@@ -1,0 +1,10 @@
+package com.mwozniak.capser_v2.repository;
+
+import com.mwozniak.capser_v2.models.database.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+public interface UsersRepository extends JpaRepository<User, UUID> {
+
+}
