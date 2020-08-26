@@ -1,21 +1,23 @@
 package com.mwozniak.capser_v2.models.database;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
 
+@Table(name = "user_stats")
 @Data
 @Entity
 public class UserStats {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @OneToOne
-    @MapsId
-    private User user;
 
     private float points;
 

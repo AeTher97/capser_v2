@@ -1,7 +1,6 @@
 package com.mwozniak.capser_v2.controllers;
 
 import com.mwozniak.capser_v2.models.exception.CapserException;
-import com.mwozniak.crudms.models.exceptions.CRUDException;
 import lombok.extern.log4j.Log4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

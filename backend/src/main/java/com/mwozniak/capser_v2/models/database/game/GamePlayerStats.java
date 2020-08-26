@@ -1,7 +1,10 @@
-package com.mwozniak.capser_v2.models.database;
+package com.mwozniak.capser_v2.models.database.game;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,6 +13,9 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "game_stats")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class GamePlayerStats {
 
 
@@ -26,7 +32,7 @@ public class GamePlayerStats {
     private int sinks;
     private int rebuttals;
     private float pointsChange;
-    private int beersDowned;
+    private float beersDowned;
     private boolean nakedLap;
 
 }

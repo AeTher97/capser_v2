@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.models.database;
+package com.mwozniak.capser_v2.models.database.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.GameEvent;

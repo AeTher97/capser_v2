@@ -1,21 +1,24 @@
-package com.mwozniak.capser_v2.models.database;
+package com.mwozniak.capser_v2.models.database.game;
 
-import com.mwozniak.capser_v2.enums.NotificationType;
+import com.mwozniak.capser_v2.enums.GameType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Notification {
+@Getter
+public class SinglesGame extends AbstractSinglesGame {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,10 +27,10 @@ public class Notification {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationType notificationType;
-    private String text;
+    @Override
+    public GameType getGameType() {
+        return GameType.SINGLES;
+    }
 
-    private UUID userId;
 
 }

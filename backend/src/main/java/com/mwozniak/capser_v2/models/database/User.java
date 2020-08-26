@@ -33,6 +33,15 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastSeen;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    private UserStats userStats;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_single_stats", referencedColumnName = "id", nullable = false)
+    private UserStats userSinglesStats;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_easy_stats", referencedColumnName = "id", nullable = false)
+    private UserStats userEasyStats;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_doubles_stats", referencedColumnName = "id", nullable = false)
+    private UserStats userDoublesStats;
 }
