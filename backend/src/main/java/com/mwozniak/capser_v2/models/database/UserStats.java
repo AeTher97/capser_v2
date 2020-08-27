@@ -25,7 +25,9 @@ public class UserStats {
     private int gamesWon;
     private int gamesLost;
 
-    private int beersDowned;
+    private float beersDowned;
+
+    private int totalRebuttals;
 
     private int totalPointsMade;
     private int totalPointsLost;

@@ -1,6 +1,8 @@
 package com.mwozniak.capser_v2.models.database.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.User;
+import com.mwozniak.capser_v2.models.database.UserStats;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,4 +35,8 @@ public class SinglesGame extends AbstractSinglesGame {
     }
 
 
+    @Override
+    protected UserStats findCorrectStats(User user) {
+        return user.getUserSinglesStats();
+    }
 }

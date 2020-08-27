@@ -2,22 +2,15 @@ package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
-import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
-import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.SinglesRepository;
-import com.mwozniak.capser_v2.repository.UsersRepository;
-import com.mwozniak.capser_v2.utils.EloRating;
-import org.hibernate.cache.CacheException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,5 +49,20 @@ public class SinglesGameService extends AbstractGameService {
         }
     }
 
+
+
+    @Override
+    public AcceptanceRequestType getAcceptanceRequestType() {
+        return AcceptanceRequestType.SINGLE;
+    }
+    @Override
+    public List<AbstractGame> listGames() {
+        return (List<AbstractGame>)(List<?>)singlesRepository.findAll();
+    }
+
+    @Override
+    public List<AbstractGame> listGames(Pageable pageable) {
+        return (List<AbstractGame>)(List<?>)singlesRepository.findAll(pageable);
+    }
 
 }

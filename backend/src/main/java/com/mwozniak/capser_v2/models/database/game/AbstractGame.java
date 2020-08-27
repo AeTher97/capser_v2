@@ -4,6 +4,7 @@ import com.mwozniak.capser_v2.enums.GameMode;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.exception.GameValidationException;
+import com.mwozniak.capser_v2.models.exception.UpdateStatsException;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -55,9 +56,11 @@ public abstract class AbstractGame {
 
     public abstract GameMode getGameMode();
 
-    public abstract void calculateStats() throws GameValidationException;
+    public abstract void calculateGameStats() throws GameValidationException;
 
     public abstract void validateGame() throws GameValidationException;
 
+    public abstract void calculatePlayerStats(User user) throws UpdateStatsException;
 
+    public abstract void updateUserPoints(User user, float pointsChange);
 }
