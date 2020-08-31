@@ -11,4 +11,5 @@ public class PlayerStatsDto {
 
     private int score;
     private int sinks;
+    private int rebuttals;
 }

@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.AbstractSinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -12,15 +12,14 @@ import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.utils.EloRating;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.util.*;
 
 public abstract class AbstractGameService implements GameService {
 
-    private final AcceptanceRequestRepository acceptanceRequestRepository;
-    private final UserService userService;
+    protected final AcceptanceRequestRepository acceptanceRequestRepository;
+    protected final UserService userService;
 
-    private final NotificationService notificationService;
+    protected final NotificationService notificationService;
 
 
     public AbstractGameService(AcceptanceRequestRepository acceptanceRequestRepository,
@@ -33,7 +32,7 @@ public abstract class AbstractGameService implements GameService {
 
     @Transactional
     @Override
-    public void queueGame(AbstractGame abstractGame) throws UserNotFoundException {
+    public void queueGame(AbstractGame abstractGame) throws CapserException {
         AbstractGame saved = saveGame(abstractGame);
         addAcceptanceAndNotify(saved);
     }
@@ -71,37 +70,20 @@ public abstract class AbstractGameService implements GameService {
     }
 
     protected void updateEloAndStats(AbstractGame abstractGame, List<AcceptanceRequest> acceptanceRequestList) throws CapserException {
-        AbstractSinglesGame singlesGame = (AbstractSinglesGame) abstractGame;
-        User user1 = userService.getUser(singlesGame.getPlayer1());
-        User user2 = userService.getUser(singlesGame.getPlayer2());
+        AbstractSinglesGame abstractSinglesGame = (AbstractSinglesGame) abstractGame;
+        User user1 = userService.getUser(abstractSinglesGame.getPlayer1());
+        User user2 = userService.getUser(abstractSinglesGame.getPlayer2());
+
+        abstractSinglesGame.calculatePlayerStats(user1);
+        abstractSinglesGame.calculatePlayerStats(user2);
 
         boolean d;
-        d = singlesGame.getWinner().equals(user1.getId());
+        d = abstractSinglesGame.getWinner().equals(user1.getId());
 
-        List<User> listToPass = Arrays.asList(user1, user2);
-        float player1PreviousRating = user1.getUserSinglesStats().getPoints();
-        float player2PreviousRating = user2.getUserSinglesStats().getPoints();
+        EloRating.EloResult eloResult = EloRating.calculate(abstractSinglesGame.findCorrectStats(user1).getPoints(), abstractSinglesGame.findCorrectStats(user2).getPoints(), 30,d);
 
-        ArrayList<User> listToPassClone = new ArrayList<>();
-
-        Iterator<User> iterator = listToPass.iterator();
-        while(iterator.hasNext()){
-            listToPassClone.add(iterator.next().clone());
-        }
-
-        EloRating.calculate(listToPassClone, 30, d);
-
-        float player1PointsChange = user1.getUserSinglesStats().getPoints() - player1PreviousRating;
-        float player2PointsChange = user2.getUserSinglesStats().getPoints() - player2PreviousRating;
-
-        singlesGame.getPlayer1Stats().setPointsChange(player1PointsChange);
-        singlesGame.getPlayer2Stats().setPointsChange(player2PointsChange);
-
-        singlesGame.calculatePlayerStats(user1);
-        singlesGame.calculatePlayerStats(user2);
-
-        singlesGame.updateUserPoints(user1,player1PointsChange);
-        singlesGame.updateUserPoints(user2,player2PointsChange);
+        abstractSinglesGame.updateUserPoints(user1, eloResult.getResult1());
+        abstractSinglesGame.updateUserPoints(user2, eloResult.getResult2());
 
         userService.saveUser(user1);
         userService.saveUser(user2);

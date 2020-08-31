@@ -1,9 +1,8 @@
 package com.mwozniak.capser_v2.utils;
 
 
-import com.mwozniak.capser_v2.models.database.User;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 public class EloRating {
 
@@ -18,29 +17,26 @@ public class EloRating {
     // K is a constant.
     // d determines whether Player A wins
     // or Player B.
-    public static void calculate(List<User> players,
-                                       int k, boolean d) {
+    public static EloResult calculate(float rating1, float rating2,
+                                      int k, boolean d) {
 
-        if (players.size() < 2) {
-            System.out.println("Not enough players in the list");
-            throw new RuntimeException("Weird");
-        }
 
-        User player1 = players.get(0);
-        User player2 = players.get(1);
-
-        float player2Probability = probability(player1.getUserSinglesStats().getPoints(), player2.getUserSinglesStats().getPoints());
-        float player1Probability = probability(player2.getUserSinglesStats().getPoints(), player1.getUserSinglesStats().getPoints());
+        float player2Probability = probability(rating1, rating2);
+        float player1Probability = probability(rating2, rating1);
 
         if (d) {
-            players.get(0).getUserSinglesStats().setPoints(player1.getUserSinglesStats().getPoints() + k * (1 - player1Probability));
-            players.get(1).getUserSinglesStats().setPoints(player2.getUserSinglesStats().getPoints() + k * (0 - player2Probability));
+            return new EloResult(k * (1 - player1Probability), k * (0 - player2Probability));
         } else {
-            players.get(0).getUserSinglesStats().setPoints(player1.getUserSinglesStats().getPoints() + k * (0 - player1Probability));
-            players.get(1).getUserSinglesStats().setPoints(player2.getUserSinglesStats().getPoints() + k * (1 - player2Probability));
+            return new EloResult(k * (0 - player1Probability), k * (1 - player2Probability));
         }
 
+    }
 
+    @Data
+    @AllArgsConstructor
+    public static class EloResult {
+        float result1;
+        float result2;
     }
 
 }

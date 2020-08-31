@@ -1,6 +1,6 @@
 package com.mwozniak.capser_v2.service;
 
-import com.mwozniak.capser_v2.models.database.game.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.SinglesRepository;

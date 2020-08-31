@@ -42,6 +42,11 @@ public class User {
     private UserStats userEasyStats;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_unranked_stats", referencedColumnName = "id", nullable = false)
+    private UserStats userUnrankedStats;
+
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "player_doubles_stats", referencedColumnName = "id", nullable = false)
     private UserStats userDoublesStats;
 }

@@ -1,9 +1,8 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
-import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.EasyCapsGame;
+import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
@@ -41,14 +40,9 @@ public class EasyCapsGameService  extends AbstractGameService{
     public EasyCapsGame findGame(UUID uuid) throws CapserException {
         Optional<EasyCapsGame> singlesGameOptional = easyCapsRepository.findEasyCapsGameById(uuid);
         if (singlesGameOptional.isPresent()) {
-            EasyCapsGame game = singlesGameOptional.get();
-            if (!game.getGameType().equals(GameType.EASY_CAPS)) {
-                throw new GameNotFoundException("This easy caps game doesn't exist");
-            } else {
-                return game;
-            }
+            return singlesGameOptional.get();
         } else {
-            throw new GameNotFoundException("This game doesn't exist");
+            throw new GameNotFoundException("This easy caps game doesn't exist");
         }
     }
     @Override

@@ -1,9 +1,8 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
-import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
@@ -38,14 +37,9 @@ public class SinglesGameService extends AbstractGameService {
     public SinglesGame findGame(UUID uuid) throws CapserException {
         Optional<SinglesGame> singlesGameOptional = singlesRepository.findSinglesGameById(uuid);
         if (singlesGameOptional.isPresent()) {
-            SinglesGame game = singlesGameOptional.get();
-            if (!game.getGameType().equals(GameType.SINGLES)) {
-                throw new GameNotFoundException("This singles game doesn't exist");
-            } else {
-                return game;
-            }
+            return singlesGameOptional.get();
         } else {
-            throw new GameNotFoundException("This game doesn't exist");
+            throw new GameNotFoundException("This singles game doesn't exist");
         }
     }
 
