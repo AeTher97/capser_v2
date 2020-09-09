@@ -118,7 +118,7 @@ public abstract class AbstractGame {
     }
 
 
-    public abstract void updateUserPoints(User user, float pointsChange);
+    public abstract void updateUserPoints(User user, float pointsChange) throws GameValidationException;
 
     public abstract void fillCommonProperties(AbstractGameDto abstractGameDto);
 

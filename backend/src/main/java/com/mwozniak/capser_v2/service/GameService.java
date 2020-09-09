@@ -3,6 +3,7 @@ package com.mwozniak.capser_v2.service;
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface GameService {
 
     List<AbstractGame> listGames();
 
-    List<AbstractGame> listGames(Pageable pageable);
+    Page<AbstractGame> listGames(Pageable pageable);
 
     void queueGame(AbstractGame abstractGame) throws CapserException;
 

@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.models.database.game.multiple;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.UserStats;
@@ -12,10 +13,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 @Entity
-@NoArgsConstructor
 @Builder
 @Getter
 public class DoublesGame extends AbstractMultipleGame {
+
+    public DoublesGame(){
+
+    }
+
     @Override
     public GameType getGameType() {
         return GameType.DOUBLES;
@@ -47,6 +52,7 @@ public class DoublesGame extends AbstractMultipleGame {
     }
 
     @Override
+    @JsonIgnore
     public UserStats findCorrectStats(User user) {
         return user.getUserDoublesStats();
     }

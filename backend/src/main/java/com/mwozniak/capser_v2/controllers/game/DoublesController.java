@@ -1,8 +1,7 @@
-package com.mwozniak.capser_v2.controllers;
+package com.mwozniak.capser_v2.controllers.game;
 
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
-import com.mwozniak.capser_v2.service.AbstractGameService;
 import com.mwozniak.capser_v2.service.DoublesService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

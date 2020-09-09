@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 @Entity
-@NoArgsConstructor
 @Builder
 @Getter
 public class UnrankedGame  extends AbstractSinglesGame {
 
+    public UnrankedGame() {
+
+    }
 
     @Override
     public void calculateBeers(GamePlayerStats gamePlayerStats1, GamePlayerStats gamePlayerStats2) {

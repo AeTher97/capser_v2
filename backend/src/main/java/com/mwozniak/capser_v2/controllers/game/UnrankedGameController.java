@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.controllers;
+package com.mwozniak.capser_v2.controllers.game;
 
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;

@@ -20,13 +20,13 @@ public abstract class AbstractMultipleGame extends AbstractGame {
 
     @Setter
     @Getter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "team_1", referencedColumnName = "id", nullable = false)
     private Team team1;
 
     @Setter
     @Getter
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "team_2", referencedColumnName = "id", nullable = false)
     private Team team2;
 

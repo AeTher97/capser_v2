@@ -30,7 +30,7 @@ public class TeamWithStats {
     @ElementCollection(fetch = FetchType.LAZY)
     private List<UUID> playerList;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "team_doubles_stats", referencedColumnName = "id", nullable = false)
     private UserStats doublesStats;
 }

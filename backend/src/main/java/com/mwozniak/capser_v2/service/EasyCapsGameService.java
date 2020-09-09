@@ -7,6 +7,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.EasyCapsRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +52,8 @@ public class EasyCapsGameService  extends AbstractGameService{
     }
 
     @Override
-    public List<AbstractGame> listGames(Pageable pageable) {
-        return (List<AbstractGame>)(List<?>)easyCapsRepository.findAll(pageable);
+    public Page<AbstractGame> listGames(Pageable pageable) {
+        return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findAll(pageable);
     }
 
 

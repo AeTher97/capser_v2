@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.models.database.game.single;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.GameMode;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
@@ -28,10 +29,12 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     @Getter
     private UUID winner;
 
+    @JsonIgnore
     public GamePlayerStats getPlayer1Stats() throws GameValidationException {
         return filterStats(getPlayer1());
     }
 
+    @JsonIgnore
     public GamePlayerStats getPlayer2Stats() throws GameValidationException {
         return filterStats(getPlayer2());
     }

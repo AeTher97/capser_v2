@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 @Entity
-@NoArgsConstructor
 @Builder
 @Getter
 public class EasyCapsGame extends AbstractSinglesGame {
 
+    public EasyCapsGame() {
+
+    }
 
     @Override
     public GameType getGameType() {
