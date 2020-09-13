@@ -1,7 +1,9 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
@@ -56,5 +58,10 @@ public class UnrankedGameService extends AbstractGameService {
     @Override
     public AcceptanceRequestType getAcceptanceRequestType() {
         return AcceptanceRequestType.UNRANKED;
+    }
+
+    @Override
+    public GameType getGameType() {
+        return GameType.UNRANKED;
     }
 }

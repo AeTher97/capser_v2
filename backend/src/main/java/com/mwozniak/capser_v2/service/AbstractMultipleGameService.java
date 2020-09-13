@@ -42,7 +42,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
             User user = userService.getUser(id);
             AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                     AcceptanceRequestType.PASSIVE,
-                    id, abstractGame.getId());
+                    id, abstractGame.getId(),abstractGame.getGameType());
             acceptanceRequestRepository.save(posterAcceptanceRequest);
             notificationService.notify(posterAcceptanceRequest, user.getUsername());
 
@@ -52,7 +52,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
             User user = userService.getUser(id);
             AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                     getAcceptanceRequestType(),
-                    id, abstractGame.getId());
+                    id, abstractGame.getId(),abstractGame.getGameType());
             acceptanceRequestRepository.save(posterAcceptanceRequest);
             notificationService.notify(posterAcceptanceRequest, user.getUsername());
         }

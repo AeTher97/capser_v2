@@ -30,4 +30,6 @@ public class Notification {
 
     private UUID userId;
 
+    private boolean seen;
+
 }

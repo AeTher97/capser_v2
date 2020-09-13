@@ -44,15 +44,15 @@ public abstract class AbstractGameService implements GameService {
 
         AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                 AcceptanceRequestType.PASSIVE,
-                singlesGame.getPlayer1(), abstractGame.getId());
+                singlesGame.getPlayer1(), abstractGame.getId(),abstractGame.getGameType());
         AcceptanceRequest activeAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                 getAcceptanceRequestType(),
-                singlesGame.getPlayer2(), abstractGame.getId());
+                singlesGame.getPlayer2(), abstractGame.getId(),abstractGame.getGameType());
 
         acceptanceRequestRepository.save(posterAcceptanceRequest);
         acceptanceRequestRepository.save(activeAcceptanceRequest);
         notificationService.notify(posterAcceptanceRequest, user2.getUsername());
-        notificationService.notify(posterAcceptanceRequest, user1.getUsername());
+        notificationService.notify(activeAcceptanceRequest, user1.getUsername());
     }
 
     @Transactional
@@ -90,6 +90,7 @@ public abstract class AbstractGameService implements GameService {
 
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
     }
+
 
 
     public abstract AbstractGame saveGame(AbstractGame abstractGame);

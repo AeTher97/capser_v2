@@ -4,8 +4,15 @@ import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.NotificationType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
 import com.mwozniak.capser_v2.models.database.Notification;
+import com.mwozniak.capser_v2.models.exception.NotificationNotFoundException;
 import com.mwozniak.capser_v2.repository.NotificationRepository;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class NotificationService {
@@ -34,6 +41,22 @@ public class NotificationService {
                 .notificationType(NotificationType.ACCEPT_REQUEST)
                 .text(text)
                 .userId(acceptanceRequest.getAcceptingUser())
+                .seen(false)
                 .build());
+    }
+
+    public void markSeen(UUID notificationId) throws NotificationNotFoundException {
+        Optional<Notification> notificationOptional = notificationRepository.findNotificationById(notificationId);
+        if(notificationOptional.isPresent()){
+            Notification notification = notificationOptional.get();
+            notification.setSeen(true);
+            notificationRepository.save(notification);
+        } else {
+            throw new NotificationNotFoundException("Notification with this id doesn't exist");
+        }
+    }
+
+    public List<Notification> getNotifications(){
+        return notificationRepository.findNotificationByUserId(SecurityUtils.getUserId());
     }
 }

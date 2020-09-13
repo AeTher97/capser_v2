@@ -1,7 +1,9 @@
 package com.mwozniak.capser_v2.service;
 
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
@@ -51,5 +53,10 @@ public class DoublesService extends AbstractMultipleGameService {
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
         return  (Page<AbstractGame>)(Page<?>)doublesRepository.findAll(pageable);
+    }
+
+    @Override
+    public GameType getGameType() {
+        return GameType.DOUBLES;
     }
 }

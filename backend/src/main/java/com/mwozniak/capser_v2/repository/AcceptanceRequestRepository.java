@@ -11,4 +11,6 @@ public interface AcceptanceRequestRepository  extends JpaRepository<AcceptanceRe
     AcceptanceRequest findAcceptanceRequestById(UUID id);
 
     List<AcceptanceRequest> findAcceptanceRequestByGameToAccept(UUID id);
+
+    List<AcceptanceRequest> findAcceptanceRequestByAcceptingUser(UUID id);
 }

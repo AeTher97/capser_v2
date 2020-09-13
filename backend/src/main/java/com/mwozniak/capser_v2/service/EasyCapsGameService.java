@@ -1,8 +1,10 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
+import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
@@ -56,6 +58,9 @@ public class EasyCapsGameService  extends AbstractGameService{
         return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findAll(pageable);
     }
 
-
+    @Override
+    public GameType getGameType() {
+        return GameType.EASY_CAPS;
+    }
 
 }

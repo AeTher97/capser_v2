@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -60,4 +62,8 @@ public class SinglesGameService extends AbstractGameService {
         return (Page<AbstractGame>)(Page<?>)singlesRepository.findAll(pageable);
     }
 
+    @Override
+    public GameType getGameType() {
+        return GameType.SINGLES;
+    }
 }

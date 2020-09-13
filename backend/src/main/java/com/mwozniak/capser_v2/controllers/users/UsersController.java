@@ -28,6 +28,12 @@ public class UsersController {
         return ResponseEntity.ok(userService.getUsers(PageRequest.of(pageNumber,pageSize, Sort.by(getSortString(gameType)).descending())));
     }
 
+    @GetMapping("/search")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Object> searchUsers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam  String username){
+        return ResponseEntity.ok(userService.searchUsers(PageRequest.of(pageNumber,pageSize), username));
+    }
+
     private String getSortString(GameType gameType){
         switch (gameType){
             case DOUBLES:

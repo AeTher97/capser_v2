@@ -18,6 +18,5 @@ public class PlayerStatsDto {
     @NotNull
     private int sinks;
 
-    @NotNull
     private int rebuttals;
 }
