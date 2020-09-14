@@ -5,7 +5,6 @@ import {useSelector} from "react-redux";
 const useNotificationFetch = () => {
 
     const {accessToken} = useSelector(state => state.auth);
-    const pageNumber = 0;
 
     return () => {
         return axios.get(`/notifications`,{
@@ -15,6 +14,18 @@ const useNotificationFetch = () => {
         })
     };
 };
+
+export const useMarkNotificationAsSeen = () => {
+    const {accessToken} = useSelector(state => state.auth);
+
+    return (notificationId) => {
+        return axios.put(`/notifications/seen/${notificationId}`,null,{
+            headers: {
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        })
+    };
+}
 
 
 export default useNotificationFetch;

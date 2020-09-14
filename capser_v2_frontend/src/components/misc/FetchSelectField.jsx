@@ -6,9 +6,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const FetchSelectField = ({onChange, label, url, resultSize, nameParameter}) => {
+const FetchSelectField = (props) => {
 
-    const theme = useTheme();
+
+    const {onChange, label, url, resultSize, nameParameter, className} = props;
 
     const searchPhrase = useFieldSearch(url, resultSize || 5);
     const classes = fetchSelectFieldStyles();
@@ -55,7 +56,7 @@ const FetchSelectField = ({onChange, label, url, resultSize, nameParameter}) => 
                         </div>
                     )
                 }) : getNoResults()}
-            </div> : <div className={classes.recordContainer}>
+            </div> : <div className={classes.loadingContainer}>
                 <CircularProgress/>
             </div>)
     }
@@ -71,7 +72,7 @@ const FetchSelectField = ({onChange, label, url, resultSize, nameParameter}) => 
                            setFocused(false)
                        }}
                        InputProps={{endAdornment: <ExpandMoreIcon/>}}
-                       className={classes.input}
+                       className={[classes.input, className].join(' ')}
             />
             {focused && getChoiceList()}
         </div>
@@ -80,8 +81,15 @@ const FetchSelectField = ({onChange, label, url, resultSize, nameParameter}) => 
 
 const fetchSelectFieldStyles = makeStyles(theme => ({
     recordContainer: {
-        backgroundColor: 'black',
+        backgroundColor: theme.palette.background.paper,
         textAlign: "left",
+        position: "absolute",
+        zIndex: 1000,
+        minWidth: 200
+    },
+    loadingContainer: {
+        backgroundColor: theme.palette.background.paper,
+        textAlign: "center",
         position: "absolute",
         zIndex: 1000,
         minWidth: 200

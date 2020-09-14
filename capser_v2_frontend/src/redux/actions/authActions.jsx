@@ -40,7 +40,7 @@ export const loginAction = ({email, password}, onSuccessCallback = () => null) =
         })
         .catch(err => {
             console.error('Login unsuccessful');
-            dispatch({type: LOGIN_FAILED, error: "Niepoprawny email lub hasło"});
+            dispatch({type: LOGIN_FAILED, error: "Invalid username or password"});
         });
 };
 

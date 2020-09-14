@@ -10,10 +10,10 @@ const mainStyles = makeStyles(theme => ({
         display: "flex",
         flexDirection: "row",
         flex: 1,
-        alignItems:"center",
+        alignItems: "center",
     },
     content: {
-        flex : 1,
+        flex: 1,
         maxWidth: 900
     },
     leftOrientedWrapper: {
@@ -25,7 +25,6 @@ const mainStyles = makeStyles(theme => ({
     leftOrientedWrapperNoPadding: {
         display: "flex",
         flexDirection: "column",
-        // alignItems: "flex-start",
         alignContent: "stretch"
     },
     twoColumnLayout: {
@@ -38,8 +37,8 @@ const mainStyles = makeStyles(theme => ({
         paddingTop: 10
     },
     textSubheading: {
-      paddingTop: 5,
-      paddingBottom: 5
+        paddingTop: 5,
+        paddingBottom: 5
     },
     text: {
         paddingTop: 10
@@ -51,12 +50,17 @@ const mainStyles = makeStyles(theme => ({
     column: {
         display: 'flex',
         flexDirection: "column",
-        alignItems: "flex-start"
-
-    }
+        alignItems: "center",
+        [theme.breakpoints.up('sm')]: {
+            minHeight: 500
+        }
+    },
+    margin: {
+        margin: 10
+    },
+    width200: {minWidth: 200}
 
 }))
-
 
 
 export default mainStyles;

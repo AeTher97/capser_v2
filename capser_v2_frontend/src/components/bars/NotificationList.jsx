@@ -1,9 +1,12 @@
 import React from 'react';
 import {Divider, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import mainStyles from "../../misc/styles/MainStyles";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const NotificationList = ({notifications}) => {
 
+    const mainClasses = mainStyles();
     const classes = notificationListStyle();
 
     const getDescription = (type) => {
@@ -17,21 +20,25 @@ const NotificationList = ({notifications}) => {
         }
     }
 
-    return (
-        <div className={classes.container}>
-            {notifications.map(notification => {
-                return (
-                    <div key={notification.id}>
-                        <Typography color={"primary"} variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
-                        <Typography variant={"body2"}>{notification.text}</Typography>
-                        <Divider/>
-                    </div>)
-            })}
-        </div>
-    );
-};
+    return notifications.map(notification => {
+        return (
+            <MenuItem key={notification.id}>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div className={mainClasses.header}>
+                    <Typography color={"primary"} style={{flex: 1}}
+                                variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
+                    <Typography variant={"caption"}>{new Date(notification.date).toDateString()}</Typography>
+                </div>
+                <div className={mainClasses.header}>
+                    <Typography variant={"body2"}>{notification.text}</Typography>
+                    <Divider/>
+                </div>
+                </div>
+            </MenuItem>)
+    })
 
-NotificationList.propTypes = {};
+
+};
 
 const notificationListStyle = makeStyles(theme => ({
     container: {

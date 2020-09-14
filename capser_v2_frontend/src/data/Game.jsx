@@ -2,17 +2,23 @@ import React from 'react';
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-export const useGamePost = (type, request) => {
+export const useGamePost = (type) => {
 
     const {accessToken} = useSelector(state => state.auth);
 
-    // return (username) => {
-    //     return axios.get(`${url}?pageSize=${pageSize}&pageNumber=${pageNumber}&username=${username}`,{
-    //         headers: {
-    //             'Authorization' : `Bearer ${accessToken}`
-    //         }
-    //     })
-    // };
+    let urlPart;
+    switch (type) {
+        case 'SINGLES':
+            urlPart = 'singles'
+    }
+
+    return (gameRequest) => {
+        return axios.post(`${urlPart}`,gameRequest,{
+            headers: {
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        })
+    };
 };
 
 export const useGameFetch = () => {

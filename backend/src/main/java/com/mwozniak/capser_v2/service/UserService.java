@@ -67,6 +67,7 @@ public class UserService {
                 userPage.getContent().stream().filter(user-> !user.getId().equals(SecurityUtils.getUserId())).map(user -> {
                     UserMinimized userMinimized = new UserMinimized();
                     BeanUtils.copyProperties(user,userMinimized);
+
                     return userMinimized;
                 }).collect(Collectors.toList()),
                 pageable, userPage.getTotalElements());

@@ -10,9 +10,7 @@ import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class NotificationService {
@@ -42,6 +40,7 @@ public class NotificationService {
                 .text(text)
                 .userId(acceptanceRequest.getAcceptingUser())
                 .seen(false)
+                .date(new Date())
                 .build());
     }
 
@@ -57,6 +56,8 @@ public class NotificationService {
     }
 
     public List<Notification> getNotifications(){
-        return notificationRepository.findNotificationByUserId(SecurityUtils.getUserId());
+        List<Notification> notifications =  notificationRepository.findNotificationByUserId(SecurityUtils.getUserId());
+        notifications.sort(Notification.Comparators.DATE);
+        return notifications;
     }
 }

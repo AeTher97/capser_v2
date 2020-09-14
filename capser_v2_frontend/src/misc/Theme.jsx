@@ -14,17 +14,16 @@ export const baseDarkTheme = createMuiTheme({
             disabled: 'rgba(255,255,255,0.38)',
             hint: 'rgba(255,255,255,0.38)'
 
-        },
-        background: {
-            default: 'rgb(33,33,34)',
-            paper: 'rgb(38,38,38)'
-        },
+        }
     },
 })
+
 
 const FakeTransitionComponent = ({children}) => children;
 
 const dividerDark = "rgba(255, 255, 255, 0.8)"
+const paperColor = 'rgb(29,29,29)'
+
 
 const getOverrides = (divider, baseTheme, type) => {
     return {
@@ -83,12 +82,13 @@ const getOverrides = (divider, baseTheme, type) => {
         },
         MuiMenu: {
             paper: {
-                backgroundColor: 'black'}
+                backgroundColor: paperColor
+            }
         },
 
         MuiTooltip: {
             tooltip: {
-                backgroundColor: type === 'dark' ? baseTheme.palette.background.default : 'rgba(24,24,24,1)'
+                backgroundColor:  'rgba(52,52,52,1)'
             }
         },
         MuiIconButton: {
@@ -102,7 +102,6 @@ const getOverrides = (divider, baseTheme, type) => {
         MuiAccordion: {
             root: {
                 backgroundColor: "transparent",
-                // borderTop: '1px solid ' + divider,
                 '&$expanded': {
                     margin: 0,
                     '&:first-child': {
@@ -110,7 +109,7 @@ const getOverrides = (divider, baseTheme, type) => {
                     },
                 },
                 '&:before': {
-                    backgroundColor: baseTheme.palette.background.paper,
+                    backgroundColor: paperColor,
                 }
             }
         },
@@ -201,7 +200,7 @@ const getOverrides = (divider, baseTheme, type) => {
             root: {
                 padding: 10,
                 border: "1px solid " + 'rgba(255,255,255,0.1)',
-                backgroundColor: baseTheme.palette.background.paper,
+                backgroundColor: paperColor,
             }
         }
         ,
@@ -281,7 +280,11 @@ export const darkTheme = createMuiTheme({
     palette: {
         type: "dark",
         primary: red,
-        secondary: grey
+        secondary: grey,
+        background: {
+            default: 'rgb(0,0,0)',
+            paper: 'rgb(38,38,38)'
+        }
     },
 
     overrides: getOverrides(dividerDark, baseDarkTheme, "dark"),

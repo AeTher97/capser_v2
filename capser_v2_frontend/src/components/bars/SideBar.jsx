@@ -15,11 +15,11 @@ import {useDispatch} from "react-redux";
 import {logoutAction} from "../../redux/actions/authActions";
 import {useHasRole} from "../../utils/SecurityUtils";
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import useNotificationFetch from "../../data/NotificationData";
+import useNotificationFetch, {useMarkNotificationAsSeen} from "../../data/NotificationData";
 import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
-import MenuItem from "@material-ui/core/MenuItem";
 import CheckIcon from '@material-ui/icons/Check';
+import {showError} from "../../redux/actions/alertActions";
 
 const SideBar = () => {
 
@@ -28,15 +28,26 @@ const SideBar = () => {
     const hasRole = useHasRole();
 
     const getNotifications = useNotificationFetch();
-
+    const markAsSeen = useMarkNotificationAsSeen();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [notifications, setNotifications] = useState([]);
     const [showBadge, setShowBadge] = useState(false);
 
+    const sendSeen = () => {
+        notifications.forEach(notification => {
+            if (!notification.seen) {
+                markAsSeen(notification.id).catch(() => {
+                    dispatch(showError("Error occured with notifications"));
+                })
+            }
+        })
+        setShowBadge(false);
+    }
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
+        sendSeen();
     };
 
     const handleClose = () => {
@@ -44,20 +55,21 @@ const SideBar = () => {
     };
 
     useEffect(() => {
-        getNotifications().then(data => {
-                console.log(data.data)
-                setNotifications(data.data)
+        if (hasRole('USER')) {
+            getNotifications().then(data => {
+                    setNotifications(data.data)
 
-                if (data.data.map(notification => {
-                    return notification.seen;
-                }).filter(boolean => !boolean).length > 0) {
-                    setShowBadge(true);
-                } else {
-                    setShowBadge(false);
+                    if (data.data.map(notification => {
+                        return notification.seen;
+                    }).filter(boolean => !boolean).length > 0) {
+                        setShowBadge(true);
+                    } else {
+                        setShowBadge(false);
+                    }
                 }
-            }
-        );
-    }, [])
+            );
+        }
+    }, [showBadge])
 
     const icons = [
         {
@@ -88,7 +100,8 @@ const SideBar = () => {
         {
             tooltip: "Games Accepting",
             link: "/secure/acceptance",
-            icon: <CheckIcon/>
+            icon: <CheckIcon/>,
+            role: 'USER'
         },
         {
             tooltip: "Profile",
@@ -110,13 +123,13 @@ const SideBar = () => {
                 }}>
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
                 </Tooltip>
-                <Tooltip title={"Notifications"} placement={"right"}>
+                {hasRole('USER') && <Tooltip title={"Notifications"} placement={"right"}>
                     <IconButton className={classes.iconButton} onClick={handleClick}>
                         {showBadge ? <Badge color={"primary"} badgeContent={5} variant={"dot"}>
                             <NotificationsIcon/>
                         </Badge> : <NotificationsIcon/>}
                     </IconButton>
-                </Tooltip>
+                </Tooltip>}
                 {icons.filter(icon => {
                     if (icon.role) {
                         return hasRole(icon.role)
@@ -146,9 +159,9 @@ const SideBar = () => {
             </Drawer>
 
             <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                <MenuItem>
+                <div>
                     <NotificationList notifications={notifications}/>
-                </MenuItem>
+                </div>
             </Menu>
         </div>
     );
