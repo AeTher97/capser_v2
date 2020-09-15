@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: capser-backend
   namespace: capser
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: capser-backend
   template:
     metadata:
       labels:
-        app: backend
+        app: capser-backend
     spec:
       containers:
-        - name: backend
+        - name: capser-backend
           image: aether97/capser:backend
           imagePullPolicy: Always
           ports:
