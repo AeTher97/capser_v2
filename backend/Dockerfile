@@ -3,7 +3,7 @@ WORKDIR /app
 COPY ./pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
 COPY ./src ./src
-RUN mvn package && cp target/crud-ms-*.jar app.jar
+RUN mvn package && cp target/capser*.jar app.jar
 
 FROM openjdk:8-jre-alpine
 RUN addgroup -S spring && adduser -S spring -G spring

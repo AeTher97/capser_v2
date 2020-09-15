@@ -1,17 +1,18 @@
-FROM maven:3.6-jdk-8 as maven
+# build environment
+FROM node:13.12.0-alpine as build
 WORKDIR /app
-COPY ./pom.xml ./pom.xml
-RUN mvn dependency:go-offline -B
-COPY ./src ./src
-RUN mvn package && cp target/crud-ms-*.jar app.jar
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY . ./
+RUN npm run build
 
-FROM openjdk:8-jre-alpine
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-LABEL maintainer="michael93509@gmail.com"
-WORKDIR /app
-COPY --from=maven /app/app.jar ./app.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+# production environment
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+# new
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
