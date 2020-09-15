@@ -24,7 +24,6 @@ export const useGamePost = (type) => {
 
 
 export const useGameListFetch = (type, pageSize = 10, pageNumber = 0) => {
-    const {accessToken} = useSelector(state => state.auth);
 
     const getTypeString = (type) => {
         switch (type) {
@@ -40,24 +39,14 @@ export const useGameListFetch = (type, pageSize = 10, pageNumber = 0) => {
     }
 
     return () => {
-        return axios.get(`/${getTypeString(type)}?pageSize=${pageSize}&pageNumber=${pageNumber}`,{
-            headers: {
-                'Authorization' : `Bearer ${accessToken}`
-            }
-        })
+        return axios.get(`/${getTypeString(type)}?pageSize=${pageSize}&pageNumber=${pageNumber}`)
     };
 }
 
 export const useGameFetch = () => {
 
-    const {accessToken} = useSelector(state => state.auth);
-
     return (gameId,gameType) => {
-        return axios.get(`games/${gameId}/?gameType=${gameType}`,{
-            headers: {
-                'Authorization' : `Bearer ${accessToken}`
-            }
-        })
+        return axios.get(`games/${gameId}/?gameType=${gameType}`)
     };
 }
 

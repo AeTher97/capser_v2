@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: crud-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: aether97/crudms:backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: db-secret
+            - name: PS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: db-secret
+            - name: JWT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: jwtt-secret
+      imagePullSecrets:
+        - name: regcred

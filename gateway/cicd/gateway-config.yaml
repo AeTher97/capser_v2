@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: crud-ms
+data:
+  application.properties: |
+    server.port=8080
+
+    # Enabling Kubernetes
+    spring.cloud.kubernetes.enabled=true
+    spring.cloud.kubernetes.ribbon.enabled=true
+    spring.cloud.kubernetes.discovery.enabled=true
+    spring.cloud.kubernetes.discovery.all-namespaces=true
+    spring.cloud.kubernetes.config.enabled=true
+
+    #Disabling Eureka
+    eureka.client.enabled=false

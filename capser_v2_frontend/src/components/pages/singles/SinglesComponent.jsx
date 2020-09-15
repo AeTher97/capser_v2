@@ -50,54 +50,6 @@ const SinglesComponent = () => {
     }
 
 
-    // const games = [
-    //     {
-    //         player1: 'aether',
-    //         player2: 'bartq',
-    //         player1Score: 11,
-    //         player2Score: 8,
-    //         date: new Date(),
-    //         player1Sinks : 16,
-    //         player2Sinks: 8,
-    //         player1Rebuttals: 5,
-    //         player2Rebuttals: 6,
-    //         player1Beers : 2,
-    //         player2Beers: 1,
-    //         player1PointsChange: '+6',
-    //         player2PointsChange: '-4'
-    //     },{
-    //         player1: 'aether',
-    //         player2: 'bartq',
-    //         player1Score: 11,
-    //         player2Score: 8,
-    //         date: new Date(),
-    //         player1Sinks : 16,
-    //         player2Sinks: 8,
-    //         player1Rebuttals: 5,
-    //         player2Rebuttals: 6,
-    //         player1Beers : 2,
-    //         player2Beers: 1,
-    //         player1PointsChange: '+6',
-    //         player2PointsChange: '-4'
-    //     },
-    //     {
-    //         player1: 'aether',
-    //         player2: 'bartq',
-    //         player1Score: 11,
-    //         player2Score: 8,
-    //         date: new Date(),
-    //         player1Sinks : 16,
-    //         player2Sinks: 8,
-    //         player1Rebuttals: 5,
-    //         player2Rebuttals: 6,
-    //         player1Beers : 2,
-    //         player2Beers: 1,
-    //         player1PointsChange: '+6',
-    //         player2PointsChange: '-4'
-    //     }
-    //
-    // ]
-
     const classes = mainStyles();
     return (
         <div>

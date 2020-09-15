@@ -20,6 +20,11 @@ import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
 import CheckIcon from '@material-ui/icons/Check';
 import {showError} from "../../redux/actions/alertActions";
+import {ReactComponent as SinglesIcon} from "../../utils/icons/singlesIcon.svg";
+import {ReactComponent as DoublesIcon} from "../../utils/icons/doublesIcon.svg";
+import {ReactComponent as EasyIcon} from "../../utils/icons/easyIcon.svg";
+import {ReactComponent as UnrankedIcon} from "../../utils/icons/unrankedIcon.svg";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
 const SideBar = () => {
 
@@ -88,22 +93,30 @@ const SideBar = () => {
         {
             tooltip: "Singles",
             link: "/singles",
-            icon: <PersonOutlineOutlinedIcon/>
+            icon: <SvgIcon>
+                <SinglesIcon/>
+            </SvgIcon>
         },
         {
             tooltip: "Easy Caps",
             link: "/easy",
-            icon: <SportsFootballOutlinedIcon/>
+            icon: <SvgIcon>
+                <EasyIcon/>
+            </SvgIcon>
         },
         {
             tooltip: "Unranked",
             link: "/unranked",
-            icon: <FiberManualRecordOutlinedIcon/>
+            icon:  <SvgIcon>
+                <UnrankedIcon/>
+            </SvgIcon>
         },
         {
             tooltip: "Doubles",
             link: "/doubles",
-            icon: <PeopleOutlinedIcon/>
+            icon:  <SvgIcon>
+                <DoublesIcon/>
+            </SvgIcon>
         },
         {
             tooltip: "Games Accepting",

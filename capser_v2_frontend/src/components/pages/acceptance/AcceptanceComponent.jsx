@@ -23,6 +23,8 @@ const AcceptanceComponent = props => {
     return (
         <div>
             <PageHeader title={"Games Accepting"}/>
+
+
             {acceptanceRequests.map(request => {
                 return (
                     <div key={request.acceptanceRequest.id}>
