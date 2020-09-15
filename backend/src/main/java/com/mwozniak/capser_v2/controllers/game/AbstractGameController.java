@@ -34,6 +34,15 @@ public abstract class AbstractGameController implements GameController {
     }
 
     @Override
+    @PreAuthorize("@accessVerificationBean.canAcceptGame(#gameId)")
+    @PostMapping("/reject/{gameId}")
+    public ResponseEntity<Object> rejectGame(@PathVariable @Valid UUID gameId) throws CapserException {
+        abstractGameService.rejectGame(gameId);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @Override
     public ResponseEntity<Object> doAddGame( AbstractGame abstractGame) throws CapserException {
         abstractGame.validateGame();
         abstractGame.calculateGameStats();
@@ -44,7 +53,7 @@ public abstract class AbstractGameController implements GameController {
     @Override
     @GetMapping
     public ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return ResponseEntity.ok().body(abstractGameService.listGames(PageRequest.of(pageNumber, pageSize, Sort.by("time"))));
+        return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time"))));
     }
 
 

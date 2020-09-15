@@ -62,11 +62,7 @@ public abstract class AbstractGameService implements GameService {
     @Override
     public void acceptGame(UUID gameId) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
-        if (acceptanceRequestList.isEmpty()) {
-            throw new GameNotFoundException("Cannot find game to accept with this id");
-        }
-        AcceptanceRequest request = acceptanceRequestList.stream().filter(acceptanceRequest ->
-                acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).findFirst().get();
+        AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
         game.setAccepted(true);
         updateEloAndStats(game, acceptanceRequestList);
@@ -74,10 +70,28 @@ public abstract class AbstractGameService implements GameService {
         notificationService.notify(Notification.builder()
                 .date(new Date())
                 .notificationType(NotificationType.GAME_ACCEPTED)
-                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was accepted by the user")
+                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was accepted by the user.")
                 .seen(false)
                 .userId(request.getAcceptingUser())
                 .build());
+    }
+
+    @Transactional
+    @Override
+    public void rejectGame(UUID gameId) throws CapserException {
+        List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
+        AcceptanceRequest request = extractAcceptanceRequest(gameId);
+        AbstractGame game = findGame(request.getGameToAccept());
+        removeGame(game);
+        notificationService.notify(Notification.builder()
+                .date(new Date())
+                .notificationType(NotificationType.GAME_REJECTED)
+                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was rejected by the user.")
+                .seen(false)
+                .userId(request.getAcceptingUser())
+                .build());
+        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
+
     }
 
     protected void updateEloAndStats(AbstractGame abstractGame, List<AcceptanceRequest> acceptanceRequestList) throws CapserException {
@@ -103,8 +117,18 @@ public abstract class AbstractGameService implements GameService {
     }
 
 
+    private AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
+        List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
+        if (acceptanceRequestList.isEmpty()) {
+            throw new GameNotFoundException("Cannot find game to accept with this id");
+        }
+        return  acceptanceRequestList.stream().filter(acceptanceRequest ->
+                acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).findFirst().get();
+    }
+
 
     public abstract AbstractGame saveGame(AbstractGame abstractGame);
+    public abstract void removeGame(AbstractGame abstractGame);
 
 
 }

@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom";
 import {useGameListFetch} from "../../../data/Game";
 import {useUsernameFetch} from "../../../data/UsersFetch";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {getGameModeString} from "../../../utils/Utils";
 
 const SinglesComponent = () => {
 
@@ -19,6 +20,7 @@ const SinglesComponent = () => {
     const [usernames, setUsernames] = useState([])
     const fetchGames = useGameListFetch('SINGLES');
     const fetchUsername = useUsernameFetch();
+
 
     useEffect(() => {
         fetchGames().then((response) => {
@@ -65,11 +67,13 @@ const SinglesComponent = () => {
                     <div className={[classes.paddedContent, classes.squareShine].join(' ')}>
                         <Divider/>
                         {!loading ? <Table style={{width: '100%'}}>
-                                <TableHead>
+                                <TableHead >
                                     <TableRow>
                                         <TableCell>Players</TableCell>
-                                        <TableCell>Score</TableCell>
+                                        <TableCell>Winner</TableCell>
+                                        <TableCell>Game Mode</TableCell>
                                         <TableCell>Time</TableCell>
+                                        <TableCell>Score</TableCell>
                                         <TableCell>Rebuttals</TableCell>
                                         <TableCell>Sinks</TableCell>
                                         <TableCell>Beers</TableCell>
@@ -80,10 +84,12 @@ const SinglesComponent = () => {
                                     {games.map(game => {
                                         const player1Stats = findPlayerStats(game, game.player1);
                                         const player2Stats = findPlayerStats(game, game.player2);
-                                        return (<TableRow key={game.id}>
+                                        return (<TableRow key={game.id} className={game.nakedLap ? classes.redNeon : classes.empty}>
                                             <TableCell>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
-                                            <TableCell>{player1Stats.score} : {player2Stats.score}</TableCell>
+                                            <TableCell>{findUsername(game.winner)}</TableCell>
+                                            <TableCell>{getGameModeString(game.gameMode)}</TableCell>
                                             <TableCell>{new Date(game.time).toDateString()}</TableCell>
+                                            <TableCell>{player1Stats.score} : {player2Stats.score}</TableCell>
                                             <TableCell>{player1Stats.rebuttals} : {player2Stats.rebuttals}</TableCell>
                                             <TableCell>{player1Stats.sinks} : {player2Stats.sinks}</TableCell>
                                             <TableCell>{player1Stats.beersDowned} : {player2Stats.beersDowned}</TableCell>

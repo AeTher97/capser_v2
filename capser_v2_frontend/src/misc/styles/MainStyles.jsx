@@ -49,6 +49,7 @@ const mainStyles = makeStyles(theme => ({
     },
     column: {
         paddingTop: 20,
+        paddingBottom: 20,
         display: 'flex',
         flexDirection: "column",
         alignItems: "center",
@@ -59,7 +60,7 @@ const mainStyles = makeStyles(theme => ({
     },
     width200: {minWidth: 200},
     height700: {
-        [theme.breakpoints.up('xs')]: {
+        [theme.breakpoints.up('md')]: {
             minHeight: 700
         }
     },
@@ -77,7 +78,11 @@ const mainStyles = makeStyles(theme => ({
     },
     neon: {
         boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
-    }
+    },
+    redNeon: {
+        boxShadow: '0 0 5px 2px rgba(255,0,0,0.4)',
+    },
+    empty: {}
 
 }))
 

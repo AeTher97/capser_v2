@@ -35,6 +35,11 @@ public class SinglesGameService extends AbstractGameService {
         return singlesRepository.save((SinglesGame)abstractGame);
     }
 
+    @Override
+    public void removeGame(AbstractGame abstractGame) {
+        singlesRepository.delete((SinglesGame)abstractGame);
+    }
+
 
     @Override
     public SinglesGame findGame(UUID uuid) throws CapserException {
@@ -60,6 +65,11 @@ public class SinglesGameService extends AbstractGameService {
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
         return (Page<AbstractGame>)(Page<?>)singlesRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+        return  (Page<AbstractGame>)(Page<?>)singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
     }
 
     @Override

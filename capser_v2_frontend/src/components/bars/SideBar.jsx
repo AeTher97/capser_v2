@@ -40,15 +40,16 @@ const SideBar = () => {
     const [showBadge, setShowBadge] = useState(false);
 
     const sendSeen = () => {
-        return new Promise(() => {
+        return new Promise((resolve) => {
             notifications.forEach(notification => {
                 if (!notification.seen) {
                     markAsSeen(notification.id).catch(() => {
-                        dispatch(showError("Error occured with notifications"));
+                        dispatch(showError("Error occurred with notifications"));
                     })
                 }
             })
             setShowBadge(false);
+            resolve();
         })
     }
 
@@ -71,13 +72,12 @@ const SideBar = () => {
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        sendSeen().then(() => {
-            updateNotifications();
-        });
+        sendSeen().then(r => {})
     };
 
     const handleClose = () => {
         setAnchorEl(null);
+        updateNotifications();
     };
 
     useEffect(() => {
@@ -107,14 +107,14 @@ const SideBar = () => {
         {
             tooltip: "Unranked",
             link: "/unranked",
-            icon:  <SvgIcon>
+            icon: <SvgIcon>
                 <UnrankedIcon/>
             </SvgIcon>
         },
         {
             tooltip: "Doubles",
             link: "/doubles",
-            icon:  <SvgIcon>
+            icon: <SvgIcon>
                 <DoublesIcon/>
             </SvgIcon>
         },

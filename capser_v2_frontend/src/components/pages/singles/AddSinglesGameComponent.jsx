@@ -76,7 +76,7 @@ const AddSinglesGameComponent = () => {
 
     return (
         <div>
-            <PageHeader title={"Add singles game"}/>
+            <PageHeader title={"Add singles game"} onBack={() => {history.push('/singles')}}/>
 
             <div style={{padding: 8}}>
                 <Grid container  spacing={2}>

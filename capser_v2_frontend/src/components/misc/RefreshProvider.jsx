@@ -28,7 +28,6 @@ const RefreshProvider = () => {
         return authTokenRequest;
     }
 
-    console.log("Refresh provider reload")
     if (axios.interceptors.request.handlers.length > 0) {
         axios.interceptors.request.eject(axios.interceptors.request.handlers.length - 1);
     }

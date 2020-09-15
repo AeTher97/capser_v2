@@ -18,9 +18,13 @@ public interface GameService {
 
     Page<AbstractGame> listGames(Pageable pageable);
 
+    Page<AbstractGame> listAcceptedGames(Pageable pageable);
+
     void queueGame(AbstractGame abstractGame) throws CapserException;
 
     void acceptGame(UUID gameId)  throws CapserException;
+
+    void rejectGame(UUID gameId)  throws CapserException;
 
     AcceptanceRequestType getAcceptanceRequestType();
 

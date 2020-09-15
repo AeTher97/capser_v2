@@ -36,6 +36,11 @@ public class DoublesService extends AbstractMultipleGameService {
     }
 
     @Override
+    public void removeGame(AbstractGame abstractGame) {
+        doublesRepository.delete((DoublesGame) abstractGame);
+    }
+
+    @Override
     public AbstractGame findGame(UUID id) throws CapserException {
         Optional<DoublesGame> doublesGameOptional = doublesRepository.findDoublesGameById(id);
         if (doublesGameOptional.isPresent()) {
@@ -53,6 +58,11 @@ public class DoublesService extends AbstractMultipleGameService {
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
         return  (Page<AbstractGame>)(Page<?>)doublesRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+        return  (Page<AbstractGame>)(Page<?>)doublesRepository.findDoublesGameByAcceptedTrue(pageable);
     }
 
     @Override

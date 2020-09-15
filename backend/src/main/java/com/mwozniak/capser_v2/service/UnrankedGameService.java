@@ -3,6 +3,7 @@ package com.mwozniak.capser_v2.service;
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
@@ -36,6 +37,12 @@ public class UnrankedGameService extends AbstractGameService {
     }
 
     @Override
+    public void removeGame(AbstractGame abstractGame) {
+        unrankedRepository.delete((UnrankedGame) abstractGame);
+    }
+
+
+    @Override
     public UnrankedGame findGame(UUID uuid) throws CapserException {
         Optional<UnrankedGame> unrankedGameOptional = unrankedRepository.findUnrankedGameById(uuid);
         if (unrankedGameOptional.isPresent()) {
@@ -53,6 +60,11 @@ public class UnrankedGameService extends AbstractGameService {
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
         return (Page<AbstractGame>)(Page<?>) unrankedRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+        return (Page<AbstractGame>)(Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
     }
 
     @Override

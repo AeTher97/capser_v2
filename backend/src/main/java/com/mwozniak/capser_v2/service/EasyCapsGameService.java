@@ -3,6 +3,7 @@ package com.mwozniak.capser_v2.service;
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
@@ -38,6 +39,11 @@ public class EasyCapsGameService  extends AbstractGameService{
         return easyCapsRepository.save((EasyCapsGame)abstractGame);
     }
 
+    @Override
+    public void removeGame(AbstractGame abstractGame) {
+        easyCapsRepository.delete((EasyCapsGame) abstractGame);
+    }
+
 
     @Override
     public EasyCapsGame findGame(UUID uuid) throws CapserException {
@@ -57,6 +63,12 @@ public class EasyCapsGameService  extends AbstractGameService{
     public Page<AbstractGame> listGames(Pageable pageable) {
         return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findAll(pageable);
     }
+
+    @Override
+    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+        return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
+    }
+
 
     @Override
     public GameType getGameType() {
