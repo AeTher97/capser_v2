@@ -50,7 +50,7 @@ const HomeComponent = () => {
            <PageHeader title={"Global Caps League"} showLogo/>
             <Grid className={classes.root}>
                 <Grid container>
-                    <Grid item sm={8}>
+                    <Grid item sm={8} className={classes.squareShine}>
                         <div className={classes.leftOrientedWrapperNoPadding}>
                             <Typography variant={"h5"}>News Feed</Typography>
                             <div style={{padding: 10}}>
@@ -73,7 +73,7 @@ const HomeComponent = () => {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item sm={4} style={{textAlign: "left"}}>
+                    <Grid item sm={4} style={{textAlign: "left"}} className={classes.squareShine}>
                         <Typography variant={"h5"}>Latest Games</Typography>
                         <div style={{padding: 10}}>
                             <Divider style={{marginBottom: 10}}/>

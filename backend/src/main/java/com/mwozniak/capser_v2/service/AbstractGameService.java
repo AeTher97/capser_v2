@@ -1,7 +1,9 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
+import com.mwozniak.capser_v2.enums.NotificationType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
+import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
@@ -9,6 +11,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.utils.EloRating;
 
 import javax.transaction.Transactional;
@@ -62,11 +65,19 @@ public abstract class AbstractGameService implements GameService {
         if (acceptanceRequestList.isEmpty()) {
             throw new GameNotFoundException("Cannot find game to accept with this id");
         }
-        AcceptanceRequest request = acceptanceRequestList.stream().findFirst().get();
+        AcceptanceRequest request = acceptanceRequestList.stream().filter(acceptanceRequest ->
+                acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).findFirst().get();
         AbstractGame game = findGame(request.getGameToAccept());
         game.setAccepted(true);
         updateEloAndStats(game, acceptanceRequestList);
         saveGame(game);
+        notificationService.notify(Notification.builder()
+                .date(new Date())
+                .notificationType(NotificationType.GAME_ACCEPTED)
+                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was accepted by the user")
+                .seen(false)
+                .userId(request.getAcceptingUser())
+                .build());
     }
 
     protected void updateEloAndStats(AbstractGame abstractGame, List<AcceptanceRequest> acceptanceRequestList) throws CapserException {

@@ -15,17 +15,20 @@ const getAuthFromStorage = () => {
     const email = localStorage.getItem('email');
 
 
+
     if (accessToken) {
         const result = {...decodeToken(accessToken)};
 
+
         const refreshResult = {...decodeToken(refreshToken)}
+
         if (isTokenOutdated(refreshResult.expirationTime)) {
             return emptyState;
         }
 
         if (result.error || refreshResult.error) {
             return result;
-        } else
+        } else {
             return {
                 ...result,
                 accessToken: accessToken,
@@ -34,6 +37,7 @@ const getAuthFromStorage = () => {
                 email: email,
                 error: null
             }
+        }
     }
 
 };

@@ -7,12 +7,15 @@ const PageHeader = ({title, font, showLogo}) => {
     const classes = mainStyles();
 
     return (
-        <div className={classes.header} style={{
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            backgroundImage: `url(/bars.svg)`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'right'
-        }}>
+        <div className={[classes.header, classes.horizontalShine].join(' ')}
+        // style={{
+        //     backgroundColor: 'rgba(0,0,0,0.8)',
+        //     backgroundImage: `url(/bars.svg)`,
+        //     backgroundRepeat: 'no-repeat',
+        //     backgroundPosition: 'right'
+        // }}
+
+        >
             {showLogo ? <img src={"/logo192.png"} style={{maxWidth: 80, padding: 10}}/> : <div  style={{minHeight: 100, minWidth: 20}}/>}
             <Typography variant={"h4"}>{title}</Typography>
         </div>

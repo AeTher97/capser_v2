@@ -12,6 +12,7 @@ import lombok.Builder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -54,6 +55,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/login").permitAll()
                 .mvcMatchers("/refresh").permitAll()
                 .mvcMatchers("/users").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/singles").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/easy").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/unranked").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/doubles").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/teams").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/users").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/users/*").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/users/search").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManager(), "/login"))

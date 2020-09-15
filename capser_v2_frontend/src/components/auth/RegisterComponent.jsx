@@ -1,79 +1,83 @@
-import React from 'react';
+import React, {useState} from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import {loginAction} from "../../redux/actions/authActions";
-import {useHistory, useLocation} from "react-router-dom";
+import {createAccount, loginAction} from "../../redux/actions/authActions";
+import {useHistory,useLocation} from "react-router-dom";
 import {saveTokenInStorage} from "../../utils/TokenUtils";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
 import CenteredColumn from "../misc/CenteredColumn";
 
 
-const SignInComponent = props => {
+
+
+const RegisterComponent = props => {
 
     const location = useLocation();
-    const {from} = location.state || {from: {pathname: '/'}};
     const classes = useStyle();
 
     const password = useFieldValidation("", () => {
     });
-    const email = useFieldValidation("", () => {
+    const repeatPassword = useFieldValidation("", () => {
+    });
+    const username = useFieldValidation("", () => {
     });
 
-    const {error} = useSelector(state => state.auth);
+    const [error,setError]  = useState('');
 
     const history = useHistory();
-    const dispatch = useDispatch();
 
     const fields = [
         {
             label: 'Username',
-            validation: email
+            validation: username
         }, {
             label: 'Password',
             validation: password,
             type: 'password'
+        },
+        {
+            label: 'Repeat Password',
+            validation: repeatPassword,
+            type: 'password'
         }]
 
-    const handleLogin = (e) => {
+    const handleClick = (e) => {
         e.preventDefault();
-        dispatch(loginAction({
-            email: email.value,
-            password: password.value
-        }, (authToken, refreshToken) => {
-            history.push(from);
-            saveTokenInStorage(authToken, refreshToken, email.value)
-        }))
+        createAccount({
+            username: username.value,
+            password: password.value,
+            repeatPassword: repeatPassword.value
+        }).then(() => {
+            history.push("/login")
+        }).catch((e) => {
+            setError('Error while registering')
+        })
     }
 
     return (
         <div className={classes.root}>
             <div className={classes.loginContainer}>
+                <img style={{maxWidth: 260}} src={"/splash.png"}/>
                 <CenteredColumn>
-                    <img src={"/logo192.png"}/>
                     <FormComponent
-                        title={'Capser Log In'}
+                        title={'Create account'}
                         fields={fields}
-                        onSubmit={handleLogin}
-                        buttonText={"Log In"}
+                        onSubmit={handleClick}
+                        buttonText={"Sign up"}
                         stretchButton={true}
                         error={error}
                     />
                     <div className={classes.footer}>
-                        <Typography variant={"caption"}>Haven't played pro caps yet? </Typography>
-                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/register')}}>Sign up!</Typography>
-                    </div>
-                    <div className={classes.footer}>
-                        <Typography variant={"caption"}>Made with ❤ by Mike 2020</Typography>
+                        <Typography variant={"caption"}>Have an account? </Typography>
+                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/login')}}>Sign in</Typography>
                     </div>
                 </CenteredColumn>
             </div>
         </div>
     );
 };
-
-SignInComponent.propTypes = {};
 
 const useStyle = makeStyles(theme => ({
     root: {
@@ -112,4 +116,4 @@ const useStyle = makeStyles(theme => ({
     }
 }));
 
-export default SignInComponent;
+export default RegisterComponent;

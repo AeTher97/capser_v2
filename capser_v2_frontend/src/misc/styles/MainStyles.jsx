@@ -48,17 +48,36 @@ const mainStyles = makeStyles(theme => ({
         padding: 10
     },
     column: {
+        paddingTop: 20,
         display: 'flex',
         flexDirection: "column",
         alignItems: "center",
-        [theme.breakpoints.up('sm')]: {
-            minHeight: 500
-        }
+
     },
     margin: {
         margin: 10
     },
-    width200: {minWidth: 200}
+    width200: {minWidth: 200},
+    height700: {
+        [theme.breakpoints.up('xs')]: {
+            minHeight: 700
+        }
+    },
+    squareShine: {
+        backgroundImage: `url(/reflection.svg)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'bottom right',
+        backgroundSize: 'cover',
+    },
+    horizontalShine: {
+        backgroundImage: `url(/horizontalShine.svg)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'bottom right',
+        backgroundSize: 'cover',
+    },
+    neon: {
+        boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
+    }
 
 }))
 

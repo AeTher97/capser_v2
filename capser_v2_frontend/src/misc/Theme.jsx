@@ -137,9 +137,10 @@ const getOverrides = (divider, baseTheme, type) => {
             }
         },
         MuiTableRow: {
+
             head: {
-                borderBottom: "1px solid " + divider
-            },
+                boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)'
+            }
 
         },
         MuiTableCell: {
@@ -261,7 +262,7 @@ const getProps = (baseTheme) => {
             disableRipple: true
         },
         MuiTableCell: {
-            size: "small"
+            size: "medium"
         },
         MuiTooltip: {
             elevation: 2,

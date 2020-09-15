@@ -43,7 +43,6 @@ public abstract class AbstractGameController implements GameController {
 
     @Override
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber) {
         return ResponseEntity.ok().body(abstractGameService.listGames(PageRequest.of(pageNumber, pageSize, Sort.by("time"))));
     }

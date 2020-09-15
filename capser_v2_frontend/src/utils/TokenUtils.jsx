@@ -24,7 +24,7 @@ export const saveTokenInStorage = (accessToken, refreshToken, email) => {
 }
 
 export const isTokenOutdated = (exp) => {
-    return exp < (new Date().getTime() / 1000);
+    return exp - 10< (new Date().getTime() / 1000) ;
 }
 
 export const getHeaders = (token) => {

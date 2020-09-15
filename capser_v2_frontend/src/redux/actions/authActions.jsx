@@ -44,6 +44,10 @@ export const loginAction = ({email, password}, onSuccessCallback = () => null) =
         });
 };
 
+export const createAccount = (request) => {
+    return axiosInstance.post('/users', request);
+}
+
 export const refreshAction = (refreshToken, onSuccessCallback = () => null) => dispatch => {
     dispatch({type: REFRESH_ATTEMPT});
 

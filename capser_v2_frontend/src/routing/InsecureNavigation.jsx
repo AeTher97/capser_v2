@@ -3,6 +3,7 @@ import React from 'react';
 import SideBar from "../components/bars/SideBar";
 import HomeScreen from "../screens/HomeScreen";
 import SinglesScreen from "../screens/SinglesScreen";
+import RegisterComponent from "../components/auth/RegisterComponent";
 
 const InsecureNavigation = () => {
 
@@ -21,6 +22,7 @@ const InsecureNavigation = () => {
                 <Route exact path={"/singles"}>
                     <SinglesScreen/>
                 </Route>
+
 
 
 

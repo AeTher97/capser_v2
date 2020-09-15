@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import {useSelector} from "react-redux";
+import {easing} from "@material-ui/core";
 
 export const useGamePost = (type) => {
 
@@ -20,6 +21,32 @@ export const useGamePost = (type) => {
         })
     };
 };
+
+
+export const useGameListFetch = (type, pageSize = 10, pageNumber = 0) => {
+    const {accessToken} = useSelector(state => state.auth);
+
+    const getTypeString = (type) => {
+        switch (type) {
+            case 'SINGLES' :
+                return 'singles'
+            case 'EASY' :
+                return 'easy'
+            case 'DOUBLES' :
+                return 'doubles'
+            case 'UNRANKED' :
+                return 'unranked'
+        }
+    }
+
+    return () => {
+        return axios.get(`/${getTypeString(type)}?pageSize=${pageSize}&pageNumber=${pageNumber}`,{
+            headers: {
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        })
+    };
+}
 
 export const useGameFetch = () => {
 

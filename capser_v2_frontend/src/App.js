@@ -16,9 +16,9 @@ function App() {
 
     return (
         <div className="App">
+            <RefreshProvider/>
 
             <Router basename={process.env.PUBLIC_URL}>
-                <RefreshProvider/>
                 <ThemeProvider theme={theme}>
                 <MainNavigation/>
                 </ThemeProvider>

@@ -9,6 +9,7 @@ import {closeAlert} from "../redux/actions/alertActions";
 import SecureNavigation from "./SecureNavigation";
 import InsecureNavigation from "./InsecureNavigation";
 import SignInScreen from "../screens/SignInScreen";
+import RegisterComponent from "../components/auth/RegisterComponent";
 
 const MainNavigation = () => {
     const {severity, message, isOpen} = useSelector(state => state.alert);
@@ -23,6 +24,11 @@ const MainNavigation = () => {
             <Route exact path='/login'>
                 <SignInScreen/>
             </Route>
+
+            <Route exact path={"/register"}>
+                <RegisterComponent/>
+            </Route>
+
 
             <SecureRoute path='/secure*'>
                 <SecureNavigation/>

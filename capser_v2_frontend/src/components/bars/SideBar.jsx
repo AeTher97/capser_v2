@@ -35,26 +35,19 @@ const SideBar = () => {
     const [showBadge, setShowBadge] = useState(false);
 
     const sendSeen = () => {
-        notifications.forEach(notification => {
-            if (!notification.seen) {
-                markAsSeen(notification.id).catch(() => {
-                    dispatch(showError("Error occured with notifications"));
-                })
-            }
+        return new Promise(() => {
+            notifications.forEach(notification => {
+                if (!notification.seen) {
+                    markAsSeen(notification.id).catch(() => {
+                        dispatch(showError("Error occured with notifications"));
+                    })
+                }
+            })
+            setShowBadge(false);
         })
-        setShowBadge(false);
     }
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-        sendSeen();
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    useEffect(() => {
+    const updateNotifications = () => {
         if (hasRole('USER')) {
             getNotifications().then(data => {
                     setNotifications(data.data)
@@ -69,7 +62,22 @@ const SideBar = () => {
                 }
             );
         }
-    }, [showBadge])
+    }
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        sendSeen().then(() => {
+            updateNotifications();
+        });
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    useEffect(() => {
+        updateNotifications();
+    }, [])
 
     const icons = [
         {

@@ -58,6 +58,7 @@ public class NotificationService {
     public List<Notification> getNotifications(){
         List<Notification> notifications =  notificationRepository.findNotificationByUserId(SecurityUtils.getUserId());
         notifications.sort(Notification.Comparators.DATE);
+        Collections.reverse(notifications);
         return notifications;
     }
 }

@@ -7,7 +7,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 const NotificationList = ({notifications}) => {
 
     const mainClasses = mainStyles();
-    const classes = notificationListStyle();
 
     const getDescription = (type) => {
         switch (type) {
@@ -27,7 +26,7 @@ const NotificationList = ({notifications}) => {
                 <div className={mainClasses.header}>
                     <Typography color={"primary"} style={{flex: 1}}
                                 variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
-                    <Typography variant={"caption"}>{new Date(notification.date).toDateString()}</Typography>
+                    <Typography variant={"caption"}>{new Date(notification.date).toUTCString()}</Typography>
                 </div>
                 <div className={mainClasses.header}>
                     <Typography variant={"body2"}>{notification.text}</Typography>

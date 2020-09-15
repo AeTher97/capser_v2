@@ -16,5 +16,11 @@ const useFieldSearch = (url, pageSize) => {
     };
 };
 
+export const useUsernameFetch = () => {
+    return (id) => {
+        return axios.get(`/users/${id}`)
+    };
+}
+
 
 export default useFieldSearch;

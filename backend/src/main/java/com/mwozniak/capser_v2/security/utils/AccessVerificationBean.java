@@ -15,7 +15,11 @@ import java.util.UUID;
 @Log4j
 public class AccessVerificationBean {
 
-    private AcceptanceRequestRepository acceptanceRequestRepository;
+    private final AcceptanceRequestRepository acceptanceRequestRepository;
+
+    public AccessVerificationBean(AcceptanceRequestRepository acceptanceRequestRepository) {
+        this.acceptanceRequestRepository = acceptanceRequestRepository;
+    }
 
     public boolean hasAccessToUser(String id) {
         return SecurityUtils.getUserId().equals(UUID.fromString(id));
@@ -24,14 +28,14 @@ public class AccessVerificationBean {
     public boolean canAcceptGame(UUID gameId) {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         if (acceptanceRequestList.isEmpty()) {
-            log.info("Tried to accept non existent game, acces denied");
+            log.info("Tried to accept non existent game, access denied");
             return false;
         }
 
         for (AcceptanceRequest request : acceptanceRequestList) {
             if (request.getAcceptingUser().equals(SecurityUtils.getUserId())) {
                 if (request.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)) {
-                    log.info("Tried to own posted game");
+                    log.info("Own acceptance request");
                 } else {
                     return true;
                 }
