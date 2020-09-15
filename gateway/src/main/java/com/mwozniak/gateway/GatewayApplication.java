@@ -22,7 +22,7 @@ public class GatewayApplication {
 		return routeLocatorBuilder.routes()
 				.route("api", r-> r
 						.path("/api/**")
-						.filters(spec -> spec.rewritePath("/capser-backend/(?<segment>.*)", SEGMENT))
+						.filters(spec -> spec.rewritePath("/api/(?<segment>.*)", SEGMENT))
 						.uri("lb://capser-backend"))
 				.route("frontend", r-> r.path("/**").uri("lb://frontend"))
 				.build();
