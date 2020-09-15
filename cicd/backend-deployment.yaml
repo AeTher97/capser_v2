@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: crud-ms
+  namespace: capser
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: aether97/crudms:backend
+          image: aether97/capser:backend
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
