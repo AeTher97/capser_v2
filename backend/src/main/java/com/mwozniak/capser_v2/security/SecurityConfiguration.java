@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean()  {
         List<AuthenticationProvider> authenticationProviderList = Arrays.asList(
-                new UsernamePasswordProvider(userService, passwordEncoder),
+                new UsernamePasswordProvider(userService, passwordEncoder, jwtConfiguration),
                 new JwtAuthenticationProvider(jwtConfiguration),
                 new JwtRefreshProvider(jwtConfiguration,userService)
         );

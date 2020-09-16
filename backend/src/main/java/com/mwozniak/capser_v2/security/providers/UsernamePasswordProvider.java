@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.security.providers;
 
 
+import com.mwozniak.capser_v2.configuration.JwtConfiguration;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.security.TokenFactory;
 import com.mwozniak.capser_v2.service.UserService;
@@ -25,10 +26,12 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtConfiguration jwtConfiguration;
 
-    public UsernamePasswordProvider(UserService userService, PasswordEncoder passwordEncoder) {
+    public UsernamePasswordProvider(UserService userService, PasswordEncoder passwordEncoder, JwtConfiguration jwtConfiguration) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtConfiguration = jwtConfiguration;
     }
 
     @Override
@@ -43,8 +46,8 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                     userService.updateLastSeen(user);
                     return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
                             new TokenHolder(
-                                    TokenFactory.generateAuthToken(user.getId(), user.getRole().toString()),
-                                    TokenFactory.generateRefreshToken(user.getId())),
+                                    TokenFactory.generateAuthToken(user.getId(), user.getRole().toString(), jwtConfiguration),
+                                    TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration)),
                             Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString())));
                 } catch (IOException | NullPointerException e) {
                     throw new AuthenticationServiceException("Error occurred while trying to authenticate");

@@ -63,7 +63,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                 String role =  user.getRole().toString();
                 userService.updateLastSeen(user);
                 List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(role));
-                return new RefreshTokenAuthentication(claims.getSubject(), TokenFactory.generateAuthToken(user.getId(), role),authorities);
+                return new RefreshTokenAuthentication(claims.getSubject(), TokenFactory.generateAuthToken(user.getId(), role,jwtConfiguration),authorities);
             } else {
                 throw new UsernameNotFoundException("User with this id doesn't exist");
             }
