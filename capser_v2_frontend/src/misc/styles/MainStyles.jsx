@@ -61,7 +61,7 @@ const mainStyles = makeStyles(theme => ({
     width200: {minWidth: 200},
     height700: {
         [theme.breakpoints.up('md')]: {
-            minHeight: 700
+            minHeight: '35vw'
         }
     },
     squareShine: {

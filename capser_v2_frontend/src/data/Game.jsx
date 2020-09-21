@@ -8,7 +8,7 @@ const getTypeString = (type) => {
     switch (type) {
         case 'SINGLES' :
             return 'singles'
-        case 'EASY' :
+        case 'EASY_CAPS' :
             return 'easy'
         case 'DOUBLES' :
             return 'doubles'
@@ -22,14 +22,9 @@ export const useGamePost = (type) => {
 
     const {accessToken} = useSelector(state => state.auth);
 
-    let urlPart;
-    switch (type) {
-        case 'SINGLES':
-            urlPart = 'singles'
-    }
 
     return (gameRequest) => {
-        return axios.post(`${urlPart}`,gameRequest,{
+        return axios.post(`${getTypeString(type)}`,gameRequest,{
             headers: {
                 'Authorization' : `Bearer ${accessToken}`
             }
@@ -38,10 +33,10 @@ export const useGamePost = (type) => {
 };
 
 
-export const useGameListFetch = (type, pageSize = 10, pageNumber = 0) => {
+export const useGameListFetch = (type, pageSize = 10) => {
 
 
-    return () => {
+    return (pageNumber) => {
         return axios.get(`/${getTypeString(type)}?pageSize=${pageSize}&pageNumber=${pageNumber}`)
     };
 }

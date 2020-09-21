@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import mainStyles from "../../../misc/styles/MainStyles";
-import {getGameModeString} from "../../../utils/Utils";
+import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
 import {useUsernameFetch} from "../../../data/UsersFetch";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button";
@@ -113,7 +113,7 @@ const AcceptanceComponent = props => {
                 {!loading ? <Table style={{width: '100%'}}>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Game Mode</TableCell>
+                                <TableCell>Game Type</TableCell>
                                 <TableCell>Opponent</TableCell>
                                 <TableCell>Result</TableCell>
                                 <TableCell>Score</TableCell>
@@ -130,6 +130,7 @@ const AcceptanceComponent = props => {
                                 const playerStats = findPlayerStats(game, userId);
                                 const opponentStats = findPlayerStats(game, game.player1 === userId ? game.player2 : game.player1);
                                 return (<TableRow key={request.id}>
+                                    <TableCell>{getGameTypeString(game.gameType)}</TableCell>
                                     <TableCell>{getGameModeString(game.gameMode)}</TableCell>
                                     <TableCell>{opponent}</TableCell>
                                     <TableCell>{game.winner === userId ? 'Victory' : 'Loss'}</TableCell>

@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
-import PageHeader from "../../misc/PageHeader";
 import FetchSelectField from "../../misc/FetchSelectField";
 import {Button, Divider, Grid, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import mainStyles from "../../../misc/styles/MainStyles";
-import addGameStyles from "../../../misc/styles/AddGameStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {useGamePost} from "../../../data/Game";
-import {showSuccess} from "../../../redux/actions/alertActions";
+import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
 
-const AddSinglesGameComponent = () => {
+const AddSinglesGameComponent = ({type}) => {
 
     const classes = mainStyles()
-    const addGameClasses = addGameStyles();
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
+    const postGame = useGamePost(type);
+
 
     const {userId} = useSelector(state => state.auth);
     const dispatch = useDispatch();
@@ -29,27 +28,34 @@ const AddSinglesGameComponent = () => {
     const [opponentSinks, setOpponentSinks] = useState(0);
     const [opponent, setOpponent] = useState(null);
 
-    const postGame = useGamePost('SINGLES');
 
     const handleChange = (e) => {
         setGameMode(e.target.value);
     }
 
-
     const handleSave = () => {
-        console.log(opponent)
+
+        if (!opponent) {
+            dispatch(showError("You have to choose an opponent"));
+            return;
+        }
+
+        const player1Stats = {
+            playerId: userId,
+            score: playerScore,
+            sinks: playerSinks
+        };
+
+        const player2Stats = {
+            playerId: opponent.id,
+            score: opponentScore,
+            sinks: opponentSinks
+        }
+
         const request = {
             gameMode: gameMode,
-            player1Stats: {
-                playerId: userId,
-                score: playerScore,
-                sinks: playerSinks
-            },
-            player2Stats: {
-                playerId: opponent.id,
-                score: opponentScore,
-                sinks: opponentSinks
-            },
+            player1Stats: player1Stats,
+            player2Stats: player2Stats,
             gameEventList: []
         }
 
@@ -57,6 +63,8 @@ const AddSinglesGameComponent = () => {
             console.log("posted")
             dispatch(showSuccess("Game posted"))
             history.push('/')
+        }).catch(e => {
+            dispatch(showError(e.response.data.error));
         });
     }
 
@@ -76,12 +84,12 @@ const AddSinglesGameComponent = () => {
 
     return (
         <div>
-            <PageHeader title={"Add singles game"} onBack={() => {history.push('/singles')}}/>
 
-            <div style={{padding: 8}}>
-                <Grid container  spacing={2}>
+            <div style={{padding: 8}} className={classes.squareShine}>
+                <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
-                        <div className={[classes.column, classes.height700,classes.squareShine, classes.neon].join(' ')}>
+                        <div
+                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
                             <Typography variant={"h5"}>Game Data</Typography>
                             <Divider/>
                             <div className={classes.margin}>
@@ -94,7 +102,8 @@ const AddSinglesGameComponent = () => {
                         </div>
                     </Grid>
                     <Grid item md={4} sm={12} xs={12}>
-                        <div className={[classes.column, classes.height700,classes.squareShine, classes.neon].join(' ')}>
+                        <div
+                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
                             <Typography variant={"h5"}>Player data</Typography>
 
                             <div className={classes.margin}>
@@ -118,7 +127,8 @@ const AddSinglesGameComponent = () => {
                     </Grid>
 
                     <Grid item md={4} sm={12} xs={12}>
-                        <div className={[classes.column, classes.height700, classes.squareShine, classes.neon].join(' ')}>
+                        <div
+                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
                             <Typography variant={"h5"}>Opponent data</Typography>
 
                             <div className={classes.margin}>

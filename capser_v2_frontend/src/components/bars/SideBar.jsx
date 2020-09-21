@@ -4,10 +4,6 @@ import {Badge, Divider, IconButton} from "@material-ui/core";
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import Tooltip from "@material-ui/core/Tooltip";
 import {useHistory} from "react-router-dom";
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
-import SportsFootballOutlinedIcon from '@material-ui/icons/SportsFootballOutlined';
-import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
-import PeopleOutlinedIcon from '@material-ui/icons/PeopleOutlined';
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import {makeStyles} from "@material-ui/core/styles";
@@ -20,11 +16,7 @@ import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
 import CheckIcon from '@material-ui/icons/Check';
 import {showError} from "../../redux/actions/alertActions";
-import {ReactComponent as SinglesIcon} from "../../utils/icons/singlesIcon.svg";
-import {ReactComponent as DoublesIcon} from "../../utils/icons/doublesIcon.svg";
-import {ReactComponent as EasyIcon} from "../../utils/icons/easyIcon.svg";
-import {ReactComponent as UnrankedIcon} from "../../utils/icons/unrankedIcon.svg";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 
 const SideBar = () => {
 
@@ -93,30 +85,24 @@ const SideBar = () => {
         {
             tooltip: "Singles",
             link: "/singles",
-            icon: <SvgIcon>
-                <SinglesIcon/>
-            </SvgIcon>
+            icon: <SinglesIcon/>
+
         },
         {
             tooltip: "Easy Caps",
             link: "/easy",
-            icon: <SvgIcon>
-                <EasyIcon/>
-            </SvgIcon>
+            icon: <EasyIcon/>
+
         },
         {
             tooltip: "Unranked",
             link: "/unranked",
-            icon: <SvgIcon>
-                <UnrankedIcon/>
-            </SvgIcon>
+            icon:   <UnrankedIcon/>
         },
         {
             tooltip: "Doubles",
             link: "/doubles",
-            icon: <SvgIcon>
-                <DoublesIcon/>
-            </SvgIcon>
+            icon:  <DoublesIcon/>
         },
         {
             tooltip: "Games Accepting",
@@ -172,7 +158,10 @@ const SideBar = () => {
                 <>
                     <Divider/>
                     <Tooltip title={"Logout"} placement={"right"}>
-                        <IconButton className={classes.iconButton} onClick={() => dispatch(logoutAction())}>
+                        <IconButton className={classes.iconButton} onClick={() => {
+                            dispatch(logoutAction())
+                            history.push('/')
+                        }}>
                             <ExitToAppOutlinedIcon/>
                         </IconButton>
                     </Tooltip></>

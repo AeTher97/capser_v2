@@ -3,7 +3,8 @@ import React from 'react';
 import SideBar from "../components/bars/SideBar";
 import HomeScreen from "../screens/HomeScreen";
 import SinglesScreen from "../screens/SinglesScreen";
-import RegisterComponent from "../components/auth/RegisterComponent";
+import EasyComponent from "../components/pages/easy/EasyComponent";
+import UnrankedComponent from "../components/pages/unranked/UnrankedComponent";
 
 const InsecureNavigation = () => {
 
@@ -24,6 +25,13 @@ const InsecureNavigation = () => {
                 </Route>
 
 
+                <Route exact path={"/easy"}>
+                    <EasyComponent/>
+                </Route>
+
+                <Route exact path={"/unranked"}>
+                    <UnrankedComponent/>
+                </Route>
 
 
             </Switch>

@@ -1,15 +1,12 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
-import {createAccount, loginAction} from "../../redux/actions/authActions";
-import {useHistory,useLocation} from "react-router-dom";
-import {saveTokenInStorage} from "../../utils/TokenUtils";
+import {createAccount} from "../../redux/actions/authActions";
+import {useHistory, useLocation} from "react-router-dom";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
 import CenteredColumn from "../misc/CenteredColumn";
-
-
+import {validateLength, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
 
 
 const RegisterComponent = props => {
@@ -17,14 +14,17 @@ const RegisterComponent = props => {
     const location = useLocation();
     const classes = useStyle();
 
-    const password = useFieldValidation("", () => {
-    });
-    const repeatPassword = useFieldValidation("", () => {
-    });
-    const username = useFieldValidation("", () => {
-    });
+    const password = useFieldValidation("", validatePassword);
 
-    const [error,setError]  = useState('');
+    const validatePasswordConfirmation = useCallback(validateRepeatedPassword(password.value), [password.value]);
+    const repeatPassword = useFieldValidation("", validatePasswordConfirmation);
+    const username = useFieldValidation("", (word) => () => validateLength(word, 5))
+
+    password.showError = true;
+    repeatPassword.showError = true;
+    username.showError = true;
+
+    const [error, setError] = useState('');
 
     const history = useHistory();
 
@@ -45,6 +45,11 @@ const RegisterComponent = props => {
 
     const handleClick = (e) => {
         e.preventDefault();
+
+        if (password.validate() || repeatPassword.validate() || username.validate()()) {
+            console.log()
+            return;
+        }
         createAccount({
             username: username.value,
             password: password.value,
@@ -71,7 +76,9 @@ const RegisterComponent = props => {
                     />
                     <div className={classes.footer}>
                         <Typography variant={"caption"}>Have an account? </Typography>
-                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/login')}}>Sign in</Typography>
+                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {
+                            history.push('/login')
+                        }}>Sign in</Typography>
                     </div>
                 </CenteredColumn>
             </div>

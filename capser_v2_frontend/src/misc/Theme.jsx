@@ -152,7 +152,8 @@ const getOverrides = (divider, baseTheme, type) => {
         MuiTabs: {
             root: {
                 minHeight: 24,
-                borderBottom: "1px solid " + divider
+                borderBottom: "1px solid " + divider,
+                color: 'white'
             },
             indicator: {
                 backgroundColor: 'transparent',
@@ -186,8 +187,7 @@ const getOverrides = (divider, baseTheme, type) => {
                     border: "1px solid " + baseTheme.palette.primary.main,
                 },
                 '&:hover': {
-                    backgroundColor: baseTheme.palette.primary.light,
-
+                    backgroundColor: 'rgba(255,255,255,0.2)',
                 },
             }
         },

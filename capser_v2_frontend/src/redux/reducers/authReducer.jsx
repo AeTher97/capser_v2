@@ -89,6 +89,7 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case REFRESH_FAILED:
+            clearLocalStorage();
             return {
                 ...emptyState,
                 error: action.error

@@ -53,7 +53,7 @@ public abstract class AbstractGameController implements GameController {
     @Override
     @GetMapping
     public ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber) {
-        return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time"))));
+        return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time").descending())));
     }
 
 

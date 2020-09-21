@@ -10,10 +10,10 @@ const ValidatedField = props => {
             handleBlur = () => null,
             handleChange = () => null,
             disabled,
-            error
+            error,
+            showError
         },
-        label,
-        showError
+        label
     } = props;
 
 
@@ -38,12 +38,12 @@ ValidatedField.propTypes = {
         handleBlur: PropTypes.func,
         error: PropTypes.string,
         handleChange: PropTypes.func,
-        disabled: PropTypes.bool
+        disabled: PropTypes.bool,
+        showError: PropTypes.bool
     }).isRequired,
     type: PropTypes.oneOf(['password', '', 'number', 'tel']),
     disabled: PropTypes.bool,
     label: PropTypes.string.isRequired,
-    showError: PropTypes.bool
 
 };
 

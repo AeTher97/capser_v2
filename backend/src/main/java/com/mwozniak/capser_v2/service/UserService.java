@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.service;
 
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;

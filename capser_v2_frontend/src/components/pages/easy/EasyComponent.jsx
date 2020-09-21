@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import PageHeader from "../../misc/PageHeader";
 import {useHistory} from "react-router-dom";
-import SinglesGamesList from "./SinglesGamesList";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "../../misc/TabPanel";
-import AddSinglesGameComponent from "./AddSinglesGameComponent";
-import SinglesPlayersList from "./SinglesPlayersList";
-import {SinglesIcon} from "../../../misc/icons/CapsIcons";
+import {EasyIcon, SinglesIcon} from "../../../misc/icons/CapsIcons";
 import {useSelector} from "react-redux";
+import SinglesGamesList from "../singles/SinglesGamesList";
+import SinglesPlayersList from "../singles/SinglesPlayersList";
+import AddSinglesGameComponent from "../singles/AddSinglesGameComponent";
 
-const SinglesComponent = () => {
+const EasyComponent = () => {
 
     const [currentTab, setCurrentTab] = useState(0);
 
@@ -27,7 +27,7 @@ const SinglesComponent = () => {
     }
 
     return (<div>
-        <PageHeader title={"Singles"} icon={<SinglesIcon fontSize={"large"}/>} noSpace/>
+        <PageHeader title={"Easy Caps"} icon={<EasyIcon fontSize={"large"}/>} noSpace/>
 
         <Tabs value={currentTab} onChange={handleTabChange}>
             <Tab value={0} label={'Games'}/>
@@ -36,17 +36,17 @@ const SinglesComponent = () => {
         </Tabs>
 
         <TabPanel value={currentTab} showValue={0}>
-            <SinglesGamesList type={'SINGLES'}/>
+            <SinglesGamesList type={'EASY_CAPS'}/>
         </TabPanel>
 
         <TabPanel value={currentTab} showValue={1}>
-            <SinglesPlayersList type={'SINGLES'}/>
+            <SinglesPlayersList type={'EASY_CAPS'}/>
         </TabPanel>
 
         <TabPanel value={currentTab} showValue={2}>
-            <AddSinglesGameComponent type={'SINGLES'}/>
+            <AddSinglesGameComponent type={'EASY_CAPS'}/>
         </TabPanel>
     </div>)
 };
 
-export default SinglesComponent;
+export default EasyComponent;
