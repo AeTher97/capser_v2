@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-const LoadingComponent = ({size = "medium"}) => {
+const LoadingComponent = ({size = "medium", wrapper = true}) => {
 
     const classes = loadingStyles();
     let selected;
@@ -20,14 +20,17 @@ const LoadingComponent = ({size = "medium"}) => {
 
     }
     return (
-        <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
-            <img src={"/loading.svg"} className={selected} style={{margin: 10}}/>
-        </div>
+        <>
+            {wrapper ? <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
+                <img src={"/loading.svg"} className={selected} style={{margin: 10}}/>
+            </div> :  <img src={"/loading.svg"} className={selected} style={{margin: 10}}/>}
+        </>
     );
 };
 
 LoadingComponent.propTypes = {
-    size: PropTypes.oneOf(['small', 'medium', 'large'])
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
+    wrapper: PropTypes.bool
 };
 
 const loadingStyles = makeStyles(theme => ({

@@ -66,7 +66,7 @@ const FetchSelectField = (props) => {
                     )
                 }) : getNoResults()}
             </div> : <div className={classes.loadingContainer}>
-                <LoadingComponent size={"small"}/>
+                <LoadingComponent size={"small"} wrapper={false}/>
                 <Typography>Searching...</Typography>
             </div>)
     }
