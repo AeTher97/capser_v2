@@ -10,6 +10,7 @@ import TableCell from "@material-ui/core/TableCell";
 import {getGameModeString} from "../../../utils/Utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Pagination from '@material-ui/lab/Pagination';
+import LoadingComponent from "../../../utils/LoadingComponent";
 
 
 const SinglesGamesList = ({type}) => {
@@ -27,8 +28,6 @@ const SinglesGamesList = ({type}) => {
     useEffect(() => {
         setLoading(true);
         fetchGames(currentPage - 1).then((response) => {
-            console.log(response.data)
-
             setCount(response.data.totalPages);
             setGames(response.data.content);
 
@@ -105,7 +104,7 @@ const SinglesGamesList = ({type}) => {
                                 </TableBody>
                             </Table> :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                                <CircularProgress/>
+                                <LoadingComponent/>
                             </div>}
                         {!loading && count > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>

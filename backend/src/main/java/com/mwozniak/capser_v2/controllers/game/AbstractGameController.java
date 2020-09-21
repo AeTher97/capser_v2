@@ -24,7 +24,6 @@ public abstract class AbstractGameController implements GameController {
         this.abstractGameService = abstractGameService;
     }
 
-
     @Override
     @PreAuthorize("@accessVerificationBean.canAcceptGame(#gameId)")
     @PostMapping("/accept/{gameId}")

@@ -6,7 +6,6 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
 import {useUsernameFetch} from "../../../data/UsersFetch";
@@ -16,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import YesNoDialog from "../../misc/YesNoDialog";
 import {useGameAcceptance} from "../../../data/Game";
 import {showSuccess} from "../../../redux/actions/alertActions";
+import LoadingComponent from "../../../utils/LoadingComponent";
 
 const AcceptanceComponent = props => {
 
@@ -85,8 +85,7 @@ const AcceptanceComponent = props => {
                 fetch();
             })
         });
-        setOnNo(() => () => {
-        })
+        setOnNo(() => () => {})
         setOpen(true);
     }
 
@@ -165,7 +164,7 @@ const AcceptanceComponent = props => {
                         </TableBody>
                     </Table> :
                     <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                        <CircularProgress/>
+                        <LoadingComponent/>
                     </div>}
             </div>
 

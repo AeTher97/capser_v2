@@ -8,9 +8,9 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {TableBody} from "@material-ui/core";
 import {getGameModeString} from "../../../utils/Utils";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Pagination from "@material-ui/lab/Pagination";
 import {usePlayersListFetch} from "../../../data/Players";
+import LoadingComponent from "../../../utils/LoadingComponent";
 
 const SinglesPlayersList = ({type}) => {
 
@@ -83,8 +83,7 @@ const SinglesPlayersList = ({type}) => {
                                 </TableBody>
                             </Table> :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                                <CircularProgress/>
-                            </div>}
+                                <LoadingComponent size={"small"}/>                            </div>}
                         {!loading && count > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                             <Pagination count={count} onChange={handlePageChange} page={currentPage}/>

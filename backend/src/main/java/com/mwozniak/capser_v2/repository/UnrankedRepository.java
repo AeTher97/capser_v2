@@ -14,9 +14,9 @@ public interface UnrankedRepository extends JpaRepository<UnrankedGame, UUID> {
 
     Optional<UnrankedGame> findUnrankedGameById(UUID id);
 
-    List<SinglesGame> findUnrankedGameByPlayer1OrPlayer2(UUID id, UUID id2);
+    List<UnrankedGame> findUnrankedGameByPlayer1OrPlayer2(UUID id, UUID id2);
 
-    Page<SinglesGame> findUnrankedGameByAcceptedTrue(Pageable pageable);
+    Page<UnrankedGame> findUnrankedGameByAcceptedTrue(Pageable pageable);
 
 
 }

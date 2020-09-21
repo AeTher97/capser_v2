@@ -27,7 +27,7 @@ const EasyComponent = () => {
     }
 
     return (<div>
-        <PageHeader title={"Easy Caps"} icon={<UnrankedIcon fontSize={"large"}/>} noSpace/>
+        <PageHeader title={"Unranked"} icon={<UnrankedIcon fontSize={"large"}/>} noSpace/>
 
         <Tabs value={currentTab} onChange={handleTabChange}>
             <Tab value={0} label={'Games'}/>

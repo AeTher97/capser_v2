@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.models.database.game;
 
 import com.mwozniak.capser_v2.enums.GameMode;
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
@@ -14,10 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @MappedSuperclass
 @AllArgsConstructor
@@ -129,5 +127,10 @@ public abstract class AbstractGame {
     public abstract int getPointsLost(User user);
 
     protected abstract boolean isWinner(User user);
+
+    public static class Comparators {
+
+        public static final Comparator<AbstractGame> DATE = Comparator.comparing(AbstractGame::getTime);
+    }
 
 }

@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/doubles").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/teams").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/users").permitAll()
+                .mvcMatchers(HttpMethod.GET,"/dashboard/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/users/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/users/search").permitAll()
                 .anyRequest().authenticated()

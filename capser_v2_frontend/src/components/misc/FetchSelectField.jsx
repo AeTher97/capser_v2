@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 import useFieldSearch from "../../data/UsersFetch";
-import {Divider, Typography, useTheme} from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {Divider, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LoadingComponent from "../../utils/LoadingComponent";
 
 const FetchSelectField = (props) => {
 
@@ -19,16 +19,25 @@ const FetchSelectField = (props) => {
     const [searching, setSearching] = useState(false);
     const [focused, setFocused] = useState(false);
 
+    let timeout;
+
     useEffect(() => {
         if (phrase !== '') {
+            clearTimeout(timeout);
             setSearching(true)
-            searchPhrase(phrase).then((response => {
-                setSearchResult(response.data.content)
-                setSearching(false);
-            }))
+            timeout = setTimeout(() => {
+                searchPhrase(phrase).then((response => {
+                    setSearchResult(response.data.content)
+                    setSearching(false);
+                }))
+            }, 300)
         } else {
             setSearching(false);
             setSearchResult([]);
+        }
+
+        return () => {
+            clearTimeout(timeout)
         }
     }, [phrase])
 
@@ -57,7 +66,8 @@ const FetchSelectField = (props) => {
                     )
                 }) : getNoResults()}
             </div> : <div className={classes.loadingContainer}>
-                <CircularProgress/>
+                <LoadingComponent size={"small"}/>
+                <Typography>Searching...</Typography>
             </div>)
     }
 
@@ -89,10 +99,13 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
     },
     loadingContainer: {
         backgroundColor: theme.palette.background.paper,
-        textAlign: "center",
+        alignItems: 'center',
         position: "absolute",
         zIndex: 1000,
-        minWidth: 200
+        minWidth: 200,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     record: {
         '&:hover': {
