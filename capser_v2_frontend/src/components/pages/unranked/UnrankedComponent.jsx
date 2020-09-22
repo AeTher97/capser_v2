@@ -4,13 +4,13 @@ import {useHistory} from "react-router-dom";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "../../misc/TabPanel";
-import {EasyIcon, SinglesIcon, UnrankedIcon} from "../../../misc/icons/CapsIcons";
+import {SinglesIcon, UnrankedIcon} from "../../../misc/icons/CapsIcons";
 import {useSelector} from "react-redux";
 import SinglesGamesList from "../singles/SinglesGamesList";
 import SinglesPlayersList from "../singles/SinglesPlayersList";
 import AddSinglesGameComponent from "../singles/AddSinglesGameComponent";
 
-const EasyComponent = () => {
+const UnrankedComponent = () => {
 
     const [currentTab, setCurrentTab] = useState(0);
 
@@ -49,4 +49,4 @@ const EasyComponent = () => {
     </div>)
 };
 
-export default EasyComponent;
+export default UnrankedComponent;

@@ -7,7 +7,7 @@ import {useHistory} from "react-router-dom";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import {makeStyles} from "@material-ui/core/styles";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logoutAction} from "../../redux/actions/authActions";
 import {useHasRole} from "../../utils/SecurityUtils";
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -23,7 +23,7 @@ const SideBar = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const hasRole = useHasRole();
-
+    const {email} = useSelector(state => state.auth)
     const getNotifications = useNotificationFetch();
     const markAsSeen = useMarkNotificationAsSeen();
 
@@ -64,7 +64,8 @@ const SideBar = () => {
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        sendSeen().then(r => {})
+        sendSeen().then(r => {
+        })
     };
 
     const handleClose = () => {
@@ -97,12 +98,12 @@ const SideBar = () => {
         {
             tooltip: "Unranked",
             link: "/unranked",
-            icon:   <UnrankedIcon/>
+            icon: <UnrankedIcon/>
         },
         {
             tooltip: "Doubles",
             link: "/doubles",
-            icon:  <DoublesIcon/>
+            icon: <DoublesIcon/>
         },
         {
             tooltip: "Games Accepting",
@@ -111,7 +112,7 @@ const SideBar = () => {
             role: 'USER'
         },
         {
-            tooltip: "Profile",
+            tooltip: email,
             link: "/secure/profile",
             icon: <AccountBoxOutlinedIcon/>,
             role: 'USER'
@@ -154,17 +155,26 @@ const SideBar = () => {
                         </Tooltip>
                     )
                 })}
-                {hasRole('USER') &&
-                <>
-                    <Divider/>
-                    <Tooltip title={"Logout"} placement={"right"}>
-                        <IconButton className={classes.iconButton} onClick={() => {
-                            dispatch(logoutAction())
-                            history.push('/')
-                        }}>
-                            <ExitToAppOutlinedIcon/>
-                        </IconButton>
-                    </Tooltip></>
+                {hasRole('USER') ?
+                    <>
+                        <Divider/>
+                        <Tooltip title={"Logout"} placement={"right"}>
+                            <IconButton className={classes.iconButton} onClick={() => {
+                                dispatch(logoutAction())
+                                history.push('/')
+                            }}>
+                                <ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/>
+                            </IconButton>
+                        </Tooltip></> :
+                    <>
+                        <Divider/>
+                        <Tooltip title={"Login"} placement={"right"}>
+                            <IconButton className={classes.iconButton} onClick={() => {
+                                history.push('/login')
+                            }}>
+                                <ExitToAppOutlinedIcon/>
+                            </IconButton>
+                        </Tooltip></>
                 }
             </Drawer>
 
