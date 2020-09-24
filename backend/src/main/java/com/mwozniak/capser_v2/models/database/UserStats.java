@@ -18,6 +18,10 @@ public class UserStats {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    public UserStats(){
+        this.points = 500.0f;
+    }
+
 
     private float points;
 

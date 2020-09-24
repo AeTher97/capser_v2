@@ -69,37 +69,37 @@ public abstract class AbstractGame {
     public void calculatePlayerStats(User user) throws UpdateStatsException {
         try {
 
-            UserStats singlesStats = findCorrectStats(user);
+            UserStats userStats = findCorrectStats(user);
             GamePlayerStats gamePlayerStats = filterStats(user.getId());
 
-            singlesStats.setGamesPlayed(singlesStats.getGamesPlayed() + 1);
+            userStats.setGamesPlayed(userStats.getGamesPlayed() + 1);
             if (isWinner(user)) {
-                singlesStats.setGamesWon(singlesStats.getGamesWon() + 1);
+                userStats.setGamesWon(userStats.getGamesWon() + 1);
             } else {
-                singlesStats.setGamesLost(singlesStats.getGamesLost() + 1);
+                userStats.setGamesLost(userStats.getGamesLost() + 1);
             }
 
-            singlesStats.setBeersDowned(singlesStats.getBeersDowned() + gamePlayerStats.getBeersDowned());
+            userStats.setBeersDowned(userStats.getBeersDowned() + gamePlayerStats.getBeersDowned());
 
-            singlesStats.setTotalPointsMade(singlesStats.getTotalPointsMade() + gamePlayerStats.getScore());
-            singlesStats.setTotalPointsLost(singlesStats.getTotalPointsLost() + getPointsLost(user));
+            userStats.setTotalPointsMade(userStats.getTotalPointsMade() + gamePlayerStats.getScore());
+            userStats.setTotalPointsLost(userStats.getTotalPointsLost() + getPointsLost(user));
 
-            singlesStats.setTotalSinksMade(singlesStats.getTotalSinksMade() + gamePlayerStats.getSinks());
-            singlesStats.setTotalSinksLost(singlesStats.getTotalSinksLost() + getSinksLost(user));
+            userStats.setTotalSinksMade(userStats.getTotalSinksMade() + gamePlayerStats.getSinks());
+            userStats.setTotalSinksLost(userStats.getTotalSinksLost() + getSinksLost(user));
 
             if(gamePlayerStats.isNakedLap()){
-                singlesStats.setNakedLaps(singlesStats.getNakedLaps() + 1);
+                userStats.setNakedLaps(userStats.getNakedLaps() + 1);
             }
 
 
-            singlesStats.setTotalRebuttals(singlesStats.getTotalRebuttals() + gamePlayerStats.getRebuttals());
+            userStats.setTotalRebuttals(userStats.getTotalRebuttals() + gamePlayerStats.getRebuttals());
 
 
-            singlesStats.setAvgRebuttals((float) singlesStats.getTotalRebuttals()/singlesStats.getGamesPlayed());
-            singlesStats.setWinLossRatio((float) singlesStats.getGamesWon()/singlesStats.getGamesPlayed());
-            singlesStats.setSinksMadeLostRatio((float) singlesStats.getTotalPointsMade()/singlesStats.getTotalSinksLost());
-            singlesStats.setPointsMadeLostRatio((float) singlesStats.getTotalPointsMade()/singlesStats.getTotalPointsLost());
-
+            userStats.setAvgRebuttals((float) userStats.getTotalRebuttals()/userStats.getGamesPlayed());
+            userStats.setWinLossRatio((float) userStats.getGamesWon()/userStats.getGamesPlayed());
+            userStats.setSinksMadeLostRatio((float) userStats.getTotalPointsMade()/userStats.getTotalSinksLost());
+            userStats.setPointsMadeLostRatio((float) userStats.getTotalPointsMade()/userStats.getTotalPointsLost());
+            user.setLastGame(new Date());
 
         } catch (GameValidationException e) {
             throw new UpdateStatsException("Invalid user id while updating stats", e);

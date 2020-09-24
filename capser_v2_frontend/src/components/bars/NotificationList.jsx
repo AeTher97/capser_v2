@@ -4,6 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useHistory} from "react-router-dom";
+import {useNotifications} from "../../data/NotificationData";
 
 
 const NotificationList = ({notifications}) => {

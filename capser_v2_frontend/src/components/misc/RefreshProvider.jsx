@@ -31,6 +31,7 @@ const RefreshProvider = () => {
     if (axios.interceptors.request.handlers.length > 0) {
         axios.interceptors.request.eject(axios.interceptors.request.handlers.length - 1);
     }
+
     axios.interceptors.request.use(async request => {
         if (expirationTime && !authTokenRequest) {
             if (isTokenOutdated(expirationTime)) {

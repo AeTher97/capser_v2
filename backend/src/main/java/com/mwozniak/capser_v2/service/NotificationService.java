@@ -45,12 +45,12 @@ public class NotificationService {
                 .build());
     }
 
-    public void markSeen(UUID notificationId) throws NotificationNotFoundException {
+    public Notification markSeen(UUID notificationId) throws NotificationNotFoundException {
         Optional<Notification> notificationOptional = notificationRepository.findNotificationById(notificationId);
         if (notificationOptional.isPresent()) {
             Notification notification = notificationOptional.get();
             notification.setSeen(true);
-            notificationRepository.save(notification);
+            return notificationRepository.save(notification);
         } else {
             throw new NotificationNotFoundException("Notification with this id doesn't exist");
         }

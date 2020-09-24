@@ -32,7 +32,6 @@ const SinglesGamesList = ({type}) => {
             setGames(response.data.content);
 
             Promise.all(response.data.content.map(game => {
-                console.log(game.player1)
                 return [fetchUsername(game.player1), fetchUsername(game.player2)]
             }).flat()).then((value) => {
                 setUsernames(value.map(user => {

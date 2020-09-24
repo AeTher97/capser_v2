@@ -65,6 +65,7 @@ const SinglesPlayersList = ({type}) => {
                                         <TableCell>Placement</TableCell>
                                         <TableCell>Name</TableCell>
                                         <TableCell>Points</TableCell>
+                                        <TableCell>Last Seen</TableCell>
                                         <TableCell>Last Game</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -77,13 +78,17 @@ const SinglesPlayersList = ({type}) => {
                                                 <TableCell>{(currentPage - 1) * 10 + index}</TableCell>
                                                 <TableCell>{player.username}</TableCell>
                                                 <TableCell>{stats.points.toFixed(2)}</TableCell>
+                                                {player.lastSeen &&
+                                                <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell>}
+                                                {player.lastGame &&
+                                                <TableCell>{new Date(player.lastGame).toDateString()}</TableCell>}
                                             </TableRow>)
                                     })
                                     }
                                 </TableBody>
                             </Table> :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                                <LoadingComponent size={"small"}/>                            </div>}
+                                <LoadingComponent /></div>}
                         {!loading && count > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                             <Pagination count={count} onChange={handlePageChange} page={currentPage}/>

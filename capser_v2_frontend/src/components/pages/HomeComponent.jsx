@@ -28,12 +28,9 @@ const HomeComponent = () => {
 
         useEffect(() => {
             gamesFetch().then((response) => {
-
-                console.log(response.data)
                 setGames(response.data);
 
                 Promise.all(response.data.map(game => {
-                    console.log(game.player1)
                     return [fetchUsername(game.player1), fetchUsername(game.player2)]
                 }).flat()).then((value) => {
                     setUsernames(value.map(user => {
@@ -47,7 +44,6 @@ const HomeComponent = () => {
         useEffect(() => {
             fetchBlog().then(response => {
                 setLoadingPosts(false)
-                console.log(response.data)
                 setPosts(response.data);
             })
         }, [])

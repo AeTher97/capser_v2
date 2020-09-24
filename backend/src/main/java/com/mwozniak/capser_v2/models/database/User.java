@@ -45,6 +45,10 @@ public class User {
     private Date lastSeen;
 
     @Setter
+    @Temporal(TemporalType.DATE)
+    private Date lastGame;
+
+    @Setter
     @ElementCollection(fetch = FetchType.LAZY)
     private List<UUID> teams;
 
