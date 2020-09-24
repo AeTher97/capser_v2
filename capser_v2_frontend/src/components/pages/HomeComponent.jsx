@@ -13,8 +13,8 @@ const HomeComponent = () => {
         const [usernames, setUsernames] = useState([])
         const [posts, setPosts] = useState([]);
         const [games, setGames] = useState([])
-        const [loading, setLoading] = useState(true);
         const [loadingPosts, setLoadingPosts] = useState(true);
+        const [loadingGames, setLoadingGames] = useState(true);
         const classes = mainStyles();
         const theme = useTheme();
 
@@ -39,7 +39,7 @@ const HomeComponent = () => {
                     setUsernames(value.map(user => {
                         return {id: user.data.id, username: user.data.username}
                     }));
-                    setLoading(false);
+                    setLoadingGames(false);
                 })
             })
         }, [])
@@ -50,7 +50,7 @@ const HomeComponent = () => {
                 console.log(response.data)
                 setPosts(response.data);
             })
-        },[])
+        }, [])
 
 
         const findUsername = (id) => {
@@ -66,14 +66,14 @@ const HomeComponent = () => {
         return (
             <>
                 <PageHeader title={"Global Caps League"} showLogo/>
-                <Grid className={classes.root}>
+                {!loadingGames && !loadingPosts ? <Grid className={classes.root}>
                     <Grid container>
                         <Grid item sm={8} className={classes.squareShine}>
                             <div className={classes.leftOrientedWrapperNoPadding}>
                                 <Typography variant={"h5"}>News Feed</Typography>
                                 <div style={{padding: 10}}>
                                     <Divider/>
-                                    {!loadingPosts ? posts.map(post => {
+                                    {posts.map(post => {
                                         return (
                                             <div key={post.title} style={{textAlign: "left"}}>
                                                 <Typography variant={"h5"}
@@ -82,12 +82,13 @@ const HomeComponent = () => {
                                                             className={classes.textHeading}>{post.title}</Typography>
                                                 <Typography align={"left"} variant={"caption"}
                                                             className={classes.textSubheading}>{new Date(post.date).toDateString()}</Typography>
-                                                <Typography align={"left"} className={classes.text}>{post.description}</Typography>
+                                                <Typography align={"left"}
+                                                            className={classes.text}>{post.description}</Typography>
                                                 <Typography align={"left"} variant={"caption"}
                                                             className={classes.text}>{post.signature}</Typography>
                                                 <Divider style={{marginTop: 10}}/>
                                             </div>)
-                                    }) :  <LoadingComponent/>}
+                                    })}
                                 </div>
                             </div>
                         </Grid>
@@ -96,28 +97,28 @@ const HomeComponent = () => {
                             <div style={{padding: 10}}>
                                 <Divider style={{marginBottom: 10}}/>
                                 <Grid container spacing={2}>
-                                    {!loading ? games.map(game => {
-                                            const player1Stats = findPlayerStats(game, game.player1)
-                                            const player2Stats = findPlayerStats(game, game.player2)
-                                            return (
-                                                <Grid key={game.player1 + game.player2} item xs={12}>
-                                                    <Card style={{textAlign: "left"}}>
-                                                        <Typography>{getGameTypeString(game.gameType)}</Typography>
-                                                        <div className={classes.header}>
-                                                            <Typography>{player1Stats.score} : {player2Stats.score} {findUsername(game.player1)} vs {findUsername(game.player2)}</Typography>
-                                                        </div>
-                                                        <Typography>{new Date(game.time).toDateString()}</Typography>
-                                                    </Card>
-                                                </Grid>
-                                            )
-                                        }) :
-                                        <LoadingComponent/>}
+                                    {games.map(game => {
+                                        const player1Stats = findPlayerStats(game, game.player1)
+                                        const player2Stats = findPlayerStats(game, game.player2)
+                                        return (
+                                            <Grid key={game.player1 + game.player2 + game.time} item xs={12}>
+                                                <div className={classes.neon} style={{padding: 10}}>
+                                                    <Typography
+                                                        color={"primary"}>{getGameTypeString(game.gameType)}</Typography>
+                                                    <div className={classes.header}>
+                                                        <Typography>{player1Stats.score} : {player2Stats.score} {findUsername(game.player1)} vs {findUsername(game.player2)}</Typography>
+                                                    </div>
+                                                    <Typography>{new Date(game.time).toDateString()}</Typography>
+                                                </div>
+                                            </Grid>
+                                        )
+                                    })}
                                 </Grid>
                             </div>
 
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> : <LoadingComponent/>}
             </>);
     }
 ;
