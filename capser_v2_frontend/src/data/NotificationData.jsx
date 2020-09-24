@@ -9,7 +9,7 @@ export const useNotifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [notSeen, setNotSeen] = useState(false);
 
-    const intervalTime = 10000;
+    const intervalTime = 30000;
 
 
     const getAccessToken = () => {
@@ -17,7 +17,6 @@ export const useNotifications = () => {
     }
 
     const fetchNotifications = () => {
-        console.log("fetch")
         axios.get(`/notifications`, {
             headers: {
                 'Authorization': `Bearer ${getAccessToken()}`

@@ -5,6 +5,7 @@ import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
+import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,8 +41,9 @@ public class EasyCapsGame extends AbstractSinglesGame {
     }
 
     @Override
-    public void updateUserPoints(User user, float pointsChange) {
+    public void updateUserPoints(User user, float pointsChange) throws GameValidationException {
         UserStats singlesStats = findCorrectStats(user);
         singlesStats.setPoints(singlesStats.getPoints() + pointsChange);
+        filterStats(user.getId()).setPointsChange(pointsChange);
     }
 }

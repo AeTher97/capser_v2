@@ -24,7 +24,6 @@ const SideBar = () => {
     const {email} = useSelector(state => state.auth)
 
 
-    console.log("sidebar rerender")
 
     const icons = [
         {

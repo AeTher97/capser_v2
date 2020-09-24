@@ -110,6 +110,7 @@ public abstract class AbstractGameService implements GameService {
         abstractSinglesGame.updateUserPoints(user1, eloResult.getResult1());
         abstractSinglesGame.updateUserPoints(user2, eloResult.getResult2());
 
+
         userService.saveUser(user1);
         userService.saveUser(user2);
 

@@ -31,6 +31,8 @@ const SinglesGamesList = ({type}) => {
             setCount(response.data.totalPages);
             setGames(response.data.content);
 
+            console.log(response.data)
+
             Promise.all(response.data.content.map(game => {
                 return [fetchUsername(game.player1), fetchUsername(game.player2)]
             }).flat()).then((value) => {

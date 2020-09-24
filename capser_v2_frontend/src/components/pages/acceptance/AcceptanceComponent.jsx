@@ -113,6 +113,7 @@ const AcceptanceComponent = props => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Game Type</TableCell>
+                                <TableCell>Game Mode</TableCell>
                                 <TableCell>Opponent</TableCell>
                                 <TableCell>Result</TableCell>
                                 <TableCell>Score</TableCell>
