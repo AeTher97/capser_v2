@@ -66,8 +66,8 @@ const HomeComponent = () => {
         return (
             <>
                 <PageHeader title={"Global Caps League"} showLogo/>
-                {!loadingGames && !loadingPosts ? <Grid className={classes.root}>
-                    <Grid container>
+                <Grid className={classes.root}>
+                    {!loadingGames && !loadingPosts ? <Grid container>
                         <Grid item sm={8} className={classes.squareShine}>
                             <div className={classes.leftOrientedWrapperNoPadding}>
                                 <Typography variant={"h5"}>News Feed</Typography>
@@ -117,8 +117,8 @@ const HomeComponent = () => {
                             </div>
 
                         </Grid>
-                    </Grid>
-                </Grid> : <LoadingComponent/>}
+                    </Grid> : <LoadingComponent/>}
+                </Grid>
             </>);
     }
 ;
