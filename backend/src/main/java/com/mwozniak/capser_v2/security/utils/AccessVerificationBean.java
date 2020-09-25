@@ -2,13 +2,17 @@ package com.mwozniak.capser_v2.security.utils;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
+import com.mwozniak.capser_v2.models.database.TeamWithStats;
+import com.mwozniak.capser_v2.models.dto.CreateTeamDto;
 import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
+import com.mwozniak.capser_v2.repository.TeamRepository;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -16,14 +20,22 @@ import java.util.UUID;
 public class AccessVerificationBean {
 
     private final AcceptanceRequestRepository acceptanceRequestRepository;
+    private final TeamRepository teamRepository;
 
-    public AccessVerificationBean(AcceptanceRequestRepository acceptanceRequestRepository) {
+    public AccessVerificationBean(AcceptanceRequestRepository acceptanceRequestRepository, TeamRepository teamRepository) {
         this.acceptanceRequestRepository = acceptanceRequestRepository;
+        this.teamRepository = teamRepository;
     }
 
     public boolean hasAccessToUser(String id) {
         return SecurityUtils.getUserId().equals(UUID.fromString(id));
     }
+
+    public boolean hasAccessToTeam(UUID id) {
+        Optional<TeamWithStats> teamWithStats = teamRepository.findTeamById(id);
+        return teamWithStats.map(withStats -> withStats.getPlayerList().contains(SecurityUtils.getUserId())).orElse(false);
+    }
+
 
     public boolean canAcceptGame(UUID gameId) {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
@@ -61,6 +73,17 @@ public class AccessVerificationBean {
             return true;
         } else {
             log.info("Not present in game request, access denied");
+            return false;
+        }
+    }
+
+
+    public boolean isPresentInTeam(CreateTeamDto createTeamDto) {
+        if (createTeamDto.getPlayers().contains(SecurityUtils.getUserId())) {
+            log.info("Present in team creation request, access granted");
+            return true;
+        } else {
+            log.info("Not present in team creation request, access denied");
             return false;
         }
     }

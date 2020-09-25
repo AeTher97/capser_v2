@@ -27,7 +27,13 @@ public class TeamWithStats {
 
 
     @Setter
-    @ElementCollection(fetch = FetchType.LAZY)
+    private String name;
+
+    @Setter
+    private boolean active;
+
+    @Setter
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> playerList;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

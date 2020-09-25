@@ -13,10 +13,11 @@ import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import YesNoDialog from "../../misc/YesNoDialog";
-import {useGameAcceptance} from "../../../data/Game";
+import {useGameAcceptance} from "../../../data/SoloGames";
 import {showSuccess} from "../../../redux/actions/alertActions";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import CheckIcon from '@material-ui/icons/Check';
+import {usePlayerTeams} from "../../../data/TeamsData";
 
 const AcceptanceComponent = props => {
 
@@ -25,6 +26,7 @@ const AcceptanceComponent = props => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [usernames, setUsernames] = useState([])
+    const [teamNames, setTeamNames] = useState([])
     const fetchUsername = useUsernameFetch();
     const {userId} = useSelector(state => state.auth)
     const [question, setQuestion] = useState('');
@@ -37,6 +39,8 @@ const AcceptanceComponent = props => {
     const dispatch = useDispatch();
     const {acceptGame, rejectGame} = useGameAcceptance();
 
+    const {fetchTeamName} = usePlayerTeams()
+
     const classes = mainStyles();
 
     const fetch = () => {
@@ -46,6 +50,26 @@ const AcceptanceComponent = props => {
             setLoading(false);
 
             Promise.all(data.data.map(request => request.abstractGame).map(game => {
+                if (game.gameType === 'DOUBLES') {
+                    return [fetchTeamName(game.team1DatabaseId), fetchTeamName(game.team2DatabaseId)]
+                } else {
+                    return [];
+                }
+            }).flat()).then((value) => {
+                console.log(value)
+                setTeamNames(value.map(o => {
+                    return {
+                        name: o.data.name,
+                        id: o.data.id
+                    }
+                }))
+
+            })
+
+            Promise.all(data.data.map(request => request.abstractGame).map(game => {
+                if (game.gameType === 'DOUBLES') {
+                    return [];
+                }
                 return [fetchUsername(game.player1), fetchUsername(game.player2)]
             }).flat()).then((value) => {
                 setUsernames(value.map(user => {
@@ -69,6 +93,16 @@ const AcceptanceComponent = props => {
         }
     }
 
+    const findTeamName = (id) => {
+        const obj = teamNames.find(o => o.id === id);
+        if (obj) {
+            return obj.name;
+        } else {
+            return ''
+        }
+    }
+
+
     const findPlayerStats = (game, id) => {
         return game.gamePlayerStats.find(o => o.playerId === id)
     }
@@ -86,8 +120,25 @@ const AcceptanceComponent = props => {
                 fetch();
             })
         });
-        setOnNo(() => () => {})
+        setOnNo(() => () => {
+        })
         setOpen(true);
+    }
+
+    const findTeamId = (game) => {
+        if (game.team1.playerList.includes(userId)) {
+            return game.team2DatabaseId;
+        } else {
+            return game.team1DatabaseId;
+        }
+    }
+
+    const getWinnerString = (game) => {
+        if (game.winner.playerList.includes(userId)) {
+            return 'Victory'
+        } else {
+            return 'Loss'
+        }
     }
 
     const handleReject = (game, opponent) => {
@@ -103,9 +154,89 @@ const AcceptanceComponent = props => {
         setOpen(true);
     }
 
+
+    const getSinglesRow = (game, request) => {
+        const opponent = findUsername(game.player1 === userId ? game.player2 : game.player1);
+        const playerStats = findPlayerStats(game, userId);
+        const opponentStats = findPlayerStats(game, game.player1 === userId ? game.player2 : game.player1);
+        return (<TableRow key={request.id}>
+            <TableCell>{getGameTypeString(game.gameType)}</TableCell>
+            <TableCell>{getGameModeString(game.gameMode)}</TableCell>
+            <TableCell>{opponent}</TableCell>
+            <TableCell>{game.winner === userId ? 'Victory' : 'Loss'}</TableCell>
+            <TableCell>{playerStats.score} : {opponentStats.score}</TableCell>
+            <TableCell>{playerStats.rebuttals} : {opponentStats.rebuttals}</TableCell>
+            <TableCell>{playerStats.sinks} : {opponentStats.sinks}</TableCell>
+            <TableCell>{new Date(game.time).toDateString()}</TableCell>
+
+            {request.acceptanceRequestType !== 'PASSIVE' ? <TableCell>
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <Button onClick={() => {
+                                handleAccept(game, opponent)
+                            }}>
+                                Accept
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant={"outlined"} onClick={() => {
+                                handleReject(game, opponent)
+                            }}>
+                                Reject
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </TableCell> :
+                <TableCell>Pending game</TableCell>}
+
+        </TableRow>)
+    }
+
+    const getMultipleRow = (game, request) => {
+        return (<TableRow key={request.id}>
+            <TableCell>{getGameTypeString(game.gameType)}</TableCell>
+            <TableCell>{getGameModeString(game.gameMode)}</TableCell>
+            <TableCell>{findTeamName(findTeamId(game))}</TableCell>
+            <TableCell>{getWinnerString(game)}</TableCell>
+            <TableCell>{game.team1Score} : {game.team2Score}</TableCell>
+            <TableCell>-</TableCell>
+            <TableCell>-</TableCell>
+            <TableCell>{new Date(game.time).toDateString()}</TableCell>
+            {request.acceptanceRequestType !== 'PASSIVE' ? <TableCell>
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <Button onClick={() => {
+                                handleAccept(game, findTeamName(findTeamId(game)))
+                            }}>
+                                Accept
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant={"outlined"} onClick={() => {
+                                handleReject(game, findTeamName(findTeamId(game)))
+                            }}>
+                                Reject
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </TableCell> :
+                <TableCell>Pending game</TableCell>}
+        </TableRow>)
+    }
+
+
+    const getGameRow = (game, request) => {
+        if (game.gameType === 'DOUBLES') {
+            return getMultipleRow(game, request);
+        } else {
+            return getSinglesRow(game, request);
+        }
+
+    }
+
     return (
         <div>
-            <PageHeader title={"Games Accepting"} icon={<CheckIcon fontSize={"large"}/>} />
+            <PageHeader title={"Games Accepting"} icon={<CheckIcon fontSize={"large"}/>}/>
 
 
             <div className={[classes.paddedContent, classes.horizontalShine].join(' ')}>
@@ -126,41 +257,10 @@ const AcceptanceComponent = props => {
                         </TableHead>
                         <TableBody>
                             {acceptanceRequests.map(request => {
-                                const game = getGame(request.gameToAccept)
-                                const opponent = findUsername(game.player1 === userId ? game.player2 : game.player1);
-                                const playerStats = findPlayerStats(game, userId);
-                                const opponentStats = findPlayerStats(game, game.player1 === userId ? game.player2 : game.player1);
-                                return (<TableRow key={request.id}>
-                                    <TableCell>{getGameTypeString(game.gameType)}</TableCell>
-                                    <TableCell>{getGameModeString(game.gameMode)}</TableCell>
-                                    <TableCell>{opponent}</TableCell>
-                                    <TableCell>{game.winner === userId ? 'Victory' : 'Loss'}</TableCell>
-                                    <TableCell>{playerStats.score} : {opponentStats.score}</TableCell>
-                                    <TableCell>{playerStats.rebuttals} : {opponentStats.rebuttals}</TableCell>
-                                    <TableCell>{playerStats.sinks} : {opponentStats.sinks}</TableCell>
-                                    <TableCell>{new Date(game.time).toDateString()}</TableCell>
-
-                                    {request.acceptanceRequestType !== 'PASSIVE' ? <TableCell>
-                                            <Grid container spacing={2}>
-                                                <Grid item>
-                                                    <Button onClick={() => {
-                                                        handleAccept(game, opponent)
-                                                    }}>
-                                                        Accept
-                                                    </Button>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Button variant={"outlined"} onClick={() => {
-                                                        handleReject(game, opponent)
-                                                    }}>
-                                                        Reject
-                                                    </Button>
-                                                </Grid>
-                                            </Grid>
-                                        </TableCell> :
-                                        <TableCell>Pending game</TableCell>}
-
-                                </TableRow>)
+                                    const game = getGame(request.gameToAccept)
+                                    return getGameRow(game, request);
+                                }
+                            )
                             })
                             }
                         </TableBody>

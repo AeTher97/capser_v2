@@ -64,6 +64,11 @@ const mainStyles = makeStyles(theme => ({
             minHeight: '35vw'
         }
     },
+    height1000: {
+        [theme.breakpoints.up('md')]: {
+            minHeight: '40vw'
+        }
+    },
     squareShine: {
         backgroundImage: `url(/reflection.svg)`,
         backgroundRepeat: 'no-repeat',

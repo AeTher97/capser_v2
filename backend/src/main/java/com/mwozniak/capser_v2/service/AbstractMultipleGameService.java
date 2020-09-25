@@ -7,8 +7,10 @@ import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.multiple.AbstractMultipleGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
+import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.utils.EloRating;
 
 import javax.transaction.Transactional;
@@ -35,26 +37,44 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
     }
 
     @Override
-    protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException {
+    protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
         AbstractMultipleGame multipleGame = (AbstractMultipleGame) abstractGame;
 
-        for (UUID id : multipleGame.getWinner().getPlayerList()) {
-            User user = userService.getUser(id);
-            AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
-                    AcceptanceRequestType.PASSIVE,
-                    id, abstractGame.getId(),abstractGame.getGameType());
-            acceptanceRequestRepository.save(posterAcceptanceRequest);
-            notificationService.notify(posterAcceptanceRequest, user.getUsername());
+        String winnerName = teamService.getTeam(multipleGame.getWinnerTeamId()).getName();
+        String loserName = teamService.getTeam(multipleGame.getLoserTeamId()).getName();
 
-        }
+        if (multipleGame.getWinner().getPlayerList().contains(SecurityUtils.getUserId())) {
+            for (UUID id : multipleGame.getWinner().getPlayerList()) {
+                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                        AcceptanceRequestType.PASSIVE,
+                        id, abstractGame.getId(), abstractGame.getGameType());
+                acceptanceRequestRepository.save(posterAcceptanceRequest);
+                notificationService.notifyMultiple(posterAcceptanceRequest, loserName);
 
-        for (UUID id : multipleGame.getWinner().getPlayerList()) {
-            User user = userService.getUser(id);
-            AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
-                    getAcceptanceRequestType(),
-                    id, abstractGame.getId(),abstractGame.getGameType());
-            acceptanceRequestRepository.save(posterAcceptanceRequest);
-            notificationService.notify(posterAcceptanceRequest, user.getUsername());
+            }
+            for (UUID id : multipleGame.getLoser().getPlayerList()) {
+                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                        getAcceptanceRequestType(),
+                        id, abstractGame.getId(), abstractGame.getGameType());
+                acceptanceRequestRepository.save(posterAcceptanceRequest);
+                notificationService.notifyMultiple(posterAcceptanceRequest, winnerName);
+            }
+        } else {
+            for (UUID id : multipleGame.getWinner().getPlayerList()) {
+                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                        getAcceptanceRequestType(),
+                        id, abstractGame.getId(), abstractGame.getGameType());
+                acceptanceRequestRepository.save(posterAcceptanceRequest);
+                notificationService.notifyMultiple(posterAcceptanceRequest, loserName);
+
+            }
+            for (UUID id : multipleGame.getLoser().getPlayerList()) {
+                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                        AcceptanceRequestType.PASSIVE,
+                        id, abstractGame.getId(), abstractGame.getGameType());
+                acceptanceRequestRepository.save(posterAcceptanceRequest);
+                notificationService.notifyMultiple(posterAcceptanceRequest, winnerName);
+            }
         }
 
     }

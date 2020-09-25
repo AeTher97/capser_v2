@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logoutAction} from "../../redux/actions/authActions";
 import {useHasRole} from "../../utils/SecurityUtils";
 import CheckIcon from '@material-ui/icons/Check';
-import {EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
+import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import BellComponent from "./BellComponent";
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 
@@ -46,11 +46,11 @@ const SideBar = () => {
             link: "/unranked",
             icon: <UnrankedIcon/>
         },
-        // {
-        //     tooltip: "Doubles",
-        //     link: "/doubles",
-        //     icon: <DoublesIcon/>
-        // },
+        {
+            tooltip: "Doubles",
+            link: "/doubles",
+            icon: <DoublesIcon/>
+        },
         {
             tooltip: "Games Accepting",
             link: "/secure/acceptance",
@@ -63,13 +63,13 @@ const SideBar = () => {
             icon: <PeopleOutlineIcon/>,
             role: 'USER'
         },
-        {
-            tooltip: email,
-            link: "/secure/profile",
-            icon: <AccountBoxOutlinedIcon/>,
-            role: 'USER'
-
-        },
+        // {
+        //     tooltip: email,
+        //     link: "/secure/profile",
+        //     icon: <AccountBoxOutlinedIcon/>,
+        //     role: 'USER'
+        //
+        // },
 
     ]
 
@@ -83,11 +83,9 @@ const SideBar = () => {
                 }}>
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
                 </Tooltip>
-                {hasRole('USER') && <Tooltip title={"Notifications"} placement={"right"}>
-                    <div>
-                        <BellComponent/>
-                    </div>
-                </Tooltip>}
+                {hasRole('USER') && <div>
+                    <BellComponent/>
+                </div>}
                 {icons.filter(icon => {
                     if (icon.role) {
                         return hasRole(icon.role)

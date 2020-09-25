@@ -45,6 +45,25 @@ public class NotificationService {
                 .build());
     }
 
+    public void notifyMultiple(AcceptanceRequest acceptanceRequest, String otherTeam) {
+
+        String text;
+
+        if (acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)) {
+            text = "Your game with team " + otherTeam + " is waiting to be accepted.";
+        } else {
+            text = "You have a game with team " + otherTeam + " to accept.";
+        }
+
+        notify(Notification.builder()
+                .notificationType(NotificationType.ACCEPT_REQUEST)
+                .text(text)
+                .userId(acceptanceRequest.getAcceptingUser())
+                .seen(false)
+                .date(new Date())
+                .build());
+    }
+
     public Notification markSeen(UUID notificationId) throws NotificationNotFoundException {
         Optional<Notification> notificationOptional = notificationRepository.findNotificationById(notificationId);
         if (notificationOptional.isPresent()) {

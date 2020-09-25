@@ -5,11 +5,11 @@ import {Divider, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LoadingComponent from "../../utils/LoadingComponent";
+import PropTypes from 'prop-types';
 
-const FetchSelectField = (props) => {
 
+const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, className, clearOnChange = false, disabled}) => {
 
-    const {onChange, label, url, resultSize, nameParameter, className} = props;
 
     const searchPhrase = useFieldSearch(url, resultSize || 5);
     const classes = fetchSelectFieldStyles();
@@ -50,12 +50,20 @@ const FetchSelectField = (props) => {
     }
 
     const getChoiceList = () => {
+        if (disabled) {
+            return null;
+        }
         return (!searching ?
             <div className={classes.recordContainer}>
                 {searchResult.length > 0 ? searchResult.map(user => {
                     return (
                         <div className={classes.record} key={user[nameParameter]} onMouseDown={() => {
-                            setPhrase(user[nameParameter])
+                            if (!clearOnChange) {
+                                setPhrase(user[nameParameter])
+                            } else {
+                                setPhrase('');
+                            }
+                            setFocused(false);
                             onChange(user)
                         }}>
                             <Typography className={classes.record} style={{padding: 5}}>
@@ -74,7 +82,7 @@ const FetchSelectField = (props) => {
     return (
         <div style={{maxWidth: 200}}>
             <TextField label={phrase === '' ? label : ''}
-                       onChange={(e) => setPhrase(e.target.value)} onFocus={() => {
+                       onChange={(e) => setPhrase(e.target.value)} onFocus={(e) => {
                 setFocused(true)
             }}
                        value={phrase}
@@ -83,6 +91,7 @@ const FetchSelectField = (props) => {
                        }}
                        InputProps={{endAdornment: <ExpandMoreIcon/>}}
                        className={[classes.input, className].join(' ')}
+                       disabled={disabled}
             />
             {focused && getChoiceList()}
         </div>
@@ -118,6 +127,15 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
     }
 }))
 
-FetchSelectField.propTypes = {};
+FetchSelectField.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    resultSize: PropTypes.number,
+    nameParameter: PropTypes.string.isRequired,
+    className: PropTypes.object,
+    clearOnChange: PropTypes.bool,
+    disabled: PropTypes.bool
+};
 
 export default FetchSelectField;

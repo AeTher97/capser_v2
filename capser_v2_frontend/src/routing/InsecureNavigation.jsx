@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SinglesScreen from "../screens/SinglesScreen";
 import EasyComponent from "../components/pages/easy/EasyComponent";
 import UnrankedComponent from "../components/pages/unranked/UnrankedComponent";
+import DoublesComponent from "../components/pages/doubles/DoublesComponent";
 
 const InsecureNavigation = () => {
 
@@ -31,6 +32,10 @@ const InsecureNavigation = () => {
 
                 <Route exact path={"/unranked"}>
                     <UnrankedComponent/>
+                </Route>
+
+                <Route exact path={"/doubles"}>
+                    <DoublesComponent/>
                 </Route>
 
 

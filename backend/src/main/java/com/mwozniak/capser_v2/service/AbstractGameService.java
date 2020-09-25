@@ -9,6 +9,7 @@ import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
+import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
@@ -40,7 +41,7 @@ public abstract class AbstractGameService implements GameService {
         addAcceptanceAndNotify(saved);
     }
 
-    protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException {
+    protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
         AbstractSinglesGame singlesGame = (AbstractSinglesGame) abstractGame;
         User user1 = userService.getUser(singlesGame.getPlayer1());
         User user2 = userService.getUser(singlesGame.getPlayer2());

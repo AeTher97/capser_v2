@@ -36,11 +36,11 @@ const UnrankedComponent = () => {
         </Tabs>
 
         <TabPanel value={currentTab} showValue={0}>
-            <SinglesGamesList type={'UNRANKED'}/>
+            <SinglesGamesList type={'UNRANKED'} hiddenPoints/>
         </TabPanel>
 
         <TabPanel value={currentTab} showValue={1}>
-            <SinglesPlayersList type={'UNRANKED'}/>
+            <SinglesPlayersList type={'UNRANKED'} pointsHidden/>
         </TabPanel>
 
         <TabPanel value={currentTab} showValue={2}>

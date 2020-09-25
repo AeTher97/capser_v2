@@ -11,8 +11,10 @@ import LoadingComponent from "../../../utils/LoadingComponent";
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayerCard from "../../misc/PlayerCard";
 import {getStatsString} from "../../../utils/Utils";
+import Grow from '@material-ui/core/Grow';
 
-const SinglesPlayersList = ({type}) => {
+
+const SinglesPlayersList = ({type, pointsHidden = false}) => {
 
     const [players, setPlayers] = useState([])
     const [loading, setLoading] = useState(true);
@@ -52,7 +54,7 @@ const SinglesPlayersList = ({type}) => {
                                     <TableRow>
                                         <TableCell>Placement</TableCell>
                                         <TableCell>Name</TableCell>
-                                        <TableCell>Points</TableCell>
+                                        {!pointsHidden && <TableCell>Points</TableCell>}
                                         <TableCell>Last Seen</TableCell>
                                         <TableCell>Last Game</TableCell>
                                     </TableRow>
@@ -65,14 +67,15 @@ const SinglesPlayersList = ({type}) => {
                                             <TableRow key={player.id}>
                                                 <TableCell>{(currentPage - 1) * 10 + index}</TableCell>
                                                 <TableCell className={classes.link}>
-                                                    <Tooltip title={<PlayerCard player={player} type={type}/>} classes={{tooltip: classes.neonTooltip}}>
+                                                    <Tooltip title={<PlayerCard player={player} type={type}/>} classes={{tooltip: classes.neonTooltip}}
+                                                             TransitionComponent={Grow}
+                                                    >
                                                         <div>
                                                             {player.username}
                                                         </div>
                                                     </Tooltip>
                                                 </TableCell>
-                                                <TableCell>{stats.points.toFixed(2)}</TableCell>
-                                                {player.lastSeen &&
+                                                {!pointsHidden && <TableCell>{stats.points.toFixed(2)}</TableCell>}                                                {player.lastSeen &&
                                                 <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell>}
                                                 {player.lastGame ?
                                                 <TableCell>{new Date(player.lastGame).toDateString()}</TableCell> :

@@ -1,4 +1,4 @@
-export const getGameModeString  = (string) => {
+export const getGameModeString = (string) => {
     switch (string) {
         case 'SUDDEN_DEATH' :
             return 'Sudden Death'
@@ -8,7 +8,7 @@ export const getGameModeString  = (string) => {
 }
 
 
-export const getGameTypeString  = (string) => {
+export const getGameTypeString = (string) => {
     switch (string) {
         case 'SINGLES' :
             return 'Singles'
@@ -19,6 +19,21 @@ export const getGameTypeString  = (string) => {
         case 'UNRANKED' :
             return 'Unranked'
     }
+}
+
+export const getRequestGameTypeString = (type) => {
+
+    switch (type) {
+        case 'SINGLES' :
+            return 'singles'
+        case 'EASY_CAPS' :
+            return 'easy'
+        case 'DOUBLES' :
+            return 'doubles'
+        case 'UNRANKED' :
+            return 'unranked'
+    }
+
 }
 
 export const getStatsString = (type) => {

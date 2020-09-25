@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {useGamePost} from "../../../data/Game";
+import {useSoloGamePost} from "../../../data/SoloGames";
 import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
 
@@ -13,7 +13,7 @@ const AddSinglesGameComponent = ({type}) => {
 
     const classes = mainStyles()
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
-    const postGame = useGamePost(type);
+    const postGame = useSoloGamePost(type);
 
 
     const {userId} = useSelector(state => state.auth);

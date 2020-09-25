@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useGameListFetch} from "../../../data/Game";
+import {useGameListFetch} from "../../../data/SoloGames";
 import {useUsernameFetch} from "../../../data/UsersFetch";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {TableBody} from "@material-ui/core";
@@ -13,7 +13,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import LoadingComponent from "../../../utils/LoadingComponent";
 
 
-const SinglesGamesList = ({type}) => {
+const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
     const [games, setGames] = useState([])
     const [loading, setLoading] = useState(true);
@@ -80,7 +80,7 @@ const SinglesGamesList = ({type}) => {
                                         <TableCell>Rebuttals</TableCell>
                                         <TableCell>Sinks</TableCell>
                                         <TableCell>Beers</TableCell>
-                                        <TableCell>Points change</TableCell>
+                                        {!hiddenPoints && <TableCell>Points change</TableCell>}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -89,7 +89,8 @@ const SinglesGamesList = ({type}) => {
                                         const player2Stats = findPlayerStats(game, game.player2);
                                         return (
                                             <TableRow key={game.id}>
-                                                <TableCell style={{color: 'red'}}>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
+                                                <TableCell
+                                                    style={{color: 'red'}}>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
                                                 <TableCell>{findUsername(game.winner)}</TableCell>
                                                 <TableCell>{getGameModeString(game.gameMode)}</TableCell>
                                                 <TableCell>{new Date(game.time).toDateString()}</TableCell>
@@ -97,7 +98,8 @@ const SinglesGamesList = ({type}) => {
                                                 <TableCell>{player1Stats.rebuttals} : {player2Stats.rebuttals}</TableCell>
                                                 <TableCell>{player1Stats.sinks} : {player2Stats.sinks}</TableCell>
                                                 <TableCell>{player1Stats.beersDowned} : {player2Stats.beersDowned}</TableCell>
-                                                <TableCell>{player1Stats.pointsChange.toFixed(2)} : {player2Stats.pointsChange.toFixed(2)}</TableCell>
+                                                {!hiddenPoints &&
+                                                <TableCell>{player1Stats.pointsChange.toFixed(2)} : {player2Stats.pointsChange.toFixed(2)}</TableCell>}
                                             </TableRow>)
                                     })
                                     }

@@ -28,7 +28,7 @@ const BellComponent = () => {
     };
 
     return (
-        <>
+        <div>
             <IconButton className={classes.iconButton} onClick={handleClick}>
                 {notSeen ?
                     <Badge color={"primary"} badgeContent={5} variant={"dot"}>
@@ -40,7 +40,7 @@ const BellComponent = () => {
                     <NotificationList notifications={notifications}/>
                 </div>
             </Menu>
-        </>
+        </div>
     );
 };
 

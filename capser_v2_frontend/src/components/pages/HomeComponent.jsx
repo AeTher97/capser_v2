@@ -31,6 +31,9 @@ const HomeComponent = () => {
                 setGames(response.data);
 
                 Promise.all(response.data.map(game => {
+                    if (game.gameType === 'DOUBLES') {
+                        return [];
+                    }
                     return [fetchUsername(game.player1), fetchUsername(game.player2)]
                 }).flat()).then((value) => {
                     setUsernames(value.map(user => {
@@ -94,6 +97,9 @@ const HomeComponent = () => {
                                 <Divider style={{marginBottom: 10}}/>
                                 <Grid container spacing={2}>
                                     {games.map(game => {
+                                        if (game.gameType === 'DOUBLES') {
+                                            return
+                                        }
                                         const player1Stats = findPlayerStats(game, game.player1)
                                         const player2Stats = findPlayerStats(game, game.player2)
                                         return (
