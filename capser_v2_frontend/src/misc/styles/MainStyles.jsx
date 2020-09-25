@@ -80,7 +80,33 @@ const mainStyles = makeStyles(theme => ({
         boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
     },
     redNeon: {
-        boxShadow: '0 0 5px 2px rgba(255,0,0,0.4)',
+        boxShadow: '0 7px 5px -4px rgba(255,0,0,0.4)',
+    },
+    link: {
+        color: 'red',
+        '&:hover': {
+            cursor: 'pointer',
+            textDecoration: "underline red"
+        }
+    },
+    tooltip: {
+        padding: 15,
+        backgroundColor: 'black',
+        backgroundImage: `url(/reflection.svg)`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'top left',
+        backgroundSize: 'cover',
+    },
+    neonTooltip: {
+        padding: 0,
+        boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
+
+    },
+    centeredRow: {
+        display: "flex",
+        flexDirection: "row",
+        flex: 1,
+        justifyContent: "center"
     },
     empty: {}
 

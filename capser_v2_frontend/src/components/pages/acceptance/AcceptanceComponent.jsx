@@ -16,6 +16,7 @@ import YesNoDialog from "../../misc/YesNoDialog";
 import {useGameAcceptance} from "../../../data/Game";
 import {showSuccess} from "../../../redux/actions/alertActions";
 import LoadingComponent from "../../../utils/LoadingComponent";
+import CheckIcon from '@material-ui/icons/Check';
 
 const AcceptanceComponent = props => {
 
@@ -104,7 +105,7 @@ const AcceptanceComponent = props => {
 
     return (
         <div>
-            <PageHeader title={"Games Accepting"}/>
+            <PageHeader title={"Games Accepting"} icon={<CheckIcon fontSize={"large"}/>} />
 
 
             <div className={[classes.paddedContent, classes.horizontalShine].join(' ')}>

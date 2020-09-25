@@ -10,11 +10,10 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutAction} from "../../redux/actions/authActions";
 import {useHasRole} from "../../utils/SecurityUtils";
-import Menu from "@material-ui/core/Menu";
-import NotificationList from "./NotificationList";
 import CheckIcon from '@material-ui/icons/Check';
-import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
+import {EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import BellComponent from "./BellComponent";
+import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 
 const SideBar = () => {
 
@@ -22,7 +21,6 @@ const SideBar = () => {
     const dispatch = useDispatch();
     const hasRole = useHasRole();
     const {email} = useSelector(state => state.auth)
-
 
 
     const icons = [
@@ -48,15 +46,21 @@ const SideBar = () => {
             link: "/unranked",
             icon: <UnrankedIcon/>
         },
-        {
-            tooltip: "Doubles",
-            link: "/doubles",
-            icon: <DoublesIcon/>
-        },
+        // {
+        //     tooltip: "Doubles",
+        //     link: "/doubles",
+        //     icon: <DoublesIcon/>
+        // },
         {
             tooltip: "Games Accepting",
             link: "/secure/acceptance",
             icon: <CheckIcon/>,
+            role: 'USER'
+        },
+        {
+            tooltip: "Teams",
+            link: "/secure/teams",
+            icon: <PeopleOutlineIcon/>,
             role: 'USER'
         },
         {

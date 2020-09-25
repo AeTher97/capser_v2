@@ -88,9 +88,8 @@ const SinglesGamesList = ({type}) => {
                                         const player1Stats = findPlayerStats(game, game.player1);
                                         const player2Stats = findPlayerStats(game, game.player2);
                                         return (
-                                            <TableRow key={game.id}
-                                                      className={game.nakedLap ? classes.redNeon : classes.empty}>
-                                                <TableCell>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
+                                            <TableRow key={game.id}>
+                                                <TableCell style={{color: 'red'}}>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
                                                 <TableCell>{findUsername(game.winner)}</TableCell>
                                                 <TableCell>{getGameModeString(game.gameMode)}</TableCell>
                                                 <TableCell>{new Date(game.time).toDateString()}</TableCell>

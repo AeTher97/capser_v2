@@ -115,6 +115,7 @@ const HomeComponent = () => {
                         </Grid>
                     </Grid> : <LoadingComponent/>}
                 </Grid>
+
             </>);
     }
 ;

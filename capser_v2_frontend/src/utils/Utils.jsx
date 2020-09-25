@@ -20,3 +20,17 @@ export const getGameTypeString  = (string) => {
             return 'Unranked'
     }
 }
+
+export const getStatsString = (type) => {
+    switch (type) {
+        case 'SINGLES' :
+            return 'userSinglesStats'
+        case  'EASY_CAPS' :
+            return 'userEasyStats'
+        case 'UNRANKED' :
+            return 'userUnrankedStats'
+        case 'DOUBLES' :
+            return 'userDoublesStats'
+    }
+
+}
