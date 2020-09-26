@@ -64,7 +64,7 @@ const TeamsComponent = () => {
             <PageHeader title={"Teams"} icon={<PeopleOutlineIcon fontSize={"large"}/>}/>
             <div className={classes.root}>
                 <Grid container spacing={2}>
-                    <Grid item md={4} sm={12}>
+                    <Grid item md={4} sm={12} xs={12}>
                         {!loading ? <div style={{padding: 10, minHeight: 500,}}
                                         className={[classes.squareShine, classes.neon].join(' ')}>
                             <div className={classes.header}>
@@ -104,7 +104,7 @@ const TeamsComponent = () => {
                             })}
                         </div> : <LoadingComponent/>}
                     </Grid>
-                    <Grid item md={8} sm={12}>
+                    <Grid item md={8} sm={12} xs={12}>
                         <div style={{padding: 10}} className={[classes.squareShine, classes.neon].join(' ')}>
                             <div style={{minHeight: 500}}>
                                 {!selectedTeam ? <div style={{
