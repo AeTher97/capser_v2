@@ -7,21 +7,21 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Button, Divider, Grid, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import FetchSelectField from "../../misc/FetchSelectField";
-import {useMultipleGame} from "../../../data/MultipleGame";
+import {useMultipleGames} from "../../../data/MultipleGamesData";
 import {usePlayerTeams} from "../../../data/TeamsData";
 import {useUsernameFetch} from "../../../data/UsersFetch";
 
 const AddDoublesGameComponent = props => {
     const classes = mainStyles()
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
-    const {postGame} = useMultipleGame("DOUBLES");
+    const {postGame} = useMultipleGames("DOUBLES");
 
 
     const {userId} = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const {teams} = usePlayerTeams(userId);
+    const {teams, loading} = usePlayerTeams(userId);
     const fetchUsername = useUsernameFetch();
 
 
@@ -178,6 +178,7 @@ const AddDoublesGameComponent = props => {
                             className={[classes.column, classes.height1000, classes.neon].join(' ')}>
                             <Typography variant={"h5"}>Player Team Data</Typography>
                             <div className={classes.margin}>
+                                {teams.length === 0 && <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams page</Typography>}
                                 {teams.length > 0 &&
                                 <Select className={classes.width200} value={team} onChange={handleTeamChange}>
                                     {teams.map(team => <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>)}

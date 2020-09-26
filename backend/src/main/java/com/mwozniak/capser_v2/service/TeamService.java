@@ -92,7 +92,7 @@ public class TeamService {
 
     public Page<TeamWithStats> searchTeams(Pageable pageable, String teamName) {
         UUID userId = SecurityUtils.getUserId();
-        Page<TeamWithStats> teamPage = teamRepository.findByNameContainingAndPlayerListNotContaining(pageable, teamName, userId);
+        Page<TeamWithStats> teamPage = teamRepository.findByNameContainingAndPlayerListNotContainingAndActive(pageable, teamName, userId, true);
 
         List<TeamWithStats> teamList = teamPage.getContent()
                 .stream().filter(team -> !team.getPlayerList().contains(userId)).collect(Collectors.toList());

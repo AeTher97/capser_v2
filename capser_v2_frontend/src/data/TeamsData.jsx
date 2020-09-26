@@ -16,7 +16,8 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then(data => {
-            setTeams(data.data.content);
+            setTeams(data.data.content.filter(team => team.active));
+            setLoading(false);
         }).catch(e => {
             console.error(e.message);
         })

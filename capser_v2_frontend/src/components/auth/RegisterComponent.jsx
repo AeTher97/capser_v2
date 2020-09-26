@@ -18,7 +18,7 @@ const RegisterComponent = props => {
 
     const validatePasswordConfirmation = useCallback(validateRepeatedPassword(password.value), [password.value]);
     const repeatPassword = useFieldValidation("", validatePasswordConfirmation);
-    const username = useFieldValidation("", (word) => () => validateLength(word, 5))
+    const username = useFieldValidation("", (word) => () => validateLength(word, 3))
 
     password.showError = true;
     repeatPassword.showError = true;

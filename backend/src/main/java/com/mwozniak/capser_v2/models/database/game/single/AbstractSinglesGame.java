@@ -49,8 +49,10 @@ public abstract class AbstractSinglesGame extends AbstractGame {
             throw new GameValidationException("Game cannot end in a draw");
         }
 
-        if(player1Stats.getScore() > player1Stats.getSinks() || player2Stats.getScore() > player2Stats.getSinks()){
-            throw new GameValidationException("Player cannot score more than they sunk");
+        if (player1Stats.getSinks() != 0 || player2Stats.getSinks() != 0) {
+            if (player1Stats.getScore() > player1Stats.getSinks() || player2Stats.getScore() > player2Stats.getSinks()) {
+                throw new GameValidationException("Player cannot score more than they sunk");
+            }
         }
 
         if (player1Stats.getScore() < 11 && player2Stats.getScore() < 11) {

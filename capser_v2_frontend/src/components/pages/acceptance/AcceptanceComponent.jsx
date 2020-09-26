@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import YesNoDialog from "../../misc/YesNoDialog";
-import {useGameAcceptance} from "../../../data/SoloGames";
+import {useGameAcceptance} from "../../../data/SoloGamesData";
 import {showSuccess} from "../../../redux/actions/alertActions";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import CheckIcon from '@material-ui/icons/Check';
@@ -56,7 +56,6 @@ const AcceptanceComponent = props => {
                     return [];
                 }
             }).flat()).then((value) => {
-                console.log(value)
                 setTeamNames(value.map(o => {
                     return {
                         name: o.data.name,
@@ -112,7 +111,6 @@ const AcceptanceComponent = props => {
     }
 
     const handleAccept = (game, opponent) => {
-        console.log(game)
         setQuestion(`Are you sure you want to accept a game against ${opponent}?`)
         setOnYes(() => () => {
             acceptGame(game.id, game.gameType).then(() => {

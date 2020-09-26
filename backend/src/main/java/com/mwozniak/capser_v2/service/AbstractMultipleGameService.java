@@ -106,6 +106,11 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
         }
 
+        multipleGame.calculateTeamStats(winner.getDoublesStats(),
+                multipleGame.getWinnerTeamId().equals(multipleGame.getTeam1DatabaseId()) ? multipleGame.getTeam1Stats() : multipleGame.getTeam2Stats(), true ,eloResult.getResult1());
+        multipleGame.calculateTeamStats(loser.getDoublesStats(),
+                multipleGame.getLoserTeamId().equals(multipleGame.getTeam1DatabaseId()) ? multipleGame.getTeam1Stats() : multipleGame.getTeam2Stats(), false ,eloResult.getResult2());
+
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
     }
 

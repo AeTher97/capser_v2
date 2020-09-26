@@ -49,6 +49,7 @@ public class DoublesGame extends AbstractMultipleGame {
     public void updateUserPoints(User user, float pointsChange) {
         UserStats singlesStats = findCorrectStats(user);
         singlesStats.setPoints(singlesStats.getPoints() + pointsChange);
+        getPlayerStats(user.getId()).setPointsChange(pointsChange);
     }
 
     @Override

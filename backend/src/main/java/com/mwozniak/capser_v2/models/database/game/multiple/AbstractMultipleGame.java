@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.models.database.game.multiple;
 
 import com.mwozniak.capser_v2.enums.GameMode;
 import com.mwozniak.capser_v2.models.database.User;
+import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
@@ -10,7 +11,10 @@ import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -118,6 +122,57 @@ public abstract class AbstractMultipleGame extends AbstractGame {
 
     }
 
+    public void calculateTeamStats(UserStats userStats, List<GamePlayerStats> teamStats, boolean winner, float pointsChange) {
+
+        userStats.setGamesPlayed(userStats.getGamesPlayed() + 1);
+        List<GamePlayerStats> opponentStats;
+        if (winner) {
+            if (getWinnerTeamId().equals(getTeam1DatabaseId())) {
+                opponentStats = getTeam2Stats();
+            } else {
+                opponentStats = getTeam1Stats();
+
+            }
+        } else {
+            if (getWinnerTeamId().equals(getTeam1DatabaseId())) {
+                opponentStats = getTeam1Stats();
+            } else {
+                opponentStats = getTeam2Stats();
+            }
+        }
+        if (winner) {
+            userStats.setGamesWon(userStats.getGamesWon() + 1);
+        } else {
+            userStats.setGamesLost(userStats.getGamesLost() + 1);
+        }
+
+        if ((getTeamSinks(teamStats) > 0) || (getTeamSinks(teamStats) == 0 && getTeamPoints(teamStats) == 0)) {
+            userStats.setGamesLoggedSinks(userStats.getGamesLoggedSinks() + 1);
+        }
+
+        userStats.setBeersDowned(userStats.getBeersDowned() + (float) getTeamBeersDowned(teamStats));
+
+        userStats.setTotalPointsMade(userStats.getTotalPointsMade() + getTeamPoints(teamStats));
+        userStats.setTotalPointsLost(userStats.getTotalPointsLost() + getTeamPoints(opponentStats));
+
+        userStats.setTotalSinksMade(userStats.getTotalSinksMade() + getTeamSinks(teamStats));
+        userStats.setTotalSinksLost(userStats.getTotalSinksLost() + getTeamSinks(opponentStats));
+
+        if (hasNakedLap(teamStats)) {
+            userStats.setNakedLaps(userStats.getNakedLaps() + 1);
+        }
+
+        if(getTeamSinks(opponentStats) > 0) {
+            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(opponentStats));
+        }
+
+        userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ?  userStats.getTotalRebuttals() :(float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());
+        userStats.setWinLossRatio(userStats.getGamesLost() == 0 ? userStats.getGamesWon() : (float) userStats.getGamesWon() / userStats.getGamesLost());
+        userStats.setSinksMadeLostRatio(userStats.getTotalSinksLost() == 0 ? userStats.getTotalSinksMade() :(float) userStats.getTotalSinksMade() / userStats.getTotalSinksLost());
+        userStats.setPointsMadeLostRatio(userStats.getTotalPointsLost() == 0 ? userStats.getTotalPointsMade() :(float) userStats.getTotalPointsMade() / userStats.getTotalPointsLost());
+        userStats.setPoints(userStats.getPoints() + pointsChange);
+    }
+
     @Override
     public void fillCommonProperties(AbstractGameDto abstractGameDto) {
         MultipleGameDto multipleGameDtoCast = (MultipleGameDto) abstractGameDto;
@@ -148,6 +203,10 @@ public abstract class AbstractMultipleGame extends AbstractGame {
 
     }
 
+    protected GamePlayerStats getPlayerStats(UUID id) {
+        return gamePlayerStats.stream().filter(gamePlayerStats1 -> gamePlayerStats1.getPlayerId().equals(id)).findAny().get();
+    }
+
 
     protected void calculateBeers(List<GamePlayerStats> team1, List<GamePlayerStats> team2) {
         float team1BeersToSplit = 0;
@@ -174,11 +233,11 @@ public abstract class AbstractMultipleGame extends AbstractGame {
     }
 
 
-    protected List<GamePlayerStats> getTeam1Stats() {
+    public List<GamePlayerStats> getTeam1Stats() {
         return gamePlayerStats.stream().filter(stats -> team1.getPlayerList().contains(stats.getPlayerId())).collect(Collectors.toList());
     }
 
-    protected List<GamePlayerStats> getTeam2Stats() {
+    public List<GamePlayerStats> getTeam2Stats() {
         return gamePlayerStats.stream().filter(stats -> team2.getPlayerList().contains(stats.getPlayerId())).collect(Collectors.toList());
     }
 
@@ -200,12 +259,12 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         }
     }
 
-    public UUID getWinnerTeamId(){
+    public UUID getWinnerTeamId() {
         return winner;
     }
 
-    public UUID getLoserTeamId(){
-        if(winner.equals(team1DatabaseId)){
+    public UUID getLoserTeamId() {
+        if (winner.equals(team1DatabaseId)) {
             return team2DatabaseId;
         } else {
             return team1DatabaseId;
@@ -218,6 +277,14 @@ public abstract class AbstractMultipleGame extends AbstractGame {
 
     private int getTeamSinks(List<GamePlayerStats> stats) {
         return stats.stream().map(GamePlayerStats::getSinks).mapToInt(Integer::intValue).sum();
+    }
+
+    private double getTeamBeersDowned(List<GamePlayerStats> stats) {
+        return stats.stream().map(GamePlayerStats::getBeersDowned).mapToDouble(Float::doubleValue).sum();
+    }
+
+    private boolean hasNakedLap(List<GamePlayerStats> stats) {
+        return stats.stream().anyMatch(GamePlayerStats::isNakedLap);
     }
 
     protected boolean isWinner(User user) {

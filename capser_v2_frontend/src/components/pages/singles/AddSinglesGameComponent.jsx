@@ -5,7 +5,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {useSoloGamePost} from "../../../data/SoloGames";
+import {useSoloGamePost} from "../../../data/SoloGamesData";
 import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
 

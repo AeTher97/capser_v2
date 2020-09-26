@@ -4,7 +4,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {TableBody} from "@material-ui/core";
+import {TableBody, Typography} from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import {usePlayersListFetch} from "../../../data/Players";
 import LoadingComponent from "../../../utils/LoadingComponent";
@@ -54,7 +54,7 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                     <TableRow>
                                         <TableCell>Placement</TableCell>
                                         <TableCell>Name</TableCell>
-                                        {!pointsHidden && <TableCell>Points</TableCell>}
+                                        {!pointsHidden ? <TableCell>Points</TableCell> : <TableCell/>}
                                         <TableCell>Last Seen</TableCell>
                                         <TableCell>Last Game</TableCell>
                                     </TableRow>
@@ -67,19 +67,20 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                             <TableRow key={player.id}>
                                                 <TableCell>{(currentPage - 1) * 10 + index}</TableCell>
                                                 <TableCell className={classes.link}>
-                                                    <Tooltip title={<PlayerCard player={player} type={type}/>} classes={{tooltip: classes.neonTooltip}}
-                                                             TransitionComponent={Grow}
-                                                    >
+                                                    <Tooltip title={<PlayerCard player={player} type={type}/>}
+                                                             classes={{tooltip: classes.neonTooltip}}
+                                                             TransitionComponent={Grow}>
                                                         <div>
                                                             {player.username}
                                                         </div>
                                                     </Tooltip>
                                                 </TableCell>
-                                                {!pointsHidden && <TableCell>{stats.points.toFixed(2)}</TableCell>}                                                {player.lastSeen &&
-                                                <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell>}
+                                                {!pointsHidden ?
+                                                <TableCell>{stats.points.toFixed(2)}</TableCell> : <TableCell/>} {player.lastSeen &&
+                                            <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell>}
                                                 {player.lastGame ?
-                                                <TableCell>{new Date(player.lastGame).toDateString()}</TableCell> :
-                                                <TableCell>No games played</TableCell>}
+                                                    <TableCell><Typography>{new Date(player.lastGame).toDateString()}</Typography></TableCell> :
+                                                    <TableCell><Typography>No games played</Typography></TableCell>}
                                             </TableRow>)
                                     })
                                     }

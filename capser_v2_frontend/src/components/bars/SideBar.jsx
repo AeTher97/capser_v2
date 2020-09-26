@@ -113,7 +113,8 @@ const SideBar = () => {
                             }}>
                                 <ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/>
                             </IconButton>
-                        </Tooltip></> :
+                        </Tooltip>
+                    </> :
                     <>
                         <Divider/>
                         <Tooltip title={"Login"} placement={"right"}>
@@ -122,11 +123,10 @@ const SideBar = () => {
                             }}>
                                 <ExitToAppOutlinedIcon/>
                             </IconButton>
-                        </Tooltip></>
+                        </Tooltip>
+                    </>
                 }
             </Drawer>
-
-
         </div>
     );
 };

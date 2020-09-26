@@ -19,7 +19,6 @@ const TeamStats = ({team}) => {
         }
     }
 
-
     useEffect(() => {
             Promise.all(team.playerList.map(player => {
                 return fetchUsername(player)

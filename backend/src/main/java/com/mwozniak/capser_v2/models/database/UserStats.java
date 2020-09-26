@@ -18,7 +18,7 @@ public class UserStats {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    public UserStats(){
+    public UserStats() {
         this.points = 500.0f;
     }
 
@@ -28,6 +28,7 @@ public class UserStats {
     private int gamesPlayed;
     private int gamesWon;
     private int gamesLost;
+    private int gamesLoggedSinks;
 
     private float beersDowned;
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useNotifications} from "../../data/NotificationData";
 import {Badge, IconButton} from "@material-ui/core";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -19,11 +19,7 @@ const BellComponent = () => {
     };
 
     const handleClose = () => {
-        notifications.forEach(notification => {
-            if (notification.seen === false) {
-                markSeen(notification.id)
-            }
-        })
+        markSeen();
         setAnchorEl(null);
     };
 

@@ -32,7 +32,6 @@ export const useNotifications = () => {
         fetchNotifications();
         const interval = setInterval(fetchNotifications, intervalTime);
         return () => {
-            console.log("clear")
             clearInterval(interval);
         };
     }, [accessToken])
@@ -49,21 +48,40 @@ export const useNotifications = () => {
         }
     }, [notifications]);
 
-    const markSeen = (notificationId) => {
-        axios.put(`/notifications/seen/${notificationId}`, null, {
+    const markNotificationAsSeen = (notificationId) => {
+        return axios.put(`/notifications/seen/${notificationId}`, null, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).then(result => {
-            const copy = notifications.slice();
-            setNotifications(copy.map(note => {
-                if (note.id === result.data.id) {
-                    return result.data;
-                } else {
-                    return note;
-                }
-            }));
         })
+    }
+
+    const markSeen = () => {
+        Promise.all(notifications.filter(notification => !notification.seen).map(notification => {
+            return markNotificationAsSeen(notification.id)
+        })).then((value) => {
+            value = value.map(o => o.data.id);
+            const copy = notifications.slice();
+            setNotifications(copy.map(notification => {
+                if (value.includes(notification.id)) {
+                    notification.seen = true;
+                }
+                return notification;
+            }))
+
+        })
+
+        // .then(result => {
+        //     const copy = notifications.slice();
+        //
+        //     setNotifications(copy.map(note => {
+        //         if (note.id === notificationId) {
+        //             return result.data;
+        //         } else {
+        //             return note;
+        //         }
+        //     }));
+        // })
     }
 
     return {notifications: notifications, markSeen: markSeen, notSeen: notSeen}

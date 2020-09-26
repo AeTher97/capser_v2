@@ -65,7 +65,7 @@ const TeamsComponent = () => {
             <div className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12}>
-                        {loading ? <div style={{padding: 10, minHeight: 500,}}
+                        {!loading ? <div style={{padding: 10, minHeight: 500,}}
                                         className={[classes.squareShine, classes.neon].join(' ')}>
                             <div className={classes.header}>
                                 <Typography variant={"h5"} style={{flex: 1}}>Your Teams</Typography>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useGameListFetch} from "../../../data/SoloGames";
+import {useGameListFetch} from "../../../data/SoloGamesData";
 import {useUsernameFetch} from "../../../data/UsersFetch";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {TableBody} from "@material-ui/core";
@@ -31,7 +31,6 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
             setCount(response.data.totalPages);
             setGames(response.data.content);
 
-            console.log(response.data)
 
             Promise.all(response.data.content.map(game => {
                 return [fetchUsername(game.player1), fetchUsername(game.player2)]
@@ -93,7 +92,7 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
                                                     style={{color: 'red'}}>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
                                                 <TableCell>{findUsername(game.winner)}</TableCell>
                                                 <TableCell>{getGameModeString(game.gameMode)}</TableCell>
-                                                <TableCell>{new Date(game.time).toDateString()}</TableCell>
+                                                <TableCell>{new Date(game.time).toUTCString()}</TableCell>
                                                 <TableCell>{player1Stats.score} : {player2Stats.score}</TableCell>
                                                 <TableCell>{player1Stats.rebuttals} : {player2Stats.rebuttals}</TableCell>
                                                 <TableCell>{player1Stats.sinks} : {player2Stats.sinks}</TableCell>

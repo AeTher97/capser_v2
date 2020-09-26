@@ -79,6 +79,10 @@ public abstract class AbstractGame {
                 userStats.setGamesLost(userStats.getGamesLost() + 1);
             }
 
+            if(gamePlayerStats.getSinks() > 0 || (gamePlayerStats.getScore() == 0 && gamePlayerStats.getSinks() == 0)){
+                userStats.setGamesLoggedSinks(userStats.getGamesLoggedSinks() + 1);
+            }
+
             userStats.setBeersDowned(userStats.getBeersDowned() + gamePlayerStats.getBeersDowned());
 
             userStats.setTotalPointsMade(userStats.getTotalPointsMade() + gamePlayerStats.getScore());
@@ -95,10 +99,10 @@ public abstract class AbstractGame {
             userStats.setTotalRebuttals(userStats.getTotalRebuttals() + gamePlayerStats.getRebuttals());
 
 
-            userStats.setAvgRebuttals((float) userStats.getTotalRebuttals()/userStats.getGamesPlayed());
-            userStats.setWinLossRatio((float) userStats.getGamesWon()/userStats.getGamesPlayed());
-            userStats.setSinksMadeLostRatio((float) userStats.getTotalPointsMade()/userStats.getTotalSinksLost());
-            userStats.setPointsMadeLostRatio((float) userStats.getTotalPointsMade()/userStats.getTotalPointsLost());
+            userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ? userStats.getTotalRebuttals() :(float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());
+            userStats.setWinLossRatio(userStats.getGamesLost() == 0 ? userStats.getGamesWon() : (float) userStats.getGamesWon() / userStats.getGamesLost());
+            userStats.setSinksMadeLostRatio(userStats.getTotalSinksLost() == 0 ? userStats.getTotalSinksMade() :(float) userStats.getTotalSinksMade() / userStats.getTotalSinksLost());
+            userStats.setPointsMadeLostRatio(userStats.getTotalPointsLost() == 0 ? userStats.getTotalPointsMade() :(float) userStats.getTotalPointsMade() / userStats.getTotalPointsLost());
             user.setLastGame(new Date());
 
         } catch (GameValidationException e) {

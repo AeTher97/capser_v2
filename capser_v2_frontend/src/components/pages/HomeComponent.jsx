@@ -1,64 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {Divider, Grid, Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
-import Card from "@material-ui/core/Card";
 import PageHeader from "../misc/PageHeader";
-import {useBlogPostsFetch, useDashboardGamesFetch} from "../../data/Dashboard";
+import {useBlogPostsFetch, useDashboard} from "../../data/DashboardData";
 import {useUsernameFetch} from "../../data/UsersFetch";
 import LoadingComponent from "../../utils/LoadingComponent";
 import {getGameTypeString} from "../../utils/Utils";
+import axios from "axios";
 
 const HomeComponent = () => {
 
-        const [usernames, setUsernames] = useState([])
-        const [posts, setPosts] = useState([]);
-        const [games, setGames] = useState([])
-        const [loadingPosts, setLoadingPosts] = useState(true);
-        const [loadingGames, setLoadingGames] = useState(true);
         const classes = mainStyles();
         const theme = useTheme();
 
-        const gamesFetch = useDashboardGamesFetch();
-        const fetchUsername = useUsernameFetch();
-        const fetchBlog = useBlogPostsFetch();
+        const {games, posts, gamesLoading, postsLoading} = useDashboard();
 
         const findPlayerStats = (game, id) => {
             return game.gamePlayerStats.find(o => o.playerId === id)
-        }
-
-        useEffect(() => {
-            gamesFetch().then((response) => {
-                setGames(response.data);
-
-                Promise.all(response.data.map(game => {
-                    if (game.gameType === 'DOUBLES') {
-                        return [];
-                    }
-                    return [fetchUsername(game.player1), fetchUsername(game.player2)]
-                }).flat()).then((value) => {
-                    setUsernames(value.map(user => {
-                        return {id: user.data.id, username: user.data.username}
-                    }));
-                    setLoadingGames(false);
-                })
-            })
-        }, [])
-
-        useEffect(() => {
-            fetchBlog().then(response => {
-                setLoadingPosts(false)
-                setPosts(response.data);
-            })
-        }, [])
-
-
-        const findUsername = (id) => {
-            const obj = usernames.find(o => o.id === id);
-            if (obj) {
-                return obj.username;
-            } else {
-                return ''
-            }
         }
 
 
@@ -66,7 +24,7 @@ const HomeComponent = () => {
             <>
                 <PageHeader title={"Global Caps League"} showLogo/>
                 <Grid className={classes.root}>
-                    {!loadingGames && !loadingPosts ? <Grid container>
+                    {!gamesLoading && !postsLoading ? <Grid container>
                         <Grid item sm={8} className={classes.squareShine}>
                             <div className={classes.leftOrientedWrapperNoPadding}>
                                 <Typography variant={"h5"}>News Feed</Typography>
@@ -98,7 +56,18 @@ const HomeComponent = () => {
                                 <Grid container spacing={2}>
                                     {games.map(game => {
                                         if (game.gameType === 'DOUBLES') {
-                                            return
+                                            return (
+                                                <Grid key={game.player1 + game.player2 + game.time} item xs={12}>
+                                                    <div className={classes.neon} style={{padding: 10}}>
+                                                        <Typography
+                                                            color={"primary"}>{getGameTypeString(game.gameType)}</Typography>
+                                                        <div className={classes.header}>
+                                                            <Typography>{game.team1Score} : {game.team2Score} {game.team1Name.name} vs {game.team2Name.name}</Typography>
+                                                        </div>
+                                                        <Typography>{new Date(game.time).toDateString()}</Typography>
+                                                    </div>
+                                                </Grid>
+                                            )
                                         }
                                         const player1Stats = findPlayerStats(game, game.player1)
                                         const player2Stats = findPlayerStats(game, game.player2)
@@ -108,7 +77,7 @@ const HomeComponent = () => {
                                                     <Typography
                                                         color={"primary"}>{getGameTypeString(game.gameType)}</Typography>
                                                     <div className={classes.header}>
-                                                        <Typography>{player1Stats.score} : {player2Stats.score} {findUsername(game.player1)} vs {findUsername(game.player2)}</Typography>
+                                                        <Typography>{player1Stats.score} : {player2Stats.score} {game.player1Name.username} vs {game.player2Name.username}</Typography>
                                                     </div>
                                                     <Typography>{new Date(game.time).toDateString()}</Typography>
                                                 </div>

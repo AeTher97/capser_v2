@@ -101,6 +101,7 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
     const closeWrapper = () => {
         setClose();
         setDisabled(false);
+        setPlayers(initialState)
     }
 
     const save = () => {
