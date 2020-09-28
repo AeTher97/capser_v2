@@ -8,7 +8,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
-import {useUsernameFetch} from "../../../data/UsersFetch";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +17,7 @@ import {showSuccess} from "../../../redux/actions/alertActions";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import CheckIcon from '@material-ui/icons/Check';
 import {usePlayerTeams} from "../../../data/TeamsData";
+import {fetchUsername} from "../../../data/UsersFetch";
 
 const AcceptanceComponent = props => {
 
@@ -27,7 +27,6 @@ const AcceptanceComponent = props => {
     const [loading, setLoading] = useState(true);
     const [usernames, setUsernames] = useState([])
     const [teamNames, setTeamNames] = useState([])
-    const fetchUsername = useUsernameFetch();
     const {userId} = useSelector(state => state.auth)
     const [question, setQuestion] = useState('');
     const [open, setOpen] = useState(false);

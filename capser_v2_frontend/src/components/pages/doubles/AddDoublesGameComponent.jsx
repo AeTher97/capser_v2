@@ -9,7 +9,8 @@ import Select from "@material-ui/core/Select";
 import FetchSelectField from "../../misc/FetchSelectField";
 import {useMultipleGames} from "../../../data/MultipleGamesData";
 import {usePlayerTeams} from "../../../data/TeamsData";
-import {useUsernameFetch} from "../../../data/UsersFetch";
+import {loginAction} from "../../../redux/actions/authActions";
+import {fetchUsername} from "../../../data/UsersFetch";
 
 const AddDoublesGameComponent = props => {
     const classes = mainStyles()
@@ -22,7 +23,6 @@ const AddDoublesGameComponent = props => {
     const history = useHistory();
 
     const {teams, loading} = usePlayerTeams(userId);
-    const fetchUsername = useUsernameFetch();
 
 
     const [teamScore, setTeamScore] = useState(0);
@@ -192,9 +192,8 @@ const AddDoublesGameComponent = props => {
                                     {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                                 </Select>
                             </div>
-                            {team && teamStats.map(stats => <><Typography
+                            {team && teamStats.map(stats => <div key={stats.playerId}><Typography
                                 variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
-
                                 <div className={classes.margin}>
                                     <Typography>Points</Typography>
                                     <Select label={"Points"} style={{minWidth: 200}}
@@ -216,7 +215,7 @@ const AddDoublesGameComponent = props => {
                                         {getScoreOptions(21)}
                                     </Select>
                                 </div>
-                            </>)}
+                            </div>)}
 
                         </div>
                     </Grid>
@@ -242,7 +241,7 @@ const AddDoublesGameComponent = props => {
                                     {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                                 </Select>
                             </div>
-                            {opposingTeam && opposingTeamStats.map(stats => <><Typography
+                            {opposingTeam && opposingTeamStats.map(stats => <div key={stats.playerId}><Typography
                                 variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
 
                                 <div className={classes.margin}>
@@ -266,7 +265,7 @@ const AddDoublesGameComponent = props => {
                                         {getScoreOptions(21)}
                                     </Select>
                                 </div>
-                            </>)}
+                            </div>)}
                         </div>
                     </Grid>
                 </Grid>

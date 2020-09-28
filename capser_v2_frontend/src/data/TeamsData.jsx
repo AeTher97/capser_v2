@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {showError, showSuccess} from "../redux/actions/alertActions";
+import {fetchUsername} from "./UsersFetch";
 
 export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
     const {accessToken} = useSelector(state => state.auth);
@@ -27,7 +28,7 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
         if (accessToken && userId) {
             fetchTeams();
         }
-    }, [accessToken])
+    }, [accessToken, pageNumber, pageSize])
 
 
     const createTeam = (request) => {
@@ -93,4 +94,53 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
     }
 }
 
+export const useAllTeams = (pageNumber = 0, pageSize = 5) => {
+    const {accessToken} = useSelector(state => state.auth);
+
+    const [teams, setTeams] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
+
+
+    const fetchTeams = () => {
+        axios.get(`/teams?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data => {
+            const teams = data.data.content;
+            Promise.all(teams.map(team => {
+                return team.playerList.map(player => fetchUsername(player));
+            }).flat()).then(result => {
+                result = result.map(o => o.data);
+                setTeams(teams.map(team => {
+                    team.playerList = team.playerList.map(player => {
+                        const username = result.find(o => o.id === player).username;
+                        return {
+                            username: username,
+                            id: player
+                        }
+                    })
+                    return team;
+                }));
+            })
+            setTeams(data.data.content);
+            setPageCount(data.data.totalPages);
+            setLoading(false);
+        }).catch(e => {
+            dispatch(showError("Failed to load teams"));
+            console.error(e.message);
+        })
+    }
+
+    useEffect(() => {
+        if (accessToken) {
+            fetchTeams();
+        }
+    }, [accessToken, pageSize, pageNumber])
+
+    return {teams, loading, pageNumber: pageCount}
+
+}
 

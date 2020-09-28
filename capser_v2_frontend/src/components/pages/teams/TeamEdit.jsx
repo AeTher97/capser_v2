@@ -10,7 +10,7 @@ import ValidatedField from "../../misc/ValidatedField";
 import CloseIcon from "@material-ui/icons/Close";
 import FetchSelectField from "../../misc/FetchSelectField";
 import Button from "@material-ui/core/Button";
-import {useUsernameFetch} from "../../../data/UsersFetch";
+import {fetchUsername, useUsernameFetch} from "../../../data/UsersFetch";
 
 const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []}}) => {
     const {userId, email} = useSelector(state => state.auth);
@@ -19,7 +19,6 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
     const external = team.playerList.length > 0;
 
     const [usernames, setUsernames] = useState([]);
-    const fetchUsername = useUsernameFetch();
 
     const classes = mainStyles();
 

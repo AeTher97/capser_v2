@@ -8,7 +8,7 @@ const useFieldSearch = (url, pageSize) => {
     const pageNumber = 0;
 
     return (username) => {
-        return axios.get(`${url}?pageSize=${pageSize}&pageNumber=${pageNumber}&username=${username}`,{
+        return axios.get(encodeURI(`${url}?pageSize=${pageSize}&pageNumber=${pageNumber}&username=${username}`),{
             headers: {
                 'Authorization' : `Bearer ${accessToken}`
             }
@@ -16,12 +16,9 @@ const useFieldSearch = (url, pageSize) => {
     };
 };
 
-export const useUsernameFetch = () => {
-    return (id) => {
-        return axios.get(`/users/${id}`)
-    };
+export const fetchUsername = (id) => {
+        return axios.get(`/users/${id}`);
 }
-
 
 
 export default useFieldSearch;

@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import AddDoublesGameComponent from "./AddDoublesGameComponent";
 import MultipleGameList from "./MultipleGameList";
+import TeamsList from "./TeamsList";
 
 
 const DoublesComponent = () => {
@@ -31,10 +32,10 @@ const DoublesComponent = () => {
                 <Tab value={2} label={'Add Game'}/>
             </Tabs>
             <TabPanel value={currentTab} showValue={0}>
-                <MultipleGameList />
+                <MultipleGameList  type={'DOUBLES'}/>
             </TabPanel>
             <TabPanel value={currentTab} showValue={1}>
-                <AddDoublesGameComponent/>
+                <TeamsList type={'DOUBLES'}/>
             </TabPanel>
             <TabPanel value={currentTab} showValue={2}>
                 <AddDoublesGameComponent/>

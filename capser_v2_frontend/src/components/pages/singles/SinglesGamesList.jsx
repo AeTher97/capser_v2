@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useGameListFetch} from "../../../data/SoloGamesData";
-import {useUsernameFetch} from "../../../data/UsersFetch";
+import {fetchUsername, useUsernameFetch} from "../../../data/UsersFetch";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {TableBody} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
@@ -19,7 +19,6 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
     const [loading, setLoading] = useState(true);
     const [usernames, setUsernames] = useState([])
     const fetchGames = useGameListFetch(type);
-    const fetchUsername = useUsernameFetch();
 
     const [count, setCount] = useState(0)
     const [currentPage, setPage] = useState(1);

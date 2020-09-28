@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 import useFieldSearch from "../../data/UsersFetch";
 import {Divider, Typography} from "@material-ui/core";
@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LoadingComponent from "../../utils/LoadingComponent";
 import PropTypes from 'prop-types';
+import {useKeyPress} from "../../utils/UseKeyPress";
 
 
 const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, className, clearOnChange = false, disabled}) => {
@@ -19,6 +20,49 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
     const [searching, setSearching] = useState(false);
     const [focused, setFocused] = useState(false);
 
+    const [hovered, setHovered] = useState(undefined);
+
+    const enterPress = useKeyPress("Enter");
+    const upPress = useKeyPress("ArrowUp");
+    const downPress = useKeyPress("ArrowDown");
+
+    const ref = useRef(null);
+
+    const [cursorPosition, setCursorPosition] = useState(0);
+
+
+    useEffect(() => {
+        if(searchResult.length && enterPress){
+            setPhrase(searchResult[cursorPosition][nameParameter]);
+            ref.current.blur();
+            onChange(searchResult[cursorPosition]);
+        }
+    },[cursorPosition, enterPress])
+
+    useEffect(() => {
+        if(searchResult.length && upPress){
+            setCursorPosition(prevState => (prevState > 0 ? prevState -1 : prevState));
+        }
+    },[upPress])
+
+    useEffect(() => {
+        if (searchResult.length && downPress) {
+            setCursorPosition(prevState => prevState < searchResult.length - 1 ? prevState + 1 : prevState);
+        }
+    }, [downPress]);
+
+    useEffect(() => {
+        if (searchResult.length && hovered) {
+            setCursorPosition(searchResult.indexOf(hovered));
+        }
+    }, [hovered]);
+
+    useEffect(() => {
+        if(searchResult.length){
+            setHovered(searchResult[cursorPosition])
+        }
+    },[cursorPosition])
+
     let timeout;
 
     useEffect(() => {
@@ -29,6 +73,9 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                 searchPhrase(phrase).then((response => {
                     setSearchResult(response.data.content)
                     setSearching(false);
+                    if(response.data.content.length > 0) {
+                        setHovered(response.data.content[cursorPosition]);
+                    }
                 }))
             }, 300)
         } else {
@@ -64,9 +111,12 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                                 setPhrase('');
                             }
                             setFocused(false);
-                            onChange(user)
-                        }}>
-                            <Typography className={classes.record} style={{padding: 5}}>
+                            onChange(user)}}
+                            onMouseEnter={() => {
+                                setHovered(user);
+                            }}
+                        >
+                            <Typography className={classes.record} style={{padding: 5}} color={hovered === user ? "primary" : "textPrimary"}>
                                 {user[nameParameter]}
                             </Typography>
                             <Divider/>
@@ -92,6 +142,7 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                        InputProps={{endAdornment: <ExpandMoreIcon/>}}
                        className={[classes.input, className].join(' ')}
                        disabled={disabled}
+                       inputRef={ref}
             />
             {focused && getChoiceList()}
         </div>
@@ -118,8 +169,7 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
     },
     record: {
         '&:hover': {
-            cursor: "pointer",
-            color: 'red'
+            cursor: "pointer"
         }
     },
     input: {

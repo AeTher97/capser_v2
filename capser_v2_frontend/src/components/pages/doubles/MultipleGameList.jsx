@@ -11,13 +11,13 @@ import LoadingComponent from "../../../utils/LoadingComponent";
 import Pagination from "@material-ui/lab/Pagination";
 import mainStyles from "../../../misc/styles/MainStyles";
 
-const MultipleGameList = ({hiddenPoints}) => {
+const MultipleGameList = ({hiddenPoints, type}) => {
 
     const classes = mainStyles();
 
     const [currentPage, setPage] = useState(1);
 
-    const {games, loading, pagesNumber} = useMultipleGames("DOUBLES", currentPage - 1, 10);
+    const {games, loading, pagesNumber} = useMultipleGames(type, currentPage - 1, 10);
 
     const handlePageChange = (e, value) => {
         setPage(value);
@@ -25,7 +25,6 @@ const MultipleGameList = ({hiddenPoints}) => {
 
 
     return (
-        <div>
             <div className={classes.root}>
                 <div className={classes.leftOrientedWrapperNoPadding}>
                     <div className={[classes.paddedContent, classes.squareShine].join(' ')}>
@@ -74,7 +73,6 @@ const MultipleGameList = ({hiddenPoints}) => {
                     </div>
                 </div>
             </div>
-        </div>
     );
 };
 

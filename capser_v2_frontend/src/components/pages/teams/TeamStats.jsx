@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Divider, Typography} from "@material-ui/core";
 import mainStyles from "../../../misc/styles/MainStyles";
 import Grid from "@material-ui/core/Grid";
-import {useUsernameFetch} from "../../../data/UsersFetch";
+import {fetchUsername, useUsernameFetch} from "../../../data/UsersFetch";
 
 const TeamStats = ({team}) => {
     const stats = team.doublesStats;
 
     const [usernames, setUsernames] = useState([]);
-    const fetchUsername = useUsernameFetch();
+;
 
     const findUsername = (id) => {
         const obj = usernames.find(o => o.id === id);
@@ -34,7 +34,7 @@ const TeamStats = ({team}) => {
     return (
         <div>
             <Grid container>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} sm={12} xs={12}>
                     <Typography variant={"h5"}>{team.name} Players</Typography>
                     <Divider/>
                     <div className={classes.paddedContent} >
@@ -44,7 +44,7 @@ const TeamStats = ({team}) => {
                         )}
                     </div>
                 </Grid>
-                <Grid item md={6} sm={12}>
+                <Grid item md={6} sm={12}  xs={12}>
                     <Typography variant={"h5"}>{team.name} Stats</Typography>
                     <Divider/>
                     <div className={classes.paddedContent} >
