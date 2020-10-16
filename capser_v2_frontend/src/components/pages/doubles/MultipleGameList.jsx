@@ -6,14 +6,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {TableBody} from "@material-ui/core";
-import {getGameModeString} from "../../../utils/Utils";
+import {getGameModeString, getRequestGameTypeString} from "../../../utils/Utils";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import Pagination from "@material-ui/lab/Pagination";
 import mainStyles from "../../../misc/styles/MainStyles";
+import {makeStyles} from "@material-ui/core/styles";
+import {useHistory} from "react-router-dom";
 
 const MultipleGameList = ({hiddenPoints, type}) => {
 
     const classes = mainStyles();
+    const styles = useStyles();
+    const history = useHistory();
 
     const [currentPage, setPage] = useState(1);
 
@@ -41,11 +45,13 @@ const MultipleGameList = ({hiddenPoints, type}) => {
                                 </TableHead>
                                 <TableBody>
                                     {games.map(game => {
-                                        const winner = game.winnerTeamId === game.team1DatabaseId ? game.team1Name.name : game.team2Name.name;
+                                        const winner = game.winnerId === game.team1DatabaseId ? game.team1Name.name : game.team2Name.name;
                                         const team1PointsChange = game.gamePlayerStats.find(obj => obj.playerId === game.team1.playerList[0]).pointsChange;
                                         const team2PointsChange = game.gamePlayerStats.find(obj => obj.playerId === game.team2.playerList[0]).pointsChange;
                                         return (
-                                            <TableRow key={game.id}>
+                                            <TableRow key={game.id} className={styles.row} onClick={() => {
+                                                history.push(`/${getRequestGameTypeString(type)}/${game.id}`)
+                                            }}>
                                                 <TableCell
                                                     style={{color: 'red'}}>{game.team1Name.name} vs {game.team2Name.name}</TableCell>
                                                 <TableCell>{winner}</TableCell>
@@ -71,6 +77,16 @@ const MultipleGameList = ({hiddenPoints, type}) => {
             </div>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    row: {
+        cursor: "pointer",
+        '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.05)'
+        }
+    }
+}));
+
 
 MultipleGameList.propTypes = {};
 

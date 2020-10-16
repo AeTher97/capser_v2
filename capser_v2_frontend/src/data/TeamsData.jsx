@@ -8,25 +8,29 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
     const {accessToken} = useSelector(state => state.auth);
 
     const [teams, setTeams] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
-    const fetchTeams = () => {
-        axios.get(`/teams/${userId}?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        }).then(data => {
-            setTeams(data.data.content.filter(team => team.active));
-            setLoading(false);
-        }).catch(e => {
-            console.error(e.message);
-        })
-    }
-
-    useEffect(() => {
+     useEffect(() => {
+        let shouldUpdate = true;
+        setLoading(true)
         if (accessToken && userId) {
-            fetchTeams();
+            axios.get(`/teams/${userId}?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            }).then(data => {
+                if (shouldUpdate) {
+                    setTeams(data.data.content.filter(team => team.active));
+                    setLoading(false);
+                }
+            }).catch(e => {
+                console.error(e.message);
+            }).finally(() => {
+                if (shouldUpdate) {
+                    setLoading(false);
+                }
+            })
         }
     }, [accessToken, pageNumber, pageSize])
 
@@ -102,39 +106,38 @@ export const useAllTeams = (pageNumber = 0, pageSize = 5) => {
     const dispatch = useDispatch();
 
 
-    const fetchTeams = () => {
+    useEffect(() => {
         setLoading(true);
         let shouldUpdate = true;
         axios.get(`/teams?pageNumber=${pageNumber}&pageSize=${pageSize}`)
             .then(data => {
-            const teams = data.data.content;
-            Promise.all(teams.map(team => {
-                return team.playerList.map(player => fetchUsername(player));
-            }).flat()).then(result => {
-                result = result.map(o => o.data);
-                console.log("xd")
-                if (shouldUpdate) {
-                    setPageCount(data.data.totalPages);
-                    setTeams(teams.map(team => {
-                        team.playerList = team.playerList.map(player => {
-                            const username = result.find(o => o.id === player).username;
-                            return {
-                                username: username,
-                                id: player
-                            }
-                        })
-                        return team;
-                    }));
-                }
-            }).finally(() => {
-                if (shouldUpdate) {
-                    setLoading(false);
-                }
-            })
+                const teams = data.data.content;
+                Promise.all(teams.map(team => {
+                    return team.playerList.map(player => fetchUsername(player));
+                }).flat()).then(result => {
+                    result = result.map(o => o.data);
+                    if (shouldUpdate) {
+                        setPageCount(data.data.totalPages);
+                        setTeams(teams.map(team => {
+                            team.playerList = team.playerList.map(player => {
+                                const username = result.find(o => o.id === player).username;
+                                return {
+                                    username: username,
+                                    id: player
+                                }
+                            })
+                            return team;
+                        }));
+                    }
+                }).finally(() => {
+                    if (shouldUpdate) {
+                        setLoading(false);
+                    }
+                })
 
-        }).catch(e => {
+            }).catch(e => {
             dispatch(showError("Failed to load teams"));
-            if(shouldUpdate){
+            if (shouldUpdate) {
                 setLoading(false);
             }
             console.error(e.message);
@@ -142,12 +145,6 @@ export const useAllTeams = (pageNumber = 0, pageSize = 5) => {
         return () => {
             shouldUpdate = false;
         }
-    }
-
-    useEffect(() => {
-        console.log("here")
-        fetchTeams();
-
     }, [pageSize, pageNumber])
 
     return {teams, loading, pageNumber: pageCount}

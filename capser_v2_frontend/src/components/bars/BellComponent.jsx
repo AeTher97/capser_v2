@@ -5,6 +5,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
 import {makeStyles} from "@material-ui/core/styles";
+import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 
 const BellComponent = () => {
 
@@ -29,7 +30,7 @@ const BellComponent = () => {
                 {notSeen ?
                     <Badge color={"primary"} badgeContent={5} variant={"dot"}>
                         <NotificationsIcon/>
-                    </Badge> : <NotificationsIcon/>}
+                    </Badge> : <NotificationsOutlinedIcon/>}
             </IconButton>
             <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <div>

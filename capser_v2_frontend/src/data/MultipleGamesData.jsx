@@ -3,8 +3,24 @@ import axios from "axios";
 import {getRequestGameTypeString} from "../utils/Utils";
 import {useEffect, useState} from "react";
 
-export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
+
+export const useMultipleGamePost = (type) =>{
     const {accessToken} = useSelector(state => state.auth);
+
+    const postGame = (gameRequest) => {
+        return axios.post(`${getRequestGameTypeString(type)}`, gameRequest, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+    };
+
+    return {
+        postGame
+    }
+}
+
+export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagesNumber, setPagesNumber] = useState(0);
@@ -14,6 +30,7 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
     }
 
     useEffect(() => {
+        setLoading(true);
         let shouldUpdate = true;
         axios.get(`/${getRequestGameTypeString(type)}?pageNumber=${pageNumber}&pageSize=${pageSize}`).then(response => {
             Promise.all(response.data.content.map(game => {
@@ -31,7 +48,9 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
                     }))
                 }
             }).finally(() => {
-                setLoading(false);
+                if (shouldUpdate) {
+                    setLoading(false);
+                }
             })
         })
 
@@ -41,16 +60,9 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
     }, [pageNumber, pageSize, type])
 
 
-    const postGame = (gameRequest) => {
-        return axios.post(`${getRequestGameTypeString(type)}`, gameRequest, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-    };
+
 
     return {
-        postGame: postGame,
         games: games,
         loading,
         pagesNumber

@@ -103,6 +103,13 @@ public abstract class AbstractMultipleGame extends AbstractGame {
             throw new GameValidationException("All players score in team 2 has to sum to team score");
         }
 
+        if (gamePlayerStats.stream().anyMatch(gamePlayerStats1 -> gamePlayerStats1.getSinks() > 0)) {
+            if (gamePlayerStats.stream().anyMatch(gamePlayerStats1 -> gamePlayerStats1.getSinks() < gamePlayerStats1.getScore())) {
+                throw new GameValidationException("All players have to log sinks if any are and sinks have to be higher or equal to score");
+            }
+
+        }
+
         continueValidation();
 
     }
@@ -167,7 +174,7 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         }
 
         if (getTeamSinks(opponentStats) > 0) {
-            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(opponentStats));
+            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(teamStats));
         }
 
         userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ? userStats.getTotalRebuttals() : (float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());
@@ -197,7 +204,7 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         team1Score = multipleGameDtoCast.getTeam1Score();
         team2Score = multipleGameDtoCast.getTeam2Score();
 
-        if(team1Score > team2Score){
+        if (team1Score > team2Score) {
             setWinnerId(team1DatabaseId);
         } else {
             setWinnerId(team2DatabaseId);

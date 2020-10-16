@@ -21,6 +21,7 @@ export const useDashboard = () => {
 
 
     const fetchDashboardGames = () => {
+        let shouldUpdate = true;
         axios.get(`/dashboard/games`).then(response => {
             Promise.all(response.data.map(game => {
                 if (game.gameType === 'DOUBLES') {
@@ -28,37 +29,57 @@ export const useDashboard = () => {
                 }
                 return [fetchUsername(game.player1), fetchUsername(game.player2)]
             }).flat()).then((value) => {
-                value = value.map(o => o.data);
-                setGames(response.data.map(game => {
-                    if (game.gameType === 'DOUBLES') {
-                        game.team1Name = value.find(o => o.id === game.team1DatabaseId);
-                        game.team2Name = value.find(o => o.id === game.team2DatabaseId);
-                        return game;
-                    } else {
-                        game.player1Name = value.find(o => o.id === game.player1);
-                        game.player2Name = value.find(o => o.id === game.player2);
-                        return game;
-                    }
-                }))
-                setGamesLoading(false);
+                if(shouldUpdate) {
+                    value = value.map(o => o.data);
+                    setGames(response.data.map(game => {
+                        if (game.gameType === 'DOUBLES') {
+                            game.team1Name = value.find(o => o.id === game.team1DatabaseId);
+                            game.team2Name = value.find(o => o.id === game.team2DatabaseId);
+                            return game;
+                        } else {
+                            game.player1Name = value.find(o => o.id === game.player1);
+                            game.player2Name = value.find(o => o.id === game.player2);
+                            return game;
+                        }
+                    }))
+                }
+            }).finally(() => {
+                if(shouldUpdate){
+                    setGamesLoading(false);
+                }
             })
         }).catch(e => {
             dispatch(showError("Failed loading games"))
         })
+
+        return () => {shouldUpdate =false};
     };
 
     const fetchBlogPosts = () => {
+        let shouldUpdate = true;
         axios.get(`/dashboard/posts`).then(result => {
-            setPosts(result.data);
-            setPostsLoading(false);
+            if(shouldUpdate) {
+                setPosts(result.data);
+            }
         }).catch(e => {
             dispatch(showError("Failed loading blog"))
+        }).finally(() => {
+            if(shouldUpdate){
+                setPostsLoading(false);
+            }
         })
+        return () => {
+            shouldUpdate=false;
+        }
     };
 
     useEffect(() => {
-        fetchBlogPosts();
-        fetchDashboardGames();
+        const unsubscribe1 = fetchBlogPosts();
+        const unsubscribe2=fetchDashboardGames();
+        return () =>{
+            unsubscribe1();
+            unsubscribe2();
+        }
     }, [])
 
     return {games, posts, postsLoading, gamesLoading}

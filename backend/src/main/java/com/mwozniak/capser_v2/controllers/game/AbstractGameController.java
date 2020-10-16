@@ -55,6 +55,13 @@ public abstract class AbstractGameController implements GameController {
         return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time").descending())));
     }
 
+    @Override
+    @GetMapping("/{gameId}")
+    public ResponseEntity<Object> getGame(@PathVariable UUID gameId) throws CapserException {
+        return ResponseEntity.ok().body(abstractGameService.findGame(gameId));
+    }
+
+
 
     protected abstract AbstractGame createGameObject();
 

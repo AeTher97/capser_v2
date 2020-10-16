@@ -1,55 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {useGameListFetch} from "../../../data/SoloGamesData";
-import {fetchUsername, useUsernameFetch} from "../../../data/UsersFetch";
+import React, {useState} from 'react';
+import {useSinglesGames} from "../../../data/SoloGamesData";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {TableBody} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import {getGameModeString} from "../../../utils/Utils";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {getGameModeString, getRequestGameTypeString} from "../../../utils/Utils";
 import Pagination from '@material-ui/lab/Pagination';
 import LoadingComponent from "../../../utils/LoadingComponent";
+import {makeStyles} from "@material-ui/core/styles";
+import {useHistory} from "react-router-dom";
 
 
 const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
-    const [games, setGames] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [usernames, setUsernames] = useState([])
-    const fetchGames = useGameListFetch(type);
-
-    const [count, setCount] = useState(0)
     const [currentPage, setPage] = useState(1);
+    const history = useHistory();
 
+    const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
 
-    useEffect(() => {
-        setLoading(true);
-        fetchGames(currentPage - 1).then((response) => {
-            setCount(response.data.totalPages);
-            setGames(response.data.content);
-
-
-            Promise.all(response.data.content.map(game => {
-                return [fetchUsername(game.player1), fetchUsername(game.player2)]
-            }).flat()).then((value) => {
-                setUsernames(value.map(user => {
-                    return {id: user.data.id, username: user.data.username}
-                }));
-                setLoading(false);
-            })
-        })
-    }, [currentPage])
-
-    const findUsername = (id) => {
-        const obj = usernames.find(o => o.id === id);
-        if (obj) {
-            return obj.username;
-        } else {
-            return ''
-        }
-    }
 
     const findPlayerStats = (game, id) => {
         return game.gamePlayerStats.find(o => o.playerId === id)
@@ -61,6 +31,7 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
 
     const classes = mainStyles();
+    const styles = useStyles();
     return (
         <div>
 
@@ -86,10 +57,12 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
                                         const player1Stats = findPlayerStats(game, game.player1);
                                         const player2Stats = findPlayerStats(game, game.player2);
                                         return (
-                                            <TableRow key={game.id}>
+                                            <TableRow key={game.id} className={styles.row} onClick={() => {
+                                                history.push(`/${getRequestGameTypeString(type)}/${game.id}`)
+                                            }}>
                                                 <TableCell
-                                                    style={{color: 'red'}}>{findUsername(game.player1)} vs {findUsername(game.player2)}</TableCell>
-                                                <TableCell>{findUsername(game.winner)}</TableCell>
+                                                    style={{color: 'red'}}>{game.player1Name} vs {game.player2Name}</TableCell>
+                                                <TableCell>{game.winner === game.player1 ? game.player1Name : game.player2Name}</TableCell>
                                                 <TableCell>{getGameModeString(game.gameMode)}</TableCell>
                                                 <TableCell>{new Date(game.time).toUTCString()}</TableCell>
                                                 <TableCell>{player1Stats.score} : {player2Stats.score}</TableCell>
@@ -106,9 +79,9 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                                 <LoadingComponent/>
                             </div>}
-                        {!loading && count > 1 &&
+                        {!loading && pagesNumber > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <Pagination count={count} onChange={handlePageChange} page={currentPage}/>
+                            <Pagination count={pagesNumber} onChange={handlePageChange} page={currentPage}/>
                         </div>}
                     </div>
                 </div>
@@ -116,5 +89,14 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
         </div>
     );
 };
+
+const useStyles = makeStyles(theme => ({
+    row: {
+        cursor: "pointer",
+        '&:hover': {
+            backgroundColor: 'rgba(255,255,255,0.05)'
+        }
+    }
+}));
 
 export default SinglesGamesList;

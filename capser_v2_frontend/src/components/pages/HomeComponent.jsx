@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Divider, Grid, Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import PageHeader from "../misc/PageHeader";
-import {useBlogPostsFetch, useDashboard} from "../../data/DashboardData";
-import {useUsernameFetch} from "../../data/UsersFetch";
+import {useDashboard} from "../../data/DashboardData";
 import LoadingComponent from "../../utils/LoadingComponent";
 import {getGameTypeString} from "../../utils/Utils";
-import axios from "axios";
 
 const HomeComponent = () => {
 

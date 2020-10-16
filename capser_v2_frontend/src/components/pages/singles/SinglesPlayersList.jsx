@@ -16,23 +16,10 @@ import Grow from '@material-ui/core/Grow';
 
 const SinglesPlayersList = ({type, pointsHidden = false}) => {
 
-    const [players, setPlayers] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [count, setCount] = useState(0)
     const [currentPage, setPage] = useState(1);
 
 
-    const fetchPlayers = usePlayersListFetch(type);
-
-
-    useEffect(() => {
-        setLoading(true)
-        fetchPlayers(currentPage - 1).then((response) => {
-            setLoading(false)
-            setCount(response.data.totalPages)
-            setPlayers(response.data.content)
-        })
-    }, [currentPage])
+    const  {loading, players, pageCount} = usePlayersListFetch(type, currentPage -1);
 
 
     const handlePageChange = (e, value) => {
@@ -76,8 +63,11 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                                     </Tooltip>
                                                 </TableCell>
                                                 {!pointsHidden ?
-                                                <TableCell>{stats.points.toFixed(2)}</TableCell> : <TableCell/>} {player.lastSeen &&
-                                            <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell>}
+                                                    <TableCell>{stats.points.toFixed(2)}</TableCell> :
+                                                    <TableCell/>}
+                                                    {player.lastSeen ?
+                                            <TableCell>{new Date(player.lastSeen).toDateString()}</TableCell> :
+                                                        <TableCell>Never seen</TableCell>}
                                                 {player.lastGame ?
                                                     <TableCell><Typography>{new Date(player.lastGame).toDateString()}</Typography></TableCell> :
                                                     <TableCell><Typography>No games played</Typography></TableCell>}
@@ -88,9 +78,9 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                             </Table> :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                                 <LoadingComponent/></div>}
-                        {!loading && count > 1 &&
+                        {!loading && pageCount > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <Pagination count={count} onChange={handlePageChange} page={currentPage}/>
+                            <Pagination count={pageCount} onChange={handlePageChange} page={currentPage}/>
                         </div>}
                     </div>
                 </div>

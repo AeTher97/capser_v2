@@ -95,8 +95,8 @@ const Rules = () => {
 
                 {basicRules.map(rule => {
                     index ++;
-                     return   <div className={styles.section}>
-                            <Typography key={rule}>{index}. {rule}</Typography>
+                     return   <div className={styles.section} key={rule}>
+                            <Typography >{index}. {rule}</Typography>
                         </div>
                     }
                 )}
@@ -104,8 +104,8 @@ const Rules = () => {
 
                 {fieldRules.map(rule => {
                         index ++;
-                        return   <div className={styles.section}>
-                            <Typography key={rule}>{index}. {rule}</Typography>
+                        return   <div className={styles.section} key={rule}>
+                            <Typography >{index}. {rule}</Typography>
                         </div>
                     }
                 )}
@@ -114,8 +114,8 @@ const Rules = () => {
 
                 {scoringRules.map(rule => {
                         index ++;
-                        return   <div className={styles.section}>
-                            <Typography key={rule}>{index}. {rule}</Typography>
+                        return   <div className={styles.section} key={rule}>
+                            <Typography >{index}. {rule}</Typography>
                         </div>
                     }
                 )}
@@ -124,8 +124,8 @@ const Rules = () => {
 
                 {conflictRules.map(rule => {
                         index ++;
-                        return   <div className={styles.section}>
-                            <Typography key={rule}>{index}. {rule}</Typography>
+                        return   <div className={styles.section} key={rule}>
+                            <Typography >{index}. {rule}</Typography>
                         </div>
                     }
                 )}
@@ -134,8 +134,8 @@ const Rules = () => {
 
                 {goodManners.map(rule => {
                         index ++;
-                        return   <div className={styles.section}>
-                            <Typography key={rule}>{index}. {rule}</Typography>
+                        return   <div className={styles.section} key={rule}>
+                            <Typography >{index}. {rule}</Typography>
                         </div>
                     }
                 )}

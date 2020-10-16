@@ -13,6 +13,6 @@ public interface TeamRepository extends JpaRepository<TeamWithStats, UUID> {
 
     Optional<TeamWithStats> findTeamById(UUID id);
     Page<TeamWithStats> findByPlayerListContaining(Pageable pageable,UUID id);
-    Page<TeamWithStats> findByNameContainingAndPlayerListNotContainingAndActive(Pageable pageable,String name, UUID id, boolean active);
+    Page<TeamWithStats> findByNameContainingIgnoreCaseAndPlayerListNotContainingAndActive(Pageable pageable,String name, UUID id, boolean active);
 
 }

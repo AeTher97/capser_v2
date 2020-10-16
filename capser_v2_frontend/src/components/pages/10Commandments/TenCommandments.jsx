@@ -1,7 +1,7 @@
 import React from 'react';
 import PageHeader from "../../misc/PageHeader";
 import mainStyles from "../../../misc/styles/MainStyles";
-import {Divider, Typography} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import PropTypes from 'prop-types';
 import {makeStyles} from "@material-ui/core/styles";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
@@ -29,25 +29,24 @@ const TenCommandments = () => {
 
     let index = 0;
 
-    console.log(xSmall)
-
     return (
         <div>
             <PageHeader title={"10 Commandments"} noSpace/>
-            <div className={!xSmall ? classes.root : null}>
             <div className={classes.squareShine}>
-                <div className={classes.leftOrientedWrapperNoPadding}>
-                    {commandments.map(commandment => {
-                        index++;
-                        return (
-                            <div className={classes.header} key={commandment.text}>
-                                <OutlinedNumber value={index}/>
-                                <Typography
-                                            variant={xSmall ? null : "h4"}>{commandment.text}</Typography>
-                            </div>)
-                    })}
+
+                <div className={!xSmall ? classes.root : null}>
+                    <div className={classes.leftOrientedWrapperNoPadding}>
+                        {commandments.map(commandment => {
+                            index++;
+                            return (
+                                <div className={classes.header} key={commandment.text}>
+                                    <OutlinedNumber value={index}/>
+                                    <Typography
+                                        variant={xSmall ? null : "h5"}>{commandment.text}</Typography>
+                                </div>)
+                        })}
+                    </div>
                 </div>
-            </div>
             </div>
 
         </div>

@@ -8,6 +8,7 @@ import UnrankedComponent from "../components/pages/unranked/UnrankedComponent";
 import DoublesComponent from "../components/pages/doubles/DoublesComponent";
 import TenCommandments from "../components/pages/10Commandments/TenCommandments";
 import Rules from "../components/pages/rules/Rules";
+import SinglesGame from "../components/pages/singles/SinglesGame";
 
 const InsecureNavigation = () => {
 
@@ -27,18 +28,37 @@ const InsecureNavigation = () => {
                     <SinglesScreen/>
                 </Route>
 
+                <Route exact path={"/singles/:gameId"}>
+                    <SinglesGame/>
+                </Route>
+
 
                 <Route exact path={"/easy"}>
                     <EasyComponent/>
                 </Route>
 
+                <Route exact path={"/easy/:gameId"}>
+                    <SinglesGame/>
+                </Route>
+
+
                 <Route exact path={"/unranked"}>
                     <UnrankedComponent/>
                 </Route>
 
+                <Route exact path={"/unranked/:gameId"}>
+                    <SinglesGame/>
+                </Route>
+
+
                 <Route exact path={"/doubles"}>
                     <DoublesComponent/>
                 </Route>
+
+                <Route exact path={"/doubles/:gameId"}>
+                    <SinglesGame/>
+                </Route>
+
 
                 <Route exact path={"/10commandments"}>
                     <TenCommandments/>

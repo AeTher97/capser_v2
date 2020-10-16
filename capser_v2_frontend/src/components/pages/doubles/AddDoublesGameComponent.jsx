@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Button, Divider, Grid, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import FetchSelectField from "../../misc/FetchSelectField";
-import {useMultipleGames} from "../../../data/MultipleGamesData";
+import {useMultipleGamePost, useMultipleGames} from "../../../data/MultipleGamesData";
 import {usePlayerTeams} from "../../../data/TeamsData";
 import {loginAction} from "../../../redux/actions/authActions";
 import {fetchUsername} from "../../../data/UsersFetch";
@@ -15,7 +15,7 @@ import {fetchUsername} from "../../../data/UsersFetch";
 const AddDoublesGameComponent = props => {
     const classes = mainStyles()
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
-    const {postGame} = useMultipleGames("DOUBLES");
+    const {postGame} = useMultipleGamePost("DOUBLES");
 
 
     const {userId} = useSelector(state => state.auth);

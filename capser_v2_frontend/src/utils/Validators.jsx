@@ -2,17 +2,8 @@ const EMAIL_PATTERN = /^[\w!#$%&’*+/=?`{|}~^-]+(?:\.[\w!#$%&’*+/=?`{|}~^-]+)
 
 
 export const validatePassword = (password) => {
-    if (!new RegExp(".*[a-z].*").test(password)) {
-        return "Password must contain a lower case character"
-    }
 
-    if (!new RegExp(".*[A-Z].*").test(password)) {
-        return "Password must contain an upper case character"
-    }
 
-    if (!new RegExp("[!@#$%^&*(),.?\":{}|<>]").test(password)) {
-        return "Password has to contain a special character"
-    }
 
     if (password.length < 8) {
         return "Password has to be at least 8 characters long"
