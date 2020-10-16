@@ -41,13 +41,9 @@ const MultipleGameList = ({hiddenPoints, type}) => {
                                 </TableHead>
                                 <TableBody>
                                     {games.map(game => {
-                                        const winner = game.winner === game.team1.id ? game.team1Name.name : game.team2Name.name;
-                                        const team1PointsChange = game.gamePlayerStats.find(o => {
-                                            return game.team1.playerList.includes(o.playerId);
-                                        }).pointsChange;
-                                        const team2PointsChange = game.gamePlayerStats.find(o => {
-                                            return game.team2.playerList.includes(o.playerId);
-                                        }).pointsChange;
+                                        const winner = game.winnerTeamId === game.team1DatabaseId ? game.team1Name.name : game.team2Name.name;
+                                        const team1PointsChange = game.gamePlayerStats.find(obj => obj.playerId === game.team1.playerList[0]).pointsChange;
+                                        const team2PointsChange = game.gamePlayerStats.find(obj => obj.playerId === game.team2.playerList[0]).pointsChange;
                                         return (
                                             <TableRow key={game.id}>
                                                 <TableCell

@@ -95,50 +95,60 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
 }
 
 export const useAllTeams = (pageNumber = 0, pageSize = 5) => {
-    const {accessToken} = useSelector(state => state.auth);
 
     const [teams, setTeams] = useState([]);
     const [pageCount, setPageCount] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
 
     const fetchTeams = () => {
-        axios.get(`/teams?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        }).then(data => {
+        setLoading(true);
+        let shouldUpdate = true;
+        axios.get(`/teams?pageNumber=${pageNumber}&pageSize=${pageSize}`)
+            .then(data => {
             const teams = data.data.content;
             Promise.all(teams.map(team => {
                 return team.playerList.map(player => fetchUsername(player));
             }).flat()).then(result => {
                 result = result.map(o => o.data);
-                setTeams(teams.map(team => {
-                    team.playerList = team.playerList.map(player => {
-                        const username = result.find(o => o.id === player).username;
-                        return {
-                            username: username,
-                            id: player
-                        }
-                    })
-                    return team;
-                }));
+                console.log("xd")
+                if (shouldUpdate) {
+                    setPageCount(data.data.totalPages);
+                    setTeams(teams.map(team => {
+                        team.playerList = team.playerList.map(player => {
+                            const username = result.find(o => o.id === player).username;
+                            return {
+                                username: username,
+                                id: player
+                            }
+                        })
+                        return team;
+                    }));
+                }
+            }).finally(() => {
+                if (shouldUpdate) {
+                    setLoading(false);
+                }
             })
-            setTeams(data.data.content);
-            setPageCount(data.data.totalPages);
-            setLoading(false);
+
         }).catch(e => {
             dispatch(showError("Failed to load teams"));
+            if(shouldUpdate){
+                setLoading(false);
+            }
             console.error(e.message);
         })
+        return () => {
+            shouldUpdate = false;
+        }
     }
 
     useEffect(() => {
-        if (accessToken) {
-            fetchTeams();
-        }
-    }, [accessToken, pageSize, pageNumber])
+        console.log("here")
+        fetchTeams();
+
+    }, [pageSize, pageNumber])
 
     return {teams, loading, pageNumber: pageCount}
 

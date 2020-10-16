@@ -6,6 +6,8 @@ import SinglesScreen from "../screens/SinglesScreen";
 import EasyComponent from "../components/pages/easy/EasyComponent";
 import UnrankedComponent from "../components/pages/unranked/UnrankedComponent";
 import DoublesComponent from "../components/pages/doubles/DoublesComponent";
+import TenCommandments from "../components/pages/10Commandments/TenCommandments";
+import Rules from "../components/pages/rules/Rules";
 
 const InsecureNavigation = () => {
 
@@ -37,6 +39,16 @@ const InsecureNavigation = () => {
                 <Route exact path={"/doubles"}>
                     <DoublesComponent/>
                 </Route>
+
+                <Route exact path={"/10commandments"}>
+                    <TenCommandments/>
+                </Route>
+
+
+                <Route exact path={"/rules"}>
+                    <Rules/>
+                </Route>
+
 
 
             </Switch>

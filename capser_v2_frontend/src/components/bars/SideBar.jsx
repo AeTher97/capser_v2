@@ -1,6 +1,6 @@
 import React from 'react';
 import Drawer from "@material-ui/core/Drawer";
-import {Divider, IconButton} from "@material-ui/core";
+import {Divider, IconButton, Typography} from "@material-ui/core";
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import Tooltip from "@material-ui/core/Tooltip";
 import {useHistory} from "react-router-dom";
@@ -14,6 +14,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import BellComponent from "./BellComponent";
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
+import GavelIcon from '@material-ui/icons/Gavel';
 
 const SideBar = () => {
 
@@ -22,6 +23,8 @@ const SideBar = () => {
     const hasRole = useHasRole();
     const {email} = useSelector(state => state.auth)
 
+
+    const classes = useStyle();
 
     const icons = [
         {
@@ -63,6 +66,18 @@ const SideBar = () => {
             icon: <PeopleOutlineIcon/>,
             role: 'USER'
         },
+        {
+            tooltip: '10 Commandments',
+            link: '/10commandments',
+            icon: 10
+
+        },
+        {
+            tooltip: 'Rules',
+            link: '/rules',
+            icon: <GavelIcon/>
+
+        }
         // {
         //     tooltip: email,
         //     link: "/secure/profile",
@@ -72,8 +87,6 @@ const SideBar = () => {
         // },
 
     ]
-
-    const classes = useStyle();
 
     return (
         <div>
@@ -135,7 +148,8 @@ const useStyle = makeStyles(theme => ({
     iconButton: {
         '&:hover': {
             color: 'red'
-        }
+        },
+        fontSize: 20
     }
 }))
 

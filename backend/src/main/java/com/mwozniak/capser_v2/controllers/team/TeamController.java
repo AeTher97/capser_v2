@@ -32,7 +32,6 @@ public class TeamController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Object> getTeams(@RequestParam int pageSize, @RequestParam int pageNumber) {
         return ResponseEntity.ok().body(teamService.getTeams(PageRequest.of(pageNumber, pageSize,Sort.by("doublesStats.points").descending())));
     }

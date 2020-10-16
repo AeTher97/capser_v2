@@ -71,7 +71,7 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                                              classes={{tooltip: classes.neonTooltip}}
                                                              TransitionComponent={Grow}>
                                                         <div>
-                                                            {player.username}
+                                                            <Typography color={"primary"}>{player.username}</Typography>
                                                         </div>
                                                     </Tooltip>
                                                 </TableCell>

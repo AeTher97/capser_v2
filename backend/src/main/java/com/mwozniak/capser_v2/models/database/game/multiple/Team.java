@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.models.database.game.multiple;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.models.database.game.GameEventEntity;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,6 +23,7 @@ public class Team {
     @GenericGenerator(name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
+    @JsonIgnore
     private UUID id;
 
     @Setter

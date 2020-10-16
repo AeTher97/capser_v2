@@ -131,7 +131,18 @@ const AcceptanceComponent = props => {
     }
 
     const getWinnerString = (game) => {
-        if (game.winner.playerList.includes(userId)) {
+        const team = game.team1.playerList.includes(userId);
+        let winner = false;
+        if (game.team1DatabaseId === game.winnerId) {
+            if (team) {
+                winner = true;
+            }
+        } else {
+            if (!team) {
+                winner = true;
+            }
+        }
+        if (winner) {
             return 'Victory'
         } else {
             return 'Loss'
