@@ -14,10 +14,15 @@ import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.utils.EloRating;
+import lombok.extern.log4j.Log4j;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
+@Log4j
 public abstract class AbstractGameService implements GameService {
 
     protected final AcceptanceRequestRepository acceptanceRequestRepository;
@@ -71,10 +76,32 @@ public abstract class AbstractGameService implements GameService {
         notificationService.notify(Notification.builder()
                 .date(new Date())
                 .notificationType(NotificationType.GAME_ACCEPTED)
-                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was accepted by the user.")
+                .text("Game with user " + userService.getUser(request.getAcceptingUser()).getUsername()  + " was accepted.")
                 .seen(false)
                 .userId(request.getAcceptingUser())
                 .build());
+    }
+
+    @Override
+    @Transactional
+    public int acceptOverdueGames() {
+        Date date = Date.from(Instant.now().minus(Duration.ofDays(1)));
+        List<AcceptanceRequest> acceptanceRequests = acceptanceRequestRepository.findByTimestampLessThanAndGameType(date, getGameType());
+
+        AtomicInteger accepted = new AtomicInteger(acceptanceRequests.size());
+
+        acceptanceRequests.forEach(request -> {
+            try {
+                acceptGame(request.getGameToAccept());
+            } catch (CapserException e) {
+                log.error("Failed to accept game " + request.getGameToAccept());
+                accepted.addAndGet(-1);
+            }
+        });
+
+        log.info("Accepted " + accepted + " " + getGameType() + " games");
+
+        return accepted.get();
     }
 
     @Transactional

@@ -12,8 +12,8 @@ import Pagination from "@material-ui/lab/Pagination";
 
 const TeamsList = props => {
 
-    const {teams, loading, pageNumber} = useAllTeams();
     const [currentPage, setPage] = useState(1);
+    const {teams, loading, pageNumber} = useAllTeams(currentPage -1);
     const handlePageChange = (e, value) => {
         setPage(value);
     }

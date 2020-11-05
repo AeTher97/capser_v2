@@ -24,6 +24,8 @@ public interface GameService {
 
     void acceptGame(UUID gameId)  throws CapserException;
 
+    int acceptOverdueGames();
+
     void rejectGame(UUID gameId)  throws CapserException;
 
     AcceptanceRequestType getAcceptanceRequestType();

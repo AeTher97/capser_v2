@@ -98,7 +98,7 @@ export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
     }
 }
 
-export const useAllTeams = (pageNumber = 0, pageSize = 5) => {
+export const useAllTeams = (pageNumber = 0, pageSize = 10) => {
 
     const [teams, setTeams] = useState([]);
     const [pageCount, setPageCount] = useState(0);
