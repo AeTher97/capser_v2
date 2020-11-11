@@ -20,9 +20,9 @@ const RefreshProvider = () => {
     async function getAuthToken() {
         if (!authTokenRequest) {
             authTokenRequest = dispatch(refreshAction(refreshToken));
-
-            authTokenRequest.then(() => {
+            authTokenRequest.then(resp => {
                 resetAuthTokenRequest();
+                return resp;
             })
         }
         return authTokenRequest;
@@ -33,20 +33,23 @@ const RefreshProvider = () => {
     }
 
     axios.interceptors.request.use(async request => {
-        if (expirationTime && !authTokenRequest) {
-            if (isTokenOutdated(expirationTime)) {
-                console.log("Refreshing token");
-                return getAuthToken()
-                    .then((payload) => {
-                        request.headers['Authorization'] = `Bearer ${payload.authToken}`;
-                        return request;
-                    }).catch(err => {
-                        console.log('Error in refresh');
-                        return request;
-                    })
+        if (expirationTime && isTokenOutdated(expirationTime)) {
+            console.log("Refreshing token");
+            const result = await getAuthToken()
+                .then((payload) => {
+                    return payload;
+                }).catch(() => {
+                    console.log('Error in refresh');
+                    return null;
+                })
+
+            if (result) {
+                request.headers['Authorization'] = `Bearer ${result.authToken}`;
             }
         }
+
         return request;
+
     })
 
     axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
