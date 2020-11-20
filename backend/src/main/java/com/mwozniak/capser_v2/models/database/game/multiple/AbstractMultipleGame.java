@@ -174,7 +174,7 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         }
 
         if (getTeamSinks(opponentStats) > 0) {
-            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(teamStats));
+            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(opponentStats));
         }
 
         userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ? userStats.getTotalRebuttals() : (float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());
