@@ -69,8 +69,7 @@ const TeamsComponent = () => {
                                         className={[classes.squareShine, classes.neon].join(' ')}>
                             <div className={classes.header}>
                                 <Typography variant={"h5"} style={{flex: 1}}>Your Teams</Typography>
-                                {teams.filter(team => team.active).length < 5 &&
-                                <Button onClick={() => setOpen(true)}>Create new</Button>}
+                                <Button onClick={() => setOpen(true)}>Create new</Button>
                             </div>
                             <Divider style={{marginTop: 5}}/>
                             {teams.map(team => {
