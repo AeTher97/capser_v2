@@ -20,7 +20,7 @@ public class DatabaseConfig {
     public DataSource dataSource(DatabaseProperties databaseProperties) throws URISyntaxException {
         String dbUrl;
         if (System.getenv().get("DYNO") != null) {
-            dbUrl = databaseProperties.getUrl().replace("postgres://","jdbc:postgresql://").split("@")[1] + "?sslmode=require";
+            dbUrl = databaseProperties.getUrl().replace("postgres://","jdbc:postgresql://").split("@")[1];
         } else {
             dbUrl = "jdbc:postgresql://" + databaseProperties.getUrl() + "?sslmode=require";
         }
