@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.configuration;
 
+import com.zaxxer.hikari.HikariConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -19,7 +20,7 @@ public class DatabaseConfig {
     public DataSource dataSource(DatabaseProperties databaseProperties) throws URISyntaxException {
         String dbUrl;
         if (System.getenv().get("DYNO") != null) {
-            dbUrl = databaseProperties.getUrl().replace("postgres://","jdbc:postgresql://") + "?sslmode=require";
+            dbUrl = databaseProperties.getUrl().replace("postgres://","jdbc:postgresql://").split("@")[1] + "?sslmode=require";
         } else {
             dbUrl = "jdbc:postgresql://" + databaseProperties.getUrl() + "?sslmode=require";
         }
