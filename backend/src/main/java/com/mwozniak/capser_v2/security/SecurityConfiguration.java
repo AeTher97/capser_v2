@@ -70,6 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET,"/teams/name/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/users/search").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/teams/search").permitAll()
+                .mvcMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(UsernamePasswordFilter.getUsernamePasswordFilter(authenticationManager(), "/login"))
