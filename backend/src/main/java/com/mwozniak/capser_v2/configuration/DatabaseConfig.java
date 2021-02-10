@@ -17,8 +17,12 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource(DatabaseProperties databaseProperties) throws URISyntaxException {
-
-        String dbUrl = "jdbc:postgresql://" + databaseProperties.getUrl() + "?sslmode=require";
+        String dbUrl;
+        if (System.getenv().get("DYNO") != null) {
+            dbUrl = databaseProperties.getUrl() + "?sslmode=require";
+        } else {
+            dbUrl = "jdbc:postgresql://" + databaseProperties.getUrl() + "?sslmode=require";
+        }
 
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
