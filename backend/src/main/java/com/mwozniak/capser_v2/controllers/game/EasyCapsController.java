@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/easy")
+@RequestMapping("/api/easy")
 public class EasyCapsController  extends AbstractSinglesController {
 
     public EasyCapsController(EasyCapsGameService easyCapsGameService) {

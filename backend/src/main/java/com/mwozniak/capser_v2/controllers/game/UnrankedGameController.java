@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/unranked")
+@RequestMapping("/api/unranked")
 public class UnrankedGameController extends AbstractSinglesController {
 
     public UnrankedGameController(UnrankedGameService unrankedGameService) {
