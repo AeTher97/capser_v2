@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/acceptance")
+@RequestMapping("/api/acceptance")
 public class AcceptanceRequestController {
 
     private final AcceptanceRequestService acceptanceRequestService;
