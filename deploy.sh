@@ -20,10 +20,7 @@ git commit -m "Deploy"
 git config user.email "michael93509@gmail.com"
 git config user.name "Michal Wozniak"
 
-
-
-heroku git:remote -a capser
-git push heroku master -f
+git push -f https://heroku:${HEROKU_API_TOKEN}@git.heroku.com/capser.git origin/master:master
 cd ..
 rm -r -f temp
 
