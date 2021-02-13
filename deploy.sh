@@ -16,7 +16,7 @@ cp -r capser_v2_frontend/build/. backend/src/main/resources/static
 mkdir temp
 cp -r backend/. temp/
 ls
-expect heroku_login.ex
+expect heroku_login.exp
 cd temp || exit
 git init
 git add .
