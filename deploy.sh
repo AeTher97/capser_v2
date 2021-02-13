@@ -22,7 +22,7 @@ git commit -m "Deploy"
 
 
 
-git push -f https://heroku:${HEROKU_API_TOKEN}@git.heroku.com/capser.git master
+git push -f https://heroku:"${HEROKU_API_TOKEN}"@git.heroku.com/capser.git master
 cd ..
 rm -r -f temp
 
