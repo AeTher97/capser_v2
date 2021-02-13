@@ -32,5 +32,5 @@ jobs:
         run: |  
           sudo apt-get install expect
           sudo chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
-          sudo "${GITHUB_WORKSPACE}/deploy.sh ${HEROKU_API_TOKEN}"
+          sudo "${GITHUB_WORKSPACE}/deploy.sh" ${HEROKU_API_TOKEN}
         shell: bash
