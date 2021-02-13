@@ -20,7 +20,7 @@ jobs:
     env:
       EMAIL: ${{secrets.EMAIL}} 
       PASSWORD: ${{secrets.PASSWORD}}  
-      HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+      API_KEY: ${{secrets.HEROKU_API_KEY}}
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,6 +31,6 @@ jobs:
       - name: Heroku bash
         run: |  
           sudo apt-get install expect
-          chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
-          "${GITHUB_WORKSPACE}/deploy.sh"
+          sudo chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
+          sudo "${GITHUB_WORKSPACE}/deploy.sh"
         shell: bash
