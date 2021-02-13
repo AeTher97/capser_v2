@@ -1,17 +1,23 @@
 #!/bin/bash
 
-echo "Type commit message: "
-
-read -r message;
+apt-get install git
 
 cd capser_v2_frontend || exit
 npm install
 npm audit fix
 npm run build
 cd ..
-cp -r capser_v2_frontend/build backend/static
-git add -A
-git commit -m "$message"
-git push heroku master
+cp -r capser_v2_frontend/build/. backend/src/main/resources/static
+mkdir temp
+cp -r backend/. temp/
+cd temp || exit
+git init
+git add .
+git commit -m "Deploy"
+heroku git:remote -a capser
+git push heroku master -f
+cd ..
+rm -r -f temp
 
+echo "Deploy successful"
 
