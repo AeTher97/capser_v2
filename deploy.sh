@@ -26,6 +26,13 @@ machine git.heroku.com
   login michael93509@gmail.com
   password ${API_KEY}" > ~/.netrc
 
+echo "machine api.heroku.com
+  login michael93509@gmail.com
+  password ${API_KEY}
+machine git.heroku.com
+  login michael93509@gmail.com
+  password ${API_KEY}"
+
 
 heroku git:remote -a capser
 git push heroku master -f
