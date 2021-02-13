@@ -18,6 +18,13 @@ git commit -m "Deploy"
 git config user.email "michael93509@gmail.com"
 git config user.name "Michal Wozniak"
 
+echo "machine api.heroku.com
+  login michael93509@gmail.com
+  password $API_KEY
+machine git.heroku.com
+  login michael93509@gmail.com
+  password $API_KEY" > /netrc
+
 heroku git:remote -a capser
 git push heroku master -f
 cd ..
