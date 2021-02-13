@@ -14,7 +14,7 @@ cd temp || exit
 git init
 git add .
 git commit -m "Deploy"
-read API_KEY
+
 
 git config user.email "michael93509@gmail.com"
 git config user.name "Michal Wozniak"
