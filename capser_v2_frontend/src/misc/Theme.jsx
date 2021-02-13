@@ -291,7 +291,8 @@ export const darkTheme = createMuiTheme({
         background: {
             default: '#0a1018',
             paper: 'rgb(0,14,24)'
-        }
+        },
+        divider: '#353b43'
     },
 
     overrides: getOverrides(dividerDark, baseDarkTheme, "dark"),

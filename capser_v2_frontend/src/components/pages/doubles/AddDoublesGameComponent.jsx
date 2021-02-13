@@ -161,7 +161,7 @@ const AddDoublesGameComponent = props => {
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height1000, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height1000, classes.standardBorder].join(' ')}>
                             <Typography variant={"h5"}>Game Data</Typography>
                             <Divider/>
                             <div className={classes.margin}>
@@ -175,7 +175,7 @@ const AddDoublesGameComponent = props => {
                     </Grid>
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height1000, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height1000,classes.standardBorder ].join(' ')}>
                             <Typography variant={"h5"}>Player Team Data</Typography>
                             <div className={classes.margin}>
                                 {teams.length === 0 && <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams page</Typography>}
@@ -222,7 +222,7 @@ const AddDoublesGameComponent = props => {
 
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height1000, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height1000, classes.standardBorder].join(' ')}>
                             <Typography variant={"h5"}>Opponent Team Data</Typography>
 
                             <div className={classes.margin}>

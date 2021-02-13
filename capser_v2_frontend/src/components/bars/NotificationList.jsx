@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Typography} from "@material-ui/core";
+import {Divider, Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,6 +14,7 @@ const NotificationList = ({notifications}) => {
     const notificationListClasses = notificationListStyle();
     const history = useHistory();
     const size = useWindowSize();
+    const theme = useTheme();
 
     const getDescription = (type) => {
         switch (type) {
@@ -31,7 +32,7 @@ const NotificationList = ({notifications}) => {
             return (
                 <MenuItem key={notification.id}
                           className={notification.seen ? notificationListClasses.seen : notificationListClasses.unseen}
-                          style={{width: size.width < 400 ? size.width -60 : 350}}
+                          style={{width: size.width < 400 ? size.width -60 : 350, padding: 10, borderBottom: '1px solid ' + theme.palette.divider}}
                           onClick={() => {
                               if (notification.notificationType === 'ACCEPT_REQUEST') {
                                   history.push('/secure/acceptance')
