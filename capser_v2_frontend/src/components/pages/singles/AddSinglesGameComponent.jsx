@@ -90,7 +90,7 @@ const AddSinglesGameComponent = ({type}) => {
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
                             <Typography variant={"h5"}>Game Data</Typography>
                             <Divider/>
                             <div className={classes.margin}>
@@ -104,7 +104,7 @@ const AddSinglesGameComponent = ({type}) => {
                     </Grid>
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
                             <Typography variant={"h5"}>Player data</Typography>
 
                             <div className={classes.margin}>
@@ -129,7 +129,7 @@ const AddSinglesGameComponent = ({type}) => {
 
                     <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height700, classes.neon].join(' ')}>
+                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
                             <Typography variant={"h5"}>Opponent data</Typography>
 
                             <div className={classes.margin}>

@@ -44,9 +44,10 @@ const NotificationList = ({notifications}) => {
                                         variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
                             <Typography variant={"caption"}>{new Date(notification.date).toUTCString()}</Typography>
                         </div>
-                        <div className={mainClasses.header}>
-                            <Typography variant={"body2"}>{notification.text}</Typography>
-                            <Divider/>
+                        <div style={{whiteSpace: "normal"}}>
+                            <Typography variant={"body2"} >
+                                {notification.text}
+                            </Typography>
                         </div>
                     </div>
                 </MenuItem>)
