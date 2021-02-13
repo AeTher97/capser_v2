@@ -5,7 +5,7 @@ apt-get install heroku
 apt-get install expect
 
 
-expect heroku_login.ex
+
 
 cd capser_v2_frontend || exit
 npm install
@@ -19,6 +19,8 @@ cd temp || exit
 git init
 git add .
 git commit -m "Deploy"
+
+expect heroku_login.ex
 heroku git:remote -a capser
 git push heroku master -f
 cd ..
