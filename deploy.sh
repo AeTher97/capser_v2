@@ -5,7 +5,7 @@ apt-get install git
 cd capser_v2_frontend || exit
 npm install
 npm audit fix
-npm run build
+CI='' npm run build
 cd ..
 cp -r capser_v2_frontend/build/. backend/src/main/resources/static
 mkdir temp
