@@ -7,10 +7,11 @@ send "$env(EMAIL)";
 
 send "\r"
 
-expect "Password (typing will be hidden):"
+expect "Password:"
 
 send "$env(PASSWORD)"
 
+send "\r"
 send "\r"
 
 interact
