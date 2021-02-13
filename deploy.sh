@@ -1,6 +1,11 @@
 #!/bin/bash
 
 apt-get install git
+apt-get install heroku
+apt-get install expect
+
+
+expect heroku_login.ex
 
 cd capser_v2_frontend || exit
 npm install

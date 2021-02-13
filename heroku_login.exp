@@ -1,0 +1,16 @@
+
+spawn heroku "login"
+
+expect "Email:"
+
+send "$env(EMAIL)";
+
+send "\r"
+
+expect "Password (typing will be hidden):"
+
+send "$env(PASSWORD)"
+
+send "\r"
+
+interact
