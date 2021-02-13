@@ -15,6 +15,9 @@ git init
 git add .
 git commit -m "Deploy"
 
+ git config user.email "michael93509@gmail.com"
+ git config user.name "Michal Wozniak"
+
 HEROKU_API_KEY="$HEROKU_API_KEY" heroku git:remote -a capser
 git push heroku master -f
 cd ..
