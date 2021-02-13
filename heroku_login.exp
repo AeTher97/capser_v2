@@ -1,4 +1,4 @@
-
+#!/usr/bin/expect
 spawn heroku "login"
 
 expect "Email:"
