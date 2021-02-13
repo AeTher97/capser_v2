@@ -19,7 +19,7 @@ import mainStyles from "../../misc/styles/MainStyles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 
-const SideBar = ({open,setOpen}) => {
+const SideBar = ({open, setOpen}) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -32,6 +32,9 @@ const SideBar = ({open,setOpen}) => {
 
     useEffect(() => {
         setExpanded(open && small);
+        if (!small) {
+            setOpen(false);
+        }
     }, [open, small])
 
 
@@ -118,16 +121,10 @@ const SideBar = ({open,setOpen}) => {
 
         <Drawer variant={"persistent"} style={{position: "absolute"}} open={!small || open}
                 onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(open)}>
-            {open && <div style={{height: 10}}/>}
+            {small && <div style={{height: 10}}/>}
             <div style={{maxWidth: width, overflow: "hidden"}} className={classes.expanding}>
                 <div onClick={() => {
                     history.push("/")
-                }} style={{
-                    width: width,
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    transition: "all 0.2s"
                 }}>
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
                 </div>
@@ -143,11 +140,11 @@ const SideBar = ({open,setOpen}) => {
                     }
                 }).map(icon => {
                     return (
-                        <div className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
+                        <div key={icon.link} className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
                              style={{paddingRight: expanded ? 100 : 0}} onClick={() => go(icon.link)}>
                             {icon.icon !== 10 && <div style={{padding: 10}}> {icon.icon}</div>}
                             {icon.icon === 10 &&
-                            <div style={{padding: 4, paddingLeft: 11, paddingRight:9}}><Typography
+                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 9}}><Typography
                                 variant={"h6"}> {icon.icon}</Typography></div>}
                             <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>{icon.tooltip}</BoldTyphography>

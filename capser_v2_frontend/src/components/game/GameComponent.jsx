@@ -15,6 +15,7 @@ const GameComponent = ({game, vertical = true}) => {
     const additionalInfoRef = useRef();
     const containerDiv = useRef();
     const [maxHeight, setMaxHeight] = useState(0);
+    const [baseHeight, setBaseHeight] = useState(0);
     const history = useHistory();
 
 
@@ -47,7 +48,12 @@ const GameComponent = ({game, vertical = true}) => {
                 setMaxHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight - 30)
             }
         }
-    }, [expanded])
+        if(columnRef.current){
+            setBaseHeight( columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight)
+        } else {
+            setBaseHeight(0);
+        }
+    }, [expanded,columnRef])
 
     let team1Name;
     let team2Name;
@@ -96,11 +102,9 @@ const GameComponent = ({game, vertical = true}) => {
         team2Sinks = player2Stats.sinks;
     }
 
-    const additionalShift = vertical ? 0 : 10;
-
     return (
         <div
-            style={{height: columnRef.current ? columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight + additionalShift : 0}}
+            style={{height: baseHeight}}
             ref={containerDiv}
             onMouseUp={() => {
                 history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)

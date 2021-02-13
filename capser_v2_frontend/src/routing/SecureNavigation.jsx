@@ -6,17 +6,19 @@ import AcceptanceComponent from "../components/pages/acceptance/AcceptanceCompon
 import TeamsComponent from "../components/pages/teams/TeamsComponent";
 import {useXtraSmallSize} from "../utils/SizeQuery";
 import MobileTopBar from "../components/bars/TopBar";
+import {useTheme} from "@material-ui/core";
 
 const SecureNavigation = () => {
 
     const small = useXtraSmallSize();
     const [open,setOpen] = useState();
+    const theme = useTheme();
 
     return (
         <div>
             <SideBar open={open} setOpen={setOpen}/>
             {small && <MobileTopBar open={open} setOpen={setOpen}/>}
-            <div style={{paddingLeft: small ? 0 : 44}}>
+            <div style={{paddingLeft: small ? 0 : 44, backgroundColor: theme.palette.background.default}}>
 
             <Switch>
                 <Route exact path={"/secure/addSinglesGame"}>

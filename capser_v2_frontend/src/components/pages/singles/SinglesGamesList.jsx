@@ -12,12 +12,14 @@ import LoadingComponent from "../../../utils/LoadingComponent";
 import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router-dom";
 import GameComponent from "../../game/GameComponent";
+import {useXtraSmallSize} from "../../../utils/SizeQuery";
+import Grid from "@material-ui/core/Grid";
 
 
 const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
     const [currentPage, setPage] = useState(1);
-    const history = useHistory();
+    const small = useXtraSmallSize();
 
     const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
 
@@ -39,9 +41,10 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
             <div className={classes.root}>
                 <div className={classes.leftOrientedWrapperNoPadding}>
                     <div>
-                        {!loading ? <div >
-                                {games.map(game => <GameComponent key={game.id} game={game} vertical={false}/>)}
-                            </div>
+                        {!loading ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
+                                <GameComponent game={game}
+                                               vertical={small}/>
+                            </Grid>)} </Grid>
                             :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                                 <LoadingComponent/>

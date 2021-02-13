@@ -44,7 +44,7 @@ const BellComponent = ({expanded = true}) => {
             <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}
                   PaperProps={{
                       style: {
-                          transform: small ?  'translateX(3%) translateY(10%)': 'translateX(6%) translateY(0)',
+                          transform: small ?  'translateX(3%) translateY(15%)': 'translateX(6%) translateY(0)',
                       }
                   }}>
                 <div className={mainStyles0.standardBorder}>

@@ -5,6 +5,7 @@ import mainStyles from "../../misc/styles/MainStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useHistory} from "react-router-dom";
 import {useNotifications} from "../../data/NotificationData";
+import {useWindowSize} from "../../utils/UseSize";
 
 
 const NotificationList = ({notifications}) => {
@@ -12,6 +13,7 @@ const NotificationList = ({notifications}) => {
     const mainClasses = mainStyles();
     const notificationListClasses = notificationListStyle();
     const history = useHistory();
+    const size = useWindowSize();
 
     const getDescription = (type) => {
         switch (type) {
@@ -29,13 +31,14 @@ const NotificationList = ({notifications}) => {
             return (
                 <MenuItem key={notification.id}
                           className={notification.seen ? notificationListClasses.seen : notificationListClasses.unseen}
+                          style={{width: size.width < 400 ? size.width -60 : 350}}
                           onClick={() => {
                               if (notification.notificationType === 'ACCEPT_REQUEST') {
                                   history.push('/secure/acceptance')
                               }
                           }}>
-                    <div style={{display: 'flex', flexDirection: 'column', flex: 1}}>
-                        <div className={mainClasses.header}>
+                    <div style={{display: 'flex', flexDirection: 'column', flex: 1, width: '100%'}}>
+                        <div className={mainClasses.header} >
                             <Typography color={"primary"} style={{flex: 1}}
                                         variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
                             <Typography variant={"caption"}>{new Date(notification.date).toUTCString()}</Typography>
@@ -48,7 +51,7 @@ const NotificationList = ({notifications}) => {
                 </MenuItem>)
         })
     } else {
-        return <MenuItem className={notificationListClasses.seen}>
+        return <MenuItem className={notificationListClasses.seen} style={{width: size.width < 400 ? size.width -30 : 350}}>
             <Typography variant={"body2"}>No notifications</Typography>
         </MenuItem>
     }
@@ -58,11 +61,9 @@ const NotificationList = ({notifications}) => {
 
 const notificationListStyle = makeStyles(theme => ({
     seen: {
-        minWidth: 350,
         padding: 10
     },
     unseen: {
-        minWidth: 350,
         padding: 10,
         backgroundColor: 'rgba(255,255,255,0.2)'
     }
