@@ -29,6 +29,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Heroku bash
         run: |  
+          sudo apt-get install expect
           chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
           "${GITHUB_WORKSPACE}/deploy.sh"
         shell: bash
