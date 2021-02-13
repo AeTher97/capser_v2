@@ -20,7 +20,7 @@ jobs:
     env:
       EMAIL: ${{secrets.EMAIL}} 
       PASSWORD: ${{secrets.PASSWORD}}  
-      API_KEY: ${{secrets.API_KEY}}
+      API_KEY: XD
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
