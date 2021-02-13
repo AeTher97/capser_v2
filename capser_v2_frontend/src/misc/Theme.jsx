@@ -207,6 +207,14 @@ const getOverrides = (divider, baseTheme, type) => {
             bar1Determinate: {
                 transition: 'none',
             },
+        },
+        MuiDrawer:{
+            root:{
+                minHeight: '100vh'
+            },
+            docked: {
+                minHeight: 0
+            }
         }
 
 
@@ -267,7 +275,8 @@ const getProps = (baseTheme) => {
         },
         MuiCard: {
             elevation: 0
-        }
+        },
+
 
 
     }

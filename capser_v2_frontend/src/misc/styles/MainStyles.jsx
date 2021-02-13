@@ -33,8 +33,8 @@ const mainStyles = makeStyles(theme => ({
         flex: 1,
     },
     textHeading: {
-        paddingBottom: 10,
-        paddingTop: 10
+        paddingBottom: 1,
+        paddingTop: 1
     },
     textSubheading: {
         paddingTop: 5,

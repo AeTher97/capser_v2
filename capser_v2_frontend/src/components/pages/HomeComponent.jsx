@@ -28,17 +28,19 @@ const HomeComponent = () => {
                                 {posts.map(post => {
                                     return (
                                         <div key={post.title} style={{textAlign: "left"}}>
-                                            <Typography variant={"h5"}
-                                                        style={{color: theme.palette.primary.main}}
-                                                        align={"left"}
-                                                        className={classes.textHeading}>{post.title}</Typography>
+
                                             <Typography align={"left"} variant={"caption"}
                                                         className={classes.textSubheading}>{new Date(post.date).toDateString()}</Typography>
+                                            <div className={classes.standardBorder} style={{padding: 10}} >
+                                                <Typography variant={"h5"}
+                                                            style={{color: theme.palette.primary.main}}
+                                                            align={"left"}
+                                                            className={classes.textHeading}>{post.title}</Typography>
                                             <Typography align={"left"}
-                                                        className={classes.text}>{post.description}</Typography>
+                                            >{post.description}</Typography>
                                             <Typography align={"left"} variant={"caption"}
                                                         className={classes.text}>{post.signature}</Typography>
-                                            <Divider style={{marginTop: 10}}/>
+                                            </div>
                                         </div>)
                                 })}
                             </div>

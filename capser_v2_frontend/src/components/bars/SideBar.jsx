@@ -119,15 +119,15 @@ const SideBar = ({open, setOpen}) => {
 
     return (
 
-        <Drawer variant={"persistent"} style={{position: "absolute"}} open={!small || open}
+        <Drawer variant={"persistent"}  open={!small || open}
                 onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(open)}>
-            {small && <div style={{height: 10}}/>}
+            {small && <div style={{height: 52}}/>}
             <div style={{maxWidth: width, overflow: "hidden"}} className={classes.expanding}>
-                <div onClick={() => {
+                {! small && <div onClick={() => {
                     history.push("/")
                 }}>
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
-                </div>
+                </div>}
                 {hasRole('USER') && <div>
                     <BellComponent expanded={expanded}/>
                 </div>}
