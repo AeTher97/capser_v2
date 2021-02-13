@@ -5,6 +5,7 @@ import PageHeader from "../misc/PageHeader";
 import {useDashboard} from "../../data/DashboardData";
 import LoadingComponent from "../../utils/LoadingComponent";
 import {getGameTypeString} from "../../utils/Utils";
+import GameComponent from "../game/GameComponent";
 
 const HomeComponent = () => {
 
@@ -13,9 +14,6 @@ const HomeComponent = () => {
 
         const {games, posts, gamesLoading, postsLoading} = useDashboard();
 
-        const findPlayerStats = (game, id) => {
-            return game.gamePlayerStats.find(o => o.playerId === id)
-        }
 
 
         return (
@@ -23,7 +21,7 @@ const HomeComponent = () => {
                 <PageHeader title={"Global Caps League"} showLogo/>
                 <Grid className={classes.root}>
                     {!gamesLoading && !postsLoading ? <Grid container>
-                        <Grid item sm={8} className={classes.squareShine}>
+                        <Grid item sm={8}>
                             <div className={classes.leftOrientedWrapperNoPadding}>
                                 <Typography variant={"h5"}>News Feed</Typography>
                                 <div style={{padding: 10}}>
@@ -47,7 +45,7 @@ const HomeComponent = () => {
                                 </div>
                             </div>
                         </Grid>
-                        <Grid item sm={4} style={{textAlign: "left"}} className={classes.squareShine}>
+                        <Grid item sm={4} style={{textAlign: "left"}}>
                             <Typography variant={"h5"}>Latest Games</Typography>
                             <div style={{padding: 10}}>
                                 <Divider style={{marginBottom: 10}}/>
@@ -56,29 +54,14 @@ const HomeComponent = () => {
                                         if (game.gameType === 'DOUBLES') {
                                             return (
                                                 <Grid key={game.player1 + game.player2 + game.time} item xs={12}>
-                                                    <div className={classes.neon} style={{padding: 10}}>
-                                                        <Typography
-                                                            color={"primary"}>{getGameTypeString(game.gameType)}</Typography>
-                                                        <div className={classes.header}>
-                                                            <Typography>{game.team1Score} : {game.team2Score} {game.team1Name.name} vs {game.team2Name.name}</Typography>
-                                                        </div>
-                                                        <Typography>{new Date(game.time).toDateString()}</Typography>
-                                                    </div>
+                                                    <GameComponent game={game} type={"doubles"}/>
                                                 </Grid>
                                             )
                                         }
-                                        const player1Stats = findPlayerStats(game, game.player1)
-                                        const player2Stats = findPlayerStats(game, game.player2)
+
                                         return (
                                             <Grid key={game.player1 + game.player2 + game.time} item xs={12}>
-                                                <div className={classes.neon} style={{padding: 10}}>
-                                                    <Typography
-                                                        color={"primary"}>{getGameTypeString(game.gameType)}</Typography>
-                                                    <div className={classes.header}>
-                                                        <Typography>{player1Stats.score} : {player2Stats.score} {game.player1Name.username} vs {game.player2Name.username}</Typography>
-                                                    </div>
-                                                    <Typography>{new Date(game.time).toDateString()}</Typography>
-                                                </div>
+                                               <GameComponent game={game}/>
                                             </Grid>
                                         )
                                     })}

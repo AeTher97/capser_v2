@@ -32,14 +32,14 @@ const TenCommandments = () => {
     return (
         <div>
             <PageHeader title={"10 Commandments"} noSpace/>
-            <div className={classes.squareShine}>
+            <div className={classes.paddedContent}>
 
                 <div className={!xSmall ? classes.root : null}>
                     <div className={classes.leftOrientedWrapperNoPadding}>
                         {commandments.map(commandment => {
                             index++;
                             return (
-                                <div className={classes.header} key={commandment.text}>
+                                <div className={[classes.header,classes.standardBorder].join(' ')} key={commandment.text} style={{marginBottom:5}}>
                                     <OutlinedNumber value={index}/>
                                     <Typography
                                         variant={xSmall ? null : "h5"}>{commandment.text}</Typography>
@@ -58,11 +58,7 @@ const OutlinedNumber = ({value}) => {
     const styles = useStyles();
 
 
-    return (
-        <div className={styles.circle}>
-            <Typography color={"primary"} variant={"h5"}>{value}</Typography>
-        </div>
-    );
+    return <Typography color={"primary"} variant={"h5"} style={{marginRight: 10}}>{value}.</Typography>
 };
 
 OutlinedNumber.propTypes = {

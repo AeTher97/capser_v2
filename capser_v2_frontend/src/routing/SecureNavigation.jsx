@@ -1,17 +1,22 @@
 import {Route, Switch} from "react-router-dom";
-import React from 'react';
+import React, {useState} from 'react';
 import SideBar from "../components/bars/SideBar";
 import AddSinglesGameComponent from "../components/pages/singles/AddSinglesGameComponent";
 import AcceptanceComponent from "../components/pages/acceptance/AcceptanceComponent";
 import TeamsComponent from "../components/pages/teams/TeamsComponent";
+import {useXtraSmallSize} from "../utils/SizeQuery";
+import MobileTopBar from "../components/bars/TopBar";
 
 const SecureNavigation = () => {
 
+    const small = useXtraSmallSize();
+    const [open,setOpen] = useState();
 
     return (
         <div>
-            <SideBar/>
-            <div style={{paddingLeft: 44}}>
+            <SideBar open={open} setOpen={setOpen}/>
+            {small && <MobileTopBar open={open} setOpen={setOpen}/>}
+            <div style={{paddingLeft: small ? 0 : 44}}>
 
             <Switch>
                 <Route exact path={"/secure/addSinglesGame"}>

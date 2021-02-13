@@ -247,7 +247,7 @@ const AcceptanceComponent = props => {
             <PageHeader title={"Games Accepting"} icon={<CheckIcon fontSize={"large"}/>}/>
 
 
-            <div className={[classes.paddedContent, classes.horizontalShine].join(' ')}>
+            <div className={[classes.paddedContent].join(' ')}>
                 <Divider/>
                 {!loading ? <Table style={{width: '100%'}}>
                         <TableHead>

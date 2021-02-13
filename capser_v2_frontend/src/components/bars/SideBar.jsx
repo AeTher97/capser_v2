@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Drawer from "@material-ui/core/Drawer";
 import {Divider, IconButton, Typography} from "@material-ui/core";
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -15,16 +15,36 @@ import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons
 import BellComponent from "./BellComponent";
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import GavelIcon from '@material-ui/icons/Gavel';
+import mainStyles from "../../misc/styles/MainStyles";
+import BoldTyphography from "../misc/BoldTyphography";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
-const SideBar = () => {
+const SideBar = ({open,setOpen}) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
     const hasRole = useHasRole();
     const {email} = useSelector(state => state.auth)
+    const [expanded, setExpanded] = useState(false);
+    const [width, setWidth] = useState(44);
+    const small = useXtraSmallSize();
+
+
+    useEffect(() => {
+        setExpanded(open && small);
+    }, [open, small])
 
 
     const classes = useStyle();
+    const mainStyles0 = mainStyles();
+
+    useEffect(() => {
+        if (expanded) {
+            setWidth(300);
+        } else {
+            setWidth(44);
+        }
+    }, [expanded])
 
     const icons = [
         {
@@ -67,7 +87,7 @@ const SideBar = () => {
             role: 'USER'
         },
         {
-            tooltip: '10 Commandments',
+            tooltip: 'Commandments',
             link: '/10commandments',
             icon: 10
 
@@ -85,20 +105,36 @@ const SideBar = () => {
         //     role: 'USER'
         //
         // },
-
     ]
 
+    const go = (address) => {
+        history.push(address);
+        setExpanded(open);
+        setOpen(false);
+    }
+
+
     return (
-        <div>
-            <Drawer variant={"permanent"}>
-                <Tooltip title={"Global Caps League"} placement={"right"} onClick={() => {
+
+        <Drawer variant={"persistent"} style={{position: "absolute"}} open={!small || open}
+                onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(open)}>
+            {open && <div style={{height: 10}}/>}
+            <div style={{maxWidth: width, overflow: "hidden"}} className={classes.expanding}>
+                <div onClick={() => {
                     history.push("/")
+                }} style={{
+                    width: width,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    transition: "all 0.2s"
                 }}>
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
-                </Tooltip>
+                </div>
                 {hasRole('USER') && <div>
-                    <BellComponent/>
+                    <BellComponent expanded={expanded}/>
                 </div>}
+                <Divider/>
                 {icons.filter(icon => {
                     if (icon.role) {
                         return hasRole(icon.role)
@@ -107,40 +143,45 @@ const SideBar = () => {
                     }
                 }).map(icon => {
                     return (
-                        <Tooltip key={icon.tooltip} title={icon.tooltip} placement={"right"}>
-                            <IconButton className={classes.iconButton} onClick={() => {
-                                history.push(icon.link)
-                            }}>
-                                {icon.icon}
-                            </IconButton>
-                        </Tooltip>
+                        <div className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
+                             style={{paddingRight: expanded ? 100 : 0}} onClick={() => go(icon.link)}>
+                            {icon.icon !== 10 && <div style={{padding: 10}}> {icon.icon}</div>}
+                            {icon.icon === 10 &&
+                            <div style={{padding: 4, paddingLeft: 11, paddingRight:9}}><Typography
+                                variant={"h6"}> {icon.icon}</Typography></div>}
+                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
+                                <BoldTyphography noWrap color={"inherit"}>{icon.tooltip}</BoldTyphography>
+                            </div>
+                        </div>
                     )
                 })}
                 {hasRole('USER') ?
                     <>
                         <Divider/>
-                        <Tooltip title={"Logout"} placement={"right"}>
-                            <IconButton className={classes.iconButton} onClick={() => {
-                                dispatch(logoutAction())
-                                history.push('/')
-                            }}>
-                                <ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/>
-                            </IconButton>
-                        </Tooltip>
+                        <div className={[classes.redHover, mainStyles0.centeredRowNoFlex].join(' ')} onClick={() => {
+                            dispatch(logoutAction())
+                            history.push('/')
+                        }}>
+                            <div style={{padding: 9}}><ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/></div>
+                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
+                                <BoldTyphography noWrap color={"inherit"}>Logout</BoldTyphography>
+                            </div>
+                        </div>
                     </> :
                     <>
                         <Divider/>
-                        <Tooltip title={"Login"} placement={"right"}>
-                            <IconButton className={classes.iconButton} onClick={() => {
-                                history.push('/login')
-                            }}>
-                                <ExitToAppOutlinedIcon/>
-                            </IconButton>
-                        </Tooltip>
+                        <div className={[classes.redHover, mainStyles0.centeredRowNoFlex].join(' ')} onClick={() => {
+                            history.push('/login')
+                        }}>
+                            <div style={{padding: 11}}><ExitToAppOutlinedIcon/></div>
+                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}} s>
+                                <BoldTyphography noWrap color={"inherit"}>Login</BoldTyphography>
+                            </div>
+                        </div>
                     </>
                 }
-            </Drawer>
-        </div>
+            </div>
+        </Drawer>
     );
 };
 
@@ -150,6 +191,16 @@ const useStyle = makeStyles(theme => ({
             color: 'red'
         },
         fontSize: 20
+    },
+    expanding: {
+        transition: "all 0.2s",
+        overflow: "hidden"
+    },
+    redHover: {
+        "&:hover": {
+            color: 'red'
+        },
+        cursor: "pointer"
     }
 }))
 

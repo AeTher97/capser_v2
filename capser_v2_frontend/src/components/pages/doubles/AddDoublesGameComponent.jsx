@@ -157,7 +157,7 @@ const AddDoublesGameComponent = props => {
     return (
         <div>
 
-            <div style={{padding: 8}} className={classes.squareShine}>
+            <div style={{padding: 8}}>
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
                         <div

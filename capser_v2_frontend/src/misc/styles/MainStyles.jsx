@@ -69,18 +69,6 @@ const mainStyles = makeStyles(theme => ({
             minHeight: '40vw'
         }
     },
-    squareShine: {
-        backgroundImage: `url(/reflection.svg)`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom right',
-        backgroundSize: 'cover',
-    },
-    horizontalShine: {
-        backgroundImage: `url(/horizontalShine.svg)`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom right',
-        backgroundSize: 'cover',
-    },
     neon: {
         boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
     },
@@ -111,9 +99,27 @@ const mainStyles = makeStyles(theme => ({
         display: "flex",
         flexDirection: "row",
         flex: 1,
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: 'center'
     },
-    empty: {}
+    centeredRowNoFlex: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: 'center'
+    },
+    centeredColumn: {
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+        alignItems: "center"
+    },
+    empty: {},
+    standardBorder: {
+        border: "1px solid #5a6572",
+        borderRadius: 6,
+        padding: 15
+    }
 
 }))
 

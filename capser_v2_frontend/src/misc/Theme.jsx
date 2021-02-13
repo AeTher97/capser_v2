@@ -81,9 +81,6 @@ const getOverrides = (divider, baseTheme, type) => {
             }
         },
         MuiMenu: {
-            paper: {
-                backgroundColor: paperColor
-            }
         },
 
         MuiTooltip: {
@@ -210,11 +207,6 @@ const getOverrides = (divider, baseTheme, type) => {
             bar1Determinate: {
                 transition: 'none',
             },
-        },
-        MuiDialog: {
-            paper: {
-                boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)'
-            }
         }
 
 
@@ -288,8 +280,8 @@ export const darkTheme = createMuiTheme({
         primary: red,
         secondary: grey,
         background: {
-            default: 'rgb(0,0,0)',
-            paper: 'rgb(38,38,38)'
+            default: '#0a1018',
+            paper: 'rgb(0,14,24)'
         }
     },
 

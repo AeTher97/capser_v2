@@ -7,7 +7,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 const PageHeader = ({title, font, showLogo, icon, noSpace}) => {
     const classes = mainStyles();
     return (
-        <div style={{paddingLeft: 10}} className={[classes.header, classes.horizontalShine].join(' ')}>
+        <div style={{paddingLeft: 10}} className={[classes.header].join(' ')}>
             {icon && <div style={{padding: 10, color: 'white'}}>{icon}</div>}
             {showLogo ? <img src={"/logo192.png"} style={{maxWidth: 80, padding: 10}}/> :
                 <div style={{minHeight: 100}}/>}}

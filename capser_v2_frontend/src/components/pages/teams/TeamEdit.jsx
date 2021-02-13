@@ -126,8 +126,7 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
 
     return (
         <Dialog open={open} fullWidth id={"xd"}>
-            <div className={[classes.paddedContent, classes.horizontalShine].join(' ')}
-                 style={{backgroundColor: 'black'}}>
+            <div className={classes.standardBorder}>
 
                 <div className={classes.header}>
                     <Typography variant={"h5"} style={{marginRight: 10, flex: 1}}>Create Team</Typography>

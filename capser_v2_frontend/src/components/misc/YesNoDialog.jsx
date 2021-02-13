@@ -20,7 +20,7 @@ const YesNoDialog = ({onYes, onNo, question, open, setOpen}) => {
 
     return (
         <Dialog open={open}>
-            <div className={[classes.paddedContent, classes.horizontalShine].join(' ')}  style={{backgroundColor: 'black'}}>
+            <div className={[classes.paddedContent].join(' ')}  style={{backgroundColor: 'black'}}>
             <Typography variant={"h5"}>{question}</Typography>
             <div className={classes.header} style={{marginTop: 20}}>
                 <Button onClick={handleYes} style={{marginRight: 10}}>

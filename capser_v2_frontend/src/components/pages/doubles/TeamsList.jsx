@@ -25,7 +25,7 @@ const TeamsList = props => {
     return (
         <div className={classes.root}>
             <div className={classes.leftOrientedWrapperNoPadding}>
-                <div className={[classes.paddedContent, classes.squareShine].join(' ')}>
+                <div className={[classes.paddedContent].join(' ')}>
                     {!loading ? <Table style={{width: '100%'}}>
                         <TableHead>
                             <TableRow>

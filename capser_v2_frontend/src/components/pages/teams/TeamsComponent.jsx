@@ -66,7 +66,7 @@ const TeamsComponent = () => {
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
                         {!loading ? <div style={{padding: 10, minHeight: 500,}}
-                                        className={[classes.squareShine, classes.neon].join(' ')}>
+                                        className={classes.standardBorder}>
                             <div className={classes.header}>
                                 <Typography variant={"h5"} style={{flex: 1}}>Your Teams</Typography>
                                 <Button onClick={() => setOpen(true)}>Create new</Button>
@@ -104,7 +104,7 @@ const TeamsComponent = () => {
                         </div> : <LoadingComponent/>}
                     </Grid>
                     <Grid item md={8} sm={12} xs={12}>
-                        <div style={{padding: 10}} className={[classes.squareShine, classes.neon].join(' ')}>
+                        <div style={{padding: 10}} className={classes.standardBorder}>
                             <div style={{minHeight: 500}}>
                                 {!selectedTeam ? <div style={{
                                     display: 'flex',

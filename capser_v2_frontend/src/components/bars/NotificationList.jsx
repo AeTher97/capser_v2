@@ -58,11 +58,11 @@ const NotificationList = ({notifications}) => {
 
 const notificationListStyle = makeStyles(theme => ({
     seen: {
-        minWidth: 400,
+        minWidth: 350,
         padding: 10
     },
     unseen: {
-        minWidth: 400,
+        minWidth: 350,
         padding: 10,
         backgroundColor: 'rgba(255,255,255,0.2)'
     }
