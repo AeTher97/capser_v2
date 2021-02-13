@@ -20,7 +20,7 @@ jobs:
     env:
       EMAIL: ${{secrets.EMAIL}} 
       PASSWORD: ${{secrets.PASSWORD}}  
-      API_KEY: XD
+      HEROKU_API_TOKEN: ${{secrets.HEROKU_API_TOKEN}}  
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
