@@ -25,5 +25,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Heroku bash
-        run: $GITHUB_WORKSPACE/deploy.sh
+        run: |  
+          chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
+          "${GITHUB_WORKSPACE}/deploy.sh"
         shell: bash
