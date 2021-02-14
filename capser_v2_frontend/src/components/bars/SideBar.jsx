@@ -125,7 +125,9 @@ const SideBar = ({open, setOpen}) => {
             <div style={{maxWidth: width, overflow: "hidden"}} className={classes.expanding}>
                 {! small && <div onClick={() => {
                     history.push("/")
-                }}>
+                }}
+                                 style={{display: "flex", flexDirection: "row", justifyContent: "center"}}
+                >
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
                 </div>}
                 {hasRole('USER') && <div>
