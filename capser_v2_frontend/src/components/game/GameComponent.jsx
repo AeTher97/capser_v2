@@ -11,12 +11,10 @@ import {useHistory} from "react-router-dom";
 const GameComponent = ({game, vertical = true}) => {
 
     const [expanded, setExpanded] = useState(false);
+    const [maxHeight, setMaxHeight] = useState(0);
+    const [delay, setDelay] = useState(0);
     const columnRef = useRef();
     const additionalInfoRef = useRef();
-    const containerDiv = useRef();
-    const [maxHeight, setMaxHeight] = useState(0);
-    const [baseHeight, setBaseHeight] = useState(0);
-    const history = useHistory();
 
 
     const findPlayerStats = (game, id) => {
@@ -47,11 +45,6 @@ const GameComponent = ({game, vertical = true}) => {
             } else {
                 setMaxHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight - 30)
             }
-        }
-        if (columnRef.current) {
-            setBaseHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight)
-        } else {
-            setBaseHeight(0);
         }
     }, [expanded, columnRef])
 
@@ -112,11 +105,14 @@ const GameComponent = ({game, vertical = true}) => {
                  zIndex: expanded ? 1000 : 0
              }}
              onMouseEnter={() => {
-                 setExpanded(true)
+                 setDelay(setTimeout(() => {
+                     setExpanded(true)
+                 }, 500))
              }} onMouseLeave={() => {
+            clearTimeout(delay);
             setExpanded(false)
         }}
-            >
+        >
             <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
 
                 <Typography variant={"h6"} style={{fontWeight: 600}} className={gameStyle.margins}
