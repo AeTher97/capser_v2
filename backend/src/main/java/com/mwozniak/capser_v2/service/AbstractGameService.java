@@ -114,7 +114,7 @@ public abstract class AbstractGameService implements GameService {
         notificationService.notify(Notification.builder()
                 .date(new Date())
                 .notificationType(NotificationType.GAME_REJECTED)
-                .text("Game with user " + userService.getUser(SecurityUtils.getUserId()).getUsername()  + " was rejected by the user.")
+                .text("Game with user " + userService.getUser(request.getAcceptingUser()).getUsername()  + " was rejected by the user.")
                 .seen(false)
                 .userId(request.getAcceptingUser())
                 .build());
@@ -146,13 +146,13 @@ public abstract class AbstractGameService implements GameService {
     }
 
 
-    private AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
+    protected AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         if (acceptanceRequestList.isEmpty()) {
             throw new GameNotFoundException("Cannot find game to accept with this id");
         }
         return  acceptanceRequestList.stream().filter(acceptanceRequest ->
-                acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).findFirst().get();
+                acceptanceRequest.getAcceptanceRequestType().equals(getAcceptanceRequestType())).findFirst().get();
     }
 
 

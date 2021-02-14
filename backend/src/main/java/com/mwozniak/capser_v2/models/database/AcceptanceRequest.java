@@ -42,13 +42,21 @@ public class AcceptanceRequest {
     @Enumerated(EnumType.STRING)
     private GameType gameType;
 
-    public static AcceptanceRequest createAcceptanceRequest(AcceptanceRequestType acceptanceRequestType, UUID acceptingUser, UUID gameToAccept, GameType gameType){
+    @Setter
+    private UUID acceptingTeam;
+
+    public static AcceptanceRequest createAcceptanceRequest(AcceptanceRequestType acceptanceRequestType, UUID acceptingUser, UUID gameToAccept, GameType gameType, UUID acceptingTeam){
         return AcceptanceRequest.builder()
                 .acceptanceRequestType(acceptanceRequestType)
                 .acceptingUser(acceptingUser)
                 .gameToAccept(gameToAccept)
                 .timestamp(new Date())
                 .gameType(gameType)
+                .acceptingTeam(acceptingTeam)
                 .build();
+    }
+
+    public static AcceptanceRequest createAcceptanceRequest(AcceptanceRequestType acceptanceRequestType, UUID acceptingUser, UUID gameToAccept, GameType gameType){
+       return createAcceptanceRequest(acceptanceRequestType,acceptingUser,gameToAccept,gameType,null);
     }
 }

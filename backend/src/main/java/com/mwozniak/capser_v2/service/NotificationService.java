@@ -26,6 +26,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+
     public void notify(AcceptanceRequest acceptanceRequest, String otherUser) {
 
         String text;

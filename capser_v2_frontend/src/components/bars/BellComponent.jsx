@@ -34,9 +34,10 @@ const BellComponent = ({expanded = true}) => {
         <div>
             <div className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')} onClick={handleClick}>
                 {notSeen ?
+                    <div style={{padding: 9}}>
                     <Badge color={"primary"} badgeContent={5} variant={"dot"}>
-                        <div style={{padding: 9}}><NotificationsIcon/></div>
-                    </Badge> : <div style={{padding: 11}}><NotificationsOutlinedIcon/></div>}
+                        <NotificationsIcon/>
+                    </Badge></div> : <div style={{padding: 11}}><NotificationsOutlinedIcon/></div>}
                 <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
                     <BoldTyphography noWrap color={"inherit"}>Notifications</BoldTyphography>
                 </div>

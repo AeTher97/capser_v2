@@ -1,7 +1,9 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
+import com.mwozniak.capser_v2.enums.NotificationType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
+import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
@@ -14,6 +16,7 @@ import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.utils.EloRating;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +58,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
             for (UUID id : multipleGame.getLoser().getPlayerList()) {
                 AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                         getAcceptanceRequestType(),
-                        id, abstractGame.getId(), abstractGame.getGameType());
+                        id, abstractGame.getId(), abstractGame.getGameType(), multipleGame.getLoserTeamId());
                 acceptanceRequestRepository.save(posterAcceptanceRequest);
                 notificationService.notifyMultiple(posterAcceptanceRequest, winnerName);
             }
@@ -63,7 +66,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
             for (UUID id : multipleGame.getWinner().getPlayerList()) {
                 AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                         getAcceptanceRequestType(),
-                        id, abstractGame.getId(), abstractGame.getGameType());
+                        id, abstractGame.getId(), abstractGame.getGameType(), multipleGame.getWinnerTeamId());
                 acceptanceRequestRepository.save(posterAcceptanceRequest);
                 notificationService.notifyMultiple(posterAcceptanceRequest, loserName);
 
@@ -114,6 +117,41 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
     }
 
+    @Transactional
+    @Override
+    public void acceptGame(UUID gameId) throws CapserException {
+        List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
+        AcceptanceRequest request = extractAcceptanceRequest(gameId);
+        AbstractGame game = findGame(request.getGameToAccept());
+        game.setAccepted(true);
+        updateEloAndStats(game, acceptanceRequestList);
+        saveGame(game);
+        notificationService.notify(Notification.builder()
+                .date(new Date())
+                .notificationType(NotificationType.GAME_ACCEPTED)
+                .text("Game with team " + teamService.findTeam(request.getAcceptingTeam()).getName()  + " was accepted.")
+                .seen(false)
+                .userId(request.getAcceptingUser())
+                .build());
+    }
+
+    @Transactional
+    @Override
+    public void rejectGame(UUID gameId) throws CapserException {
+        List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
+        AcceptanceRequest request = extractAcceptanceRequest(gameId);
+        AbstractGame game = findGame(request.getGameToAccept());
+        removeGame(game);
+        notificationService.notify(Notification.builder()
+                .date(new Date())
+                .notificationType(NotificationType.GAME_REJECTED)
+                .text("Game with team " +  teamService.findTeam(request.getAcceptingTeam()).getName() + " was rejected by on of the users.")
+                .seen(false)
+                .userId(request.getAcceptingUser())
+                .build());
+        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
+
+    }
 
     @Override
     public AcceptanceRequestType getAcceptanceRequestType() {
