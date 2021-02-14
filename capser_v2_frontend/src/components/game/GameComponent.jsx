@@ -15,6 +15,9 @@ const GameComponent = ({game, vertical = true}) => {
     const [delay, setDelay] = useState(0);
     const columnRef = useRef();
     const additionalInfoRef = useRef();
+    const containerDiv = useRef();
+    const [baseHeight, setBaseHeight] = useState(0);
+    const history = useHistory();
 
 
     const findPlayerStats = (game, id) => {
@@ -46,7 +49,12 @@ const GameComponent = ({game, vertical = true}) => {
                 setMaxHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight - 30)
             }
         }
-    }, [expanded, columnRef])
+        if(columnRef.current){
+            setBaseHeight( columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight)
+        } else {
+            setBaseHeight(0);
+        }
+    }, [expanded,columnRef])
 
     let team1Name;
     let team2Name;
@@ -96,79 +104,89 @@ const GameComponent = ({game, vertical = true}) => {
     }
 
     return (
-        <div ref={columnRef}
-             className={[classes.standardBorder, gameStyle.expanding, expanded ? gameStyle.elevated : gameStyle.notElevated].join(' ')}
-             style={{
-                 borderRadius: 7,
-                 backgroundColor: '#05070a',
-                 maxHeight: maxHeight,
-                 zIndex: expanded ? 1000 : 0
-             }}
-             onMouseEnter={() => {
-                 setDelay(setTimeout(() => {
-                     setExpanded(true)
-                 }, 500))
-             }} onMouseLeave={() => {
-            clearTimeout(delay);
-            setExpanded(false)
-        }}
-        >
-            <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
-
-                <Typography variant={"h6"} style={{fontWeight: 600}} className={gameStyle.margins}
-                            color={"primary"}>{team1Name} vs {team2Name}</Typography>
-                <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
-                    {getIcon(game.gameType)}
-                    <Typography style={{marginLeft: 5}}>{getGameTypeString(game.gameType)}</Typography>
-                </div>
-                <div style={{display: 'block'}} className={gameStyle.margins}>
-                    <Typography style={{fontWeight: 600}}>{team1Score} : {team2Score}</Typography>
-                </div>
-                <Typography>{new Date(game.time).toDateString()}</Typography>
-
-            </div>
-
-            <div className={[expanded ? gameStyle.visible : gameStyle.transparent, gameStyle.overlay].join(' ')}
-                 ref={additionalInfoRef}
-                 style={{paddingLeft: 15}}>
-                {game.gameType !== "UNRANKED" &&
+        <div
+            style={{height: baseHeight}}
+            ref={containerDiv}
+            onMouseUp={() => {
+                history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+            }}
+            onTouchEnd={(e) => {
+                e.preventDefault();
+                setExpanded(!expanded);
+            }}>
+            <div ref={columnRef}
+                 className={[classes.standardBorder, gameStyle.expanding, expanded ? gameStyle.elevated : gameStyle.notElevated].join(' ')}
+                 style={{
+                     borderRadius: 7,
+                     backgroundColor: '#05070a',
+                     maxHeight: maxHeight,
+                     zIndex: expanded ? 1000 : 0
+                 }}
+                 onMouseEnter={() => {
+                     setDelay(setTimeout(() => {
+                         setExpanded(true)
+                     }, 750))
+                 }} onMouseLeave={() => {
+                clearTimeout(delay);
+                setExpanded(false)
+            }}>
                 <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
-                    <div>
-                        <BoldTyphography>Points Change</BoldTyphography>
+
+                    <Typography variant={"h6"} style={{fontWeight: 600}} className={gameStyle.margins}
+                                color={"primary"}>{team1Name} vs {team2Name}</Typography>
+                    <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
+                        {getIcon(game.gameType)}
+                        <Typography style={{marginLeft: 5}}>{getGameTypeString(game.gameType)}</Typography>
                     </div>
-                    <div className={classes.centeredRowNoFlex}>
-                        <Typography className={classes.margin}>{team1Name}</Typography>
-                        <BoldTyphography
-                            color={team1PointsChange > 0 ? 'green' : 'red'}>{team1PointsChange}</BoldTyphography>
-                        <Typography className={classes.margin}>{team2Name}</Typography>
-                        <BoldTyphography
-                            color={team2PointsChange > 0 ? 'green' : 'red'}>{team2PointsChange}</BoldTyphography>
+                    <div style={{display: 'block'}} className={gameStyle.margins}>
+                        <Typography style={{fontWeight: 600}}>{team1Score} : {team2Score}</Typography>
                     </div>
-                </div>}
-                <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
-                    <div>
-                        <BoldTyphography>Rebuttals</BoldTyphography>
-                    </div>
-                    <div className={classes.centeredRowNoFlex}>
-                        <Typography className={classes.margin}>{team1Name}</Typography>
-                        <BoldTyphography
-                            color={team1Rebuttals >= team2Rebuttals ? 'green' : 'red'}>{team1Rebuttals}</BoldTyphography>
-                        <Typography className={classes.margin}>{team2Name}</Typography>
-                        <BoldTyphography
-                            color={team2Rebuttals >= team1Rebuttals ? 'green' : 'red'}>{team2Rebuttals}</BoldTyphography>
-                    </div>
+                    <Typography>{new Date(game.time).toDateString()}</Typography>
+
                 </div>
-                <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
-                    <div>
-                        <BoldTyphography>Sinks</BoldTyphography>
+
+                <div className={[expanded ? gameStyle.visible : gameStyle.transparent, gameStyle.overlay].join(' ')}
+                     ref={additionalInfoRef}
+                     style={{paddingLeft: 15}}>
+                    {game.gameType !== "UNRANKED" &&
+                    <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
+                        <div>
+                            <BoldTyphography>Points Change</BoldTyphography>
+                        </div>
+                        <div className={classes.centeredRowNoFlex}>
+                            <Typography className={classes.margin}>{team1Name}</Typography>
+                            <BoldTyphography
+                                color={team1PointsChange > 0 ? 'green' : 'red'}>{team1PointsChange}</BoldTyphography>
+                            <Typography className={classes.margin}>{team2Name}</Typography>
+                            <BoldTyphography
+                                color={team2PointsChange > 0 ? 'green' : 'red'}>{team2PointsChange}</BoldTyphography>
+                        </div>
+                    </div>}
+                    <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
+                        <div>
+                            <BoldTyphography>Rebuttals</BoldTyphography>
+                        </div>
+                        <div className={classes.centeredRowNoFlex}>
+                            <Typography className={classes.margin}>{team1Name}</Typography>
+                            <BoldTyphography
+                                color={team1Rebuttals >= team2Rebuttals ? 'green' : 'red'}>{team1Rebuttals}</BoldTyphography>
+                            <Typography className={classes.margin}>{team2Name}</Typography>
+                            <BoldTyphography
+                                color={team2Rebuttals >= team1Rebuttals ? 'green' : 'red'}>{team2Rebuttals}</BoldTyphography>
+                        </div>
                     </div>
-                    <div className={classes.centeredRowNoFlex}>
-                        <Typography className={classes.margin}>{team1Name}</Typography>
-                        <BoldTyphography
-                            color={team1Sinks >= team2Sinks ? 'green' : 'red'}>{team1Sinks}</BoldTyphography>
-                        <Typography className={classes.margin}>{team2Name}</Typography>
-                        <BoldTyphography
-                            color={team2Sinks >= team1Sinks ? 'green' : 'red'}>{team2Sinks}</BoldTyphography>
+                    <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
+                        <div>
+                            <BoldTyphography>Sinks</BoldTyphography>
+                        </div>
+                        <div className={classes.centeredRowNoFlex}>
+                            <Typography className={classes.margin}>{team1Name}</Typography>
+                            <BoldTyphography
+                                color={team1Sinks >= team2Sinks ? 'green' : 'red'}>{team1Sinks}</BoldTyphography>
+                            <Typography className={classes.margin}>{team2Name}</Typography>
+                            <BoldTyphography
+                                color={team2Sinks >= team1Sinks ? 'green' : 'red'}>{team2Sinks}</BoldTyphography>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,7 +202,7 @@ const gameStyles = makeStyles(theme => ({
         cursor: "pointer",
         overflow: "hidden",
         transition: 'all 0.2s',
-        // position: "relative"
+        position: "relative"
     },
     elevated: {
         boxShadow: '0px 5px 10px 5px rgba(0, 0, 0,0.8)',
