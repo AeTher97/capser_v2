@@ -1,10 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Drawer from "@material-ui/core/Drawer";
-import {Divider, IconButton, Typography} from "@material-ui/core";
+import {Divider, Typography} from "@material-ui/core";
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import Tooltip from "@material-ui/core/Tooltip";
 import {useHistory} from "react-router-dom";
-import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import {makeStyles} from "@material-ui/core/styles";
 import {useDispatch, useSelector} from "react-redux";
@@ -25,13 +23,18 @@ const SideBar = ({open, setOpen}) => {
     const dispatch = useDispatch();
     const hasRole = useHasRole();
     const {email} = useSelector(state => state.auth)
-    const [expanded, setExpanded] = useState(false);
-    const [width, setWidth] = useState(44);
     const small = useXtraSmallSize();
+    const [state, setState] = useState({
+        expanded: false,
+        width: 44
+    });
 
 
     useEffect(() => {
-        setExpanded(open && small);
+        setState({
+            expanded: open && small,
+            width: open && small ? 300 : 44
+        });
         if (!small) {
             setOpen(false);
         }
@@ -41,13 +44,6 @@ const SideBar = ({open, setOpen}) => {
     const classes = useStyle();
     const mainStyles0 = mainStyles();
 
-    useEffect(() => {
-        if (expanded) {
-            setWidth(300);
-        } else {
-            setWidth(44);
-        }
-    }, [expanded])
 
     const icons = [
         {
@@ -112,26 +108,38 @@ const SideBar = ({open, setOpen}) => {
 
     const go = (address) => {
         history.push(address);
-        setExpanded(open);
+        setState({
+            expanded: open,
+            width: 44
+        })
         setOpen(false);
     }
 
-
     return (
 
-        <Drawer variant={"persistent"}  open={!small || open}
-                onMouseEnter={() => setExpanded(true)} onMouseLeave={() => setExpanded(open)}>
+        <Drawer variant={"persistent"} open={!small || open}
+                onMouseEnter={() => {
+                    setState({
+                        expanded: true,
+                        width: 300
+                    })
+                }} onMouseLeave={() => {
+            setState({
+                expanded: open,
+                width: 44
+            })
+        }}>
             {small && <div style={{height: 52}}/>}
-            <div style={{maxWidth: width, overflow: "hidden"}} className={classes.expanding}>
-                {! small && <div onClick={() => {
+            <div style={{maxWidth: state.width, overflow: "hidden"}} className={classes.expanding}>
+                {!small && <div onClick={() => {
                     history.push("/")
                 }}
-                                 style={{display: "flex", flexDirection: "row", justifyContent: "center"}}
+                                style={{display: "flex", flexDirection: "row", justifyContent: "center"}}
                 >
                     <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
                 </div>}
                 {hasRole('USER') && <div>
-                    <BellComponent expanded={expanded}/>
+                    <BellComponent expanded={state.expanded}/>
                 </div>}
                 <Divider/>
                 {icons.filter(icon => {
@@ -143,12 +151,15 @@ const SideBar = ({open, setOpen}) => {
                 }).map(icon => {
                     return (
                         <div key={icon.link} className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
-                             style={{paddingRight: expanded ? 100 : 0}} onClick={() => go(icon.link)}>
+                             style={{paddingRight: state.expanded ? 100 : 0}} onClick={() => go(icon.link)}>
                             {icon.icon !== 10 && <div style={{padding: 10}}> {icon.icon}</div>}
                             {icon.icon === 10 &&
-                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 9}}><Typography
-                                variant={"h6"}> {icon.icon}</Typography></div>}
-                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
+                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 9}}>
+                                <Typography variant={"h6"} color={"inherit"}>
+                                    {icon.icon}
+                                </Typography>
+                            </div>}
+                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>{icon.tooltip}</BoldTyphography>
                             </div>
                         </div>
@@ -162,7 +173,7 @@ const SideBar = ({open, setOpen}) => {
                             history.push('/')
                         }}>
                             <div style={{padding: 9}}><ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/></div>
-                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}}>
+                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Logout</BoldTyphography>
                             </div>
                         </div>
@@ -173,7 +184,7 @@ const SideBar = ({open, setOpen}) => {
                             history.push('/login')
                         }}>
                             <div style={{padding: 11}}><ExitToAppOutlinedIcon/></div>
-                            <div style={{opacity: expanded ? 1 : 0, transition: "all 0,2s"}} s>
+                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Login</BoldTyphography>
                             </div>
                         </div>
@@ -184,7 +195,7 @@ const SideBar = ({open, setOpen}) => {
     );
 };
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles(() => ({
     iconButton: {
         '&:hover': {
             color: 'red'
