@@ -5,6 +5,9 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.responses.AcceptanceRequestWithAGame;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
+import com.mwozniak.capser_v2.service.game.GameService;
+import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,7 +23,7 @@ public class AcceptanceRequestService {
 
     private final List<GameService> gameServiceList;
 
-    public AcceptanceRequestService(AcceptanceRequestRepository acceptanceRequestRepository,DoublesService doublesService, EasyCapsGameService easyCapsGameService, SinglesGameService singlesGameService, UnrankedGameService unrankedGameService) {
+    public AcceptanceRequestService(AcceptanceRequestRepository acceptanceRequestRepository, DoublesService doublesService, EasyCapsGameService easyCapsGameService, SinglesGameService singlesGameService, UnrankedGameService unrankedGameService) {
         this.acceptanceRequestRepository = acceptanceRequestRepository;
         gameServiceList = new ArrayList<>();
         gameServiceList.add(doublesService);

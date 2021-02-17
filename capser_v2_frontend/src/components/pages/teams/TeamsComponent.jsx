@@ -65,18 +65,20 @@ const TeamsComponent = () => {
             <div className={classes.root}>
                 <Grid container spacing={2}>
                     <Grid item md={4} sm={12} xs={12}>
-                        {!loading ? <div style={{padding: 10, minHeight: 500,}}
-                                        className={classes.standardBorder}>
-                            <div className={classes.header}>
+                        {!loading ? <div style={{minHeight: 500, padding: 0}}
+                                         className={classes.standardBorder}>
+                            <div className={classes.header} style={{padding: 10, alignItems: 'center'}}>
                                 <Typography variant={"h5"} style={{flex: 1}}>Your Teams</Typography>
-                                <Button onClick={() => setOpen(true)}>Create new</Button>
+                                <div>
+                                    <Button onClick={() => setOpen(true)}>Create new</Button>
+                                </div>
                             </div>
                             <Divider style={{marginTop: 5}}/>
                             {teams.map(team => {
                                 if (!team.active) {
                                     return null;
                                 }
-                                return <div key={team.id} style={{cursor: "pointer", padding: '5px 0 5px 0'}}>
+                                return <div key={team.id} style={{cursor: "pointer", padding: 10}}>
                                     <div className={classes.header} style={{padding: 5}}>
                                         <Typography color={"primary"}
                                                     className={classes.link}
@@ -105,13 +107,13 @@ const TeamsComponent = () => {
                     </Grid>
                     <Grid item md={8} sm={12} xs={12}>
                         <div style={{padding: 10}} className={classes.standardBorder}>
-                            <div style={{minHeight: 500}}>
+                            <div style={{minHeight: 480}}>
                                 {!selectedTeam ? <div style={{
                                     display: 'flex',
                                     justifyContent: 'center',
                                     flexDirection: "column",
                                     alignItems: 'center',
-                                    height: 500
+                                    height: 480
                                 }}>
                                     <img src={"/dd.svg"} style={{maxWidth: 250}}/>
                                     {teams.length > 0 ?

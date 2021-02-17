@@ -1,6 +1,8 @@
 package com.mwozniak.capser_v2.service;
 
 
+import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
+import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

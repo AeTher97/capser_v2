@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -125,7 +126,7 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     public void fillCommonProperties(AbstractGameDto abstractGameDto) {
         SinglesGameDto singlesGameDto = (SinglesGameDto) abstractGameDto;
         setGameEventList(singlesGameDto.getGameEventList());
-        setGamePlayerStats(Arrays.asList(
+        setGamePlayerStats(new ArrayList<>(Arrays.asList(
                 GamePlayerStats.builder()
                         .score(singlesGameDto.getPlayer1Stats().getScore())
                         .sinks(singlesGameDto.getPlayer1Stats().getSinks())
@@ -135,7 +136,7 @@ public abstract class AbstractSinglesGame extends AbstractGame {
                         .score(singlesGameDto.getPlayer2Stats().getScore())
                         .sinks(singlesGameDto.getPlayer2Stats().getSinks())
                         .playerId(singlesGameDto.getPlayer2Stats().getPlayerId())
-                        .build()));
+                        .build())));
         setGameMode(singlesGameDto.getGameMode());
         setPlayer1(singlesGameDto.getPlayer1Stats().getPlayerId());
         setPlayer2(singlesGameDto.getPlayer2Stats().getPlayerId());

@@ -20,13 +20,13 @@ const YesNoDialog = ({onYes, onNo, question, open, setOpen}) => {
 
     return (
         <Dialog open={open}>
-            <div className={[classes.paddedContent, classes.standardBorder].join(' ')}  style={{backgroundColor: 'black'}}>
+            <div className={[classes.standardBorder].join(' ')}  style={{backgroundColor: 'black',margin: 0}}>
             <Typography variant={"h5"}>{question}</Typography>
             <div className={classes.header} style={{marginTop: 20}}>
                 <Button onClick={handleYes} style={{marginRight: 10}}>
                     Yes
                 </Button>
-                <Button onClick={handleNo}>
+                <Button onClick={handleNo} variant={"outlined"}>
                     No
                 </Button>
             </div>

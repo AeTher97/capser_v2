@@ -7,13 +7,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LoadingComponent from "../../utils/LoadingComponent";
 import PropTypes from 'prop-types';
 import {useKeyPress} from "../../utils/UseKeyPress";
+import mainStyles from "../../misc/styles/MainStyles";
+import {useSelector} from "react-redux";
 
 
-const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, className, clearOnChange = false, disabled}) => {
+const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, className, clearOnChange = false, disabled, searchYourself=false}) => {
 
 
     const searchPhrase = useFieldSearch(url, resultSize || 5);
     const classes = fetchSelectFieldStyles();
+    const styles = mainStyles();
+    const {userId} = useSelector(state => state.auth)
 
     const [phrase, setPhrase] = useState('')
     const [searchResult, setSearchResult] = useState([])
@@ -33,7 +37,11 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
 
     useEffect(() => {
         if(searchResult.length && enterPress){
-            setPhrase(searchResult[cursorPosition][nameParameter]);
+            if(clearOnChange){
+                setPhrase('');
+            } else {
+                setPhrase(searchResult[cursorPosition][nameParameter]);
+            }
             ref.current.blur();
             onChange(searchResult[cursorPosition]);
         }
@@ -71,7 +79,11 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
             setSearching(true)
             timeout = setTimeout(() => {
                 searchPhrase(phrase).then((response => {
-                    setSearchResult(response.data.content)
+                    if(!searchYourself) {
+                        setSearchResult(response.data.content.filter(obj => obj.id !== userId))
+                    }else {
+                        setSearchResult(response.data.content)
+                    }
                     setSearching(false);
                     if(response.data.content.length > 0) {
                         setHovered(response.data.content[cursorPosition]);
@@ -124,7 +136,7 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                     )
                 }) : getNoResults()}
             </div> : <div className={classes.loadingContainer}>
-                <LoadingComponent size={"small"} wrapper={false}/>
+                <LoadingComponent size={"small"} wrapper={false} noPadding/>
                 <Typography>Searching...</Typography>
             </div>)
     }

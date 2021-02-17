@@ -16,7 +16,7 @@ import GavelIcon from '@material-ui/icons/Gavel';
 import mainStyles from "../../misc/styles/MainStyles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
-
+import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 const SideBar = ({open, setOpen}) => {
 
     const history = useHistory();
@@ -50,6 +50,11 @@ const SideBar = ({open, setOpen}) => {
             tooltip: "Homepage",
             link: "/",
             icon: <HomeOutlinedIcon/>
+        },
+        {
+            tooltip: "Tournaments",
+            link: "/tournaments",
+            icon: <AccountTreeOutlinedIcon/>
         },
         {
             tooltip: "Singles",
@@ -130,7 +135,7 @@ const SideBar = ({open, setOpen}) => {
             })
         }}>
             {small && <div style={{height: 52}}/>}
-            <div style={{maxWidth: state.width, overflow: "hidden"}} className={classes.expanding}>
+            <div style={{width: state.width, overflow: "hidden"}} className={classes.expanding}>
                 {!small && <div onClick={() => {
                     history.push("/")
                 }}
@@ -151,29 +156,29 @@ const SideBar = ({open, setOpen}) => {
                 }).map(icon => {
                     return (
                         <div key={icon.link} className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
-                             style={{paddingRight: state.expanded ? 100 : 0}} onClick={() => go(icon.link)}>
+                             style={{paddingRight: 0}} onClick={() => go(icon.link)}>
                             {icon.icon !== 10 && <div style={{padding: 10}}> {icon.icon}</div>}
                             {icon.icon === 10 &&
-                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 9}}>
+                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 10}}>
                                 <Typography variant={"h6"} color={"inherit"}>
                                     {icon.icon}
                                 </Typography>
                             </div>}
-                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
+                            <div style={{ transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>{icon.tooltip}</BoldTyphography>
                             </div>
                         </div>
                     )
                 })}
-                {hasRole('USER') ?
+                {hasRole('USER') || hasRole('ADMIN') ?
                     <>
                         <Divider/>
                         <div className={[classes.redHover, mainStyles0.centeredRowNoFlex].join(' ')} onClick={() => {
                             dispatch(logoutAction())
                             history.push('/')
                         }}>
-                            <div style={{padding: 9}}><ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/></div>
-                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
+                            <div style={{padding: 11}}><ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/></div>
+                            <div style={{ transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Logout</BoldTyphography>
                             </div>
                         </div>
@@ -184,7 +189,7 @@ const SideBar = ({open, setOpen}) => {
                             history.push('/login')
                         }}>
                             <div style={{padding: 11}}><ExitToAppOutlinedIcon/></div>
-                            <div style={{opacity: state.expanded ? 1 : 0, transition: "all 0,2s"}}>
+                            <div style={{ transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Login</BoldTyphography>
                             </div>
                         </div>

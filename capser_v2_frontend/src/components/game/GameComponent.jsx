@@ -1,12 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Typography} from "@material-ui/core";
+import {Grid, Typography, useTheme} from "@material-ui/core";
 import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import {useHistory} from "react-router-dom";
+
+export const getGameIcon = (type) => {
+    switch (type) {
+        case "EASY_CAPS":
+            return <EasyIcon fontSize={"small"}/>
+        case "SINGLES":
+            return <SinglesIcon fontSize={"small"}/>
+        case "DOUBLES":
+            return <DoublesIcon fontSize={"small"}/>
+        case "UNRANKED":
+            return <UnrankedIcon fontSize={"small"}/>
+    }
+}
 
 const GameComponent = ({game, vertical = true}) => {
 
@@ -18,6 +31,7 @@ const GameComponent = ({game, vertical = true}) => {
     const containerDiv = useRef();
     const [baseHeight, setBaseHeight] = useState(0);
     const history = useHistory();
+    const theme = useTheme();
 
 
     const findPlayerStats = (game, id) => {
@@ -28,19 +42,6 @@ const GameComponent = ({game, vertical = true}) => {
     const classes = mainStyles();
 
 
-    const getIcon = (type) => {
-        switch (type) {
-            case "EASY_CAPS":
-                return <EasyIcon fontSize={"small"}/>
-            case "SINGLES":
-                return <SinglesIcon fontSize={"small"}/>
-            case "DOUBLES":
-                return <DoublesIcon fontSize={"small"}/>
-            case "UNRANKED":
-                return <UnrankedIcon fontSize={"small"}/>
-        }
-    }
-
     useEffect(() => {
         if (columnRef.current && additionalInfoRef.current) {
             if (expanded) {
@@ -49,12 +50,12 @@ const GameComponent = ({game, vertical = true}) => {
                 setMaxHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight - 30)
             }
         }
-        if(columnRef.current){
-            setBaseHeight( columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight)
+        if (columnRef.current) {
+            setBaseHeight(columnRef.current.scrollHeight - additionalInfoRef.current.scrollHeight)
         } else {
             setBaseHeight(0);
         }
-    }, [expanded,columnRef])
+    }, [expanded, columnRef])
 
     let team1Name;
     let team2Name;
@@ -74,18 +75,17 @@ const GameComponent = ({game, vertical = true}) => {
         team2Score = game.team2Score;
         const player1Stats = findPlayerStats(game, game.team1.playerList[0]);
         const player2Stats = findPlayerStats(game, game.team2.playerList[0]);
-        game.team1.playerList.forEach(player => {
-            team1Rebuttals += findPlayerStats(game, player).rebuttals;
-        })
-        game.team2.playerList.forEach(player => {
-            team2Rebuttals += findPlayerStats(game, player).rebuttals;
-        })
+        console.log(game)
         game.team1.playerList.forEach(player => {
             team1Sinks += findPlayerStats(game, player).sinks;
         })
         game.team2.playerList.forEach(player => {
             team2Sinks += findPlayerStats(game, player).sinks;
         })
+        if(team1Sinks !== 0 && team2Sinks!== 0) {
+            team1Rebuttals = team2Sinks - team2Score;
+            team2Rebuttals = team1Sinks - team1Score;
+        }
         team1PointsChange = player1Stats.pointsChange;
         team2PointsChange = player2Stats.pointsChange;
     } else {
@@ -108,7 +108,9 @@ const GameComponent = ({game, vertical = true}) => {
             style={{height: baseHeight}}
             ref={containerDiv}
             onMouseUp={() => {
-                history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                if(game.gameType!=='DOUBLES') {
+                    history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                }
             }}
             onTouchEnd={(e) => {
                 e.preventDefault();
@@ -118,7 +120,7 @@ const GameComponent = ({game, vertical = true}) => {
                  className={[classes.standardBorder, gameStyle.expanding, expanded ? gameStyle.elevated : gameStyle.notElevated].join(' ')}
                  style={{
                      borderRadius: 7,
-                     backgroundColor: '#05070a',
+                     backgroundColor: theme.palette.background.default,
                      maxHeight: maxHeight,
                      zIndex: expanded ? 1000 : 0
                  }}
@@ -135,7 +137,7 @@ const GameComponent = ({game, vertical = true}) => {
                     <Typography variant={"h6"} style={{fontWeight: 600}} className={gameStyle.margins}
                                 color={"primary"}>{team1Name} vs {team2Name}</Typography>
                     <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
-                        {getIcon(game.gameType)}
+                        {getGameIcon(game.gameType)}
                         <Typography style={{marginLeft: 5}}>{getGameTypeString(game.gameType)}</Typography>
                     </div>
                     <div style={{display: 'block'}} className={gameStyle.margins}>
@@ -155,11 +157,16 @@ const GameComponent = ({game, vertical = true}) => {
                         </div>
                         <div className={classes.centeredRowNoFlex}>
                             <Typography className={classes.margin}>{team1Name}</Typography>
-                            <BoldTyphography
-                                color={team1PointsChange > 0 ? 'green' : 'red'}>{team1PointsChange}</BoldTyphography>
+                            <div style={{color: team1PointsChange > 0 ? 'green' : 'red'}}>
+                                <BoldTyphography color={"inherit"}
+                                >{team1PointsChange}</BoldTyphography>
+                            </div>
                             <Typography className={classes.margin}>{team2Name}</Typography>
-                            <BoldTyphography
-                                color={team2PointsChange > 0 ? 'green' : 'red'}>{team2PointsChange}</BoldTyphography>
+                            <div style={{color: team2PointsChange > 0 ? 'green' : 'red'}}>
+                                <BoldTyphography
+                                    color={"inherit"}>{team2PointsChange}</BoldTyphography>
+                            </div>
+
                         </div>
                     </div>}
                     <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
@@ -168,11 +175,14 @@ const GameComponent = ({game, vertical = true}) => {
                         </div>
                         <div className={classes.centeredRowNoFlex}>
                             <Typography className={classes.margin}>{team1Name}</Typography>
-                            <BoldTyphography
-                                color={team1Rebuttals >= team2Rebuttals ? 'green' : 'red'}>{team1Rebuttals}</BoldTyphography>
+                            <div style={{color: team1Rebuttals >= team2Rebuttals ? 'green' : 'red'}}>
+                                <BoldTyphography color={"inherit"}>{team1Rebuttals}</BoldTyphography>
+                            </div>
                             <Typography className={classes.margin}>{team2Name}</Typography>
-                            <BoldTyphography
-                                color={team2Rebuttals >= team1Rebuttals ? 'green' : 'red'}>{team2Rebuttals}</BoldTyphography>
+                            <div style={{color: team2Rebuttals >= team1Rebuttals ? 'green' : 'red'}}>
+                                <BoldTyphography
+                                    color={"inherit"}>{team2Rebuttals}</BoldTyphography>
+                            </div>
                         </div>
                     </div>
                     <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
@@ -181,11 +191,14 @@ const GameComponent = ({game, vertical = true}) => {
                         </div>
                         <div className={classes.centeredRowNoFlex}>
                             <Typography className={classes.margin}>{team1Name}</Typography>
-                            <BoldTyphography
-                                color={team1Sinks >= team2Sinks ? 'green' : 'red'}>{team1Sinks}</BoldTyphography>
+                            <div style={{color: team1Sinks >= team2Sinks ? 'green' : 'red'}}>
+                                <BoldTyphography color={"inherit"}>{team1Sinks}</BoldTyphography>
+                            </div>
                             <Typography className={classes.margin}>{team2Name}</Typography>
-                            <BoldTyphography
-                                color={team2Sinks >= team1Sinks ? 'green' : 'red'}>{team2Sinks}</BoldTyphography>
+                            <div style={{color: team2Sinks >= team1Sinks ? 'green' : 'red'}}>
+                                <BoldTyphography
+                                    color={"inherit"}>{team2Sinks}</BoldTyphography>
+                            </div>
                         </div>
                     </div>
                 </div>

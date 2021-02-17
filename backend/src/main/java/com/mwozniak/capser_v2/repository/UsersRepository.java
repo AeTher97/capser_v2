@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.repository;
 
+import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ public interface UsersRepository extends JpaRepository<User, UUID> {
     Optional<User> findUserByUsername(String username);
 
     Page<User> findByUsernameContainingIgnoreCase(String username, Pageable pageable);
+    Page<User> findByRoleNot(Roles role,Pageable pageable);
 
 
 }

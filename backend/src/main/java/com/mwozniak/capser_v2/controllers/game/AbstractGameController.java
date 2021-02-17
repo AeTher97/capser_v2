@@ -2,11 +2,8 @@ package com.mwozniak.capser_v2.controllers.game;
 
 import com.mwozniak.capser_v2.controllers.GameController;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
-import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
-import com.mwozniak.capser_v2.service.AbstractGameService;
+import com.mwozniak.capser_v2.service.game.AbstractGameService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;

@@ -15,6 +15,7 @@ import {useHistory} from "react-router-dom";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
+import CapserPagination from "../../misc/CapserPagination";
 
 const MultipleGameList = ({hiddenPoints, type}) => {
 
@@ -31,10 +32,10 @@ const MultipleGameList = ({hiddenPoints, type}) => {
 
 
     return (
-        <div className={classes.root}>
-            <div className={classes.leftOrientedWrapperNoPadding}>
+        <div style={{display: "flex", justifyContent: 'center'}}>
+            <div style={{maxWidth: 800}}>
                 <div className={[classes.paddedContent].join(' ')}>
-                    {!loading ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
+                    {!loading ? <Grid container spacing={0}>{games.map(game => <Grid xs={12} item key={game.id}>
                             <GameComponent game={game}
                                            vertical={small}/>
                         </Grid>)} </Grid> :
@@ -43,7 +44,10 @@ const MultipleGameList = ({hiddenPoints, type}) => {
                         </div>}
                     {!loading && pagesNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                        <Pagination count={pagesNumber} onChange={handlePageChange} page={currentPage}/>
+                        <CapserPagination onNext={() => setPage(currentPage + 1)}
+                                          onPrevious={() => setPage(currentPage + -1)}
+                                          currentPage={currentPage}
+                                          pageCount={pagesNumber}/>
                     </div>}
                 </div>
             </div>

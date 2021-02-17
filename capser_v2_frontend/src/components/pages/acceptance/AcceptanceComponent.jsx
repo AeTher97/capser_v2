@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import useAcceptanceFetch from "../../../data/Acceptance";
 import PageHeader from "../../misc/PageHeader";
-import {Divider, TableBody} from "@material-ui/core";
+import {Divider, TableBody, Typography} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -18,6 +18,9 @@ import LoadingComponent from "../../../utils/LoadingComponent";
 import CheckIcon from '@material-ui/icons/Check';
 import {usePlayerTeams} from "../../../data/TeamsData";
 import {fetchUsername} from "../../../data/UsersFetch";
+import {listStyles} from "../singles/SinglesPlayersList";
+import {useXtraSmallSize} from "../../../utils/SizeQuery";
+import BoldTyphography from "../../misc/BoldTyphography";
 
 const AcceptanceComponent = props => {
 
@@ -34,6 +37,9 @@ const AcceptanceComponent = props => {
     })
     const [onNo, setOnNo] = useState(() => () => {
     })
+
+    const small = useXtraSmallSize();
+    const styles = listStyles({small})();
 
     const dispatch = useDispatch();
     const {acceptGame, rejectGame} = useGameAcceptance();
@@ -167,69 +173,61 @@ const AcceptanceComponent = props => {
         const opponent = findUsername(game.player1 === userId ? game.player2 : game.player1);
         const playerStats = findPlayerStats(game, userId);
         const opponentStats = findPlayerStats(game, game.player1 === userId ? game.player2 : game.player1);
-        return (<TableRow key={request.id}>
-            <TableCell>{getGameTypeString(game.gameType)}</TableCell>
-            <TableCell>{getGameModeString(game.gameMode)}</TableCell>
-            <TableCell>{opponent}</TableCell>
-            <TableCell>{game.winner === userId ? 'Victory' : 'Loss'}</TableCell>
-            <TableCell>{playerStats.score} : {opponentStats.score}</TableCell>
-            <TableCell>{playerStats.rebuttals} : {opponentStats.rebuttals}</TableCell>
-            <TableCell>{playerStats.sinks} : {opponentStats.sinks}</TableCell>
-            <TableCell>{new Date(game.time).toDateString()}</TableCell>
+        return (<div key={request.id} className={styles.row} style={{flexDirection: "column"}}>
+            <div className={classes.header} style={{flexDirection: small ? "column" : "row"}}>
+                <BoldTyphography>{getGameTypeString(game.gameType)}</BoldTyphography>
+                <Typography style={{marginLeft: 10, marginRight: 10}}>{getGameModeString(game.gameMode)}</Typography>
+                <Typography>{game.winner === userId ? 'Victory' : 'Loss'} against {opponent}</Typography>
+            </div>
+            <div className={classes.header} style={{flexWrap: 'wrap', width: '100%', flexDirection: small ? "column" : "row"}}>
+                <Typography style={{marginRight: 20}}>Score {playerStats.score} : {opponentStats.score}</Typography>
+                <Typography
+                    style={{marginRight: 20}}>Rebuttals {playerStats.rebuttals} : {opponentStats.rebuttals}</Typography>
+                <Typography style={{marginRight: 20}}>Sinks {playerStats.sinks} : {opponentStats.sinks}</Typography>
+                <Typography>Date {new Date(game.time).toDateString()}</Typography>
 
-            {request.acceptanceRequestType !== 'PASSIVE' ? <TableCell>
-                    <Grid container spacing={2}>
-                        <Grid item>
-                            <Button onClick={() => {
-                                handleAccept(game, opponent)
-                            }}>
-                                Accept
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button variant={"outlined"} onClick={() => {
-                                handleReject(game, opponent)
-                            }}>
-                                Reject
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </TableCell> :
-                <TableCell>Pending game</TableCell>}
+                {request.acceptanceRequestType !== 'PASSIVE' ? <div style={{flex: 1, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
+                        <Button onClick={() => {
+                            handleAccept(game, opponent)
+                        }} style={{marginRight: 5}}>
+                            Accept
+                        </Button>
+                        <Button variant={"outlined"} onClick={() => {
+                            handleReject(game, opponent)
+                        }}>
+                            Reject
+                        </Button></div> :
+                    <Typography>Pending game</Typography>}
+            </div>
 
-        </TableRow>)
+        </div>)
     }
 
     const getMultipleRow = (game, request) => {
-        return (<TableRow key={request.id}>
-            <TableCell>{getGameTypeString(game.gameType)}</TableCell>
-            <TableCell>{getGameModeString(game.gameMode)}</TableCell>
-            <TableCell>{findTeamName(findTeamId(game))}</TableCell>
-            <TableCell>{getWinnerString(game)}</TableCell>
-            <TableCell>{game.team1Score} : {game.team2Score}</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>{new Date(game.time).toDateString()}</TableCell>
-            {request.acceptanceRequestType !== 'PASSIVE' ? <TableCell>
-                    <Grid container spacing={2}>
-                        <Grid item>
+        return (<div key={request.id} className={styles.row} style={{flexDirection: "column"}}>
+            <div className={classes.header} style={{flexDirection: small ? "column" : "row"}}>
+            <BoldTyphography>{getGameTypeString(game.gameType)}</BoldTyphography>
+            <Typography style={{marginLeft: 10, marginRight:10}}>{getGameModeString(game.gameMode)}</Typography>
+            <Typography>{getWinnerString(game)} against {findTeamName(findTeamId(game))}</Typography>
+            </div>
+            <div className={classes.header} style={{flexWrap: 'wrap', width: '100%', flexDirection: small ? "column" : "row"}}>
+            <Typography style={{marginRight: 20}}>Score {game.team1Score} : {game.team2Score}</Typography>
+            <Typography>{new Date(game.time).toDateString()}</Typography>
+            {request.acceptanceRequestType !== 'PASSIVE' ? <div style={{flex: 1, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
                             <Button onClick={() => {
                                 handleAccept(game, findTeamName(findTeamId(game)))
-                            }}>
+                            }} style={{marginRight: 5}}>
                                 Accept
                             </Button>
-                        </Grid>
-                        <Grid item>
                             <Button variant={"outlined"} onClick={() => {
                                 handleReject(game, findTeamName(findTeamId(game)))
                             }}>
                                 Reject
                             </Button>
-                        </Grid>
-                    </Grid>
-                </TableCell> :
-                <TableCell>Pending game</TableCell>}
-        </TableRow>)
+                </div> :
+                <Typography>Pending game</Typography>}
+            </div>
+        </div>)
     }
 
 
@@ -246,39 +244,35 @@ const AcceptanceComponent = props => {
         <div>
             <PageHeader title={"Games Accepting"} icon={<CheckIcon fontSize={"large"}/>}/>
 
+            <div style={{display: "flex", justifyContent: 'center'}}>
 
-            <div className={[classes.paddedContent].join(' ')}>
-                <Divider/>
-                {!loading ? <Table style={{width: '100%'}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Game Type</TableCell>
-                                <TableCell>Game Mode</TableCell>
-                                <TableCell>Opponent</TableCell>
-                                <TableCell>Result</TableCell>
-                                <TableCell>Score</TableCell>
-                                <TableCell>Rebuttals</TableCell>
-                                <TableCell>Sinks</TableCell>
-                                <TableCell>Time</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {acceptanceRequests.map(request => {
-                                    const game = getGame(request.gameToAccept)
-                                    return getGameRow(game, request);
-                                }
-                            )
-                            })
-                            }
-                        </TableBody>
-                    </Table> :
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                        <LoadingComponent/>
-                    </div>}
+                <div style={{maxWidth: 800, flex: 1}}>
+                    {!loading ? <div>
+                            <div className={classes.standardBorder} style={{padding: 0}}>
+                                <div className={styles.row} style={{flexDirection: small ? "column" : "row", justifyContent: "flex-start"}}>
+                                    <Typography>Games</Typography>
+                                </div>
+                                {acceptanceRequests.map(request => {
+                                        const game = getGame(request.gameToAccept)
+                                        return getGameRow(game, request);
+                                    }
+                                )}
+                                {acceptanceRequests.length === 0 && <div className={styles.row} style={{padding: 50}}>
+                                    <Typography variant={"h5"}>
+                                        No games to accept
+                                    </Typography>
+                                </div>}
+                            </div>
+                        </div> :
+                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                            <LoadingComponent/>
+                        </div>}
+
+                </div>
             </div>
 
             <YesNoDialog onYes={onYes} onNo={onNo} question={question} open={open} setOpen={setOpen}/>
+
         </div>
     );
 };

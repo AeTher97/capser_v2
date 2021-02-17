@@ -104,7 +104,7 @@ const AddDoublesGameComponent = props => {
             team2Score: opposingTeamScore,
             team1: team,
             team2: opposingTeam.id,
-            team1Players: teams.find(o => o.id===team).playerList,
+            team1Players: teams.find(o => o.id === team).playerList,
             team2Players: opposingTeam.playerList,
             playerStatsDtos: opposingTeamStats.concat(teamStats),
             gameEventList: []
@@ -155,125 +155,122 @@ const AddDoublesGameComponent = props => {
     }
 
     return (
-        <div>
+        <div style={{display: "flex", justifyContent: "center"}}>
+            <div style={{maxWidth: 700, flex: 1}}>
 
-            <div style={{padding: 8}}>
-                <Grid container spacing={2}>
-                    <Grid item md={4} sm={12} xs={12}>
-                        <div
-                            className={[classes.column, classes.height1000, classes.standardBorder].join(' ')}>
-                            <Typography variant={"h5"}>Game Data</Typography>
-                            <Divider/>
-                            <div className={classes.margin}>
-                                <Select label={"Game mode"} style={{minWidth: 200}} value={gameMode}
-                                        onChange={handleChange}>
-                                    <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
-                                    <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
-                                </Select>
-                            </div>
+                <div style={{padding: 8}}>
+                    <div
+                        className={[classes.column, classes.standardBorder].join(' ')}>
+                        <Typography variant={"h5"}>Game Data</Typography>
+                        <Divider/>
+                        <div className={classes.margin}>
+                            <Select label={"Game mode"} style={{minWidth: 200}} value={gameMode}
+                                    onChange={handleChange}>
+                                <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
+                                <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
+                            </Select>
                         </div>
-                    </Grid>
-                    <Grid item md={4} sm={12} xs={12}>
-                        <div
-                            className={[classes.column, classes.height1000,classes.standardBorder ].join(' ')}>
-                            <Typography variant={"h5"}>Player Team Data</Typography>
-                            <div className={classes.margin}>
-                                {teams.length === 0 && <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams page</Typography>}
-                                {teams.length > 0 &&
-                                <Select className={classes.width200} value={team} onChange={handleTeamChange}>
-                                    {teams.map(team => <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>)}
-                                </Select>}
-                            </div>
+                    </div>
+                    <div
+                        className={[classes.column, classes.standardBorder].join(' ')}>
+                        <Typography variant={"h5"}>Player Team Data</Typography>
+                        <div className={classes.margin}>
+                            {teams.length === 0 &&
+                            <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams
+                                page</Typography>}
+                            {teams.length > 0 &&
+                            <Select className={classes.width200} value={team} onChange={handleTeamChange}>
+                                {teams.map(team => <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>)}
+                            </Select>}
+                        </div>
+                        <div className={classes.margin}>
+                            <Typography>Points</Typography>
+                            <Select label={"Points"} style={{minWidth: 200}} value={teamScore} onChange={(e) => {
+                                setTeamScore(e.target.value)
+                            }}>
+                                {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
+                            </Select>
+                        </div>
+                        {team && teamStats.map(stats => <div key={stats.playerId}><Typography
+                            variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
-                                <Select label={"Points"} style={{minWidth: 200}} value={teamScore} onChange={(e) => {
-                                    setTeamScore(e.target.value)
-                                }}>
+                                <Select label={"Points"} style={{minWidth: 200}}
+                                        value={stats.score}
+                                        onChange={(e) => {
+                                            setTeamStatsValue(stats.playerId, e.target.value, 'score');
+                                        }}>
                                     {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                                 </Select>
                             </div>
-                            {team && teamStats.map(stats => <div key={stats.playerId}><Typography
-                                variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
-                                <div className={classes.margin}>
-                                    <Typography>Points</Typography>
-                                    <Select label={"Points"} style={{minWidth: 200}}
-                                            value={stats.score}
-                                            onChange={(e) => {
-                                                setTeamStatsValue(stats.playerId, e.target.value,'score');
-                                            }}>
-                                        {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
-                                    </Select>
-                                </div>
-
-                                <div className={classes.margin}>
-                                    <Typography>Sinks</Typography>
-                                    <Select label={"Sinks"} style={{minWidth: 200}}
-                                            value={stats.sinks}
-                                            onChange={(e) => {
-                                                setTeamStatsValue(stats.playerId, e.target.value,'sinks');
-                                            }}>
-                                        {getScoreOptions(21)}
-                                    </Select>
-                                </div>
-                            </div>)}
-
-                        </div>
-                    </Grid>
-
-                    <Grid item md={4} sm={12} xs={12}>
-                        <div
-                            className={[classes.column, classes.height1000, classes.standardBorder].join(' ')}>
-                            <Typography variant={"h5"}>Opponent Team Data</Typography>
 
                             <div className={classes.margin}>
-                                <FetchSelectField label={"Select Opposing Team"}
-                                                  onChange={handleOpponentTeamChange}
-                                                  url={"/teams/search"}
-                                                  nameParameter={"name"}/>
+                                <Typography>Sinks</Typography>
+                                <Select label={"Sinks"} style={{minWidth: 200}}
+                                        value={stats.sinks}
+                                        onChange={(e) => {
+                                            setTeamStatsValue(stats.playerId, e.target.value, 'sinks');
+                                        }}>
+                                    {getScoreOptions(21)}
+                                </Select>
                             </div>
+                        </div>)}
+
+                    </div>
+
+                    <div
+                        className={[classes.column, classes.standardBorder].join(' ')}>
+                        <Typography variant={"h5"}>Opponent Team Data</Typography>
+
+                        <div className={classes.margin}>
+                            <FetchSelectField label={"Select Opposing Team"}
+                                              onChange={handleOpponentTeamChange}
+                                              url={"/teams/search"}
+                                              nameParameter={"name"}/>
+                        </div>
+
+                        <div className={classes.margin}>
+                            <Typography>Points</Typography>
+
+                            <Select label={"Points"} value={opposingTeamScore} onChange={(e) => {
+                                setOpposingTeamScore(e.target.value)
+                            }} className={classes.width200}>
+                                {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
+                            </Select>
+                        </div>
+                        {opposingTeam && opposingTeamStats.map(stats => <div key={stats.playerId}><Typography
+                            variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
 
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
-
-                                <Select label={"Points"} value={opposingTeamScore} onChange={(e) => {
-                                    setOpposingTeamScore(e.target.value)
-                                }} className={classes.width200}>
+                                <Select label={"Points"} style={{minWidth: 200}}
+                                        value={stats.score}
+                                        onChange={(e) => {
+                                            setOpposingTeamStatsValue(stats.playerId, e.target.value, 'score');
+                                        }}>
                                     {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                                 </Select>
                             </div>
-                            {opposingTeam && opposingTeamStats.map(stats => <div key={stats.playerId}><Typography
-                                variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
 
-                                <div className={classes.margin}>
-                                    <Typography>Points</Typography>
-                                    <Select label={"Points"} style={{minWidth: 200}}
-                                            value={stats.score}
-                                            onChange={(e) => {
-                                                setOpposingTeamStatsValue(stats.playerId, e.target.value,'score');
-                                            }}>
-                                        {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
-                                    </Select>
-                                </div>
-
-                                <div className={classes.margin}>
-                                    <Typography>Sinks</Typography>
-                                    <Select label={"Sinks"} style={{minWidth: 200}}
-                                            value={stats.sinks}
-                                            onChange={(e) => {
-                                                setOpposingTeamStatsValue(stats.playerId, e.target.value,'sinks');
-                                            }}>
-                                        {getScoreOptions(21)}
-                                    </Select>
-                                </div>
-                            </div>)}
-                        </div>
-                    </Grid>
-                </Grid>
+                            <div className={classes.margin}>
+                                <Typography>Sinks</Typography>
+                                <Select label={"Sinks"} style={{minWidth: 200}}
+                                        value={stats.sinks}
+                                        onChange={(e) => {
+                                            setOpposingTeamStatsValue(stats.playerId, e.target.value, 'sinks');
+                                        }}>
+                                    {getScoreOptions(21)}
+                                </Select>
+                            </div>
+                        </div>)}
+                    </div>
+                </div>
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: 0}}>
+                    <Button onClick={handleSave}>Add a game</Button>
+                </div>
+                <div style={{height: 100}}/>
             </div>
 
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: 20}}>
-                <Button onClick={handleSave}>Add a game</Button>
-            </div>
         </div>
     );
 };

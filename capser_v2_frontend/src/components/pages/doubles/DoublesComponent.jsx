@@ -10,12 +10,14 @@ import {useHistory} from "react-router-dom";
 import AddDoublesGameComponent from "./AddDoublesGameComponent";
 import MultipleGameList from "./MultipleGameList";
 import TeamsList from "./TeamsList";
+import {useHasRole} from "../../../utils/SecurityUtils";
 
 
 const DoublesComponent = () => {
     const [currentTab, setCurrentTab] = useState(0);
     const {isAuthenticated} = useSelector(state => state.auth);
     const history = useHistory();
+    const hasRole = useHasRole();
 
     const handleTabChange = (e, value) => {
         if (value === 2 && !isAuthenticated) {
@@ -26,10 +28,10 @@ const DoublesComponent = () => {
     return (
         <div>
             <PageHeader title={"Doubles"} icon={<DoublesIcon/>}/>
-            <Tabs value={currentTab} onChange={handleTabChange}>
+            <Tabs value={currentTab} onChange={handleTabChange} style={{marginTop:5}} centered>
                 <Tab value={0} label={'Games'}/>
                 <Tab value={1} label={'Teams'}/>
-                <Tab value={2} label={'Add Game'}/>
+                {!hasRole('ADMIN') && <Tab value={2} label={'Post Game'}/>}
             </Tabs>
             <TabPanel value={currentTab} showValue={0}>
                 <MultipleGameList  type={'DOUBLES'}/>
@@ -37,9 +39,9 @@ const DoublesComponent = () => {
             <TabPanel value={currentTab} showValue={1}>
                 <TeamsList type={'DOUBLES'}/>
             </TabPanel>
-            <TabPanel value={currentTab} showValue={2}>
+            {!hasRole('ADMIN') && <TabPanel value={currentTab} showValue={2}>
                 <AddDoublesGameComponent/>
-            </TabPanel>
+            </TabPanel>}
         </div>
     );
 };

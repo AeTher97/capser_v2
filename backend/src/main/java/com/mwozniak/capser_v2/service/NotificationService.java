@@ -32,9 +32,9 @@ public class NotificationService {
         String text;
 
         if (acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)) {
-            text = "Your game with user " + otherUser + " is waiting to be accepted.";
+            text = "Your game with " + otherUser + " is waiting to be accepted.";
         } else {
-            text = "You have a game with user " + otherUser + " to accept.";
+            text = "You have a game with " + otherUser + " to accept.";
         }
 
         notify(Notification.builder()

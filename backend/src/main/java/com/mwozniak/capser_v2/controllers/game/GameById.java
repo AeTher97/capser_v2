@@ -4,6 +4,9 @@ import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GamemodeInvalidException;
 import com.mwozniak.capser_v2.service.*;
+import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
+import com.mwozniak.capser_v2.service.game.GameService;
+import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

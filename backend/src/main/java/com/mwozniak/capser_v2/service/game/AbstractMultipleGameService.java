@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.service;
+package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.NotificationType;
@@ -13,13 +13,18 @@ import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import com.mwozniak.capser_v2.service.NotificationService;
+import com.mwozniak.capser_v2.service.TeamService;
+import com.mwozniak.capser_v2.service.UserService;
 import com.mwozniak.capser_v2.utils.EloRating;
+import lombok.extern.log4j.Log4j;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Log4j
 public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     private final TeamService teamService;
@@ -31,12 +36,13 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     @Transactional
     @Override
-    public void queueGame(AbstractGame abstractGame) throws CapserException {
+    public UUID queueGame(AbstractGame abstractGame) throws CapserException {
         AbstractMultipleGame abstractMultipleGame = (AbstractMultipleGame) abstractGame;
         teamService.findTeam(abstractMultipleGame.getTeam1DatabaseId());
         teamService.findTeam(abstractMultipleGame.getTeam2DatabaseId());
         AbstractGame saved = saveGame(abstractGame);
         addAcceptanceAndNotify(saved);
+        return saved.getId();
     }
 
     @Override
@@ -83,7 +89,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
     }
 
     @Override
-    protected void updateEloAndStats(AbstractGame abstractGame, List<AcceptanceRequest> acceptanceRequestList) throws CapserException {
+    protected void updateEloAndStats(AbstractGame abstractGame) throws CapserException {
         AbstractMultipleGame multipleGame = (AbstractMultipleGame) abstractGame;
 
         TeamWithStats winner = teamService.findTeam(multipleGame.getWinnerTeamId());
@@ -114,25 +120,32 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
         multipleGame.calculateTeamStats(loser.getDoublesStats(),
                 multipleGame.getLoserTeamId().equals(multipleGame.getTeam1DatabaseId()) ? multipleGame.getTeam1Stats() : multipleGame.getTeam2Stats(), false ,eloResult.getResult2());
 
-        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
     }
 
     @Transactional
     @Override
-    public void acceptGame(UUID gameId) throws CapserException {
+    public AbstractGame acceptGame(UUID gameId) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
         game.setAccepted(true);
-        updateEloAndStats(game, acceptanceRequestList);
+        updateEloAndStats(game);
+        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
         saveGame(game);
-        notificationService.notify(Notification.builder()
-                .date(new Date())
-                .notificationType(NotificationType.GAME_ACCEPTED)
-                .text("Game with team " + teamService.findTeam(request.getAcceptingTeam()).getName()  + " was accepted.")
-                .seen(false)
-                .userId(request.getAcceptingUser())
-                .build());
+        acceptanceRequestList.stream().filter(acceptanceRequest -> acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).forEach(acceptanceRequest -> {
+            try {
+                notificationService.notify(Notification.builder()
+                        .date(new Date())
+                        .notificationType(NotificationType.GAME_ACCEPTED)
+                        .text("Game with team " + teamService.findTeam(request.getAcceptingTeam()).getName()  + " was accepted.")
+                        .seen(false)
+                        .userId(acceptanceRequest.getAcceptingUser())
+                        .build());
+            } catch (CapserException e) {
+                log.error("Failed to get team name.");
+            }
+        });
+        return game;
     }
 
     @Transactional
@@ -142,13 +155,19 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
         removeGame(game);
-        notificationService.notify(Notification.builder()
-                .date(new Date())
-                .notificationType(NotificationType.GAME_REJECTED)
-                .text("Game with team " +  teamService.findTeam(request.getAcceptingTeam()).getName() + " was rejected by on of the users.")
-                .seen(false)
-                .userId(request.getAcceptingUser())
-                .build());
+        acceptanceRequestList.stream().filter(acceptanceRequest -> acceptanceRequest.getAcceptanceRequestType().equals(AcceptanceRequestType.PASSIVE)).forEach(acceptanceRequest -> {
+            try {
+                notificationService.notify(Notification.builder()
+                        .date(new Date())
+                        .notificationType(NotificationType.GAME_REJECTED)
+                        .text("Game with team " +  teamService.findTeam(request.getAcceptingTeam()).getName() + " was rejected by on of the users.")
+                        .seen(false)
+                        .userId(acceptanceRequest.getAcceptingUser())
+                        .build());
+            } catch (CapserException e) {
+                log.error("Failed to get team name.");
+            }
+        });
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
 
     }

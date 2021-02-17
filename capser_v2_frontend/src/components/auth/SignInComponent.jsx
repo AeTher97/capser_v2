@@ -65,7 +65,7 @@ const SignInComponent = props => {
                         <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/register')}}>Sign up!</Typography>
                     </div>
                     <div className={classes.footer}>
-                        <Typography variant={"caption"}>Made with ❤ by Mike 2020</Typography>
+                        <Typography variant={"caption"}>Made with ❤ by Mike 2021</Typography>
                     </div>
                 </CenteredColumn>
             </div>

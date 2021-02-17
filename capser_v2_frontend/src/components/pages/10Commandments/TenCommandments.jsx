@@ -30,9 +30,10 @@ const TenCommandments = () => {
     let index = 0;
 
     return (
-        <div>
+        <div >
             <PageHeader title={"10 Commandments"} noSpace/>
-            <div className={classes.paddedContent}>
+            <div style={{display: 'flex',justifyContent: 'center'}}>
+            <div className={classes.paddedContent} style={{maxWidth:800}}>
 
                 <div className={!xSmall ? classes.root : null}>
                     <div className={classes.leftOrientedWrapperNoPadding}>
@@ -48,7 +49,7 @@ const TenCommandments = () => {
                     </div>
                 </div>
             </div>
-
+            </div>
         </div>
     );
 };

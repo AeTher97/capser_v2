@@ -8,7 +8,7 @@ import {useNotifications} from "../../data/NotificationData";
 import {useWindowSize} from "../../utils/UseSize";
 
 
-const NotificationList = ({notifications}) => {
+const NotificationList = ({notifications, markSeen}) => {
 
     const mainClasses = mainStyles();
     const notificationListClasses = notificationListStyle();
@@ -35,6 +35,7 @@ const NotificationList = ({notifications}) => {
                           style={{width: size.width < 400 ? size.width -60 : 350, padding: 10, borderBottom: '1px solid ' + theme.palette.divider}}
                           onClick={() => {
                               if (notification.notificationType === 'ACCEPT_REQUEST') {
+                                  markSeen();
                                   history.push('/secure/acceptance')
                               }
                           }}>

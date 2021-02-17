@@ -12,6 +12,8 @@ import SinglesGame from "../components/pages/singles/SinglesGame";
 import {useXtraSmallSize} from "../utils/SizeQuery";
 import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
+import TournamentComponent from "../components/tournament/TournamentComponent";
+import TournamentsComponent from "../components/tournament/TournamentsComponent";
 
 const InsecureNavigation = () => {
 
@@ -20,10 +22,10 @@ const InsecureNavigation = () => {
     const theme = useTheme();
 
     return (
-        <div>
+        <div style={{height:'100%'}}>
             <SideBar open={open} setOpen={setOpen}/>
             {small && <MobileTopBar open={open} setOpen={setOpen}/>}
-            <div style={{paddingLeft: small ? 0 : 44, backgroundColor: theme.palette.background.default}}>
+            <div style={{paddingLeft: small ? 0 : 44, backgroundColor: theme.palette.background.default, height:'100%'}}>
                 <Switch>
 
 
@@ -74,6 +76,14 @@ const InsecureNavigation = () => {
 
                     <Route exact path={"/rules"}>
                         <Rules/>
+                    </Route>
+
+                    <Route exact path={"/tournaments"}>
+                        <TournamentsComponent/>
+                    </Route>
+
+                    <Route exact path={"/:tournamentType/tournament/:tournamentId"}>
+                        <TournamentComponent/>
                     </Route>
 
 

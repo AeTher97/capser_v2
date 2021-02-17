@@ -25,7 +25,7 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
     const classes = mainStyles();
 
     const nameField = useFieldValidation(team.name, (value) => () => {
-        return validateLength(value, 5)
+        return validateLength(value, 3)
     })
     nameField.showError = true;
 

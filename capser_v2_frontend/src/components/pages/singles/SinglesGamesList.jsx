@@ -14,8 +14,11 @@ import {useHistory} from "react-router-dom";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
+import CapserPagination from "../../misc/CapserPagination";
 
-
+export  const findPlayerStats = (game, id) => {
+    return game.gamePlayerStats.find(o => o.playerId === id)
+}
 const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
     const [currentPage, setPage] = useState(1);
@@ -24,9 +27,7 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
     const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
 
 
-    const findPlayerStats = (game, id) => {
-        return game.gamePlayerStats.find(o => o.playerId === id)
-    }
+
 
     const handlePageChange = (e, value) => {
         setPage(value);
@@ -36,12 +37,12 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
     const classes = mainStyles();
     const styles = useStyles();
     return (
-        <div>
+        <div style={{display: "flex", justifyContent: 'center'}}>
 
-            <div className={classes.root}>
+            <div  style={{maxWidth:800}}>
                 <div className={classes.leftOrientedWrapperNoPadding}>
                     <div>
-                        {!loading ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
+                        {!loading ? <Grid container spacing={0}>{games.map(game => <Grid xs={12} item key={game.id}>
                                 <GameComponent game={game}
                                                vertical={small}/>
                             </Grid>)} </Grid>
@@ -51,7 +52,10 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
                             </div>}
                         {!loading && pagesNumber > 1 &&
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <Pagination count={pagesNumber} onChange={handlePageChange} page={currentPage}/>
+                            <CapserPagination onNext={() => setPage(currentPage + 1)}
+                                              onPrevious={() => setPage(currentPage + -1)}
+                                              currentPage={currentPage}
+                                              pageCount={pagesNumber}/>
                         </div>}
                     </div>
                 </div>

@@ -156,8 +156,8 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         } else {
             userStats.setGamesLost(userStats.getGamesLost() + 1);
         }
-
-        if ((getTeamSinks(teamStats) > 0) || (getTeamSinks(teamStats) == 0 && getTeamPoints(teamStats) == 0)) {
+        int score = team2.getPlayerList().contains(teamStats.get(0).getPlayerId()) ? team2Score : team1Score;
+        if ((getTeamSinks(teamStats) > 0) || (getTeamSinks(teamStats) == 0 && score == 0)) {
             userStats.setGamesLoggedSinks(userStats.getGamesLoggedSinks() + 1);
         }
 
@@ -174,7 +174,7 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         }
 
         if (getTeamSinks(opponentStats) > 0) {
-            userStats.setTotalRebuttals(getTeamSinks(opponentStats) - getTeamPoints(opponentStats));
+            userStats.setTotalRebuttals(userStats.getTotalRebuttals() + getTeamSinks(opponentStats) - getTeamPoints(opponentStats));
         }
 
         userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ? userStats.getTotalRebuttals() : (float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());

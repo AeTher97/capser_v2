@@ -1,4 +1,5 @@
 .App {
+  height: 100%;
 }
 
 .App-logo {
@@ -22,6 +23,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+
+#tournamentContainer {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
 
 .App-link {
   color: #61dafb;

@@ -30,10 +30,19 @@ const getOverrides = (divider, baseTheme, type) => {
         MuiButton: {
             root: {
                 textTransform: "none",
-                padding: '2px 15px 2px 15px'
+                padding: '2px 15px 2px 15px',
+                borderRadius:7,
             },
-            outlined: {
-                padding: '2px 15px 2px 15px'
+            outlinedPrimary: {
+                color: divider,
+                padding: '2px 15px 2px 15px',
+                border: '1px solid ' + '#626875',
+                backgroundColor: "#35383e",
+                "&:hover" :{
+                    border: '1px solid ' + 'white',
+                    backgroundColor: "#555656",
+
+                }
             }
         },
         MuiInputLabel: {
@@ -85,6 +94,7 @@ const getOverrides = (divider, baseTheme, type) => {
 
         MuiTooltip: {
             tooltip: {
+                padding:0,
                 backgroundColor:  'rgba(52,52,52,1)'
             }
         },
@@ -148,8 +158,8 @@ const getOverrides = (divider, baseTheme, type) => {
         },
         MuiTabs: {
             root: {
-                minHeight: 24,
-                borderBottom: "1px solid " + divider,
+                minHeight: 34,
+                borderBottom: "1px solid " + '#353b43',
                 color: 'white'
             },
             indicator: {
@@ -162,19 +172,29 @@ const getOverrides = (divider, baseTheme, type) => {
                 textTransform: 'none',
                 fontWeight: baseTheme.typography.fontWeightBold,
                 marginRight: baseTheme.spacing(1),
+                borderBottom: "3px solid transparent",
                 '&$selected': {
                     opacity: 1,
-                    borderBottom: "2px solid " + baseTheme.palette.primary.main
+                    borderBottom: "3px solid " + baseTheme.palette.primary.main
+                },
+                '&:hover' :{
+                    opacity: 0.9,
+                    borderBottom: "3px solid " + 'rgb(23,58,79)'
+                },
+                '&$selected:hover': {
+                    opacity: 1,
+                    borderBottom: "3px solid " + baseTheme.palette.primary.main
                 },
             }
         },
         MuiPaginationItem: {
             root: {
                 minWidth: 22,
-                height: 22
+                height: 22,
+                borderRadius: 5
             },
             rounded: {
-                borderRadius: 3,
+                borderRadius: 0,
                 border: "1px solid " + baseTheme.palette.divider,
             },
             page: {
@@ -293,6 +313,7 @@ export const darkTheme = createMuiTheme({
             paper: 'rgb(0,14,24)'
         },
         divider: '#353b43'
+
     },
 
     overrides: getOverrides(dividerDark, baseDarkTheme, "dark"),

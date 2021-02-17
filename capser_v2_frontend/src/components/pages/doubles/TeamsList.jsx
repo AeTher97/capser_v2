@@ -9,53 +9,63 @@ import {TableBody, Typography} from "@material-ui/core";
 import {getGameModeString, getStatsString} from "../../../utils/Utils";
 import Table from "@material-ui/core/Table";
 import Pagination from "@material-ui/lab/Pagination";
+import CapserPagination from "../../misc/CapserPagination";
+import {listStyles} from "../singles/SinglesPlayersList";
+import {useXtraSmallSize} from "../../../utils/SizeQuery";
 
 const TeamsList = props => {
 
     const [currentPage, setPage] = useState(1);
-    const {teams, loading, pageNumber} = useAllTeams(currentPage -1);
+    const {teams, loading, pageNumber} = useAllTeams(currentPage - 1);
     const handlePageChange = (e, value) => {
         setPage(value);
     }
     let index = 0;
+    const small = useXtraSmallSize();
+    const styles = listStyles({small})();
 
 
     const classes = mainStyles();
 
     return (
-        <div className={classes.root}>
-            <div className={classes.leftOrientedWrapperNoPadding}>
+        <div style={{display: "flex", justifyContent: 'center'}}>
+            <div style={{maxWidth: 800, flex: 1}}>
+                {!loading && <div className={classes.standardBorder} style={{padding: 0}}>
+                    <div className={styles.row}>
+                        <Typography style={{flex: 0.2}}>Team</Typography>
+                        <Typography style={{flex: 0.5}}>Team Points</Typography>
+                        <Typography style={{flex: 0.3}}>Players</Typography>
+                    </div>
+                    {teams.map(team => {
+                        index++;
+                        const stats = team.doublesStats;
+                        return <div key={team.id} className={styles.row}>
+                            <Typography color={"primary"} className={classes.link} style={{flex: 0.2}}>
+                                {(currentPage - 1) * 10 + index}. {team.name}
+                            </Typography>
+                            <Typography style={{flex: 0.5}}>{stats.points.toFixed(2)}</Typography>
+                            <div style={{flex: 0.3}}>
+                                <div className={classes.header}>
+                                    {team.playerList.map(player => {
+                                        return <Typography key={player.id} color={"primary"}
+                                                           className={classes.link} style={{marginRight: 10, marginLeft: small ? 10 : 0}}>
+                                            {player.username}
+                                        </Typography>
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    })}
+                </div>}
                 <div className={[classes.paddedContent].join(' ')}>
                     {!loading ? <Table style={{width: '100%'}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Placement</TableCell>
-                                <TableCell>Team Name</TableCell>
-                                <TableCell>Team Points</TableCell>
-                                <TableCell>Players</TableCell>
-                            </TableRow>
-                        </TableHead>
+
                         <TableBody>
                             {teams.map(team => {
-                                index++;
-                                const stats = team.doublesStats;
+
                                 return (
                                     <TableRow key={team.id}>
-                                        <TableCell>{(currentPage - 1) * 10 + index}</TableCell>
-                                        <TableCell>
-                                            <Typography color={"primary"} className={classes.link}>
-                                                {team.name}
-                                            </Typography>
-                                        </TableCell>
-                                        <TableCell>{stats.points.toFixed(2)}</TableCell>
-                                        <TableCell>
-                                            {team.playerList.map(player => {
-                                                return <Typography key={player.id} color={"primary"}
-                                                                     className={classes.link}>
-                                                    {player.username}
-                                                </Typography>
-                                            })}
-                                        </TableCell>
+
 
                                     </TableRow>)
                             })
@@ -64,7 +74,10 @@ const TeamsList = props => {
                     </Table> : <LoadingComponent/>}
                     {!loading && pageNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                        <Pagination count={pageNumber} onChange={handlePageChange} page={currentPage}/>
+                        <CapserPagination onNext={() => setPage(currentPage + 1)}
+                                          onPrevious={() => setPage(currentPage + -1)}
+                                          currentPage={currentPage}
+                                          pageCount={pageNumber}/>
                     </div>}
                 </div>
             </div>

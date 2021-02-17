@@ -10,7 +10,10 @@ import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
 import {useMultipleGamePost} from "../../../data/MultipleGamesData";
 
-const AddSinglesGameComponent = ({type}) => {
+const AddSinglesGameComponent = ({
+                                     type, choosePlayers = true, displayGameDataSection = true, showBorder = true,
+                                     handleSaveExternal, overridePlayer1Name, overridePlayer2Name, onCancel
+                                 }) => {
 
     const classes = mainStyles()
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
@@ -36,7 +39,7 @@ const AddSinglesGameComponent = ({type}) => {
 
     const handleSave = () => {
 
-        if (!opponent) {
+        if (!opponent && choosePlayers) {
             dispatch(showError("You have to choose an opponent"));
             return;
         }
@@ -47,10 +50,19 @@ const AddSinglesGameComponent = ({type}) => {
             sinks: playerSinks
         };
 
-        const player2Stats = {
-            playerId: opponent.id,
-            score: opponentScore,
-            sinks: opponentSinks
+        let player2Stats;
+        if (opponent) {
+            player2Stats = {
+                playerId: opponent.id,
+                score: opponentScore,
+                sinks: opponentSinks
+            }
+        } else {
+            player2Stats = {
+                playerId: undefined,
+                score: opponentScore,
+                sinks: opponentSinks
+            }
         }
 
         const request = {
@@ -58,6 +70,10 @@ const AddSinglesGameComponent = ({type}) => {
             player1Stats: player1Stats,
             player2Stats: player2Stats,
             gameEventList: []
+        }
+        if (handleSaveExternal) {
+            handleSaveExternal(request);
+            return;
         }
 
         postGame(request).then(() => {
@@ -84,13 +100,12 @@ const AddSinglesGameComponent = ({type}) => {
     }
 
     return (
-        <div>
+            <div style={{display: "flex", justifyContent: "center"}}>
+                <div style={{maxWidth: 700, flex: 1}}>
 
-            <div style={{padding: 8}}>
-                <Grid container spacing={2}>
-                    <Grid item md={4} sm={12} xs={12}>
-                        <div
-                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
+                    <div style={{padding: 8}}>
+                        {displayGameDataSection && <div
+                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
                             <Typography variant={"h5"}>Game Data</Typography>
                             <Divider/>
                             <div className={classes.margin}>
@@ -100,12 +115,11 @@ const AddSinglesGameComponent = ({type}) => {
                                     <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
                                 </Select>
                             </div>
-                        </div>
-                    </Grid>
-                    <Grid item md={4} sm={12} xs={12}>
+                        </div>}
+
                         <div
-                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
-                            <Typography variant={"h5"}>Player data</Typography>
+                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                            <Typography variant={"h5"}>{overridePlayer1Name || "Player data"}</Typography>
 
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
@@ -125,18 +139,15 @@ const AddSinglesGameComponent = ({type}) => {
                                 </Select>
                             </div>
                         </div>
-                    </Grid>
 
-                    <Grid item md={4} sm={12} xs={12}>
                         <div
-                            className={[classes.column, classes.height700, classes.standardBorder].join(' ')}>
-                            <Typography variant={"h5"}>Opponent data</Typography>
-
-                            <div className={classes.margin}>
+                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                            <Typography variant={"h5"}>{overridePlayer2Name || "Opponent data"}</Typography>
+                            {choosePlayers && <div className={classes.margin}>
                                 <FetchSelectField label={"Select Opponent"} onChange={(value) => setOpponent(value)}
                                                   url={"/users/search"}
                                                   nameParameter={"username"}/>
-                            </div>
+                            </div>}
 
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
@@ -157,14 +168,15 @@ const AddSinglesGameComponent = ({type}) => {
                                 </Select>
                             </div>
                         </div>
-                    </Grid>
-                </Grid>
-            </div>
+                    </div>
 
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: 20}}>
-                <Button onClick={handleSave}>Add a game</Button>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: 0}}>
+                        <Button onClick={handleSave}>Add a game</Button>
+                        {onCancel &&
+                        <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
+                    </div>
+                </div>
             </div>
-        </div>
     );
 };
 

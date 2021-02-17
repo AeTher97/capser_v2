@@ -1,6 +1,6 @@
 import React from 'react';
 import mainStyles from "../../misc/styles/MainStyles";
-import {TableBody, TableRow, Typography} from "@material-ui/core";
+import {TableBody, TableRow, Typography, useTheme} from "@material-ui/core";
 import LogoComponent from "./LogoComponent";
 import TableCell from "@material-ui/core/TableCell";
 import Table from "@material-ui/core/Table";
@@ -12,9 +12,10 @@ const PlayerCard = (props) => {
     const classes = mainStyles();
 
     const stats = player[getStatsString(type)];
+    const theme = useTheme();
 
     return (
-        <div className={classes.tooltip}>
+        <div className={classes.standardBorder} style={{margin:0, backgroundColor: theme.palette.background.paper}}>
             <LogoComponent/>
             <div className={classes.centeredRow}>
                 <Typography color={"primary"} variant={"h6"}>{player.username}</Typography>

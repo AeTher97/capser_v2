@@ -20,6 +20,7 @@
                           to="1 1"
                           begin="0s"
                           dur="1s"
+                          calcMode="linear"
                           repeatCount="indefinite"/>
 
         <animateTransform attributeName="transform"
@@ -29,6 +30,7 @@
                           to="-1 1"
                           begin="1s"
                           dur="1s"
+                          calcMode="discrete"
                           repeatCount="indefinite"/>
     </g>
 </svg>

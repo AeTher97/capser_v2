@@ -6,25 +6,26 @@ import {useDashboard} from "../../data/DashboardData";
 import LoadingComponent from "../../utils/LoadingComponent";
 import {getGameTypeString} from "../../utils/Utils";
 import GameComponent from "../game/GameComponent";
+import {useWindowSize} from "../../utils/UseSize";
 
 const HomeComponent = () => {
 
     const classes = mainStyles();
     const theme = useTheme();
+    const size = useWindowSize();
 
     const {games, posts, gamesLoading, postsLoading} = useDashboard();
 
 
     return (
-        <>
+        <div style={{height:'100%', overflow: 'scroll'}}>
             <PageHeader title={"Global Caps League"} showLogo/>
-            <Grid className={classes.root} container>
+            <Grid className={classes.root} container style={{padding:0}}>
                 {!gamesLoading && !postsLoading ? <Grid container>
                     <Grid item sm={8} xs={12}>
-                        <div className={classes.leftOrientedWrapperNoPadding}>
+                        <div className={classes.leftOrientedWrapperNoPadding} style={{padding:15}}>
                             <Typography variant={"h5"}>News Feed</Typography>
                             <div style={{padding: 10}}>
-                                <Divider/>
                                 {posts.map(post => {
                                     return (
                                         <div key={post.title} style={{textAlign: "left"}}>
@@ -41,15 +42,17 @@ const HomeComponent = () => {
                                             <Typography align={"left"} variant={"caption"}
                                                         className={classes.text}>{post.signature}</Typography>
                                             </div>
+                                            <Divider style={{marginTop:20}}/>
                                         </div>)
                                 })}
                             </div>
                         </div>
                     </Grid>
-                    <Grid item sm={4} xs={12} style={{textAlign: "left"}}>
+                    <Grid item sm={4} xs={12} style={{minHeight: size.height - 120,textAlign: "left", borderLeft: '1px solid ' + theme.palette.divider,padding:15}}>
+                        <div>
                         <Typography variant={"h5"}>Latest Games</Typography>
+                        </div>
                         <div style={{padding: 10}}>
-                            <Divider style={{marginBottom: 10}}/>
                             <Grid container spacing={2}>
                                 {games.map(game => {
                                     return (
@@ -65,7 +68,7 @@ const HomeComponent = () => {
                 </Grid> : <LoadingComponent/>}
             </Grid>
 
-        </>);
+        </div>);
 }
 
 

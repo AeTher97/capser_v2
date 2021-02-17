@@ -82,14 +82,6 @@ const mainStyles = makeStyles(theme => ({
             textDecoration: "underline red"
         }
     },
-    tooltip: {
-        padding: 15,
-        backgroundColor: 'black',
-        backgroundImage: `url(/reflection.svg)`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'top left',
-        backgroundSize: 'cover',
-    },
     neonTooltip: {
         padding: 0,
         boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
@@ -117,6 +109,12 @@ const mainStyles = makeStyles(theme => ({
     empty: {},
     standardBorder: {
         border: "1px solid #5a6572",
+        borderRadius: 6,
+        padding: 15,
+        margin:10
+    },
+    disabledBorder: {
+        border: "1px solid #1e2126",
         borderRadius: 6,
         padding: 15
     }

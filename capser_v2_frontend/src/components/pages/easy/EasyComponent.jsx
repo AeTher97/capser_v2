@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import SinglesGamesList from "../singles/SinglesGamesList";
 import SinglesPlayersList from "../singles/SinglesPlayersList";
 import AddSinglesGameComponent from "../singles/AddSinglesGameComponent";
+import {useHasRole} from "../../../utils/SecurityUtils";
 
 const EasyComponent = () => {
 
@@ -17,6 +18,7 @@ const EasyComponent = () => {
     const {isAuthenticated} = useSelector(state => state.auth)
 
     const history = useHistory();
+    const hasRole = useHasRole();
 
 
     const handleTabChange = (e, value) => {
@@ -29,10 +31,10 @@ const EasyComponent = () => {
     return (<div>
         <PageHeader title={"Easy Caps"} icon={<EasyIcon fontSize={"large"}/>} noSpace/>
 
-        <Tabs value={currentTab} onChange={handleTabChange}>
+        <Tabs value={currentTab} onChange={handleTabChange} centered style={{marginTop:5}}>
             <Tab value={0} label={'Games'}/>
             <Tab value={1} label={'Players'}/>
-            <Tab value={2} label={'Add Game'}/>
+            {!hasRole('ADMIN') &&  <Tab value={2} label={'Post Game'}/>}
         </Tabs>
 
         <TabPanel value={currentTab} showValue={0}>
@@ -43,9 +45,9 @@ const EasyComponent = () => {
             <SinglesPlayersList type={'EASY_CAPS'}/>
         </TabPanel>
 
-        <TabPanel value={currentTab} showValue={2}>
+        {!hasRole('ADMIN') && <TabPanel value={currentTab} showValue={2}>
             <AddSinglesGameComponent type={'EASY_CAPS'}/>
-        </TabPanel>
+        </TabPanel>}
     </div>)
 };
 

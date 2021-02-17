@@ -72,78 +72,81 @@ const Rules = () => {
     return (
         <div>
             <PageHeader title={'Rules'} icon={<GavelIcon fontSize={"large"}/>}/>
-            <div className={classes.root}>
-                <Typography color={"primary"} variant={"h4"}>Official Game of Caps rulebook</Typography>
-                <div className={styles.section}>
-                    <Typography>Official Game of Caps rulebook originally written down on October 16 2020 by Mike.
-                        Any changes made after October 16 2020 will be marked as modifications and stated in rules
-                        version
-                        section.
-                    </Typography>
-                </div>
-                <div className={styles.section}>
-                    <Typography>
-                        Any player who wants to play a complete game that counts as a valid singles game and changes
-                        singles
-                        player rating
-                        has to follow these rules while playing. Other game variants like easy caps, unranked or doubles
-                        follow the rules
-                        more loosely (differences will be marked and explained).
-                    </Typography>
-                </div>
-                <Typography variant={"h5"}>Basic rules</Typography>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div className={classes.standardBorder} style={{maxWidth: 800}}>
+                    <Typography color={"primary"} variant={"h4"}>Official Game of Caps rulebook</Typography>
+                    <div className={styles.section}>
+                        <Typography>Official Game of Caps rulebook originally written down on October 16 2020 by Mike.
+                            Any changes made after October 16 2020 will be marked as modifications and stated in rules
+                            version
+                            section.
+                        </Typography>
+                    </div>
+                    <div className={styles.section}>
+                        <Typography>
+                            Any player who wants to play a complete game that counts as a valid singles game and changes
+                            singles
+                            player rating
+                            has to follow these rules while playing. Other game variants like easy caps, unranked or
+                            doubles
+                            follow the rules
+                            more loosely (differences will be marked and explained).
+                        </Typography>
+                    </div>
+                    <Typography variant={"h5"}>Basic rules</Typography>
 
-                {basicRules.map(rule => {
-                    index ++;
-                     return   <div className={styles.section} key={rule}>
-                            <Typography >{index}. {rule}</Typography>
-                        </div>
-                    }
-                )}
-                <Typography variant={"h5"}>Playing field rules</Typography>
+                    {basicRules.map(rule => {
+                            index++;
+                            return <div className={styles.section} key={rule}>
+                                <Typography>{index}. {rule}</Typography>
+                            </div>
+                        }
+                    )}
+                    <Typography variant={"h5"}>Playing field rules</Typography>
 
-                {fieldRules.map(rule => {
-                        index ++;
-                        return   <div className={styles.section} key={rule}>
-                            <Typography >{index}. {rule}</Typography>
-                        </div>
-                    }
-                )}
+                    {fieldRules.map(rule => {
+                            index++;
+                            return <div className={styles.section} key={rule}>
+                                <Typography>{index}. {rule}</Typography>
+                            </div>
+                        }
+                    )}
 
-                <Typography variant={"h5"}>Scoring rules</Typography>
+                    <Typography variant={"h5"}>Scoring rules</Typography>
 
-                {scoringRules.map(rule => {
-                        index ++;
-                        return   <div className={styles.section} key={rule}>
-                            <Typography >{index}. {rule}</Typography>
-                        </div>
-                    }
-                )}
+                    {scoringRules.map(rule => {
+                            index++;
+                            return <div className={styles.section} key={rule}>
+                                <Typography>{index}. {rule}</Typography>
+                            </div>
+                        }
+                    )}
 
-                <Typography variant={"h5"}>Conflict resolution</Typography>
+                    <Typography variant={"h5"}>Conflict resolution</Typography>
 
-                {conflictRules.map(rule => {
-                        index ++;
-                        return   <div className={styles.section} key={rule}>
-                            <Typography >{index}. {rule}</Typography>
-                        </div>
-                    }
-                )}
+                    {conflictRules.map(rule => {
+                            index++;
+                            return <div className={styles.section} key={rule}>
+                                <Typography>{index}. {rule}</Typography>
+                            </div>
+                        }
+                    )}
 
-                <Typography variant={"h5"}>Good manners</Typography>
+                    <Typography variant={"h5"}>Good manners</Typography>
 
-                {goodManners.map(rule => {
-                        index ++;
-                        return   <div className={styles.section} key={rule}>
-                            <Typography >{index}. {rule}</Typography>
-                        </div>
-                    }
-                )}
+                    {goodManners.map(rule => {
+                            index++;
+                            return <div className={styles.section} key={rule}>
+                                <Typography>{index}. {rule}</Typography>
+                            </div>
+                        }
+                    )}
 
-                <Typography color={"primary"} variant={"h4"}>Rules version</Typography>
-                <div className={styles.section}>
-                    <Typography>16.10.2020 - Caps rules written down.
-                    </Typography>
+                    <Typography color={"primary"} variant={"h4"}>Rules version</Typography>
+                    <div className={styles.section}>
+                        <Typography>16.10.2020 - Caps rules written down.
+                        </Typography>
+                    </div>
                 </div>
             </div>
         </div>

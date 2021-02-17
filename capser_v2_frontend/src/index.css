@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
 
 }
 
@@ -67,4 +68,8 @@ div::-webkit-scrollbar-thumb:hover {
 div::-webkit-scrollbar-corner {
   background: transparent;
 
+}
+
+#root{
+  height: 100%;
 }

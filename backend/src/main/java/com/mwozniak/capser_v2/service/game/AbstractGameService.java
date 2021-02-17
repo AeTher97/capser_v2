@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.service;
+package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.NotificationType;
@@ -12,9 +12,12 @@ import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
-import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import com.mwozniak.capser_v2.service.NotificationService;
+import com.mwozniak.capser_v2.service.UserService;
+import com.mwozniak.capser_v2.service.game.GameService;
 import com.mwozniak.capser_v2.utils.EloRating;
 import lombok.extern.log4j.Log4j;
+import org.springframework.security.core.parameters.P;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
@@ -39,11 +42,19 @@ public abstract class AbstractGameService implements GameService {
         this.notificationService = notificationService;
     }
 
+    @Override
+    public UUID queueGame(AbstractGame abstractGame) throws CapserException{
+        return queueGame(abstractGame,true);
+    }
+
     @Transactional
     @Override
-    public void queueGame(AbstractGame abstractGame) throws CapserException {
+    public UUID queueGame(AbstractGame abstractGame, boolean notify) throws CapserException {
         AbstractGame saved = saveGame(abstractGame);
-        addAcceptanceAndNotify(saved);
+        if(notify) {
+            addAcceptanceAndNotify(saved);
+        }
+        return saved.getId();
     }
 
     protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
@@ -64,22 +75,41 @@ public abstract class AbstractGameService implements GameService {
         notificationService.notify(activeAcceptanceRequest, user1.getUsername());
     }
 
+    @Override
+    public AbstractGame acceptGame(UUID gameId) throws CapserException {
+        return acceptGame(gameId,true);
+    }
+
     @Transactional
     @Override
-    public void acceptGame(UUID gameId) throws CapserException {
+    public AbstractGame acceptGame(UUID gameId, boolean notify) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
         game.setAccepted(true);
-        updateEloAndStats(game, acceptanceRequestList);
+        updateEloAndStats(game);
+        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
         saveGame(game);
-        notificationService.notify(Notification.builder()
-                .date(new Date())
-                .notificationType(NotificationType.GAME_ACCEPTED)
-                .text("Game with user " + userService.getUser(request.getAcceptingUser()).getUsername()  + " was accepted.")
-                .seen(false)
-                .userId(request.getAcceptingUser())
-                .build());
+        if(notify) {
+            notificationService.notify(Notification.builder()
+                    .date(new Date())
+                    .notificationType(NotificationType.GAME_ACCEPTED)
+                    .text("Game with " + userService.getUser(request.getAcceptingUser()).getUsername() + " was accepted.")
+                    .seen(false)
+                    .userId(acceptanceRequestList.stream()
+                            .filter(acceptanceRequest -> acceptanceRequest.getAcceptanceRequestType()
+                                    .equals(AcceptanceRequestType.PASSIVE))
+                            .findFirst().get().getAcceptingUser())
+                    .build());
+        }
+        return game;
+    }
+
+    @Transactional
+    public AbstractGame postGameWithoutAcceptance(AbstractGame abstractGame) throws CapserException {
+        abstractGame.setAccepted(true);
+        updateEloAndStats(abstractGame);
+        return saveGame(abstractGame);
     }
 
     @Override
@@ -114,15 +144,18 @@ public abstract class AbstractGameService implements GameService {
         notificationService.notify(Notification.builder()
                 .date(new Date())
                 .notificationType(NotificationType.GAME_REJECTED)
-                .text("Game with user " + userService.getUser(request.getAcceptingUser()).getUsername()  + " was rejected by the user.")
+                .text("Game with " + userService.getUser(request.getAcceptingUser()).getUsername()  + " was rejected by the user.")
                 .seen(false)
-                .userId(request.getAcceptingUser())
+                .userId(acceptanceRequestList.stream()
+                        .filter(acceptanceRequest -> acceptanceRequest.getAcceptanceRequestType()
+                                .equals(AcceptanceRequestType.PASSIVE))
+                        .findFirst().get().getAcceptingUser())
                 .build());
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
 
     }
 
-    protected void updateEloAndStats(AbstractGame abstractGame, List<AcceptanceRequest> acceptanceRequestList) throws CapserException {
+    protected void updateEloAndStats(AbstractGame abstractGame) throws CapserException {
         AbstractSinglesGame abstractSinglesGame = (AbstractSinglesGame) abstractGame;
         User user1 = userService.getUser(abstractSinglesGame.getPlayer1());
         User user2 = userService.getUser(abstractSinglesGame.getPlayer2());
@@ -142,7 +175,6 @@ public abstract class AbstractGameService implements GameService {
         userService.saveUser(user1);
         userService.saveUser(user2);
 
-        acceptanceRequestRepository.deleteAll(acceptanceRequestList);
     }
 
 

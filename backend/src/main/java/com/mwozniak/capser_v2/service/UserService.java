@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
@@ -73,22 +74,13 @@ public class UserService {
     }
 
     public Page<User> getUsers(Pageable pageable) {
-        return usersRepository.findAll(pageable);
+        return usersRepository.findByRoleNot(Roles.ADMIN,pageable);
     }
 
     public Page<UserMinimized> searchUsers(Pageable pageable, String username) {
         Page<User> userPage = usersRepository.findByUsernameContainingIgnoreCase(username, pageable);
         try {
-            AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-            UUID userId = SecurityUtils.getUserId();
-            List<UserMinimized> userMinimizedList = userPage.getContent().stream().filter(user -> {
-                if (user.getId().equals(userId)) {
-                    atomicBoolean.set(true);
-                    return false;
-                } else {
-                    return true;
-                }
-            }).map(user -> {
+            List<UserMinimized> userMinimizedList = userPage.getContent().stream().filter(user -> !user.getRole().equals(Roles.ADMIN)).map(user -> {
                 UserMinimized userMinimized = new UserMinimized();
                 BeanUtils.copyProperties(user, userMinimized);
                 return userMinimized;
