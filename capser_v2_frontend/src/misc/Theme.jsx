@@ -96,6 +96,9 @@ const getOverrides = (divider, baseTheme, type) => {
             tooltip: {
                 padding:0,
                 backgroundColor:  'rgba(52,52,52,1)'
+            },
+            touch: {
+                padding: 0
             }
         },
         MuiIconButton: {

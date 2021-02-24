@@ -14,6 +14,11 @@ const BracketEntry = ({bracketEntry, showPath, isOwner,openAddGameDialog}) => {
     const classes = mainStyles();
     const borderColor = theme.palette.divider;
     const hasRole = useHasRole();
+    if(bracketEntry.game) {
+        console.log(bracketEntry.game.winner)
+        console.log(bracketEntry.player1.id)
+        console.log(bracketEntry.player2)
+    }
 
     const showPlus = isOwner && bracketEntry.player1 && bracketEntry.player2 && !bracketEntry.game && hasRole('ADMIN');
     const getUsername = (player) =>{
@@ -39,14 +44,14 @@ const BracketEntry = ({bracketEntry, showPath, isOwner,openAddGameDialog}) => {
                     <div className={[entryStyle.entry, !bracketEntry.bye ?  classes.standardBorder : classes.disabledBorder].join(' ')} style={{padding: 0, margin: 0}}>
                         <div className={[entryStyle.border, entryStyle.padding].join(' ')} style={{borderBottom: '1px solid ' + borderColor}}>
                             <div style={{display: "flex", flexDirection: "row"}}>
-                            <Typography style={{flex:1}}>{getUsername(bracketEntry.player1)}</Typography>
+                            <Typography style={{flex:1, opacity: bracketEntry.game && bracketEntry.player1.id !== bracketEntry.game.winner ? 0.5 : 1}}>{getUsername(bracketEntry.player1)}</Typography>
                                 {bracketEntry.player1 && bracketEntry.game &&  <Typography
                                     style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player1.id).score}</Typography>}
                             </div>
                         </div>
                         <div className={entryStyle.padding}>
                             <div style={{display: "flex", flexDirection: "row"}}>
-                            <Typography style={{flex: 1}}>{getUsername(bracketEntry.player2)}</Typography>
+                            <Typography style={{flex:1, opacity: bracketEntry.game && bracketEntry.player2.id !== bracketEntry.game.winner ? 0.5 : 1}}>{getUsername(bracketEntry.player2)}</Typography>
                                 {bracketEntry.player2 && bracketEntry.game &&  <Typography
                                     style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player2.id).score}</Typography>}
                             </div>

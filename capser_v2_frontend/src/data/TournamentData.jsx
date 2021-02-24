@@ -23,9 +23,9 @@ export const useTournamentsList = (type, pageNumber = 0, pageSize = 10) => {
                 authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
-            const copy = tournaments.slice();
-            copy.push(response.data);
-            setTournaments(copy);
+            const newContent = [response.data];
+            newContent.push(...tournaments);
+            setTournaments(newContent);
         }).finally(() => {
             if (shouldUpdate) {
                 setLoading(false);

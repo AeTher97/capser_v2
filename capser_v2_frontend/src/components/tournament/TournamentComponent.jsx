@@ -34,6 +34,7 @@ const TournamentComponent = () => {
     const theme = useTheme();
     const history = useHistory();
     const hasRole = useHasRole();
+    const {roles} = useSelector(state => state.auth)
 
 
     const isOwner = () => {
@@ -78,7 +79,6 @@ const TournamentComponent = () => {
         request.player1Stats.playerId = overrides.player1.id;
         request.player2Stats.playerId = overrides.player2.id;
         postTournamentGame(overrides.id, request);
-        console.log(request);
         setAddGameOpen(false);
     }
 

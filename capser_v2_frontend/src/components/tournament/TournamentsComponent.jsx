@@ -108,7 +108,7 @@ const TournamentsComponent = () => {
                 </div>
             </div>
             <Dialog open={creationOpen}>
-                <div className={classes.standardBorder} style={{margin: 100, color: "red"}}>
+                <div className={classes.standardBorder} style={{margin: 0}}>
                     <Typography variant={"h5"}>Create new tournament</Typography>
                     <div style={{display: "flex", flexDirection: "column"}}>
                     <TextField label={name === '' ? "Nazwa" : ''} style={{width:200}} value={name} onChange={event => setName(event.target.value)} />
@@ -132,7 +132,7 @@ const TournamentsComponent = () => {
                                 return;
                             }
                             createNew({
-                                tournamentName: "Nowy",
+                                tournamentName: name,
                                 seedType: "RANDOM",
                                 tournamentType: "SINGLE_ELIMINATION",
                                 size

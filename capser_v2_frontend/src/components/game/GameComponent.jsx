@@ -7,6 +7,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import {useHistory} from "react-router-dom";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 export const getGameIcon = (type) => {
     switch (type) {
@@ -32,6 +33,7 @@ const GameComponent = ({game, vertical = true}) => {
     const [baseHeight, setBaseHeight] = useState(0);
     const history = useHistory();
     const theme = useTheme();
+    const small = useXtraSmallSize();
 
 
     const findPlayerStats = (game, id) => {
@@ -75,7 +77,6 @@ const GameComponent = ({game, vertical = true}) => {
         team2Score = game.team2Score;
         const player1Stats = findPlayerStats(game, game.team1.playerList[0]);
         const player2Stats = findPlayerStats(game, game.team2.playerList[0]);
-        console.log(game)
         game.team1.playerList.forEach(player => {
             team1Sinks += findPlayerStats(game, player).sinks;
         })
@@ -113,21 +114,25 @@ const GameComponent = ({game, vertical = true}) => {
                 }
             }}
             onTouchEnd={(e) => {
-                e.preventDefault();
-                setExpanded(!expanded);
             }}>
             <div ref={columnRef}
                  className={[classes.standardBorder, gameStyle.expanding, expanded ? gameStyle.elevated : gameStyle.notElevated].join(' ')}
                  style={{
                      borderRadius: 7,
+                     margin: 0,
                      backgroundColor: theme.palette.background.default,
                      maxHeight: maxHeight,
                      zIndex: expanded ? 1000 : 0
                  }}
-                 onMouseEnter={() => {
-                     setDelay(setTimeout(() => {
-                         setExpanded(true)
-                     }, 750))
+                 onClick={() =>{
+                     setExpanded(!expanded);
+                 }}
+                 onMouseEnter={(e) => {
+                     if(!small) {
+                         setDelay(setTimeout(() => {
+                             setExpanded(true)
+                         }, 750))
+                     }
                  }} onMouseLeave={() => {
                 clearTimeout(delay);
                 setExpanded(false)

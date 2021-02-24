@@ -7,52 +7,62 @@ import LoadingComponent from "../../utils/LoadingComponent";
 import {getGameTypeString} from "../../utils/Utils";
 import GameComponent from "../game/GameComponent";
 import {useWindowSize} from "../../utils/UseSize";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 const HomeComponent = () => {
 
     const classes = mainStyles();
     const theme = useTheme();
     const size = useWindowSize();
+    const small = useXtraSmallSize();
 
     const {games, posts, gamesLoading, postsLoading} = useDashboard();
 
 
     return (
-        <div style={{height:'100%', overflow: 'scroll'}}>
+        <div style={{height: '100%', overflow: 'scroll'}}>
             <PageHeader title={"Global Caps League"} showLogo/>
-            <Grid className={classes.root} container style={{padding:0}}>
+            <Grid className={classes.root} container style={{padding: 0}} >
                 {!gamesLoading && !postsLoading ? <Grid container>
                     <Grid item sm={8} xs={12}>
-                        <div className={classes.leftOrientedWrapperNoPadding} style={{padding:15}}>
+                        <div className={classes.leftOrientedWrapperNoPadding} style={{padding: small ? 10: 15}}>
                             <Typography variant={"h5"}>News Feed</Typography>
-                            <div style={{padding: 10}}>
+                            <div style={{padding: small? 0 : 10}}>
+                                <Divider />
                                 {posts.map(post => {
                                     return (
                                         <div key={post.title} style={{textAlign: "left"}}>
-
-                                            <Typography align={"left"} variant={"caption"}
-                                                        className={classes.textSubheading}>{new Date(post.date).toDateString()}</Typography>
-                                            <div className={classes.standardBorder} style={{padding: 10}} >
+                                            <div  style={{padding: 10, margin: 0}}>
+                                                <div className={classes.header}>
                                                 <Typography variant={"h5"}
-                                                            style={{color: theme.palette.primary.main}}
+                                                            style={{color: theme.palette.primary.main, flex: 1}}
                                                             align={"left"}
                                                             className={classes.textHeading}>{post.title}</Typography>
-                                            <Typography align={"left"}
-                                            >{post.description}</Typography>
-                                            <Typography align={"left"} variant={"caption"}
-                                                        className={classes.text}>{post.signature}</Typography>
+
+                                                    <Typography align={"left"} variant={"caption"}
+                                                                className={classes.textSubheading}>{new Date(post.date).toDateString()}</Typography>
+                                                </div>
+                                                <Typography align={"left"}
+                                                >{post.description}</Typography>
+                                                <Typography align={"left"} variant={"caption"}
+                                                            className={classes.text}>{post.signature}</Typography>
                                             </div>
-                                            <Divider style={{marginTop:20}}/>
+                                            <Divider style={{marginTop: 10}}/>
                                         </div>)
                                 })}
                             </div>
                         </div>
                     </Grid>
-                    <Grid item sm={4} xs={12} style={{minHeight: size.height - 120,textAlign: "left", borderLeft: '1px solid ' + theme.palette.divider,padding:15}}>
+                    <Grid item sm={4} xs={12} style={{
+                        minHeight: size.height - 120,
+                        textAlign: "left",
+                        borderLeft: '1px solid ' + theme.palette.divider,
+                        padding: small ? 10: 15
+                    }}>
                         <div>
-                        <Typography variant={"h5"}>Latest Games</Typography>
+                            <Typography variant={"h5"}>Latest Games</Typography>
                         </div>
-                        <div style={{padding: 10}}>
+                        <div style={{padding: small ? 0 : 10}}>
                             <Grid container spacing={2}>
                                 {games.map(game => {
                                     return (
