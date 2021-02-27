@@ -19,19 +19,12 @@ import CapserPagination from "../../misc/CapserPagination";
 export  const findPlayerStats = (game, id) => {
     return game.gamePlayerStats.find(o => o.playerId === id)
 }
-const SinglesGamesList = ({type, hiddenPoints = false}) => {
+const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
 
     const [currentPage, setPage] = useState(1);
     const small = useXtraSmallSize();
 
     const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
-
-
-
-
-    const handlePageChange = (e, value) => {
-        setPage(value);
-    }
 
 
     const classes = mainStyles();
@@ -41,10 +34,11 @@ const SinglesGamesList = ({type, hiddenPoints = false}) => {
 
             <div  style={{maxWidth:800}}>
                 <div className={classes.leftOrientedWrapperNoPadding}>
-                    <div>
-                        {!loading ? <Grid container spacing={0}>{games.map(game => <Grid xs={12} item key={game.id}>
+                    <div style={{padding: 15}}>
+                        {!loading && render ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
                                 <GameComponent game={game}
-                                               vertical={small}/>
+                                               vertical={small}
+                                                render={render}/>
                             </Grid>)} </Grid>
                             :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>

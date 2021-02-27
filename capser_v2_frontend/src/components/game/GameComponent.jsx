@@ -109,8 +109,13 @@ const GameComponent = ({game, vertical = true}) => {
             style={{height: baseHeight}}
             ref={containerDiv}
             onMouseUp={() => {
-                if(game.gameType!=='DOUBLES') {
-                    history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                if(!small) {
+                    if (game.gameType !== 'DOUBLES') {
+                        history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                    }
+                } else {
+                    setExpanded(!expanded);
+
                 }
             }}
             onTouchEnd={(e) => {
@@ -123,9 +128,6 @@ const GameComponent = ({game, vertical = true}) => {
                      backgroundColor: theme.palette.background.default,
                      maxHeight: maxHeight,
                      zIndex: expanded ? 1000 : 0
-                 }}
-                 onClick={() =>{
-                     setExpanded(!expanded);
                  }}
                  onMouseEnter={(e) => {
                      if(!small) {

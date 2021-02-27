@@ -4,10 +4,10 @@ import SignInComponent from "../components/auth/SignInComponent";
 import ErrorAlert from "../utils/ErrorAlert";
 
 
-const SignInScreen = () => {
+const SignInScreen = props => {
     return (
         <ErrorBoundary render={(error) => <ErrorAlert error={error}/>}>
-            <SignInComponent/>
+            <SignInComponent {...props}/>
         </ErrorBoundary>);
 };
 

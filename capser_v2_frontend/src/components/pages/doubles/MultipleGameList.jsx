@@ -17,7 +17,7 @@ import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
 import CapserPagination from "../../misc/CapserPagination";
 
-const MultipleGameList = ({hiddenPoints, type}) => {
+const MultipleGameList = ({hiddenPoints = false, type, render =true}) => {
 
     const classes = mainStyles();
     const small = useXtraSmallSize();
@@ -34,8 +34,8 @@ const MultipleGameList = ({hiddenPoints, type}) => {
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
             <div style={{maxWidth: 800}}>
-                <div className={[classes.paddedContent].join(' ')}>
-                    {!loading ? <Grid container spacing={0}>{games.map(game => <Grid xs={12} item key={game.id}>
+                <div style={{padding:15}}>
+                    {!loading && render ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
                             <GameComponent game={game}
                                            vertical={small}/>
                         </Grid>)} </Grid> :

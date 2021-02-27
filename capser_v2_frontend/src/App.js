@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import RefreshProvider from "./components/misc/RefreshProvider";
 import MainNavigation from "./routing/MainNavigation";
-import {BrowserRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {darkTheme} from "./misc/Theme";
 import {ThemeProvider} from "@material-ui/styles";
 
@@ -13,12 +13,13 @@ function App() {
 
     const bodyElt = document.querySelector("body");
     bodyElt.style.backgroundColor = theme.palette.background.default;
+    const history = useHistory();
 
     return (
         <div className="App">
             <RefreshProvider/>
 
-            <Router basename={process.env.PUBLIC_URL}>
+            <Router basename={process.env.PUBLIC_URL} history={history}>
                 <ThemeProvider theme={theme}>
                 <MainNavigation/>
                 </ThemeProvider>

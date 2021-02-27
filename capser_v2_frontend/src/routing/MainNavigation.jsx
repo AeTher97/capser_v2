@@ -21,9 +21,7 @@ const MainNavigation = () => {
 
     return (
         <Switch>
-            <Route exact path='/login'>
-                <SignInScreen/>
-            </Route>
+            <Route exact path='/login' render={(props) => <SignInScreen {...props}/>}/>
 
             <Route exact path={"/register"}>
                 <RegisterComponent/>

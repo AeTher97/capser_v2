@@ -12,14 +12,13 @@ import CenteredColumn from "../misc/CenteredColumn";
 
 const SignInComponent = props => {
 
-    const location = useLocation();
-    const {from} = location.state || {from: {pathname: '/'}};
     const classes = useStyle();
 
     const password = useFieldValidation("", () => {
     });
     const email = useFieldValidation("", () => {
     });
+
 
     const {error} = useSelector(state => state.auth);
 
@@ -42,8 +41,12 @@ const SignInComponent = props => {
             email: email.value,
             password: password.value
         }, (authToken, refreshToken) => {
-            history.push(from);
             saveTokenInStorage(authToken, refreshToken, email.value)
+            if(props.location && props.location.state){
+                history.push(props.location.state.prevPath);
+                return;
+            }
+            history.push("/");
         }))
     }
 
