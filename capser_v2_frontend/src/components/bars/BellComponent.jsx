@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useNotifications} from "../../data/NotificationData";
-import {Badge, IconButton, Link, Typography} from "@material-ui/core";
+import {Badge, Link} from "@material-ui/core";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
@@ -8,7 +8,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 import mainStyles from "../../misc/styles/MainStyles";
 import BoldTyphography from "../misc/BoldTyphography";
-import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 const BellComponent = ({expanded = true}) => {
@@ -24,6 +23,12 @@ const BellComponent = ({expanded = true}) => {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+        if (!expanded) {
+            setAnchorEl(null);
+        }
+    }, [expanded])
 
     const handleClose = () => {
         markSeen();
