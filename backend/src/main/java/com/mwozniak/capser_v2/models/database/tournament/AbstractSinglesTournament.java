@@ -110,15 +110,23 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
                         continue;
                     }
 
-                    if(topEntry.getGame()!=null){
-                        if(higherEntry.getPlayer1()==null){
-                            higherEntry.setPlayer1(topEntry.getPlayer1().getId().equals(topEntry.getGame().getWinner()) ? topEntry.getPlayer1(): topEntry.getPlayer2());
+                    if (topEntry.getGame() != null) {
+                        if (higherEntry.getPlayer1() == null) {
+                            higherEntry.setPlayer1(topEntry.getPlayer1().getId().equals(topEntry.getGame().getWinner()) ? topEntry.getPlayer1() : topEntry.getPlayer2());
+                        }
+                    } else {
+                        if (topEntry.isForfeited()) {
+                            higherEntry.setPlayer1(topEntry.getPlayer1().getId().equals(topEntry.getForfeitedId()) ? topEntry.getPlayer2() : topEntry.getPlayer1());
                         }
                     }
 
-                    if(bottomEntry.getGame()!=null){
-                        if(higherEntry.getPlayer2()==null){
-                            higherEntry.setPlayer2(bottomEntry.getPlayer1().getId().equals(bottomEntry.getGame().getWinner()) ? bottomEntry.getPlayer1(): bottomEntry.getPlayer2());
+                    if (bottomEntry.getGame() != null) {
+                        if (higherEntry.getPlayer2() == null) {
+                            higherEntry.setPlayer2(bottomEntry.getPlayer1().getId().equals(bottomEntry.getGame().getWinner()) ? bottomEntry.getPlayer1() : bottomEntry.getPlayer2());
+                        }
+                    } else {
+                        if (bottomEntry.isForfeited()) {
+                            higherEntry.setPlayer2(bottomEntry.getPlayer1().getId().equals(bottomEntry.getForfeitedId()) ? bottomEntry.getPlayer2() : bottomEntry.getPlayer1());
                         }
                     }
 
@@ -131,9 +139,12 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             }
             AbstractSinglesBracketEntry entry = getBracketEntries().get(0);
             if(entry.getCoordinate() == 0){
-                if(entry.getGame()!=null){
+                if (entry.getGame() != null) {
                     setFinished(true);
                     setWinner(entry.getPlayer1().getId().equals(entry.getGame().getWinner()) ? new UserBridge(entry.getPlayer1()) : new UserBridge(entry.getPlayer2()));
+                } else if (entry.isForfeited()) {
+                    setFinished(true);
+                    setWinner(entry.getPlayer1().getId().equals(entry.getForfeitedId()) ? new UserBridge(entry.getPlayer2()) : new UserBridge(entry.getPlayer1()));
                 }
             }
         }

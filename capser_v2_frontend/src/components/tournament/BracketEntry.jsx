@@ -1,28 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Divider, Typography, useTheme} from "@material-ui/core";
+import React, {useState} from 'react';
+import {Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import {findPlayerStats} from "../pages/singles/SinglesGamesList";
 import {useHasRole} from "../../utils/SecurityUtils";
+import SkipNextOutlinedIcon from '@material-ui/icons/SkipNextOutlined';
 
-const BracketEntry = ({bracketEntry, showPath, isOwner,openAddGameDialog}) => {
+const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openSkipDialog}) => {
 
     const entryStyle = entryStyles();
     const theme = useTheme();
     const classes = mainStyles();
     const borderColor = theme.palette.divider;
     const hasRole = useHasRole();
-    if(bracketEntry.game) {
-        console.log(bracketEntry.game.winner)
-        console.log(bracketEntry.player1.id)
-        console.log(bracketEntry.player2)
-    }
+    const plusBaseColor = "#404040"
+    const plusActiveColor = "#6b6b6b"
+    const [plusColor, setPlusColor] = useState('red');
+    const [skipColor, setSkipColor] = useState(plusBaseColor);
 
-    const showPlus = isOwner && bracketEntry.player1 && bracketEntry.player2 && !bracketEntry.game && hasRole('ADMIN');
-    const getUsername = (player) =>{
-        if(!player){
+
+    const showPlus = isOwner && bracketEntry.player1 && bracketEntry.player2 && !bracketEntry.game && !bracketEntry.forfeited && hasRole('ADMIN');
+    const getUsername = (player) => {
+        if (!player) {
             return ""
         } else {
             return player.username;
@@ -30,7 +30,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner,openAddGameDialog}) => {
     }
 
     let flexType;
-    if (!bracketEntry.player1 && !bracketEntry.player2){
+    if (!bracketEntry.player1 && !bracketEntry.player2) {
         flexType = 'center';
     } else if(!bracketEntry.player2){
         flexType ='flex-start';
@@ -51,23 +51,58 @@ const BracketEntry = ({bracketEntry, showPath, isOwner,openAddGameDialog}) => {
                         </div>
                         <div className={entryStyle.padding}>
                             <div style={{display: "flex", flexDirection: "row"}}>
-                            <Typography style={{flex:1, opacity: bracketEntry.game && bracketEntry.player2.id !== bracketEntry.game.winner ? 0.5 : 1}}>{getUsername(bracketEntry.player2)}</Typography>
+                                <Typography style={{
+                                    flex: 1,
+                                    opacity: (bracketEntry.game && bracketEntry.player2.id !== bracketEntry.game.winner) || (bracketEntry.player2 && bracketEntry.forfeitedId === bracketEntry.player2.id) ? 0.5 : 1
+                                }}>{getUsername(bracketEntry.player2)}</Typography>
                                 {bracketEntry.player2 && bracketEntry.game &&  <Typography
                                     style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player2.id).score}</Typography>}
                             </div>
                         </div>
                     </div>
-                {showPlus && <div style={{borderRadius: '50%',
-                    backgroundColor: 'red',
+                {showPlus && <div style={{
+                    borderRadius: '50%',
+                    backgroundColor: plusColor,
                     position: "relative",
-                    top: -47, left: 140,
-                    color: "black",
-                    height:24,
-                    width:24,
-                    cursor: "pointer"
-                }}>
-                    <AddOutlinedIcon onClick={() => openAddGameDialog(bracketEntry.id,bracketEntry.player1,bracketEntry.player2, null, null)}/>
+                    top: -49, left: 137,
+                    color: "white",
+                    height: plusColor === "red" ? 24 : 22,
+                    width: plusColor === "red" ? 24 : 22,
+                    cursor: "pointer",
+                    border: plusColor === "red" ? "none" : "1px solid white",
+                    padding: plusColor === "red" ? 2 : 1.25
+                }} onMouseEnter={() => setPlusColor("#c70000")} onMouseLeave={() => setPlusColor("red")}>
+                    <AddOutlinedIcon
+                        onClick={() => openAddGameDialog(bracketEntry.id, bracketEntry.player1, bracketEntry.player2, null, null)}/>
                 </div>}
+
+                {showPlus && <div style={{
+                    borderRadius: '50%',
+                    backgroundColor: skipColor,
+                    position: "relative",
+                    top: plusColor === "red" ? -77 : -76,
+                    left: 170,
+                    color: "white",
+                    height: skipColor === plusBaseColor ? 24 : 22,
+                    width: skipColor === plusBaseColor ? 24 : 22,
+                    cursor: "pointer",
+                    border: skipColor === plusBaseColor ? "none" : "1px solid white",
+                    padding: skipColor === plusBaseColor ? 2 : 1.25
+                }} onMouseEnter={() => setSkipColor(plusActiveColor)} onMouseLeave={() => setSkipColor(plusBaseColor)}>
+                    <SkipNextOutlinedIcon
+                        onClick={() => openSkipDialog(bracketEntry.id, bracketEntry.player1, bracketEntry.player2)}/>
+                </div>}
+
+                {bracketEntry.forfeited && <div style={{
+                    borderRadius: '50%',
+                    position: "relative",
+                    color: "grey",
+                    top: -90,
+                    left: 80,
+                }} onMouseEnter={() => setSkipColor(plusActiveColor)} onMouseLeave={() => setSkipColor(plusBaseColor)}>
+                    <Typography color={"inherit"}>Forfeited</Typography>
+                </div>}
+
             </div>
                 {showPath && <div style={{
                     width: 49,

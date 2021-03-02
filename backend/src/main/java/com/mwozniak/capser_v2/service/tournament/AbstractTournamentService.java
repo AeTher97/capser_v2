@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -65,5 +64,6 @@ public abstract class AbstractTournamentService<T extends Tournament<?>> {
 
     protected abstract T createTournamentClass();
     public abstract T getTournament(UUID id) throws TournamentNotFoundException;
+
 
 }

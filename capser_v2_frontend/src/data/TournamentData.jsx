@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchUsername} from "./UsersFetch";
 import {useSelector} from "react-redux";
-import {getRequestGameTypeString} from "../utils/Utils";
 
 export const useTournamentsList = (type, pageNumber = 0, pageSize = 10) => {
     const {accessToken} = useSelector(state => state.auth);
@@ -114,7 +112,29 @@ export const useTournamentData = (type, tournamentId) => {
         }
     }
 
-    const savePlayers =(playersList) =>{
+    const skipTournamentGame = (entryId, playerToSkip) => {
+        let shouldUpdate = true;
+        setLoading(true);
+        axios.post(`${type}/tournaments/${tournamentId}/entry/${entryId}/skip`, {forfeitedId: playerToSkip}, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then((response) => {
+            setTournament(response.data);
+        }).catch(e => {
+            console.log(e.message)
+        }).finally(() => {
+            if (shouldUpdate) {
+                setLoading(false);
+            }
+        })
+
+        return () => {
+            shouldUpdate = false;
+        }
+    }
+
+    const savePlayers = (playersList) => {
         let shouldUpdate = true;
         setLoading(true);
         axios.post(`${type}/tournaments/${tournamentId}/players`, playersList, {
@@ -180,6 +200,6 @@ export const useTournamentData = (type, tournamentId) => {
         }
     }
 
-    return {tournament, loading, postTournamentGame, savePlayers, seedTournament,deleteTournament}
+    return {tournament, loading, postTournamentGame, savePlayers, seedTournament, deleteTournament, skipTournamentGame}
 }
 

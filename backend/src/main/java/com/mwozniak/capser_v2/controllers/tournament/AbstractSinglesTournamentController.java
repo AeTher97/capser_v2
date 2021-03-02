@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.controllers.tournament;
 
 import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesTournament;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SkipDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -26,12 +27,19 @@ public abstract class AbstractSinglesTournamentController<T extends AbstractSing
     @PostMapping("/{tournamentId}/players")
     @PreAuthorize("hasAuthority('ADMIN')")
     public T addUser(@PathVariable UUID tournamentId, @RequestBody List<UUID> users) throws UserNotFoundException, TournamentNotFoundException {
-        return tournamentService.addUsers(tournamentId,users);
-    };
+        return tournamentService.addUsers(tournamentId, users);
+    }
+
+    ;
 
     @PostMapping("/{tournamentId}/entry/{entryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public T addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SinglesGameDto singlesGameDto) throws CapserException {
         return tournamentService.postGame(tournamentId, entryId, singlesGameDto);
+    }
+
+    @PostMapping("/{tournamentId}/entry/{entryId}/skip")
+    public T skipGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SkipDto skipDto) throws CapserException {
+        return tournamentService.skipGame(tournamentId, entryId, skipDto.getForfeitedId());
     }
 }

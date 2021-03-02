@@ -1,16 +1,8 @@
 import React, {useState} from 'react';
 import {useSinglesGames} from "../../../data/SoloGamesData";
 import mainStyles from "../../../misc/styles/MainStyles";
-import {TableBody} from "@material-ui/core";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import {getGameModeString, getRequestGameTypeString} from "../../../utils/Utils";
-import Pagination from '@material-ui/lab/Pagination';
 import LoadingComponent from "../../../utils/LoadingComponent";
 import {makeStyles} from "@material-ui/core/styles";
-import {useHistory} from "react-router-dom";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
@@ -35,10 +27,12 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
             <div  style={{maxWidth:800}}>
                 <div className={classes.leftOrientedWrapperNoPadding}>
                     <div style={{padding: 15}}>
-                        {!loading && render ? <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}>
+                        {!loading && render ?
+                            <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}
+                                                                                 style={{padding: 0, marginBottom: 8}}>
                                 <GameComponent game={game}
                                                vertical={small}
-                                                render={render}/>
+                                               render={render}/>
                             </Grid>)} </Grid>
                             :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>

@@ -1,14 +1,12 @@
 package com.mwozniak.capser_v2.service.tournament;
 
+import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
+import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesTournament;
-import com.mwozniak.capser_v2.models.database.tournament.SinglesBracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.SinglesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
-import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.UserService;
@@ -19,9 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Log4j
 public abstract class AbstractSinglesTournamentService<T extends AbstractSinglesTournament<?>> extends AbstractTournamentService<T> {
@@ -61,7 +57,22 @@ public abstract class AbstractSinglesTournamentService<T extends AbstractSingles
 
     public abstract T postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException;
 
+    @Transactional
+    public T skipGame(UUID tournamentId, UUID entryId, UUID forfeitingId) throws CapserException {
+        User forfeitingPlayer = userService.getUser(forfeitingId);
+        AbstractSinglesBracketEntry bracketEntry = getBracketEntry(tournamentId, entryId);
+        bracketEntry.forfeitGame(forfeitingPlayer);
+        saveBracketEntry(tournamentId, entryId, bracketEntry);
+        T tournament = getTournament(tournamentId);
+        tournament.resolveAfterGame();
+        return tournament;
+    }
+
     protected abstract AbstractGame createGameObject();
+
+    protected abstract AbstractSinglesBracketEntry getBracketEntry(UUID tournamentId, UUID entryId) throws TournamentNotFoundException;
+
+    protected abstract AbstractSinglesBracketEntry saveBracketEntry(UUID tournamentId, UUID entryId, AbstractSinglesBracketEntry newEntry) throws TournamentNotFoundException;
 
 
 }

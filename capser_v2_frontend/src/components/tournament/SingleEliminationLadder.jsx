@@ -1,8 +1,6 @@
 import React, {useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
 import {makeStyles} from "@material-ui/core/styles";
 import BracketEntry from "./BracketEntry";
-import mainStyles from "../../misc/styles/MainStyles";
 import BracketPath from "./BracketPath";
 import {Typography} from "@material-ui/core";
 
@@ -24,16 +22,16 @@ export const getRoString = (round) =>{
     }
 }
 
-const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner,openAddGameDialog, winner}) => {
+const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddGameDialog, openSkipDialog, winner}) => {
     const styles = ladderStyles();
 
-    const ref =useRef();
+    const ref = useRef();
 
-    useEffect(() =>{
-        if(ref.current){
+    useEffect(() => {
+        if (ref.current) {
             ref.current.id = "tournamentContainer"
         }
-    },[ref])
+    }, [ref])
 
     const levels = [];
     bracketEntries.forEach(entry => {
@@ -78,7 +76,7 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner,openAddGa
                         left: currentHorizontalOffset
                     }}>
                         <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
-                                      openAddGameDialog={openAddGameDialog}
+                                      openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
                         />
                         {level.type !== lowestRound && <>
                             <BracketPath height={verticalOffsetLevel / 4 }
