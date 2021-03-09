@@ -11,3 +11,5 @@ export const REFRESH_SUCCESS = "REFRESH_SUCCESS"
 export const REFRESH_FAILED = "REFRESH_FAILED"
 
 export const LOGOUT = "LOGOUT"
+
+export const UPDATE_DATA = "UPDATE_DATA"

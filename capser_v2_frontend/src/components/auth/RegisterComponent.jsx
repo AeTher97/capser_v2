@@ -6,7 +6,7 @@ import {useHistory, useLocation} from "react-router-dom";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
 import CenteredColumn from "../misc/CenteredColumn";
-import {validateLength, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
+import {validateEmail, validateLength, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
 
 
 const RegisterComponent = props => {
@@ -19,10 +19,12 @@ const RegisterComponent = props => {
     const validatePasswordConfirmation = useCallback(validateRepeatedPassword(password.value), [password.value]);
     const repeatPassword = useFieldValidation("", validatePasswordConfirmation);
     const username = useFieldValidation("", (word) => () => validateLength(word, 3))
+    const email = useFieldValidation("", validateEmail)
 
     password.showError = true;
     repeatPassword.showError = true;
     username.showError = true;
+    email.showError = true;
 
     const [error, setError] = useState('');
 
@@ -32,6 +34,10 @@ const RegisterComponent = props => {
         {
             label: 'Username',
             validation: username
+        },
+        {
+            label: 'Email',
+            validation: email
         }, {
             label: 'Password',
             validation: password,
@@ -41,7 +47,8 @@ const RegisterComponent = props => {
             label: 'Repeat Password',
             validation: repeatPassword,
             type: 'password'
-        }]
+        }
+    ]
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -53,11 +60,18 @@ const RegisterComponent = props => {
         createAccount({
             username: username.value,
             password: password.value,
-            repeatPassword: repeatPassword.value
+            repeatPassword: repeatPassword.value,
+            email: email.value
         }).then(() => {
             history.push("/login")
         }).catch((e) => {
-            setError('Error while registering')
+            if (e.response) {
+                if (e.response.data.error) {
+                    setError(e.response.data.error);
+                }
+            } else {
+                setError('Error while registering')
+            }
         })
     }
 

@@ -10,11 +10,11 @@ import ValidatedField from "../../misc/ValidatedField";
 import CloseIcon from "@material-ui/icons/Close";
 import FetchSelectField from "../../misc/FetchSelectField";
 import Button from "@material-ui/core/Button";
-import {fetchUsername, useUsernameFetch} from "../../../data/UsersFetch";
+import {fetchUsername} from "../../../data/UsersFetch";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 
 const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []}}) => {
-    const {userId, email} = useSelector(state => state.auth);
+    const {userId, username} = useSelector(state => state.auth);
     const [disabled, setDisabled] = useState(false);
     const dispatch = useDispatch();
     const external = team.playerList.length > 0;
@@ -30,7 +30,7 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
     nameField.showError = true;
 
     const initialState = [{
-        username: email,
+        username: username,
         id: userId,
         deletable: false
     }]

@@ -1,10 +1,9 @@
 import React from 'react';
-import {Divider, Typography, useTheme} from "@material-ui/core";
+import {Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useHistory} from "react-router-dom";
-import {useNotifications} from "../../data/NotificationData";
 import {useWindowSize} from "../../utils/UseSize";
 
 
@@ -43,7 +42,8 @@ const NotificationList = ({notifications, markSeen}) => {
                         <div className={mainClasses.header} >
                             <Typography color={"primary"} style={{flex: 1}}
                                         variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
-                            <Typography variant={"caption"}>{new Date(notification.date).toUTCString()}</Typography>
+                            <Typography
+                                variant={"caption"}>{new Date(notification.date).toDateString()} {new Date(notification.date).getHours()}:{new Date(notification.date).getMinutes()}</Typography>
                         </div>
                         <div style={{whiteSpace: "normal"}}>
                             <Typography variant={"body2"} >

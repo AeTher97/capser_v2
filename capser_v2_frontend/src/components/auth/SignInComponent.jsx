@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {loginAction} from "../../redux/actions/authActions";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {saveTokenInStorage} from "../../utils/TokenUtils";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
@@ -16,7 +16,7 @@ const SignInComponent = props => {
 
     const password = useFieldValidation("", () => {
     });
-    const email = useFieldValidation("", () => {
+    const username = useFieldValidation("", () => {
     });
 
 
@@ -28,7 +28,7 @@ const SignInComponent = props => {
     const fields = [
         {
             label: 'Username',
-            validation: email
+            validation: username
         }, {
             label: 'Password',
             validation: password,
@@ -38,12 +38,12 @@ const SignInComponent = props => {
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(loginAction({
-            email: email.value,
+            username: username.value,
             password: password.value
-        }, (authToken, refreshToken) => {
-            saveTokenInStorage(authToken, refreshToken, email.value)
-            if(props.location && props.location.state){
-                history.push(props.location.state.prevPath);
+        }, (authToken, refreshToken, email) => {
+            saveTokenInStorage(authToken, refreshToken, email, username.value)
+            if (props.location && props.location.state) {
+                history.push(props.location.state.prevPath || props.location.state.from);
                 return;
             }
             history.push("/");
@@ -65,8 +65,14 @@ const SignInComponent = props => {
                     />
                     <div className={classes.footer}>
                         <Typography variant={"caption"}>Haven't played pro caps yet? </Typography>
-                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/register')}}>Sign up!</Typography>
+                        <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {
+                            history.push('/register')
+                        }}>Sign up!</Typography>
                     </div>
+                    {/*<div className={classes.footer}>*/}
+                    {/*    <Typography variant={"caption"}>Forgot password? </Typography>*/}
+                    {/*    <Typography variant={"caption"} color={"primary"} className={classes.link} onClick={() => {history.push('/register')}}>Reset</Typography>*/}
+                    {/*</div>*/}
                     <div className={classes.footer}>
                         <Typography variant={"caption"}>Made with ❤ by Mike 2021</Typography>
                     </div>

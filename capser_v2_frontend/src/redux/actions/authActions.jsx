@@ -18,11 +18,11 @@ const axiosInstance = axios.create(
 )
 
 
-export const loginAction = ({email, password}, onSuccessCallback = () => null) => dispatch => {
+export const loginAction = ({username, password}, onSuccessCallback = () => null) => dispatch => {
     dispatch({type: LOGIN_ATTEMPT});
 
     let formData = new FormData();
-    formData.append('username', email);
+    formData.append('username', username);
     formData.append('password', password);
 
 
@@ -32,11 +32,11 @@ export const loginAction = ({email, password}, onSuccessCallback = () => null) =
                 ...decodeToken(data.authToken),
                 accessToken: data.authToken,
                 refreshToken: data.refreshToken,
-                email: email
+                username: username
             };
 
             dispatch({type: LOGIN_SUCCESS, payload: payload});
-            onSuccessCallback(data.authToken, data.refreshToken);
+            onSuccessCallback(data.authToken, data.refreshToken, payload.email);
         })
         .catch(err => {
             console.error('Login unsuccessful');

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .header {
+            width: 100%;
+            max-width: 800px;
+            height: 96px;
+        }
+
+        .logo {
+            margin: auto;
+            max-width: 192px;
+        }
+
+        .column {
+            margin: 0;
+            padding: 5px;
+        }
+
+        .content-wrapper {
+            margin: auto;
+            width: 100%;
+            color: white;
+            max-width: 800px;
+            font-family: Roboto, serif, Arial;
+            padding-bottom: 30px;
+        }
+
+        .content {
+            background-color: #0a1018;
+            border-radius: 20px;
+
+            padding: 70px 20px 20px 20px;
+        }
+
+        a {
+            color: red;
+        }
+
+        p {
+            margin: 5px 0 5px 0;
+        }
+
+        .signature {
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body class="column">
+
+<div class="content-wrapper">
+    <div class="header">
+        <div>
+            <div class="logo">
+                <img src="https://globalcapsleague.com/logo192.png"/>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <h4>Dear ${player},</h4>
+        <p>Game in which you were a participant was posted in Global Caps League. You can either accept or reject the
+            result at the <a href="https://globalcapsleague.com/secure/acceptance">acceptance page.</a></p>
+        <p>Your opponent was ${opponent}.</p>
+        <p>If you don't take action game will be automatically accepted in 24 hours.</p>
+        <p class="signature">Happy Capsing!</p>
+        <p>Mike</p>
+    </div>
+</div>
+</body>
+</html>

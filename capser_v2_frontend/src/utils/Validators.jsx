@@ -23,7 +23,7 @@ export const validateRepeatedPassword = (password) => (repeatedPassword) => {
 
 export const validateEmail = (email) => {
     if (!EMAIL_PATTERN.test(email)) {
-        return "Podaj poprawny adres email";
+        return "Type in a correct email address";
     } else {
         return null
     }

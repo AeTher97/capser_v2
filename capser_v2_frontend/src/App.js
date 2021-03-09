@@ -5,6 +5,7 @@ import MainNavigation from "./routing/MainNavigation";
 import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {darkTheme} from "./misc/Theme";
 import {ThemeProvider} from "@material-ui/styles";
+import UpdateEmailDialog from "./utils/UpdateEmailDialog";
 
 
 function App() {
@@ -21,7 +22,8 @@ function App() {
 
             <Router basename={process.env.PUBLIC_URL} history={history}>
                 <ThemeProvider theme={theme}>
-                <MainNavigation/>
+                    <UpdateEmailDialog/>
+                    <MainNavigation/>
                 </ThemeProvider>
             </Router>
         </div>

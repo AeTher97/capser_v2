@@ -5,14 +5,16 @@ import {
     LOGOUT,
     REFRESH_ATTEMPT,
     REFRESH_FAILED,
-    REFRESH_SUCCESS
+    REFRESH_SUCCESS,
+    UPDATE_DATA
 } from "../actions/types/authActionTypes";
-import {decodeToken, isTokenOutdated, saveTokenInStorage} from "../../utils/TokenUtils";
+import {decodeToken, isTokenOutdated, saveTokenInStorage, saveUserParametersInStorage} from "../../utils/TokenUtils";
 
 const getAuthFromStorage = () => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     const email = localStorage.getItem('email');
+    const username = localStorage.getItem('username');
 
 
 
@@ -34,6 +36,7 @@ const getAuthFromStorage = () => {
                 accessToken: accessToken,
                 refreshToken: refreshToken,
                 isAuthenticated: true,
+                username: username,
                 email: email,
                 error: null
             }
@@ -44,6 +47,7 @@ const getAuthFromStorage = () => {
 
 const clearLocalStorage = () => {
     localStorage.removeItem("email")
+    localStorage.removeItem("username")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("accessToken")
 }
@@ -69,7 +73,7 @@ const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
         case REFRESH_SUCCESS:
-            saveTokenInStorage(action.payload.accessToken, state.refreshToken, state.email)
+            saveTokenInStorage(action.payload.accessToken, state.refreshToken, state.email, state.username)
             return {
                 ...state,
                 ...action.payload,
@@ -86,6 +90,13 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...emptyState,
                 error: state.error
+            }
+        }
+        case UPDATE_DATA : {
+            saveUserParametersInStorage(action.payload.email, action.payload.username)
+            return {
+                ...state,
+                ...action.payload
             }
         }
         case REFRESH_FAILED:

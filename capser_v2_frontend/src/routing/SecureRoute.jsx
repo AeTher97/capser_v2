@@ -1,22 +1,24 @@
 import React from 'react';
-import {Redirect, Route} from "react-router-dom";
+import {Redirect, Route, useLocation} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 
 const SecureRoute = ({children, ...props}) => {
     const {isAuthenticated} = useSelector(state => state.auth)
+    const location2 = useLocation();
+    console.log(location2.pathname)
 
     return (
         <Route
             {...props}
             render={({location}) =>
-            (isAuthenticated) ? (
-                children
-            ) : (
-                <Redirect
-                    to={{
+                (isAuthenticated) ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
                         pathname: "/login",
-                        state: {from: location}
+                            state: {from: location2.pathname}
                     }}/>
             )}
         />

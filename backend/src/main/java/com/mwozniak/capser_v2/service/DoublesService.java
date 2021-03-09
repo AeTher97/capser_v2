@@ -25,8 +25,9 @@ public class DoublesService extends AbstractMultipleGameService {
                           UserService userService,
                           NotificationService notificationService,
                           TeamService teamService,
+                          EmailService emailService,
                           DoublesRepository doublesRepository) {
-        super(acceptanceRequestRepository, userService, notificationService, teamService);
+        super(acceptanceRequestRepository, emailService, userService, notificationService, teamService);
         this.doublesRepository = doublesRepository;
     }
 

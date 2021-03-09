@@ -13,10 +13,12 @@ import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.TeamService;
 import com.mwozniak.capser_v2.service.UserService;
 import com.mwozniak.capser_v2.utils.EloRating;
+import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.extern.log4j.Log4j;
 
 import javax.transaction.Transactional;
@@ -28,10 +30,12 @@ import java.util.UUID;
 public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     private final TeamService teamService;
+    private final EmailService emailService;
 
-    public AbstractMultipleGameService(AcceptanceRequestRepository acceptanceRequestRepository, UserService userService, NotificationService notificationService, TeamService teamService) {
-        super(acceptanceRequestRepository, userService, notificationService);
+    public AbstractMultipleGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, TeamService teamService) {
+        super(acceptanceRequestRepository, userService, emailService, notificationService);
         this.teamService = teamService;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -62,19 +66,25 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
             }
             for (UUID id : multipleGame.getLoser().getPlayerList()) {
-                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                User user = userService.getUser(id);
+                AcceptanceRequest receiverAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                         getAcceptanceRequestType(),
                         id, abstractGame.getId(), abstractGame.getGameType(), multipleGame.getLoserTeamId());
-                acceptanceRequestRepository.save(posterAcceptanceRequest);
-                notificationService.notifyMultiple(posterAcceptanceRequest, winnerName);
+                acceptanceRequestRepository.save(receiverAcceptanceRequest);
+                notificationService.notifyMultiple(receiverAcceptanceRequest, winnerName);
+                emailService.sendHtmlMessage(user.getEmail(), "New Doubles Game in GCL!", EmailLoader.loadGameAcceptanceEmail().replace("${player}", user.getUsername()).replace("${opponent}", "team " + winnerName));
+
             }
         } else {
             for (UUID id : multipleGame.getWinner().getPlayerList()) {
-                AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
+                User user = userService.getUser(id);
+                AcceptanceRequest receiverAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                         getAcceptanceRequestType(),
                         id, abstractGame.getId(), abstractGame.getGameType(), multipleGame.getWinnerTeamId());
-                acceptanceRequestRepository.save(posterAcceptanceRequest);
-                notificationService.notifyMultiple(posterAcceptanceRequest, loserName);
+                acceptanceRequestRepository.save(receiverAcceptanceRequest);
+                notificationService.notifyMultiple(receiverAcceptanceRequest, loserName);
+                emailService.sendHtmlMessage(user.getEmail(), "New Doubles Game in GCL!", EmailLoader.loadGameAcceptanceEmail().replace("${player}", user.getUsername()).replace("${opponent}", "team " + loserName));
+
 
             }
             for (UUID id : multipleGame.getLoser().getPlayerList()) {

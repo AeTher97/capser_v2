@@ -2,7 +2,6 @@ package com.mwozniak.capser_v2.security.providers;
 
 
 import com.mwozniak.capser_v2.configuration.JwtConfiguration;
-import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.security.RefreshTokenAuthentication;
 import com.mwozniak.capser_v2.security.TokenFactory;
@@ -23,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class JwtRefreshProvider implements AuthenticationProvider {
 
@@ -63,7 +61,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
                 String role =  user.getRole().toString();
                 userService.updateLastSeen(user);
                 List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(role));
-                return new RefreshTokenAuthentication(claims.getSubject(), TokenFactory.generateAuthToken(user.getId(), role,jwtConfiguration),authorities);
+                return new RefreshTokenAuthentication(claims.getSubject(), TokenFactory.generateAuthToken(user.getId(), role, user.getEmail(), jwtConfiguration), authorities);
             } else {
                 throw new UsernameNotFoundException("User with this id doesn't exist");
             }

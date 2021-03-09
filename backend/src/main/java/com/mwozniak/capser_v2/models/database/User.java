@@ -1,10 +1,10 @@
 package com.mwozniak.capser_v2.models.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import lombok.Getter;
 import lombok.Setter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    public User(){
+    public User() {
         userDoublesStats = new UserStats();
         userSinglesStats = new UserStats();
         userEasyStats = new UserStats();
@@ -35,6 +35,9 @@ public class User {
 
     @Setter
     private String username;
+
+    @Setter
+    private String email;
 
     @JsonIgnore
     @Setter
@@ -80,6 +83,7 @@ public class User {
         user.setRole(Roles.USER);
         user.setUsername(createUserDto.getUsername());
         user.setTeams(new ArrayList<>());
+        user.setEmail(createUserDto.getEmail());
         return user;
     }
 }

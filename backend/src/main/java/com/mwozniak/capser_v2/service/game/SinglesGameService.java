@@ -8,6 +8,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.SinglesRepository;
+import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.data.domain.Page;
@@ -26,9 +27,10 @@ public class SinglesGameService extends AbstractGameService {
     public SinglesGameService(SinglesRepository singlesRepository,
                               AcceptanceRequestRepository acceptanceRequestRepository,
                               UserService userService,
+                              EmailService emailService,
                               NotificationService notificationService) {
-        super(acceptanceRequestRepository, userService, notificationService);
-        this.singlesRepository =singlesRepository;
+        super(acceptanceRequestRepository, userService, emailService, notificationService);
+        this.singlesRepository = singlesRepository;
     }
 
     @Override

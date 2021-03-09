@@ -53,7 +53,7 @@ const BellComponent = ({expanded = true}) => {
                           transform: small ?  'translateX(3%) translateY(15%)': 'translateX(6%) translateY(0)',
                       }
                   }}>
-                <div className={mainStyles0.standardBorder} style={{padding: 0 }}>
+                <div className={mainStyles0.standardBorder} style={{padding: 0, margin: 0}}>
                     <NotificationList notifications={notifications} markSeen={markSeen}/>
                     <div style={{padding: 10}}>
                         <Link onClick={handleClose}>Hide</Link>

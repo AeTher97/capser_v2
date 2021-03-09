@@ -1,15 +1,15 @@
 package com.mwozniak.capser_v2.service;
 
-import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
+import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
+import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;
-import com.mwozniak.capser_v2.repository.SinglesRepository;
 import com.mwozniak.capser_v2.repository.UsersRepository;
-import com.mwozniak.capser_v2.security.utils.SecurityUtils;
+import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -18,11 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UsersRepository usersRepository;
-    private final SinglesRepository singlesRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public UserService(UsersRepository usersRepository, SinglesRepository singlesRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usersRepository = usersRepository;
-        this.singlesRepository = singlesRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public User getUser(UUID id) throws UserNotFoundException {
@@ -66,15 +66,49 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public User createUser(CreateUserDto createUserDto) {
+    public User createUser(CreateUserDto createUserDto) throws CredentialTakenException {
+        if (usersRepository.findUserByEmail(createUserDto.getEmail()).isPresent()) {
+            throw new CredentialTakenException("Email not available");
+        } else if (usersRepository.findUserByUsername(createUserDto.getUsername()).isPresent()) {
+            throw new CredentialTakenException("Username not available");
+        }
         User user = User.createUserFromDto(createUserDto, passwordEncoder.encode(createUserDto.getPassword()));
         usersRepository.save(user);
         log.info("User creation successful");
+        emailService.sendHtmlMessage(createUserDto.getEmail(), "Welcome to Global Caps League!", EmailLoader.loadRegisteredEmail().replace("${player}", user.getUsername()));
         return user;
     }
 
+    @Transactional
+    public User updateUser(UUID id, UpdateUserDto updateUserDto) throws UserNotFoundException {
+        User user = getUser(id);
+        if (updateUserDto.getEmail() != null) {
+            if (!usersRepository.findUserByEmail(updateUserDto.getEmail()).isPresent()) {
+                user.setEmail(updateUserDto.getEmail());
+            } else {
+                throw new UserNotFoundException("Email taken");
+            }
+        }
+        if (updateUserDto.getUsername() != null) {
+            if (!getUser(updateUserDto.getUsername()).isPresent()) {
+                user.setUsername(updateUserDto.getUsername());
+            } else {
+                throw new UserNotFoundException("Username taken");
+            }
+        }
+        User user0 = usersRepository.save(user);
+        if (updateUserDto.getEmail() != null) {
+            try {
+                emailService.sendHtmlMessage(updateUserDto.getEmail(), "Email updated", EmailLoader.loadUpdateEmailEmail().replace("${player}", user.getUsername()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return user0;
+    }
+
     public Page<User> getUsers(Pageable pageable) {
-        return usersRepository.findByRoleNot(Roles.ADMIN,pageable);
+        return usersRepository.findByRoleNot(Roles.ADMIN, pageable);
     }
 
     public Page<UserMinimized> searchUsers(Pageable pageable, String username) {

@@ -25,8 +25,9 @@ public class UnrankedGameService extends AbstractGameService {
     public UnrankedGameService(AcceptanceRequestRepository acceptanceRequestRepository,
                                UserService userService,
                                NotificationService notificationService,
+                               EmailService emailService,
                                UnrankedRepository unrankedRepository) {
-        super(acceptanceRequestRepository, userService, notificationService);
+        super(acceptanceRequestRepository, userService, emailService, notificationService);
         this.unrankedRepository = unrankedRepository;
     }
 

@@ -17,10 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class UsernamePasswordProvider implements AuthenticationProvider {
 
@@ -46,7 +44,7 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
                     userService.updateLastSeen(user);
                     return new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
                             new TokenHolder(
-                                    TokenFactory.generateAuthToken(user.getId(), user.getRole().toString(), jwtConfiguration),
+                                    TokenFactory.generateAuthToken(user.getId(), user.getRole().toString(), user.getEmail(), jwtConfiguration),
                                     TokenFactory.generateRefreshToken(user.getId(), jwtConfiguration)),
                             Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString())));
                 } catch (IOException | NullPointerException e) {

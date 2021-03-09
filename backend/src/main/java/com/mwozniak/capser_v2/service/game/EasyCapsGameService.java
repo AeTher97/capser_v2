@@ -8,6 +8,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.EasyCapsRepository;
+import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EasyCapsGameService  extends AbstractGameService {
+public class EasyCapsGameService extends AbstractGameService {
 
     private final EasyCapsRepository easyCapsRepository;
 
@@ -29,14 +30,14 @@ public class EasyCapsGameService  extends AbstractGameService {
     }
 
 
-    public EasyCapsGameService(AcceptanceRequestRepository acceptanceRequestRepository, UserService userService, NotificationService notificationService, EasyCapsRepository easyCapsRepository) {
-        super(acceptanceRequestRepository, userService, notificationService);
+    public EasyCapsGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, EasyCapsRepository easyCapsRepository) {
+        super(acceptanceRequestRepository, userService, emailService, notificationService);
         this.easyCapsRepository = easyCapsRepository;
     }
 
     @Override
     public AbstractGame saveGame(AbstractGame abstractGame) {
-        return easyCapsRepository.save((EasyCapsGame)abstractGame);
+        return easyCapsRepository.save((EasyCapsGame) abstractGame);
     }
 
     @Override
