@@ -53,7 +53,7 @@ const displayStats = (type, stats, showPoints = true) => {
 
 const UserComponent = ({id}) => {
 
-    const {username, userId} = useSelector(state => state.auth);
+    const {userId} = useSelector(state => state.auth);
     const history = useHistory();
     const {data, loading, loaded, updateUserData} = useUserData(id ? id : userId);
 
@@ -92,6 +92,13 @@ const UserComponent = ({id}) => {
                 <div style={{flex: 1, padding: 20, display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                     <img src={"/logo192.png"}/>
                     {!loading && loaded && <Typography variant={"h6"}>{data.username}</Typography>}
+                    {!loading && loaded &&
+                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column', marginTop: 10}}>
+                        <Typography style={{fontWeight: 'bold'}}>Last seen</Typography>
+                        <Typography>{data.lastSeen ? new Date(data.lastSeen).toDateString() : 'Never seen'}</Typography>
+                        <Typography style={{fontWeight: 'bold'}}>Last game</Typography>
+                        <Typography>{data.lastGame ? new Date(data.lastGame).toDateString() : 'Never played'}</Typography>
+                    </div>}
                     {(!id || id === userId) &&
                     <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
                         profile</Button>}

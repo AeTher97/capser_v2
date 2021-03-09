@@ -144,7 +144,7 @@ const SideBar = ({open, setOpen}) => {
                 }}
                                 style={{display: "flex", flexDirection: "row", justifyContent: "center"}}
                 >
-                    <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer"}}/>
+                    <img src={"/logo192.png"} style={{maxWidth: 38, padding: 3, cursor: "pointer", minHeight: 38}}/>
                 </div>}
                 {hasRole('USER') && <div>
                     <BellComponent expanded={state.expanded}/>
