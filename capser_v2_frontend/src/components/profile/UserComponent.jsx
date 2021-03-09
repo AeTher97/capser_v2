@@ -20,7 +20,7 @@ const displayStats = (type, stats, showPoints = true) => {
                         color={"inherit"}> {getGameTypeString(type)}</Typography>
         </div>
 
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex", flexWrap: 'wrap'}}>
             <div style={{flex: 1}}>
                 <div style={{display: "flex", flexDirection: "column", marginRight: 10}}>
                     <Typography noWrap variant={"caption"}>Average
