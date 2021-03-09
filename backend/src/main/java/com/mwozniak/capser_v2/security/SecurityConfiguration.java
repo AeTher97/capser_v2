@@ -8,7 +8,6 @@ import com.mwozniak.capser_v2.security.providers.JwtAuthenticationProvider;
 import com.mwozniak.capser_v2.security.providers.JwtRefreshProvider;
 import com.mwozniak.capser_v2.security.providers.UsernamePasswordProvider;
 import com.mwozniak.capser_v2.service.UserService;
-import lombok.Builder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -56,17 +54,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/refresh").permitAll()
                 .mvcMatchers("/api/users").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/api/singles").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/singles/*").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/easy").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/easy/*").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/unranked").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/unranked/*").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/doubles").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/doubles/*").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/teams").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/users").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/dashboard/*").permitAll()
-                .mvcMatchers(HttpMethod.GET,"/api/users/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/singles/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/easy").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/easy/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/unranked").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/unranked/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/doubles").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/doubles/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/teams").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/users").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/dashboard/*").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/users/**").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/api/teams/name/*").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/api/users/search").permitAll()
                 .mvcMatchers(HttpMethod.GET,"/api/teams/search").permitAll()

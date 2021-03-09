@@ -29,6 +29,7 @@ public class TeamService {
     public TeamService(TeamRepository teamRepository, UserService userService) {
         this.teamRepository = teamRepository;
         this.userService = userService;
+        userService.setTeamService(this);
     }
 
     public TeamWithStats findTeam(UUID id) throws CapserException {

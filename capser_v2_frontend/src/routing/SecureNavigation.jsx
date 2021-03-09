@@ -7,6 +7,7 @@ import TeamsComponent from "../components/pages/teams/TeamsComponent";
 import {useXtraSmallSize} from "../utils/SizeQuery";
 import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
+import UserComponent from "../components/profile/UserComponent";
 
 const SecureNavigation = () => {
 
@@ -38,6 +39,12 @@ const SecureNavigation = () => {
                 <Route exact path={"/secure/teams"}>
                     <div>
                         <TeamsComponent/>
+                    </div>
+                </Route>
+
+                <Route exact path={"/secure/profile"}>
+                    <div>
+                        <UserComponent/>
                     </div>
                 </Route>
 

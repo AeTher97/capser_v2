@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import PropTypes from 'prop-types';
-import {Grid, Typography, useTheme} from "@material-ui/core";
+import {Typography, useTheme} from "@material-ui/core";
 import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
@@ -156,7 +155,7 @@ const GameComponent = ({game, vertical = true}) => {
 
                 <div className={[expanded ? gameStyle.visible : gameStyle.transparent, gameStyle.overlay].join(' ')}
                      ref={additionalInfoRef}
-                     style={{paddingLeft: 15}}>
+                     style={{paddingLeft: vertical ? 0 : 15, paddingTop: 10}}>
                     {game.gameType !== "UNRANKED" &&
                     <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
                         <div>

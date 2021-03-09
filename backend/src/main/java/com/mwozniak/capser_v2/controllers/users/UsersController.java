@@ -45,6 +45,11 @@ public class UsersController {
         return ResponseEntity.ok(userMinimized);
     }
 
+    @GetMapping("/{userId}/full")
+    public ResponseEntity<Object> getFullUser(@PathVariable UUID userId) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getFullUser(userId));
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException {
         log.info("Creating user");

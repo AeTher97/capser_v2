@@ -13,6 +13,10 @@ public class EmailLoader {
         return getFileStream("email/emailUpdated.html");
     }
 
+    public static String loadUpdateUsernameEmail() {
+        return getFileStream("email/usernameUpdated.html");
+    }
+
     public static String loadRegisteredEmail() {
         return getFileStream("email/registered.html");
     }

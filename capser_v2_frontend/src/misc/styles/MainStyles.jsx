@@ -83,7 +83,7 @@ const mainStyles = makeStyles(theme => ({
         }
     },
     neonTooltip: {
-        padding: 0,
+        padding: 4,
         boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)',
 
     },

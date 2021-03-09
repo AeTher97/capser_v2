@@ -1,11 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import mainStyles from "../../../misc/styles/MainStyles";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import {TableBody, Typography, useTheme} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
+import {Typography} from "@material-ui/core";
 import {usePlayersListFetch} from "../../../data/Players";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -14,23 +9,20 @@ import {getStatsString} from "../../../utils/Utils";
 import Grow from '@material-ui/core/Grow';
 import BoldTyphography from "../../misc/BoldTyphography";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
-import Button from "@material-ui/core/Button";
 import CapserPagination from "../../misc/CapserPagination";
 import {makeStyles} from "@material-ui/core/styles";
+import {useHistory} from "react-router-dom";
 
 
 const SinglesPlayersList = ({type, pointsHidden = false}) => {
 
     const [currentPage, setPage] = useState(1);
 
-    const theme = useTheme();
     const small = useXtraSmallSize();
     const {loading, players, pageCount} = usePlayersListFetch(type, currentPage - 1);
+    const history = useHistory();
 
 
-    const handlePageChange = (e, value) => {
-        setPage(value);
-    }
 
     const styles = listStyles({small})();
 
@@ -60,7 +52,9 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                             return (
                                 <div className={styles.row} key={player.id}>
                                     <div className={classes.header} style={{flex: 0.4}}>
-                                        <Typography className={classes.link}>
+                                        <Typography className={classes.link} onClick={() => {
+                                            history.push(`/players/${player.id}`)
+                                        }}>
                                             <Tooltip title={<PlayerCard player={player} type={type}/>}
                                                      TransitionComponent={Grow}
                                                      style={{padding: 0, margin: 0}}>

@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {Typography, useTheme} from "@material-ui/core";
+import {Tooltip, Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import {findPlayerStats} from "../pages/singles/SinglesGamesList";
 import {useHasRole} from "../../utils/SecurityUtils";
 import SkipNextOutlinedIcon from '@material-ui/icons/SkipNextOutlined';
+import {getRequestGameTypeString} from "../../utils/Utils";
+import {useHistory} from "react-router-dom";
 
 const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openSkipDialog}) => {
 
@@ -18,6 +20,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
     const plusActiveColor = "#6b6b6b"
     const [plusColor, setPlusColor] = useState('red');
     const [skipColor, setSkipColor] = useState(plusBaseColor);
+    const history = useHistory();
 
 
     const showPlus = isOwner && bracketEntry.player1 && bracketEntry.player2 && !bracketEntry.game && !bracketEntry.forfeited && hasRole('ADMIN');
@@ -32,34 +35,40 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
     let flexType;
     if (!bracketEntry.player1 && !bracketEntry.player2) {
         flexType = 'center';
-    } else if(!bracketEntry.player2){
-        flexType ='flex-start';
-    } else if(!bracketEntry.player1){
-        flexType='flex-end'
+    } else if (!bracketEntry.player2) {
+        flexType = 'flex-start';
+    } else if (!bracketEntry.player1) {
+        flexType = 'flex-end'
     }
 
-        return (
-            <div style={{display: "flex", flexDirection:"row", justifyContent: "flex-start"}}>
+    return (
+        <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
             <div style={{height: 71, display: "flex", flexDirection: "column", justifyContent: flexType}}>
-                    <div className={[entryStyle.entry, !bracketEntry.bye ?  classes.standardBorder : classes.disabledBorder].join(' ')} style={{padding: 0, margin: 0}}>
-                        <div className={[entryStyle.border, entryStyle.padding].join(' ')} style={{borderBottom: '1px solid ' + borderColor}}>
-                            <div style={{display: "flex", flexDirection: "row"}}>
-                            <Typography style={{flex:1, opacity: bracketEntry.game && bracketEntry.player1.id !== bracketEntry.game.winner ? 0.5 : 1}}>{getUsername(bracketEntry.player1)}</Typography>
-                                {bracketEntry.player1 && bracketEntry.game &&  <Typography
-                                    style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player1.id).score}</Typography>}
-                            </div>
-                        </div>
-                        <div className={entryStyle.padding}>
-                            <div style={{display: "flex", flexDirection: "row"}}>
-                                <Typography style={{
-                                    flex: 1,
-                                    opacity: (bracketEntry.game && bracketEntry.player2.id !== bracketEntry.game.winner) || (bracketEntry.player2 && bracketEntry.forfeitedId === bracketEntry.player2.id) ? 0.5 : 1
-                                }}>{getUsername(bracketEntry.player2)}</Typography>
-                                {bracketEntry.player2 && bracketEntry.game &&  <Typography
-                                    style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player2.id).score}</Typography>}
-                            </div>
+                <div
+                    className={[entryStyle.entry, !bracketEntry.bye ? classes.standardBorder : classes.disabledBorder].join(' ')}
+                    style={{padding: 0, margin: 0}}>
+                    <div className={[entryStyle.border, entryStyle.padding].join(' ')}
+                         style={{borderBottom: '1px solid ' + borderColor}}>
+                        <div style={{display: "flex", flexDirection: "row"}}>
+                            <Typography style={{
+                                flex: 1,
+                                opacity: bracketEntry.game && bracketEntry.player1.id !== bracketEntry.game.winner || (bracketEntry.player1 && bracketEntry.forfeitedId === bracketEntry.player1.id) ? 0.5 : 1
+                            }}>{getUsername(bracketEntry.player1)}</Typography>
+                            {bracketEntry.player1 && bracketEntry.game && <Typography
+                                style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player1.id).score}</Typography>}
                         </div>
                     </div>
+                    <div className={entryStyle.padding}>
+                        <div style={{display: "flex", flexDirection: "row"}}>
+                            <Typography style={{
+                                flex: 1,
+                                opacity: (bracketEntry.game && bracketEntry.player2.id !== bracketEntry.game.winner) || (bracketEntry.player2 && bracketEntry.forfeitedId === bracketEntry.player2.id) ? 0.5 : 1
+                            }}>{getUsername(bracketEntry.player2)}</Typography>
+                            {bracketEntry.player2 && bracketEntry.game && <Typography
+                                style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player2.id).score}</Typography>}
+                        </div>
+                    </div>
+                </div>
                 {showPlus && <div style={{
                     borderRadius: '50%',
                     backgroundColor: plusColor,
@@ -103,15 +112,39 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     <Typography color={"inherit"}>Forfeited</Typography>
                 </div>}
 
+                {!showPlus && bracketEntry.game && <Tooltip title={"Detailed game info"}
+                                                            onClick={() => history.push(`/${getRequestGameTypeString(bracketEntry.game.gameType)}/${bracketEntry.game.id}`)}>
+                    <div style={{
+                        backgroundColor: plusBaseColor,
+                        position: "relative",
+                        top: -47,
+                        left: 140,
+                        width: 20,
+                        minHeight: 20,
+                        display: 'flex',
+                        fontSize: 12,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: 'white',
+                        borderRadius: '50%',
+                        border: '1px solid grey',
+                        cursor: 'pointer'
+
+                    }} onMouseEnter={() => setSkipColor(plusActiveColor)}
+                         onMouseLeave={() => setSkipColor(plusBaseColor)}>
+                        i
+                    </div>
+                </Tooltip>}
+
             </div>
-                {showPath && <div style={{
-                    width: 49,
-                    height: 35,
-                    display: "inline-block",
-                    borderBottom: `1px solid ${borderColor}`
-                }}/>}
-            </div>
-        );
+            {showPath && <div style={{
+                width: 49,
+                height: 35,
+                display: "inline-block",
+                borderBottom: `1px solid ${borderColor}`
+            }}/>}
+        </div>
+    );
 };
 
 BracketEntry.propTypes = {};

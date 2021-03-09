@@ -11,18 +11,20 @@ import {useHasRole} from "../../utils/SecurityUtils";
 import CheckIcon from '@material-ui/icons/Check';
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import BellComponent from "./BellComponent";
+import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import GavelIcon from '@material-ui/icons/Gavel';
 import mainStyles from "../../misc/styles/MainStyles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
+
 const SideBar = ({open, setOpen}) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
     const hasRole = useHasRole();
-    const {email} = useSelector(state => state.auth)
+    const {email, username} = useSelector(state => state.auth)
     const small = useXtraSmallSize();
     const [state, setState] = useState({
         expanded: false,
@@ -50,6 +52,13 @@ const SideBar = ({open, setOpen}) => {
             tooltip: "Homepage",
             link: "/",
             icon: <HomeOutlinedIcon/>
+        },
+        {
+            tooltip: username,
+            link: "/secure/profile",
+            icon: <AccountBoxOutlinedIcon/>,
+            role: 'USER'
+
         },
         {
             tooltip: "Tournaments",
@@ -101,14 +110,8 @@ const SideBar = ({open, setOpen}) => {
             link: '/rules',
             icon: <GavelIcon/>
 
-        }
-        // {
-        //     tooltip: email,
-        //     link: "/secure/profile",
-        //     icon: <AccountBoxOutlinedIcon/>,
-        //     role: 'USER'
-        //
-        // },
+        },
+
     ]
 
     const go = (address) => {

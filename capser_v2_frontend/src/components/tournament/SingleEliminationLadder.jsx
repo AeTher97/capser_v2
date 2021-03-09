@@ -65,9 +65,13 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
             {levels.map(level => {
                 const value = (
                     <div key={level.type}>
-                        <div style={{position: "absolute", top: -50 + additionalVerticalOffset, left: currentHorizontalOffset}}>
+                        <div style={{
+                            position: "absolute",
+                            top: -60 + additionalVerticalOffset,
+                            left: currentHorizontalOffset
+                        }}>
                             <Typography variant={"h4"} color={"textSecondary"} noWrap>
-                            {getRoString(level.type)}
+                                {getRoString(level.type)}
                             </Typography>
                         </div>
                         {level.entries.map((entry) => {
@@ -115,9 +119,7 @@ SingleEliminationLadder.propTypes = {};
 const ladderStyles = makeStyles(theme => ({
     container: {
         height: '100%',
-        // overflowY: "visible",
         overflow: "scroll",
-        // overflowX: "display",
         position: "relative",
         scrollbarColor: "white"
 

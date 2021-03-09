@@ -6,7 +6,6 @@ import {useSelector} from "react-redux";
 const SecureRoute = ({children, ...props}) => {
     const {isAuthenticated} = useSelector(state => state.auth)
     const location2 = useLocation();
-    console.log(location2.pathname)
 
     return (
         <Route

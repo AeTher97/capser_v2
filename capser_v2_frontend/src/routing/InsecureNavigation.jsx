@@ -14,6 +14,7 @@ import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import TournamentComponent from "../components/tournament/TournamentComponent";
 import TournamentsComponent from "../components/tournament/TournamentsComponent";
+import PlayerComponent from "../components/profile/PlayerComponent";
 
 const InsecureNavigation = () => {
 
@@ -39,6 +40,10 @@ const InsecureNavigation = () => {
 
                     <Route exact path={"/singles/:gameId"}>
                         <SinglesGame/>
+                    </Route>
+
+                    <Route exact path={"/players/:playerId"}>
+                        <PlayerComponent/>
                     </Route>
 
 
