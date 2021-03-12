@@ -44,7 +44,7 @@ export const useUserData = (id) => {
             setData(response.data)
             dispatch({
                 type: UPDATE_DATA, payload: {
-                    email: response.data.email,
+                    email: newData.email,
                     username: response.data.username
                 }
             })
