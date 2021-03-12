@@ -5,7 +5,6 @@ import UserComponent from "./UserComponent";
 const PlayerComponent = () => {
 
     const {playerId} = useParams();
-    console.log(playerId)
 
     return (
         <>

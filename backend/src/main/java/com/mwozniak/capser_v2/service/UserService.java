@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -89,7 +90,7 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public User createUser(CreateUserDto createUserDto) throws CredentialTakenException {
+    public User createUser(CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException {
         if (usersRepository.findUserByEmail(createUserDto.getEmail()).isPresent()) {
             throw new CredentialTakenException("Email not available");
         } else if (usersRepository.findUserByUsername(createUserDto.getUsername()).isPresent()) {
@@ -103,7 +104,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateUser(UUID id, UpdateUserDto updateUserDto) throws UserNotFoundException {
+    public UserDto updateUser(UUID id, UpdateUserDto updateUserDto) throws UserNotFoundException, NoSuchAlgorithmException {
         User user = getUser(id);
         if (updateUserDto.getEmail() != null) {
             if (!usersRepository.findUserByEmail(updateUserDto.getEmail()).isPresent()) {

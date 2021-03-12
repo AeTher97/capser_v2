@@ -4,11 +4,13 @@ import {validateEmail, validateLength} from "../../utils/Validators";
 import ValidatedField from "../misc/ValidatedField";
 import {Button, Dialog, Typography} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
+import {useSelector} from "react-redux";
 
 const EditUserDataDialog = ({open, setOpen, editData, data}) => {
+    const {email} = useSelector(state => state.auth);
 
     const usernameField = useFieldValidation(data.username, (word) => () => validateLength(word, 3))
-    const emailField = useFieldValidation(data.email, validateEmail)
+    const emailField = useFieldValidation(email || '', validateEmail)
     usernameField.showError = true;
     emailField.showError = true;
 

@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.models.responses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.UserStats;
@@ -15,8 +16,10 @@ public class UserDto {
 
     private UUID id;
     private String username;
+    @JsonIgnore
     private String email;
     private Date lastSeen;
+    private String avatarHash;
     private Date lastGame;
     private List<TeamWithStats> teams;
 

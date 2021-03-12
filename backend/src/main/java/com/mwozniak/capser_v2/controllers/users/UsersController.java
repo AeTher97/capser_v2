@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @RestController
@@ -51,13 +52,13 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException {
+    public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException {
         log.info("Creating user");
         return ResponseEntity.ok(userService.createUser(createUserDto));
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable UUID userId) throws UserNotFoundException {
+    public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable UUID userId) throws UserNotFoundException, NoSuchAlgorithmException {
         return ResponseEntity.ok(userService.updateUser(userId, updateUserDto));
     }
 
