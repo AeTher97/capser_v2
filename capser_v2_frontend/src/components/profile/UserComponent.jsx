@@ -125,7 +125,7 @@ const UserComponent = ({id}) => {
                         alignItems: 'center',
                     }}>
                         {data && <img style={{clipPath: 'url(#clip)'}}
-                                      src={`https://www.gravatar.com/avatar/${data.avatarHash}?s=160&d=${encodeURIComponent('https://i.ibb.co/S3G9jn9/default-Profile.png')}`}/>}
+                                      src={`https://www.gravatar.com/avatar/${data.avatarHash}?s=160&d=${encodeURIComponent('https://globalcapsleague.com/defaultProfile.png')}`}/>}
                         {(!id || id === userId) &&
                         <EditIcon fontSize={"large"} style={{
                             position: 'relative', top: -95, left: 0, display: pictureOverlay || small ? 'block' : 'none'
