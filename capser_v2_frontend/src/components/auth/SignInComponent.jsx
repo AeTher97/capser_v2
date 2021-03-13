@@ -8,6 +8,7 @@ import {saveTokenInStorage} from "../../utils/TokenUtils";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
 import CenteredColumn from "../misc/CenteredColumn";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 
 const SignInComponent = props => {
@@ -18,6 +19,8 @@ const SignInComponent = props => {
     });
     const username = useFieldValidation("", () => {
     });
+
+    const small = useXtraSmallSize();
 
 
     const {error} = useSelector(state => state.auth);
@@ -54,7 +57,7 @@ const SignInComponent = props => {
         <div className={classes.root}>
             <div className={classes.loginContainer}>
                 <CenteredColumn>
-                    <img src={"/logo192.png"}/>
+                    <img src={small ? '/logo512.png' : "/logo192.png"} style={{height: 192, width: 192}}/>
                     <FormComponent
                         title={'Capser Log In'}
                         fields={fields}
