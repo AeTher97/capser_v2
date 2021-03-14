@@ -36,7 +36,7 @@ export const useUserData = (id) => {
     }, [id])
 
     const updateUserData = (newData) => {
-        axios.put(`/users/${id}`, newData, {
+        return axios.put(`/users/${id}`, newData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }
@@ -50,9 +50,14 @@ export const useUserData = (id) => {
             })
             dispatch(showSuccess("Data saved"))
         }).catch(e => {
+            if (e.response.status === 403) {
+                dispatch(showError("Password invalid"));
+                throw  e;
+            }
             if (e.response.data.error) {
                 dispatch(showError(e.response.data.error))
             }
+
         })
     }
     return {updateUserData, data, loading, loaded}

@@ -10,22 +10,26 @@ public class EmailLoader {
 
 
     public static String loadUpdateEmailEmail() {
-        return getFileStream("email/emailUpdated.html");
+        return loadFile("email/emailUpdated.html");
     }
 
     public static String loadUpdateUsernameEmail() {
-        return getFileStream("email/usernameUpdated.html");
+        return loadFile("email/usernameUpdated.html");
+    }
+
+    public static String loadResetPasswordEmail() {
+        return loadFile("email/passwordReset.html");
     }
 
     public static String loadRegisteredEmail() {
-        return getFileStream("email/registered.html");
+        return loadFile("email/registered.html");
     }
 
     public static String loadGameAcceptanceEmail() {
-        return getFileStream("email/gameAcceptance.html");
+        return loadFile("email/gameAcceptance.html");
     }
 
-    private static String getFileStream(String name) {
+    private static String loadFile(String name) {
         StringBuilder email = new StringBuilder();
         InputStream inputStream = EmailLoader.class.getClassLoader().getResourceAsStream(name);
         try (InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);

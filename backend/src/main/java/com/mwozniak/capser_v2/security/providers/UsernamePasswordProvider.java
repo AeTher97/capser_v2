@@ -3,7 +3,9 @@ package com.mwozniak.capser_v2.security.providers;
 
 import com.mwozniak.capser_v2.configuration.JwtConfiguration;
 import com.mwozniak.capser_v2.models.database.User;
+import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.security.TokenFactory;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -30,6 +32,11 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtConfiguration = jwtConfiguration;
+        userService.setUsernamePasswordProvider(this);
+    }
+
+    public void checkPassword(String password) throws UserNotFoundException {
+        authenticate(new UsernamePasswordAuthenticationToken(userService.getUser(SecurityUtils.getUserId()).getUsername(), password));
     }
 
     @Override

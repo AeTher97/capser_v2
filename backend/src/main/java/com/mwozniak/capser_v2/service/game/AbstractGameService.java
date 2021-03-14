@@ -131,7 +131,7 @@ public abstract class AbstractGameService implements GameService {
             try {
                 acceptGame(request.getGameToAccept());
             } catch (CapserException e) {
-                log.error("Failed to accept game " + request.getGameToAccept());
+                log.error("Failed to accept game " + request.getGameToAccept() + " " + e.getMessage());
                 accepted.addAndGet(-1);
             }
         });

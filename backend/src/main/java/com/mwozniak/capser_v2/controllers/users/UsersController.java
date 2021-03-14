@@ -2,8 +2,10 @@ package com.mwozniak.capser_v2.controllers.users;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
+import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
+import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;
 import com.mwozniak.capser_v2.service.UserService;
@@ -12,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,8 +61,25 @@ public class UsersController {
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("hasAuthority('USER') and @accessVerificationBean.hasAccessToUser(#userId)")
     public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable UUID userId) throws UserNotFoundException, NoSuchAlgorithmException {
         return ResponseEntity.ok(userService.updateUser(userId, updateUserDto));
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestParam String email) {
+        try {
+            userService.resetPassword(email);
+        } catch (Exception e) {
+            log.info("Password reset " + e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) throws ResetTokenExpiredException, UserNotFoundException {
+        userService.updatePassword(updatePasswordDto);
+        return ResponseEntity.ok().build();
     }
 
 

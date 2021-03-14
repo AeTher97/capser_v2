@@ -11,35 +11,55 @@ const EditUserDataDialog = ({open, setOpen, editData, data}) => {
 
     const usernameField = useFieldValidation(data.username, (word) => () => validateLength(word, 3))
     const emailField = useFieldValidation(email || '', validateEmail)
+    const passwordField = useFieldValidation('', (word) => () => validateLength(word, 6))
     usernameField.showError = true;
     emailField.showError = true;
+    passwordField.showError = true;
 
     const classes = mainStyles();
-    const saveData = () => {
 
-        if (usernameField.validate()() || emailField.validate()) {
+    const close = () => {
+        usernameField.setValue(data.username);
+        emailField.setValue(email);
+        passwordField.setValue('');
+        setOpen(false);
+    }
+    const saveData = (e) => {
+        e.preventDefault();
+        if (usernameField.validate()() || emailField.validate() || passwordField.validate()()) {
             return;
         }
         console.log("saving")
         editData({
             email: emailField.value,
-            username: usernameField.value
+            username: usernameField.value,
+            password: passwordField.value
+        }).then((e) => {
+            setOpen(false);
+            passwordField.setValue('');
         })
-        setOpen(false);
+            .catch(e => {
+
+            })
     }
 
     return (
         <Dialog open={open}>
-            <div className={classes.standardBorder} style={{margin: 0}}>
-                <Typography variant={"h5"}>Change account data</Typography>
-                <ValidatedField field={usernameField} label={usernameField.value === "" ? "Username" : ""}/>
-                <ValidatedField field={emailField} label={emailField.value === "" ? "Email" : ""}/>
-                <div style={{marginTop: 10}}>
-                    <Button style={{marginRight: 5}} onClick={saveData}>Save</Button>
-                    <Button variant={"outlined"} onClick={() => setOpen(false)}>Cancel</Button>
+            <form onSubmit={saveData}>
+                <div className={classes.standardBorder} style={{margin: 0}}>
+                    <Typography variant={"h5"}>Change account data</Typography>
+                    <ValidatedField field={usernameField} label={usernameField.value === "" ? "Username" : ""}/>
+                    <ValidatedField field={emailField} label={emailField.value === "" ? "Email" : ""}/>
+                    <ValidatedField field={passwordField} label={passwordField.value === "" ? "Password" : ""}
+                                    type={"password"}/>
+                    <div style={{marginTop: 10}}>
+                        <Button style={{marginRight: 5}} type={"submit"}>Save</Button>
+                        <Button variant={"outlined"} onClick={close}>Cancel</Button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </Dialog>
+
     );
 };
 

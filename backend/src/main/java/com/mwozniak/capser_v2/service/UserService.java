@@ -1,17 +1,21 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.Roles;
+import com.mwozniak.capser_v2.models.database.PasswordResetToken;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
+import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
+import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserDto;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;
+import com.mwozniak.capser_v2.repository.PasswordTokenRepository;
 import com.mwozniak.capser_v2.repository.UsersRepository;
+import com.mwozniak.capser_v2.security.providers.UsernamePasswordProvider;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -34,17 +38,30 @@ public class UserService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final PasswordTokenRepository passwordTokenRepository;
+    @Setter
+    private UsernamePasswordProvider usernamePasswordProvider;
     @Setter
     private TeamService teamService;
 
-    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, EmailService emailService, PasswordTokenRepository passwordTokenRepository) {
         this.usersRepository = usersRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.passwordTokenRepository = passwordTokenRepository;
     }
 
     public User getUser(UUID id) throws UserNotFoundException {
         Optional<User> userOptional = usersRepository.findUserById(id);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    public User getUserByEmail(String email) throws UserNotFoundException {
+        Optional<User> userOptional = usersRepository.findUserByEmail(email);
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
@@ -105,6 +122,7 @@ public class UserService {
 
     @Transactional
     public UserDto updateUser(UUID id, UpdateUserDto updateUserDto) throws UserNotFoundException, NoSuchAlgorithmException {
+        usernamePasswordProvider.checkPassword(updateUserDto.getPassword());
         User user = getUser(id);
         if (updateUserDto.getEmail() != null) {
             if (!usersRepository.findUserByEmail(updateUserDto.getEmail()).isPresent()) {
@@ -131,7 +149,7 @@ public class UserService {
 
                 user.setUsername(updateUserDto.getUsername());
             } else {
-                if (!usersRepository.findUserByEmail(updateUserDto.getEmail()).get().getId().equals(id)) {
+                if (!usersRepository.findUserByUsername(updateUserDto.getUsername()).get().getId().equals(id)) {
                     throw new UserNotFoundException("Username taken");
                 }
             }
@@ -139,6 +157,36 @@ public class UserService {
         User user0 = usersRepository.save(user);
 
         return getFullUser(user0.getId());
+    }
+
+    @Transactional
+    public void resetPassword(String email) throws UserNotFoundException {
+        User user = getUserByEmail(email);
+        String token = UUID.randomUUID().toString();
+        createPasswordResetToken(user, token);
+        emailService.sendHtmlMessage(email, "Password reset", EmailLoader.loadResetPasswordEmail().replace("${player}", user.getUsername()).replace("${resetCode}", token));
+    }
+
+    @Transactional
+    public void updatePassword(UpdatePasswordDto updatePasswordDto) throws UserNotFoundException, ResetTokenExpiredException {
+        Optional<PasswordResetToken> passwordResetTokenOptional = passwordTokenRepository.findPasswordResetTokenByToken(updatePasswordDto.getCode());
+        if (!passwordResetTokenOptional.isPresent()) {
+            throw new UserNotFoundException("Reset token invalid");
+        }
+        PasswordResetToken resetToken = passwordResetTokenOptional.get();
+        if (resetToken.isExpired()) {
+            throw new ResetTokenExpiredException("Reset token expired");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(updatePasswordDto.getPassword()));
+        passwordTokenRepository.delete(resetToken);
+        usersRepository.save(user);
+    }
+
+    private void createPasswordResetToken(User user, String token) {
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(passwordResetToken);
     }
 
     public Page<User> getUsers(Pageable pageable) {
@@ -166,9 +214,5 @@ public class UserService {
 
     }
 
-    private List<SinglesGame> findUserSinglesGames(UUID id) {
-//        return singlesRepository.findSinglesGamesByPlayer1OrPlayer2(id,id);
-        return null;
-    }
 
 }

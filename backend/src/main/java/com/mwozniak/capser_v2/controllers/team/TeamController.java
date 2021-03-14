@@ -3,9 +3,7 @@ package com.mwozniak.capser_v2.controllers.team;
 import com.mwozniak.capser_v2.models.dto.CreateTeamDto;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
-import com.mwozniak.capser_v2.models.responses.UserMinimized;
 import com.mwozniak.capser_v2.service.TeamService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +54,7 @@ public class TeamController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> searchUsers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String username) {
+    public ResponseEntity<Object> searchTeams(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String username) {
         return ResponseEntity.ok(teamService.searchTeams(PageRequest.of(pageNumber, pageSize), username));
     }
 

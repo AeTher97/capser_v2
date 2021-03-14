@@ -4,14 +4,14 @@ import axios from "axios";
 import {showError, showSuccess} from "../redux/actions/alertActions";
 import {fetchUsername} from "./UsersFetch";
 
-export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 5) => {
+export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 50) => {
     const {accessToken} = useSelector(state => state.auth);
 
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
 
-     useEffect(() => {
+    useEffect(() => {
         let shouldUpdate = true;
         setLoading(true)
         if (accessToken && userId) {

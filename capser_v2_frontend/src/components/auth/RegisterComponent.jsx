@@ -2,16 +2,15 @@ import React, {useCallback, useState} from 'react';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@material-ui/core";
 import {createAccount} from "../../redux/actions/authActions";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../misc/FormComponent";
 import CenteredColumn from "../misc/CenteredColumn";
 import {validateEmail, validateLength, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
 
 
-const RegisterComponent = props => {
+const RegisterComponent = () => {
 
-    const location = useLocation();
     const classes = useStyle();
 
     const password = useFieldValidation("", validatePassword);
