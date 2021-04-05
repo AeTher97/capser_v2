@@ -9,21 +9,21 @@ import {getRoString} from "./SingleEliminationLadder";
 export const getDroString = (round) => {
     switch (round) {
         case "D_RO_16":
-            return "Ro 64"
-        case "D_RO_12":
-            return "Ro 32"
-        case "D_RO_8":
             return "Ro 16"
+        case "D_RO_12":
+            return ""
+        case "D_RO_8":
+            return "Quarter finals"
         case "D_RO_6":
-            return "Quater finals"
+            return ""
         case "D_RO_4":
             return "Semi finals"
         case "D_RO_3":
-            return "Final"
+            return ""
         case "D_RO_2":
-            return ""
+            return "Bracket Finals"
         case "D_RO_1":
-            return ""
+            return "Grand Finals"
 
     }
 }
@@ -83,11 +83,11 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                             <div key={level.type}>
                                 <div style={{
                                     position: "absolute",
-                                    top: -60 + additionalVerticalOffset,
+                                    top: -60 + verticalOffsetLevel * currentVertical + additionalVerticalOffset,
                                     left: currentHorizontalOffset
                                 }}>
                                     <Typography variant={"h4"} color={"textSecondary"} noWrap>
-                                        {getRoString(level.type)}
+                                        {getDroString(level.type)}
                                     </Typography>
                                 </div>
                                 {level.entries.map((entry) => {
@@ -102,7 +102,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                         />
                                         {level.type !== lowestRound &&  <>
                                             <BracketPath height={verticalOffsetLevel / 4}
-                                                         width={300} left={-300}
+                                                         width={level.type === "D_RO_1" ? 50 : 300} left={level.type === "D_RO_1" ? -50 :-300}
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>
                                             { level.type !== 'D_RO_1' && currentVertical>parseInt(level.type.split("_")[2])/2-1 && <BracketPath height={verticalOffsetLevel / 4}
@@ -110,7 +110,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>}
                                             { currentVertical<parseInt(level.type.split("_")[2])/2 && <BracketPath height={verticalOffsetLevel / 4}
-                                                          width={300} left={-300}
+                                                          width={level.type === "D_RO_1" ? 50 : 300} left={level.type === "D_RO_1" ? -50 :-300}
                                                           top={35}
                                                           pathType={"bottom"}
                                             />}</>}
@@ -123,9 +123,6 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                         currentVertical = 0;
                         lastPower2 = level.type;
                         currentHorizontalOffset += horizontalOffsetLevel;
-                        if(level.type === "D_RO_2") {
-                            currentHorizontalOffset += horizontalOffsetLevel;
-                        }
                         additionalVerticalOffset += verticalOffsetLevel / 2;
                         verticalOffsetLevel *= 2;
                         return value;
@@ -139,7 +136,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                     left: currentHorizontalOffset
                                 }}>
                                     <Typography variant={"h4"} color={"textSecondary"} noWrap>
-                                        {getRoString(level.type)}
+                                        {getDroString(level.type)}
                                     </Typography>
                                 </div>
                                 {level.entries.map((entry) => {

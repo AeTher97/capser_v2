@@ -13,7 +13,7 @@ export const getRoString = (round) =>{
         case "RO_16":
             return "Ro 16"
         case "RO_8":
-            return "Quater finals"
+            return "Quarter finals"
         case "RO_4":
             return "Semi finals"
         case "RO_2":

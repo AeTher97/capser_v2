@@ -98,7 +98,7 @@ const TournamentsComponent = () => {
                                     {getSeedTypeString(tournament.seedType)}
                                 </Typography>
                                 <Typography>
-                                    {tournament.size.split("_")[1]} Players
+                                    {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Players
                                 </Typography>
 
                             </div>
@@ -114,7 +114,7 @@ const TournamentsComponent = () => {
                 <div className={classes.standardBorder} style={{margin: 0}}>
                     <Typography variant={"h5"}>Create new tournament</Typography>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField label={name === '' ? "Nazwa" : ''} style={{width: 200}} value={name}
+                        <TextField label={name === '' ? "Name" : ''} style={{width: 200}} value={name}
                                    onChange={event => setName(event.target.value)}/>
                         <Select style={{width: 200, marginBottom: 10}} value={size}
                                 onChange={(e) => setSize(e.target.value)} label={"Player count"}>

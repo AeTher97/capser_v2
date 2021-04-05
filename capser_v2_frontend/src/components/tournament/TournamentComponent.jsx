@@ -108,7 +108,7 @@ const TournamentComponent = () => {
                                 </div>
                                 <BoldTyphography
                                     className={classes.header}>{getGameIcon(tournament.gameType)} {getGameTypeString(tournament.gameType)}</BoldTyphography>
-                                <BoldTyphography>{tournament.size.split("_")[1]} players</BoldTyphography>
+                                <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} players</BoldTyphography>
                                 <BoldTyphography>{getTournamentTypeString(tournament.tournamentType)} tournament</BoldTyphography>
                                 <Typography>{getSeedTypeString(tournament.seedType)}</Typography>
                                 <Typography>{getInProgressString(tournament.seeded, tournament.finished)}</Typography>

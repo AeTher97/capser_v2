@@ -99,7 +99,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     cursor: "pointer",
                     border: skipColor === plusBaseColor ? "none" : "1px solid white",
                     padding: skipColor === plusBaseColor ? 2 : 1.25,
-                    zIndex: 10000
+                    zIndex: 10
                 }} onMouseEnter={() => setSkipColor(plusActiveColor)} onMouseLeave={() => setSkipColor(plusBaseColor)}>
                     <SkipNextOutlinedIcon
                         onClick={() => openSkipDialog(bracketEntry.id, bracketEntry.player1, bracketEntry.player2)}/>

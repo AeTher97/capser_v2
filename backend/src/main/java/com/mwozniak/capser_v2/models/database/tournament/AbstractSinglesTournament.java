@@ -210,7 +210,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
                             lowerEntry.setPlayer2(getLoser(upperEntry2));
                         }
                         if (upperEntry1.isFinal() && upperEntry2.isFinal()) {
-                            if (upperEntry1.isBye() || upperEntry2.isBye())
+                            if (upperEntry1.isBye() || upperEntry2.isBye() || upperEntry2.isForfeited() || upperEntry1.isForfeited())
                                 lowerEntry.setBye(true);
                             lowerEntry.setFinal(true);
                         }
@@ -312,11 +312,15 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             if (higherEntry.getPlayer1() == null) {
                 higherEntry.setPlayer1(getLoser(topEntry));
             }
+        } else {
+            if (topEntry.isForfeited() && bottomEntry.isFinal()) {
+                higherEntry.setBye(true);
+            }
         }
 
         if (bottomEntry.getGame() != null) {
             if (higherEntry.getPlayer2() == null) {
-                higherEntry.setPlayer2(getLoser(bottomEntry));
+                higherEntry.setPlayer2(getWinner(bottomEntry));
             }
         }
     }
