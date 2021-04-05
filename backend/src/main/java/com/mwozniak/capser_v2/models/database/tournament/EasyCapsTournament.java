@@ -28,6 +28,7 @@ public class EasyCapsTournament extends AbstractSinglesTournament<EasyCapsGame> 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     protected List<EasyCapsBracketEntry> bracketEntries;
 
+    @Override
     public List<? extends AbstractSinglesBracketEntry> getBracketEntries(){
         return bracketEntries;
     }

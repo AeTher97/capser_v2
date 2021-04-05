@@ -84,49 +84,14 @@ public abstract class Tournament<T extends AbstractGame> {
         populateEntryList();
     }
 
-    protected int getCoordinatesIdsBelow(BracketEntryType bracketEntryType){
-        int number =0;
-        for(BracketEntryType entry : BracketEntryType.values()){
-            if(entry.getValue() > bracketEntryType.getValue()){
-                number += entry.getValue()/2;
-            }
-        }
-        return number;
-    }
 
-    protected int getCoordinatesIdsBelowAndEqual(BracketEntryType bracketEntryType){
-        int number =0;
-        for(BracketEntryType entry : BracketEntryType.values()){
-            if(entry.getValue() >= bracketEntryType.getValue()){
-                number += entry.getValue()/2;
-            }
-        }
-        return number;
-    }
-
-    protected int getCoordinatesIdsAbove(BracketEntryType bracketEntryType){
-        int number =0;
-        for(BracketEntryType entry : BracketEntryType.values()){
-            if(entry.getValue() < bracketEntryType.getValue()){
-                number += entry.getValue()/2;
-            }
-        }
-        return number;
-    }
-
-    protected int getCoordinatesIdsAboveAndEqual(BracketEntryType bracketEntryType){
-        int number =0;
-        for(BracketEntryType entry : BracketEntryType.values()){
-            if(entry.getValue() <= bracketEntryType.getValue()){
-                number += entry.getValue()/2;
-            }
-        }
-        return number;
-    }
 
     public static class Comparators {
 
         public static final Comparator<Tournament<?>> DATE = Comparator.comparing(Tournament::getDate);
     }
+    public abstract List<? extends BracketEntry> getBracketEntries();
+
+    public abstract List<UserBridge> getPlayers();
 
 }

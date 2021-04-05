@@ -150,6 +150,14 @@ const TournamentComponent = () => {
                                              winner={tournament.winner}
                                              openSkipDialog={openSkipDialog}
                     />}
+                    {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
+                    <SingleEliminationLadder isOwner={isOwner()}
+                                             bracketEntries={tournament.bracketEntries}
+                                             lowestRound={tournament.size}
+                                             openAddGameDialog={openAddGameDialog}
+                                             winner={tournament.winner}
+                                             openSkipDialog={openSkipDialog}
+                    />}
                     {overrides.player1 && <Dialog open={addGameOpen}>
                         <div className={classes.standardBorder}
                              style={{margin: 0, maxWidth: 250, paddingLeft: 50, paddingRight: 50}}>

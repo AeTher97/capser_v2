@@ -95,4 +95,8 @@ public class User {
         }
         avatarHash = stringBuffer.toString();
     }
+
+    protected void setId(UUID id){
+        this.id = id;
+    }
 }

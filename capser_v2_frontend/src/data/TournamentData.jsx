@@ -18,7 +18,7 @@ export const useTournamentsList = (type, pageNumber = 0, pageSize = 10) => {
         let shouldUpdate = true;
         axios.post(`/${type}/tournaments`,creationRequest,{
             headers: {
-                authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer ${accessToken}`
             }
         }).then((response) => {
             const newContent = [response.data];

@@ -54,6 +54,7 @@ const TournamentsComponent = () => {
     const [creationOpen, setCreationOpen] = useState(false);
     const [size, setSize] = useState('RO_16');
     const [gameType, setGameType] = useState('EASY_CAPS');
+    const [tournamentType, setTournamentType] = useState('SINGLE_ELIMINATION');
     const [name, setName] = useState('');
     const hasRole = useHasRole();
     const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const TournamentsComponent = () => {
             <PageHeader title={"Tournaments"} icon={<AccountTreeOutlinedIcon fontSize={"large"}/>} noSpace/>
             <div style={{display: "flex", justifyContent: "center"}}>
                 <div className={[classes.paddedContent, styles.column].join(' ')}>
-                    <div style={{display: "flex", flexDirection: "row", alignItems: 'center',padding: 10}}>
+                    <div style={{display: "flex", flexDirection: "row", alignItems: 'center', padding: 10}}>
                         <Typography style={{flex: 1}} variant={"h4"}>Official tournaments list</Typography>
                         <div>
                             {hasRole('ADMIN') && <Button onClick={() => setCreationOpen(true)}>Create new</Button>}
@@ -78,10 +79,11 @@ const TournamentsComponent = () => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
                             }} className={classes.standardBorder} style={{marginBottom: 10, cursor: "pointer"}}>
                                 <div className={classes.header}>
-                                <Typography variant={"h6"} color={"primary"} style={{flex:1}}>
-                                    {tournament.tournamentName}
-                                </Typography>
-                                    <Typography variant={"caption"}>{new Date(tournament.date).toDateString()}</Typography>
+                                    <Typography variant={"h6"} color={"primary"} style={{flex: 1}}>
+                                        {tournament.tournamentName}
+                                    </Typography>
+                                    <Typography
+                                        variant={"caption"}>{new Date(tournament.date).toDateString()}</Typography>
                                 </div>
                                 <Typography className={classes.header}>
                                     {getGameIcon(tournament.gameType)} {getGameTypeString(tournament.gameType)}
@@ -102,7 +104,8 @@ const TournamentsComponent = () => {
                             </div>
                         })}
                     </>}
-                    {!loading && tournaments.length === 0 && <div style={{padding:60, textAlign: 'center'}} className={classes.standardBorder}>
+                    {!loading && tournaments.length === 0 &&
+                    <div style={{padding: 60, textAlign: 'center'}} className={classes.standardBorder}>
                         <Typography variant={"h5"}>No tournaments yet</Typography>
                     </div>}
                 </div>
@@ -111,31 +114,44 @@ const TournamentsComponent = () => {
                 <div className={classes.standardBorder} style={{margin: 0}}>
                     <Typography variant={"h5"}>Create new tournament</Typography>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                    <TextField label={name === '' ? "Nazwa" : ''} style={{width:200}} value={name} onChange={event => setName(event.target.value)} />
-                    <Select style={{width: 200, marginBottom: 10}} value={size} onChange={(e) => setSize(e.target.value)} label={"Player count"}>
-                        <MenuItem value={"RO_8"}>8</MenuItem>
-                        <MenuItem value={"RO_16"}>16</MenuItem>
-                        <MenuItem value={"RO_32"}>32</MenuItem>
-                        <MenuItem value={"RO_64"}>64</MenuItem>
-                    </Select>
-                        <Select style={{width: 200, marginBottom: 10}} value={gameType} onChange={event => setGameType(event.target.value)}>
+                        <TextField label={name === '' ? "Nazwa" : ''} style={{width: 200}} value={name}
+                                   onChange={event => setName(event.target.value)}/>
+                        <Select style={{width: 200, marginBottom: 10}} value={size}
+                                onChange={(e) => setSize(e.target.value)} label={"Player count"}>
+                            <MenuItem value={"RO_8"}>8</MenuItem>
+                            <MenuItem value={"RO_16"}>16</MenuItem>
+                            {tournamentType !== "DOUBLE_ELIMINATION" &&<MenuItem value={"RO_32"}>32</MenuItem>}
+                            {tournamentType !== "DOUBLE_ELIMINATION" && <MenuItem value={"RO_64"}>64</MenuItem>}
+                        </Select>
+                        <Select style={{width: 200, marginBottom: 10}} value={gameType}
+                                onChange={event => setGameType(event.target.value)}>
                             <MenuItem value={"SINGLES"}>Singles</MenuItem>
                             <MenuItem value={"EASY_CAPS"}>Easy caps</MenuItem>
                             <MenuItem value={"UNRANKED"}>Unranked</MenuItem>
+                        </Select>
+                        <Select style={{width: 200, marginBottom: 10}} value={tournamentType}
+                                onChange={event => {
+                                    setTournamentType(event.target.value)
+                                    if(size === "RO_32" || size === "RO_64"){
+                                        setSize("RO_16");
+                                    }
+                                }}>
+                            <MenuItem value={"SINGLE_ELIMINATION"}>Single Elimination</MenuItem>
+                            <MenuItem value={"DOUBLE_ELIMINATION"}>Double Elimination</MenuItem>
                         </Select>
                     </div>
                     <div>
 
                         <Button style={{marginRight: 5}} onClick={() => {
-                            if(name === ''){
+                            if (name === '') {
                                 dispatch(showError("Invalid name"));
                                 return;
                             }
                             createNew({
                                 tournamentName: name,
                                 seedType: "RANDOM",
-                                tournamentType: "SINGLE_ELIMINATION",
-                                size
+                                tournamentType: tournamentType,
+                                size : tournamentType === "SINGLE_ELIMINATION" ? size : "D_" + size
                             }, getRequestGameTypeString(gameType))
                             setCreationOpen(false)
                         }}>Create</Button>

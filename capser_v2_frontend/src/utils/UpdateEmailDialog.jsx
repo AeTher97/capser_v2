@@ -6,6 +6,7 @@ import useFieldValidation from "./useFieldValidation";
 import {validateEmail, validateLength} from "./Validators";
 import ValidatedField from "../components/misc/ValidatedField";
 import {useUserData} from "../data/UserData";
+import {useHasRole} from "./SecurityUtils";
 
 const UpdateEmailDialog = () => {
 
@@ -16,11 +17,12 @@ const UpdateEmailDialog = () => {
     const {updateUserData} = useUserData(userId);
     emailField.showError = true;
     passwordField.showError = true;
+    const hasRole = useHasRole();
 
     const classes = mainStyles();
 
     useEffect(() => {
-        setOpen(!!(username && (email === undefined || email === "null" || email === "undefined")));
+        setOpen(!!(username && (email === undefined || email === "null" || email === "undefined")) && !hasRole('ADMIN'));
     }, [username, email])
 
     const updateEmail = (e) => {
