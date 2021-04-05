@@ -165,7 +165,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
                 }
 
                 threeObjectResolve(topEntry, bottomEntry, higherEntry);
-                threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye());
+                threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),true);
 
             }
             currentRow = BracketEntryType.getHigher(currentRow);
@@ -185,7 +185,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
 
                 resolvePowerOfTwoLevel(currentRow, absoluteCoord, higherAbsoluteCoord);
 
-                if(!currentRow.equals(size)) {
+                if (!currentRow.equals(size)) {
                     int bottomAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(currentRow, false);
                     int bottomHigherAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(currentRow), false);
 
@@ -248,7 +248,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             }
 
             threeObjectResolve(topEntry, bottomEntry, higherEntry);
-            threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye());
+            threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),true);
 
         }
     }
@@ -264,7 +264,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             }
 
             threeObjectLosingResolve(upperBracketEntry, lowerEntry, higherEntry);
-            threeObjectBye(upperBracketEntry, lowerEntry, higherEntry, upperBracketEntry.getPlayer1(), upperBracketEntry.getPlayer2(), lowerEntry.getPlayer1(), lowerEntry.getPlayer2(), upperBracketEntry.isBye(), lowerEntry.isBye());
+            threeObjectBye(upperBracketEntry, lowerEntry, higherEntry, upperBracketEntry.getPlayer1(), upperBracketEntry.getPlayer2(), lowerEntry.getPlayer1(), lowerEntry.getPlayer2(), upperBracketEntry.isBye(), lowerEntry.isBye(),false);
 
         }
     }
@@ -339,9 +339,11 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
         }
     }
 
-    private void threeObjectBye(AbstractSinglesBracketEntry topEntry, AbstractSinglesBracketEntry bottomEntry, AbstractSinglesBracketEntry higherEntry, User player1, User player2, User player12, User player22, boolean bye, boolean bye2) {
+    private void threeObjectBye(AbstractSinglesBracketEntry topEntry, AbstractSinglesBracketEntry bottomEntry, AbstractSinglesBracketEntry higherEntry, User player1, User player2, User player12, User player22, boolean bye, boolean bye2, boolean copyFromTopOnBye) {
         if (bottomEntry.isBye() && topEntry.isBye()) {
-            higherEntry.setPlayer1(player1 == null ? player2 : player1);
+            if(copyFromTopOnBye) {
+                higherEntry.setPlayer1(player1 == null ? player2 : player1);
+            }
             higherEntry.setPlayer2(player12 == null ? player22 : player12);
             if (higherEntry.getPlayer1() == null || higherEntry.getPlayer2() == null) {
                 higherEntry.setBye(true);
@@ -349,7 +351,9 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             }
         } else if (bye || bye2) {
             if (bye) {
-                higherEntry.setPlayer1(player1 == null ? player2 : player1);
+                if(copyFromTopOnBye) {
+                    higherEntry.setPlayer1(player1 == null ? player2 : player1);
+                }
                 if (higherEntry.getPlayer1() == null && higherEntry.getPlayer2() != null) {
                     higherEntry.setFinal(true);
                     higherEntry.setBye(true);
@@ -379,7 +383,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
                     bottomEntry.setBracketEntryType(currentRow);
                     AbstractSinglesBracketEntry higherEntry = getBracketEntry(higherAbsoluteCoord + i / 2);
 
-                    threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye());
+                    threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),true);
                 }
                 currentRow = BracketEntryType.getHigher(currentRow);
 
@@ -390,19 +394,21 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             while (!currentRow.equals(BracketEntryType.D_RO_1)) {
                 getBracketEntries().sort(BracketEntry.Comparators.COORDINATE);
                 if (BracketEntryType.isPowerOf2(currentRow)) {
-                    int absoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(currentRow, true);
-                    int higherAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigherPowerOf2(currentRow), true);
-                    for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, true); i += 2) {
-                        AbstractSinglesBracketEntry topEntry = getBracketEntry(absoluteCoord + i);
-                        AbstractSinglesBracketEntry bottomEntry = getBracketEntry(absoluteCoord + i + 1);
-                        topEntry.setBracketEntryType(currentRow);
-                        bottomEntry.setBracketEntryType(currentRow);
-                        AbstractSinglesBracketEntry higherEntry = getBracketEntry(higherAbsoluteCoord + i / 2);
+                    if (!currentRow.equals(BracketEntryType.D_RO_2)) {
+                        int absoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(currentRow, true);
+                        int higherAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigherPowerOf2(currentRow), true);
+                        for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, true); i += 2) {
+                            AbstractSinglesBracketEntry topEntry = getBracketEntry(absoluteCoord + i);
+                            AbstractSinglesBracketEntry bottomEntry = getBracketEntry(absoluteCoord + i + 1);
+                            topEntry.setBracketEntryType(currentRow);
+                            bottomEntry.setBracketEntryType(currentRow);
+                            AbstractSinglesBracketEntry higherEntry = getBracketEntry(higherAbsoluteCoord + i / 2);
 
-                        threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye());
+                            threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),true);
+                        }
                     }
 
-                    if(!currentRow.equals(size)) {
+                    if (!currentRow.equals(size)) {
                         int lowerAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(currentRow, false);
                         for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, false); i += 1) {
                             AbstractSinglesBracketEntry entry = getBracketEntry(lowerAbsoluteCoord + i);

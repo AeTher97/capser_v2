@@ -9,7 +9,7 @@ import SkipNextOutlinedIcon from '@material-ui/icons/SkipNextOutlined';
 import {getRequestGameTypeString} from "../../utils/Utils";
 import {useHistory} from "react-router-dom";
 
-const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openSkipDialog}) => {
+const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openSkipDialog, pathElongation=0}) => {
 
     const entryStyle = entryStyles();
     const theme = useTheme();
@@ -32,6 +32,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
         }
     }
 
+
     let flexType;
     if (!bracketEntry.player1 && !bracketEntry.player2) {
         flexType = 'center';
@@ -53,7 +54,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                             <Typography style={{
                                 flex: 1,
                                 opacity: bracketEntry.game && bracketEntry.player1.id !== bracketEntry.game.winner || (bracketEntry.player1 && bracketEntry.forfeitedId === bracketEntry.player1.id) ? 0.5 : 1
-                            }}>{getUsername(bracketEntry.player1)}</Typography>
+                            }}> {getUsername(bracketEntry.player1)}</Typography>
                             {bracketEntry.player1 && bracketEntry.game && <Typography
                                 style={{marginRight: 15}}>{findPlayerStats(bracketEntry.game, bracketEntry.player1.id).score}</Typography>}
                         </div>
@@ -79,7 +80,8 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     width: plusColor === "red" ? 24 : 22,
                     cursor: "pointer",
                     border: plusColor === "red" ? "none" : "1px solid white",
-                    padding: plusColor === "red" ? 2 : 1.25
+                    padding: plusColor === "red" ? 2 : 1.25,
+                    zIndex: 10
                 }} onMouseEnter={() => setPlusColor("#c70000")} onMouseLeave={() => setPlusColor("red")}>
                     <AddOutlinedIcon
                         onClick={() => openAddGameDialog(bracketEntry.id, bracketEntry.player1, bracketEntry.player2, null, null)}/>
@@ -96,7 +98,8 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     width: skipColor === plusBaseColor ? 24 : 22,
                     cursor: "pointer",
                     border: skipColor === plusBaseColor ? "none" : "1px solid white",
-                    padding: skipColor === plusBaseColor ? 2 : 1.25
+                    padding: skipColor === plusBaseColor ? 2 : 1.25,
+                    zIndex: 10000
                 }} onMouseEnter={() => setSkipColor(plusActiveColor)} onMouseLeave={() => setSkipColor(plusBaseColor)}>
                     <SkipNextOutlinedIcon
                         onClick={() => openSkipDialog(bracketEntry.id, bracketEntry.player1, bracketEntry.player2)}/>
@@ -108,6 +111,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     color: "grey",
                     top: -90,
                     left: 80,
+                    zIndex: 10
                 }} onMouseEnter={() => setSkipColor(plusActiveColor)} onMouseLeave={() => setSkipColor(plusBaseColor)}>
                     <Typography color={"inherit"}>Forfeited</Typography>
                 </div>}
@@ -128,7 +132,8 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                         color: 'white',
                         borderRadius: '50%',
                         border: '1px solid grey',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        zIndex: 10
 
                     }} onMouseEnter={() => setSkipColor(plusActiveColor)}
                          onMouseLeave={() => setSkipColor(plusBaseColor)}>
@@ -138,7 +143,7 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
 
             </div>
             {showPath && <div style={{
-                width: 49,
+                width: 49+pathElongation,
                 height: 35,
                 display: "inline-block",
                 borderBottom: `1px solid ${borderColor}`

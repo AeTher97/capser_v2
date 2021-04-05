@@ -13,6 +13,7 @@ import YesNoDialog from "../misc/YesNoDialog";
 import {useHasRole} from "../../utils/SecurityUtils";
 import {getGameIcon} from "../game/GameComponent";
 import {getGameTypeString} from "../../utils/Utils";
+import DoubleEliminationLadder from "./DoubleEliminationLadder";
 
 const TournamentComponent = () => {
 
@@ -151,7 +152,7 @@ const TournamentComponent = () => {
                                              openSkipDialog={openSkipDialog}
                     />}
                     {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
-                    <SingleEliminationLadder isOwner={isOwner()}
+                    <DoubleEliminationLadder isOwner={isOwner()}
                                              bracketEntries={tournament.bracketEntries}
                                              lowestRound={tournament.size}
                                              openAddGameDialog={openAddGameDialog}

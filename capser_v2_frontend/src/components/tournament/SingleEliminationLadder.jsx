@@ -46,6 +46,7 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
     levels.sort((a, b) => {
         return parseInt(b.type.split("_")[1]) - parseInt(a.type.split("_")[1])
     })
+
     levels.forEach(level => {
         level.entries.sort((a,b) => {
             return a.coordinate-b.coordinate
@@ -109,12 +110,11 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                 <Typography variant={"h5"}>{winner ? winner.user.username : "TBD"}</Typography>
             </div>
         </div>
-            <div style={{height: levels.sort((a,b)=> a.entries.length - b.entries.length)[0].entries.length /2 *verticalOffsetLevel}}/>
+            <div style={{height: levels.slice().sort((a,b)=> a.entries.length - b.entries.length)[0].entries.length /2 *verticalOffsetLevel}}/>
         </>
     );
 };
 
-SingleEliminationLadder.propTypes = {};
 
 const ladderStyles = makeStyles(theme => ({
     container: {

@@ -37,6 +37,7 @@ public abstract class BracketEntry {
     private boolean isFinal;
 
     @Setter
+    @Enumerated(EnumType.STRING)
     private BracketEntryType bracketEntryType;
 
     public static class Comparators {

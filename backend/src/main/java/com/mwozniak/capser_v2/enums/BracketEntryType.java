@@ -104,6 +104,7 @@ public enum BracketEntryType {
         int number =0;
         if(upper){
             switch (bracketEntryType){
+                case D_RO_16:
                 case D_RO_12:
                     return getSingleEliminationCountAbove(RO_16)+1;
                 case D_RO_8:
