@@ -265,7 +265,7 @@ const AcceptanceComponent = props => {
                             </div>
                         </div> :
                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                            <LoadingComponent/>
+                            <LoadingComponent showText/>
                         </div>}
 
                 </div>

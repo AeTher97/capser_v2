@@ -86,7 +86,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                     top: -60 + verticalOffsetLevel * currentVertical + additionalVerticalOffset,
                                     left: currentHorizontalOffset
                                 }}>
-                                    <Typography variant={"h4"} color={"textSecondary"} noWrap>
+                                    <Typography variant={"h5"} color={"textSecondary"} noWrap>
                                         {getDroString(level.type)}
                                     </Typography>
                                 </div>

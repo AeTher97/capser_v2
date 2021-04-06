@@ -2,7 +2,6 @@ import React from "react";
 import ErrorBoundary from "../utils/ErrorBoundary";
 import ErrorAlert from "../utils/ErrorAlert";
 import HomeComponent from "../components/pages/HomeComponent";
-import LoadingComponent from "../utils/LoadingComponent";
 
 
 const HomeScreen = () => {

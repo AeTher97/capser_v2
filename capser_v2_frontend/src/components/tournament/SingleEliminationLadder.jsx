@@ -71,7 +71,7 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                             top: -60 + additionalVerticalOffset,
                             left: currentHorizontalOffset
                         }}>
-                            <Typography variant={"h4"} color={"textSecondary"} noWrap>
+                            <Typography variant={"h5"} color={"textSecondary"} noWrap>
                                 {getRoString(level.type)}
                             </Typography>
                         </div>
