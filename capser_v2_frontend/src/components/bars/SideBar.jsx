@@ -137,7 +137,7 @@ const SideBar = ({open, setOpen}) => {
                 width: 44
             })
         }}>
-            {small && <div style={{height: 52}}/>}
+            {small && <div style={{height: 48}}/>}
             <div style={{width: state.width, overflow: "hidden"}} className={classes.expanding}>
                 {!small && <div onClick={() => {
                     history.push("/")

@@ -136,7 +136,7 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                     )
                 }) : getNoResults()}
             </div> : <div className={classes.loadingContainer}>
-                <LoadingComponent size={"small"} wrapper={false} noPadding/>
+                <LoadingComponent size={"small"} wrapper={false} noPadding showText={false}/>
                 <Typography>Searching...</Typography>
             </div>)
     }

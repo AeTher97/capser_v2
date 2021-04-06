@@ -75,7 +75,7 @@ const HomeComponent = () => {
                         </div>
 
                     </Grid>
-                </Grid> : <LoadingComponent/>}
+                </Grid> : <LoadingComponent showText fullHeight/>}
             </Grid>
 
         </div>);

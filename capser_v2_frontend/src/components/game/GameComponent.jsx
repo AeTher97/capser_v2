@@ -132,7 +132,7 @@ const GameComponent = ({game, vertical = true}) => {
                      if(!small) {
                          setDelay(setTimeout(() => {
                              setExpanded(true)
-                         }, 750))
+                         }, 500))
                      }
                  }} onMouseLeave={() => {
                 clearTimeout(delay);
@@ -220,7 +220,7 @@ const gameStyles = makeStyles(theme => ({
     expanding: {
         cursor: "pointer",
         overflow: "hidden",
-        transition: 'all 0.2s',
+        transition: 'all 0.15s',
         position: "relative"
     },
     elevated: {
@@ -230,11 +230,11 @@ const gameStyles = makeStyles(theme => ({
         boxShadow: '0 0px black'
     },
     visible: {
-        transition: 'all 0.2s',
+        transition: 'all 0.15s',
         opacity: 1
     },
     transparent: {
-        transition: 'all 0.2s',
+        transition: 'all 0.15s',
         opacity: 0
     },
     margins: {

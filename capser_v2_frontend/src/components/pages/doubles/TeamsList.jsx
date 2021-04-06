@@ -71,7 +71,7 @@ const TeamsList = props => {
                             })
                             }
                         </TableBody>
-                    </Table> : <LoadingComponent/>}
+                    </Table> : <LoadingComponent showText/>}
                     {!loading && pageNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                         <CapserPagination onNext={() => setPage(currentPage + 1)}

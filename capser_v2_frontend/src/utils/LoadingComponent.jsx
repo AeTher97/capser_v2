@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Typography} from "@material-ui/core";
 
-const LoadingComponent = ({size = "medium", wrapper = true, noPadding=false}) => {
+const LoadingComponent = ({size = "medium", wrapper = true, noPadding=false, showText = true, fullHeight=false}) => {
 
     const classes = loadingStyles();
     let selected;
@@ -21,8 +22,10 @@ const LoadingComponent = ({size = "medium", wrapper = true, noPadding=false}) =>
     }
     return (
         <div style={{padding: noPadding ? 0 : 50}}>
-            {wrapper ? <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'row', width: '100%'}}>
+            {wrapper ? <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column',alignItems: 'center', width: '100%', height: fullHeight ? '100%':null}}>
                 <img src={"/loading.svg"} className={selected} style={{margin: 10}}/>
+                {showText && <Typography variant={"h6"} style={{fontWeight: 'bold'}}>Loading...</Typography>}
+
             </div> :  <img src={"/loading.svg"} className={selected} style={{margin: 10}}/>}
         </div>
     );

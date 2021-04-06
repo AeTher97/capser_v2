@@ -33,7 +33,7 @@ const MultipleGameList = ({hiddenPoints = false, type, render =true}) => {
                                            vertical={small}/>
                         </Grid>)} </Grid> :
                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                            <LoadingComponent/>
+                            <LoadingComponent showText/>
                         </div>}
                     {!loading && pagesNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>

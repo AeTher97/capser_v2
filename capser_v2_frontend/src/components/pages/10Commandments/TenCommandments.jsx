@@ -19,7 +19,7 @@ const TenCommandments = () => {
         {text: "A good caps player can play on any side."},
         {text: "A good caps player can play in any venue."},
         {text: "A good caps player plays better when drunk."},
-        {text: "A good caps player rebuttles."},
+        {text: "A good caps player rebuttals."},
         {text: "A good caps player is not afraid of drinking beer."},
         {text: "A good caps player celebrates after scoring."},
         {text: "A good caps player is a gentleman."},
