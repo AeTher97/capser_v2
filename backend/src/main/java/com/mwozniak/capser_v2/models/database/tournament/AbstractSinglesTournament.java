@@ -189,7 +189,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
                     int bottomAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(currentRow, false);
                     int bottomHigherAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(currentRow), false);
 
-                    resolvePowerOfTwoLevel(currentRow, bottomAbsoluteCoord, bottomHigherAbsoluteCoord);
+                    resolvePowerOfTwoLevel(currentRow, bottomAbsoluteCoord, bottomHigherAbsoluteCoord,!currentRow.equals(BracketEntryType.D_RO_2));
                 }
 
             } else {
@@ -235,6 +235,10 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
     }
 
     private void resolvePowerOfTwoLevel(BracketEntryType currentRow, int absoluteCoord, int higherAbsoluteCoord) {
+        resolvePowerOfTwoLevel(currentRow,absoluteCoord,higherAbsoluteCoord,true);
+    }
+
+    private void resolvePowerOfTwoLevel(BracketEntryType currentRow, int absoluteCoord, int higherAbsoluteCoord, boolean passFromTopWhenForfeited) {
         for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, true); i += 2) {
             AbstractSinglesBracketEntry topEntry = getBracketEntry(absoluteCoord + i);
             AbstractSinglesBracketEntry bottomEntry = getBracketEntry(absoluteCoord + i + 1);
@@ -248,7 +252,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
             }
 
             threeObjectResolve(topEntry, bottomEntry, higherEntry);
-            threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),true);
+            threeObjectBye(topEntry, bottomEntry, higherEntry, topEntry.getPlayer1(), topEntry.getPlayer2(), bottomEntry.getPlayer1(), bottomEntry.getPlayer2(), topEntry.isBye(), bottomEntry.isBye(),passFromTopWhenForfeited);
 
         }
     }
@@ -321,6 +325,10 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
         if (bottomEntry.getGame() != null) {
             if (higherEntry.getPlayer2() == null) {
                 higherEntry.setPlayer2(getWinner(bottomEntry));
+            }
+        } else {
+            if(bottomEntry.isForfeited()){
+                higherEntry.setPlayer2(bottomEntry.getPlayer1().getId().equals(bottomEntry.getForfeitedId()) ? bottomEntry.getPlayer2() : bottomEntry.getPlayer1());
             }
         }
     }
