@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {useSinglesGames} from "../../../data/SoloGamesData";
-import mainStyles from "../../../misc/styles/MainStyles";
 import LoadingComponent from "../../../utils/LoadingComponent";
-import {makeStyles} from "@material-ui/core/styles";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
@@ -18,14 +16,10 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
 
     const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
 
-
-    const classes = mainStyles();
-    const styles = useStyles();
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
 
             <div  style={{maxWidth:800}}>
-                <div className={classes.leftOrientedWrapperNoPadding}>
                     <div style={{padding: 15}}>
                         {!loading && render ?
                             <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}
@@ -47,18 +41,9 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
                         </div>}
                     </div>
                 </div>
-            </div>
         </div>
     );
 };
 
-const useStyles = makeStyles(theme => ({
-    row: {
-        cursor: "pointer",
-        '&:hover': {
-            backgroundColor: 'rgba(255,255,255,0.05)'
-        }
-    }
-}));
 
 export default SinglesGamesList;

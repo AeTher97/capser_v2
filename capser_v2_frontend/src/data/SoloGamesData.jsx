@@ -90,10 +90,12 @@ export const useSoloGame = (type, gameId) => {
                         if (shouldUpdate) {
 
                             const usernames = value.map(obj => {
-                                return {username: obj.data.username, id: obj.data.id}
+                                return {username: obj.data.username, id: obj.data.id, avatarHash: obj.data.avatarHash}
                             });
                             game.player1Name = usernames.find(obj => obj.id === game.player1).username;
                             game.player2Name = usernames.find(obj => obj.id === game.player2).username;
+                            game.player1Data = usernames.find(obj => obj.id === game.player1);
+                            game.player2Data = usernames.find(obj => obj.id === game.player2);
                             setGame(game);
 
                         }

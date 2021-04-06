@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Typography, useTheme} from "@material-ui/core";
+import {Link, Typography, useTheme} from "@material-ui/core";
 import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
@@ -82,7 +82,7 @@ const GameComponent = ({game, vertical = true}) => {
         game.team2.playerList.forEach(player => {
             team2Sinks += findPlayerStats(game, player).sinks;
         })
-        if(team1Sinks !== 0 && team2Sinks!== 0) {
+        if (team1Sinks !== 0 && team2Sinks !== 0) {
             team1Rebuttals = team2Sinks - team2Score;
             team2Rebuttals = team1Sinks - team1Score;
         }
@@ -108,7 +108,7 @@ const GameComponent = ({game, vertical = true}) => {
             style={{height: baseHeight}}
             ref={containerDiv}
             onMouseUp={() => {
-                if(!small) {
+                if (!small) {
                     if (game.gameType !== 'DOUBLES') {
                         history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
                     }
@@ -129,7 +129,7 @@ const GameComponent = ({game, vertical = true}) => {
                      zIndex: expanded ? 1000 : 0
                  }}
                  onMouseEnter={(e) => {
-                     if(!small) {
+                     if (!small) {
                          setDelay(setTimeout(() => {
                              setExpanded(true)
                          }, 500))
@@ -207,6 +207,13 @@ const GameComponent = ({game, vertical = true}) => {
                             </div>
                         </div>
                     </div>
+                    {small && <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
+                        <Link onClick={() => {
+                            if (game.gameType !== 'DOUBLES') {
+                                history.push(`/${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                            }
+                        }}>Details</Link>
+                    </div>}
                 </div>
             </div>
         </div>

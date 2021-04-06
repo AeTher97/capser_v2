@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {useMultipleGames} from "../../../data/MultipleGamesData";
 import LoadingComponent from "../../../utils/LoadingComponent";
-import mainStyles from "../../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
@@ -10,16 +9,12 @@ import CapserPagination from "../../misc/CapserPagination";
 
 const MultipleGameList = ({hiddenPoints = false, type, render =true}) => {
 
-    const classes = mainStyles();
     const small = useXtraSmallSize();
 
     const [currentPage, setPage] = useState(1);
 
     const {games, loading, pagesNumber} = useMultipleGames(type, currentPage - 1, 10);
 
-    const handlePageChange = (e, value) => {
-        setPage(value);
-    }
 
 
     return (

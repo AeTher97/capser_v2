@@ -1,10 +1,8 @@
 import React from 'react';
 import mainStyles from "../../misc/styles/MainStyles";
-import {TableBody, TableRow, Typography, useTheme} from "@material-ui/core";
-import LogoComponent from "./LogoComponent";
-import TableCell from "@material-ui/core/TableCell";
-import Table from "@material-ui/core/Table";
+import {Typography, useTheme} from "@material-ui/core";
 import {getStatsString} from "../../utils/Utils";
+import ProfilePicture from "../profile/ProfilePicture";
 
 const PlayerCard = (props) => {
 
@@ -15,8 +13,10 @@ const PlayerCard = (props) => {
     const theme = useTheme();
 
     return (
-        <div className={classes.standardBorder} style={{margin:0, backgroundColor: theme.palette.background.paper}}>
-            <LogoComponent/>
+        <div className={classes.standardBorder} style={{margin: 0, backgroundColor: theme.palette.background.paper}}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <ProfilePicture avatarHash={player.avatarHash} size={'medium'}/>
+            </div>
             <div className={classes.centeredRow}>
                 <Typography color={"primary"} variant={"h6"}>{player.username}</Typography>
             </div>

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Dialog, MenuItem, Select, TextField, Typography} from "@material-ui/core";
 import PageHeader from "../misc/PageHeader";
-import {SinglesIcon} from "../../misc/icons/CapsIcons";
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
@@ -12,6 +11,7 @@ import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
 import {getGameIcon} from "../game/GameComponent";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
+import LoadingComponent from "../../utils/LoadingComponent";
 
 export const getInProgressString = (seeded, finished) => {
     if (seeded && finished) {
@@ -73,6 +73,7 @@ const TournamentsComponent = () => {
                             {hasRole('ADMIN') && <Button onClick={() => setCreationOpen(true)}>Create new</Button>}
                         </div>
                     </div>
+                    {loading && <LoadingComponent/>}
                     {tournaments && <>
                         {tournaments.map(tournament => {
                             return <div key={tournament.id} onClick={() => {
@@ -104,7 +105,7 @@ const TournamentsComponent = () => {
                             </div>
                         })}
                     </>}
-                    {!loading && tournaments.length === 0 &&
+                    {!loading && tournaments.length && tournaments === 0 &&
                     <div style={{padding: 60, textAlign: 'center'}} className={classes.standardBorder}>
                         <Typography variant={"h5"}>No tournaments yet</Typography>
                     </div>}

@@ -12,6 +12,7 @@ import SignInScreen from "../screens/SignInScreen";
 import RegisterComponent from "../components/auth/RegisterComponent";
 import ResetPasswordComponent from "../components/auth/ResetPasswordComponent";
 import UpdatePasswordComponent from "../components/auth/UpdatePasswordComponent";
+import ScrollToTop from "../utils/ScrollToTop";
 
 const MainNavigation = () => {
     const {severity, message, isOpen} = useSelector(state => state.alert);
@@ -22,48 +23,50 @@ const MainNavigation = () => {
 
 
     return (
-        <Switch>
-            <Route exact path='/login' render={(props) => <><SignInScreen {...props}/>
-                <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
-                    <Alert severity={severity}>
-                        {message}
-                    </Alert>
-                </Snackbar>
-            </>}/>
+        <ScrollToTop>
+            <Switch>
+                <Route exact path='/login' render={(props) => <><SignInScreen {...props}/>
+                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={severity}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
+                </>}/>
 
-            <Route exact path={"/register"}>
-                <RegisterComponent/>
-            </Route>
+                <Route exact path={"/register"}>
+                    <RegisterComponent/>
+                </Route>
 
-            <Route exact path={"/reset"}>
-                <ResetPasswordComponent/>
-            </Route>
+                <Route exact path={"/reset"}>
+                    <ResetPasswordComponent/>
+                </Route>
 
-            <Route exact path={"/resetUpdate"}>
-                <UpdatePasswordComponent/>
-            </Route>
+                <Route exact path={"/resetUpdate"}>
+                    <UpdatePasswordComponent/>
+                </Route>
 
-            <SecureRoute path='/secure*'>
-                <SecureNavigation/>
-                <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
-                    <Alert severity={severity}>
-                        {message}
-                    </Alert>
-                </Snackbar>
-            </SecureRoute>
-
-
-            <Route path='/*'>
-                <InsecureNavigation/>
-                <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
-                    <Alert severity={severity}>
-                        {message}
-                    </Alert>
-                </Snackbar>
-            </Route>
+                <SecureRoute path='/secure*'>
+                    <SecureNavigation/>
+                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={severity}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
+                </SecureRoute>
 
 
-        </Switch>
+                <Route path='/*'>
+                    <InsecureNavigation/>
+                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={severity}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
+                </Route>
+
+
+            </Switch>
+        </ScrollToTop>
     );
 };
 

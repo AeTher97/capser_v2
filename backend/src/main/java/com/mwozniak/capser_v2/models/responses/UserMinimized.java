@@ -10,4 +10,5 @@ public class UserMinimized {
     private String username;
     private UUID id;
     private Date lastSeen;
+    private String avatarHash;
 }
