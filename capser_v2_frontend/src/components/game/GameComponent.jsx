@@ -110,7 +110,7 @@ const GameComponent = ({game, vertical = true}) => {
             onMouseUp={() => {
                 if (!small) {
                     if (game.gameType !== 'DOUBLES') {
-                        history.push(`${getRequestGameTypeString(game.gameType)}/${game.id}`)
+                        history.push(`/${getRequestGameTypeString(game.gameType)}/${game.id}`)
                     }
                 } else {
                     setExpanded(!expanded);
