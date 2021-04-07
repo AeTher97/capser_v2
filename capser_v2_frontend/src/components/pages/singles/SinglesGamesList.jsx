@@ -3,7 +3,6 @@ import {useSinglesGames} from "../../../data/SoloGamesData";
 import LoadingComponent from "../../../utils/LoadingComponent";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
-import Grid from "@material-ui/core/Grid";
 import CapserPagination from "../../misc/CapserPagination";
 
 export  const findPlayerStats = (game, id) => {
@@ -19,13 +18,14 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
             <div  style={{maxWidth:800}}>
-                    <div style={{padding: 15}}>
+                    <div style={{padding: 5}}>
                         {!loading && render ?
-                            <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}
-                                                                                 style={{padding: 0, marginBottom: 8}}>
-                                <GameComponent game={game}
-                                               vertical={small}/>
-                            </Grid>)} </Grid>
+                            games.map(game =>
+                                <div style={{marginBottom: 10}}>
+                                    <GameComponent game={game}
+                                                   vertical={small}/>
+                                </div>)
+
                             :
                             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                                 <LoadingComponent/>
