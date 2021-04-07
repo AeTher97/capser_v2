@@ -140,16 +140,19 @@ const GameComponent = ({game, vertical = true}) => {
             }}>
                 <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
 
-                    <Typography variant={"h6"} style={{fontWeight: 600}} className={gameStyle.margins}
+                    <Typography variant={"h6"} style={{fontWeight: 600, textAlign: 'center'}}
+                                className={gameStyle.margins}
                                 color={"primary"}>{team1Name} vs {team2Name}</Typography>
                     <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
                         {getGameIcon(game.gameType)}
-                        <Typography style={{marginLeft: 5}}>{getGameTypeString(game.gameType)}</Typography>
+                        <Typography
+                            style={{marginLeft: 5, textAlign: 'center'}}>{getGameTypeString(game.gameType)}</Typography>
                     </div>
                     <div style={{display: 'block'}} className={gameStyle.margins}>
-                        <Typography style={{fontWeight: 600}}>{team1Score} : {team2Score}</Typography>
+                        <Typography
+                            style={{fontWeight: 600, textAlign: 'center'}}>{team1Score} : {team2Score}</Typography>
                     </div>
-                    <Typography>{new Date(game.time).toDateString()}</Typography>
+                    <Typography style={{textAlign: 'center'}}>{new Date(game.time).toDateString()}</Typography>
 
                 </div>
 
@@ -165,12 +168,12 @@ const GameComponent = ({game, vertical = true}) => {
                             <Typography className={classes.margin}>{team1Name}</Typography>
                             <div style={{color: team1PointsChange > 0 ? 'green' : 'red'}}>
                                 <BoldTyphography color={"inherit"}
-                                >{team1PointsChange}</BoldTyphography>
+                                >{team1PointsChange.toFixed(2)}</BoldTyphography>
                             </div>
                             <Typography className={classes.margin}>{team2Name}</Typography>
                             <div style={{color: team2PointsChange > 0 ? 'green' : 'red'}}>
                                 <BoldTyphography
-                                    color={"inherit"}>{team2PointsChange}</BoldTyphography>
+                                    color={"inherit"}>{team2PointsChange.toFixed(2)}</BoldTyphography>
                             </div>
 
                         </div>

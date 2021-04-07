@@ -17,7 +17,7 @@ const RegisterComponent = () => {
 
     const validatePasswordConfirmation = useCallback(validateRepeatedPassword(password.value), [password.value]);
     const repeatPassword = useFieldValidation("", validatePasswordConfirmation);
-    const username = useFieldValidation("", (word) => () => validateLength(word, 3))
+    const username = useFieldValidation("", (word) => () => validateLength(word, 3, 15))
     const email = useFieldValidation("", validateEmail)
 
     password.showError = true;

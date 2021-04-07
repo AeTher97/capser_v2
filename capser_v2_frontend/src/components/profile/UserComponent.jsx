@@ -34,7 +34,7 @@ const displayStats = (type, stats, showPoints = true) => {
                     <Typography noWrap variant={"caption"}>Games played: {stats.gamesPlayed}</Typography>
                     <Typography noWrap variant={"caption"}>Games won: {stats.gamesWon}</Typography>
                     <Typography noWrap variant={"caption"}>Games lost: {stats.gamesLost}</Typography>
-                    <Typography noWrap variant={"caption"}>Win/loss: {stats.winLossRatio}</Typography>
+                    <Typography noWrap variant={"caption"}>Win/loss: {stats.winLossRatio.toFixed(2)}</Typography>
                 </div>
             </div>
             <div style={{flex: 1}}>
@@ -44,7 +44,8 @@ const displayStats = (type, stats, showPoints = true) => {
                         lost: {stats.pointsMadeLostRatio.toFixed(2)}</Typography>
                     <Typography noWrap variant={"caption"}>Points made: {stats.totalPointsMade}</Typography>
                     <Typography noWrap variant={"caption"}>Points lost: {stats.totalPointsLost}</Typography>
-                    <Typography noWrap variant={"caption"}>Sinks made to lost: {stats.sinksMadeLostRatio}</Typography>
+                    <Typography noWrap variant={"caption"}>Sinks made to
+                        lost: {stats.sinksMadeLostRatio.toFixed(2)}</Typography>
                     <Typography noWrap variant={"caption"}>Sinks made: {stats.totalSinksMade}</Typography>
                     <Typography noWrap variant={"caption"}>Sinks lost: {stats.totalSinksLost}</Typography>
                 </div>

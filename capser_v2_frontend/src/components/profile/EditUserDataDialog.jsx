@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 const EditUserDataDialog = ({open, setOpen, editData, data}) => {
     const {email} = useSelector(state => state.auth);
 
-    const usernameField = useFieldValidation(data.username, (word) => () => validateLength(word, 3))
+    const usernameField = useFieldValidation(data.username, (word) => () => validateLength(word, 3, 15))
     const emailField = useFieldValidation(email || '', validateEmail)
     const passwordField = useFieldValidation('', (word) => () => validateLength(word, 6))
     usernameField.showError = true;
@@ -37,10 +37,9 @@ const EditUserDataDialog = ({open, setOpen, editData, data}) => {
         }).then((e) => {
             setOpen(false);
             passwordField.setValue('');
-        })
-            .catch(e => {
+        }).catch(e => {
 
-            })
+        })
     }
 
     return (

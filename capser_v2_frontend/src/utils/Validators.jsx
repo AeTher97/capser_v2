@@ -29,10 +29,14 @@ export const validateEmail = (email) => {
     }
 }
 
-export const validateLength = (word, length) => {
-    if (word.length < length) {
-        return "Lenght of " + length + " required"
-    } else {
+
+export const validateLength = (word, lengthMin, lengthMax = Infinity) => {
+    if (word.length < lengthMin) {
+        return "Lenght of " + lengthMin + " required"
+    } else if (word.length > lengthMax) {
+        return "Text cannot be longer than " + lengthMax + " characters."
+    }
+    {
         return null;
     }
 }
