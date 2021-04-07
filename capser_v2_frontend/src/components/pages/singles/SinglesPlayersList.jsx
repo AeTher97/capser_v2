@@ -23,6 +23,7 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
     const {loading, players, pageCount} = usePlayersListFetch(type, currentPage - 1);
     const history = useHistory();
 
+    console.log(small)
 
     const styles = listStyles({small})();
 
@@ -48,10 +49,15 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                             index++;
                             const stats = player[getStatsString(type)];
                             return (
-                                <div className={styles.row} key={player.id}>
+                                <div className={styles.row} style={players.length === 1 ? {borderWidth: 0} : {}}
+                                     key={player.id}>
 
-                                    <div className={classes.header} style={{flex: 0.4}}>
-                                        <ProfilePicture size={'tiny'} avatarHash={player.avatarHash}/>
+                                    <div style={{flex: 0.07}}>
+                                        <div style={{position: 'relative', left: small ? 0 : -5}}>
+                                            <ProfilePicture size={'tiny'} avatarHash={player.avatarHash}/>
+                                        </div>
+                                    </div>
+                                    <div className={classes.header} style={{flex: 0.33}}>
 
                                         <Typography className={classes.link} onClick={() => {
                                             history.push(`/players/${player.id}`)
@@ -60,7 +66,11 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                                      TransitionComponent={Fade}
                                                      style={{padding: 0, margin: 0}}>
                                                 <div>
-                                                    <BoldTyphography style={{display: 'flex', alignItems: 'center'}}
+                                                    <BoldTyphography style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        marginRight: small ? 5 : 0
+                                                    }}
                                                                      color={"primary"}>{(currentPage - 1) * 10 + index}. {player.username}</BoldTyphography>
                                                 </div>
                                             </Tooltip>
@@ -76,9 +86,9 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                     <div style={{flex: 0.2}}>
                                         {player.lastSeen ?
                                             <Typography style={{
-                                                marginRight: 10
+                                                marginRight: small ? 0 : 10
                                             }}>{new Date(player.lastSeen).toDateString()}</Typography> :
-                                            <Typography style={{marginRight: 10}}>Never seen</Typography>}
+                                            <Typography style={{marginRight: small ? 0 : 10}}>Never seen</Typography>}
                                     </div>
                                     <div style={{flex: 0.2}}>
                                         {player.lastGame ?

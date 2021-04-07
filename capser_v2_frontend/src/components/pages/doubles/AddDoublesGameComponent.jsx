@@ -4,12 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import MenuItem from "@material-ui/core/MenuItem";
-import {Button, Divider, Grid, Typography} from "@material-ui/core";
+import {Button, Divider, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import FetchSelectField from "../../misc/FetchSelectField";
-import {useMultipleGamePost, useMultipleGames} from "../../../data/MultipleGamesData";
+import {useMultipleGamePost} from "../../../data/MultipleGamesData";
 import {usePlayerTeams} from "../../../data/TeamsData";
-import {loginAction} from "../../../redux/actions/authActions";
 import {fetchUsername} from "../../../data/UsersFetch";
 
 const AddDoublesGameComponent = props => {
@@ -156,7 +155,7 @@ const AddDoublesGameComponent = props => {
 
     return (
         <div style={{display: "flex", justifyContent: "center"}}>
-            <div style={{maxWidth: 700, flex: 1}}>
+            <div style={{maxWidth: 400, flex: 1}}>
 
                 <div style={{padding: 8}}>
                     <div
@@ -270,6 +269,7 @@ const AddDoublesGameComponent = props => {
                 </div>
                 <div style={{height: 100}}/>
             </div>
+            <div style={{height: 50}}/>
 
         </div>
     );

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import {useSelector} from "react-redux";
 import useQuery from "../../../utils/UserQuery";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
@@ -40,7 +39,7 @@ const GamesSubpageComponent = ({title, type}) => {
     }
 
     return (<div>
-        <PageHeader title={title} icon={<SinglesIcon fontSize={"large"}/>} noSpace/>
+        <PageHeader title={title} icon={<SinglesIcon fontSize={"large"}/>}/>
 
         <Tabs value={tab} onChange={handleTabChange} style={{marginTop: 5}} centered>
             <Tab value={'games'} label={'Games'}/>

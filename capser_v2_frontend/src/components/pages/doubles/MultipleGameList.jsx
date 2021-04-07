@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {useMultipleGames} from "../../../data/MultipleGamesData";
 import LoadingComponent from "../../../utils/LoadingComponent";
-import {makeStyles} from "@material-ui/core/styles";
 import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
@@ -33,7 +32,7 @@ const MultipleGameList = ({hiddenPoints = false, type, render =true}) => {
                     {!loading && pagesNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                         <CapserPagination onNext={() => setPage(currentPage + 1)}
-                                          onPrevious={() => setPage(currentPage + -1)}
+                                          onPrevious={() => setPage(currentPage - 1)}
                                           currentPage={currentPage}
                                           pageCount={pagesNumber}/>
                     </div>}
@@ -42,15 +41,6 @@ const MultipleGameList = ({hiddenPoints = false, type, render =true}) => {
         </div>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    row: {
-        cursor: "pointer",
-        '&:hover': {
-            backgroundColor: 'rgba(255,255,255,0.05)'
-        }
-    }
-}));
 
 
 MultipleGameList.propTypes = {};

@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import FetchSelectField from "../../misc/FetchSelectField";
-import {Button, Divider, Grid, Typography} from "@material-ui/core";
+import {Button, Divider, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {useDispatch, useSelector} from "react-redux";
-import {useSinglesGames, useSoloGamePost} from "../../../data/SoloGamesData";
+import {useSoloGamePost} from "../../../data/SoloGamesData";
 import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
-import {useMultipleGamePost} from "../../../data/MultipleGamesData";
 
 const AddSinglesGameComponent = ({
                                      type, choosePlayers = true, displayGameDataSection = true, showBorder = true,
@@ -101,7 +100,7 @@ const AddSinglesGameComponent = ({
 
     return (
             <div style={{display: "flex", justifyContent: "center"}}>
-                <div style={{maxWidth: 700, flex: 1}}>
+                <div style={{maxWidth: 400, flex: 1}}>
 
                     <div style={{padding: 8}}>
                         {displayGameDataSection && <div
@@ -175,6 +174,7 @@ const AddSinglesGameComponent = ({
                         {onCancel &&
                         <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
                     </div>
+                    <div style={{height: 50}}/>
                 </div>
             </div>
     );
