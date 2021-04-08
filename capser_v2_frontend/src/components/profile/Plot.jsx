@@ -5,76 +5,87 @@ import {Typography} from "@material-ui/core";
 const Plot = ({width, timeSeries, title}) => {
 
 
-    const plotData = useMemo(() => {
-        if (timeSeries) {
-            const cursor = timeSeries.lastElement;
-            const startDate = new Date(timeSeries.lastLogged);
-            const unwrapped = [];
-            let index = 0;
-            for (let i = cursor + 1; i < 365; i++) {
-                let date = new Date();
-                if (timeSeries.data[i] !== -100000) {
-                    unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i] === -100000 ? null : timeSeries.data[i]]);
+        const plotData = useMemo(() => {
+            if (timeSeries) {
+                const cursor = timeSeries.lastElement;
+                const startDate = new Date(timeSeries.lastLogged);
+                const unwrapped = [];
+                let index = 0;
+                for (let i = cursor + 1; i < 365; i++) {
+                    let date = new Date();
+                    if (timeSeries.data[i] !== -100000) {
+                        unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i] === -100000 ? null : timeSeries.data[i]]);
+                    }
+                    index++;
                 }
-                index++;
-            }
-            for (let i = 0; i <= cursor; i++) {
-                let date = new Date();
-                if (timeSeries.data[i] !== -100000) {
-                    unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i]]);
+                for (let i = 0; i <= cursor; i++) {
+                    let date = new Date();
+                    if (timeSeries.data[i] !== -100000) {
+                        unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i]]);
+                    }
+                    index++;
                 }
-                index++;
+                return unwrapped;
+            } else {
+                return [];
             }
-            return unwrapped;
-        } else {
-            return [];
-        }
-    }, [timeSeries])
+        }, [timeSeries])
 
-    const series = React.useMemo(
-        () => ({
-            showPoints: false
-        }),
-        []
-    )
-    const axes = React.useMemo(
-        () => [
-            {primary: true, type: 'time', position: 'bottom'},
-            {type: 'linear', position: 'left'}
-        ],
-        []
-    )
+        const series = React.useMemo(
+            () => ({
+                showPoints: false
+            }),
+            []
+        )
+        const axes = React.useMemo(
+            () => [
+                {primary: true, type: 'time', position: 'bottom'},
+                {type: 'linear', position: 'left'}
+            ],
+            []
+        )
 
-    const seriesStyle = React.useCallback(series => ({
-        color: 'red'
-    }))
+        const seriesStyle = React.useCallback(series => ({
+            color: 'red'
+        }))
 
-    const tooltip = React.useMemo(
-        () => ({
-            render: ({datum, primaryAxis, getStyle}) => {
-                return <CustomTooltip {...{getStyle, primaryAxis, datum}} title={title}/>
-            }
-        }),
-        []
-    )
+        const tooltip = React.useMemo(
+            () => ({
+                render: ({datum, primaryAxis, getStyle}) => {
+                    return <CustomTooltip {...{getStyle, primaryAxis, datum}} title={title}/>
+                }
+            }),
+            []
+        )
 
-    return (
-        <div style={{position: 'relative', height: '30vh', padding: 15}}>
-            <Typography>{title}</Typography>
-            {timeSeries &&
-            <div style={{display: 'flex', flexDirection: 'column', height: '30vh', position: 'absolute'}}>
-                <div style={{flex: 2, width: width - 10, height: '100%'}}>
-                    <Chart data={[{label: 'xd', data: plotData}]} series={series}
-                           getSeriesStyle={seriesStyle} axes={axes} dark tooltip={tooltip}
-                    />
-                </div>
+        return (
+            <div style={{position: 'relative', height: '30vh', padding: 15}}>
+                <Typography>{title}</Typography>
 
-            </div>}
-        </div>
-    );
-};
+                {(!timeSeries || timeSeries.data.filter(entry => entry !== -100000).length === 1) &&
+                <div style={{display: "flex", justifyContent: 'center', height: '100%', alignItems: 'center'}}>
+                    <Typography variant={"h4"}>No data available yet</Typography>
+                </div>}
 
-const CustomTooltip = ({title, getStyle, primaryAxis, datum}) => {
+                {timeSeries && timeSeries.data.filter(entry => entry !== -100000).length !== 1 &&
+                <div style={{display: 'flex', flexDirection: 'column', height: '30vh', position: 'absolute'}}>
+                    <div style={{flex: 2, width: width - 10, height: '100%'}}>
+                        <Chart data={[{label: 'xd', data: plotData}]} series={series}
+                               getSeriesStyle={seriesStyle} axes={axes} dark tooltip={tooltip}
+                        />
+                    </div>
+
+                </div>}
+            </div>
+        );
+    }
+;
+
+const CustomTooltip = (
+    {
+        title, getStyle, primaryAxis, datum
+    }
+) => {
     const data = React.useMemo(
         () =>
             datum
