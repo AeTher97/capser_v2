@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useSelector} from "react-redux";
 import mainStyles from "../../misc/styles/MainStyles";
 import {Divider, Tab, Tabs, Typography, useTheme} from "@material-ui/core";
@@ -12,6 +12,9 @@ import Button from "@material-ui/core/Button";
 import EditUserDataDialog from "./EditUserDataDialog";
 import {useHistory} from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
+import {useWindowSize} from "../../utils/UseSize";
+import ProfilePlots from "./ProfilePlots";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 
 const displayStats = (type, stats, showPoints = true) => {
@@ -57,6 +60,18 @@ const displayStats = (type, stats, showPoints = true) => {
 const UserComponent = ({id}) => {
 
     const {userId} = useSelector(state => state.auth);
+    const [plotWidth, setPlotWidth] = useState(0);
+    const [tick, setTick] = useState(1);
+    const size = useWindowSize();
+    const small = useXtraSmallSize();
+
+    const measuredRef = useCallback(node => {
+        if (node) {
+            setPlotWidth(node.getBoundingClientRect().width);
+        }
+    }, [size, tick]);
+
+
     const history = useHistory();
     const {data, loading, loaded, updateUserData} = useUserData(id ? id : userId);
 
@@ -71,6 +86,7 @@ const UserComponent = ({id}) => {
 
     const handleTabChange = (e, value) => {
         history.push(`?tab=${value}`);
+        setTick(tick + 1)
     }
 
     return (
@@ -110,8 +126,10 @@ const UserComponent = ({id}) => {
                         profile</Button>}
                 </div>
                 <div style={{flex: 5, padding: 20}}>
-                    <Tabs value={tab} onChange={handleTabChange}>
+                    <Tabs value={tab} onChange={handleTabChange} centered={small}>
                         <Tab label={"Overview"} value={"stats"} onChange={() => {
+                        }}/>
+                        <Tab label={"Charts"} value={"charts"} onChange={() => {
                         }}/>
                         {/*<Tab label={"Game history"} value={"history"}/>*/}
                     </Tabs>
@@ -152,6 +170,14 @@ const UserComponent = ({id}) => {
                                 <div className={classes.header} style={{justifyContent: 'center'}}>
                                     <Typography variant={"h6"}>No teams</Typography>
                                 </div>}
+                            </div>
+                        </TabPanel>
+                        <TabPanel value={tab} showValue={'charts'}>
+                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                                <div ref={measuredRef}>
+
+                                    <ProfilePlots userId={id ? id : userId} width={plotWidth}/>
+                                </div>
                             </div>
                         </TabPanel>
                     </>}

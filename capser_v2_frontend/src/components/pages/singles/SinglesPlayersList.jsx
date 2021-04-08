@@ -23,8 +23,6 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
     const {loading, players, pageCount} = usePlayersListFetch(type, currentPage - 1);
     const history = useHistory();
 
-    console.log(small)
-
     const styles = listStyles({small})();
 
 
@@ -59,7 +57,7 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                     </div>
                                     <div className={classes.header} style={{flex: 0.33}}>
 
-                                        <Typography className={classes.link} onClick={() => {
+                                        <div className={classes.link} onClick={() => {
                                             history.push(`/players/${player.id}`)
                                         }}>
                                             <Tooltip title={<PlayerCard player={player} type={type}/>}
@@ -74,7 +72,7 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                                                                      color={"primary"}>{(currentPage - 1) * 10 + index}. {player.username}</BoldTyphography>
                                                 </div>
                                             </Tooltip>
-                                        </Typography>
+                                        </div>
 
                                     </div>
 

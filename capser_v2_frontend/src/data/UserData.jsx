@@ -62,3 +62,34 @@ export const useUserData = (id) => {
     }
     return {updateUserData, data, loading, loaded}
 }
+
+export const useUserPlots = (id, gameType) => {
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [loaded, setLoaded] = useState(false);
+
+
+    useEffect(() => {
+        let shouldUpdate = true;
+        if (id) {
+            setLoading(true);
+            axios.get(`/users/${id}/plots?gameType=${gameType}`).then(response => {
+                if (shouldUpdate) {
+                    setData(response.data);
+                }
+            }).finally(() => {
+                if (shouldUpdate) {
+                    setLoading(false)
+                    setLoaded(true)
+                }
+            })
+        }
+        return () => {
+            shouldUpdate = false;
+        }
+    }, [id, gameType])
+
+    return {data, loading, loaded}
+
+}
