@@ -1,12 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link, Typography, useTheme} from "@material-ui/core";
-import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
+import {getRequestGameTypeString} from "../../utils/Utils";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
 import BoldTyphography from "../misc/BoldTyphography";
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import {useHistory} from "react-router-dom";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
+import GameIconWithName from "../../misc/GameIconWithName";
 
 export const getGameIcon = (type) => {
     switch (type) {
@@ -144,9 +145,7 @@ const GameComponent = ({game, vertical = true}) => {
                                 className={gameStyle.margins}
                                 color={"primary"}>{team1Name} vs {team2Name}</Typography>
                     <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
-                        {getGameIcon(game.gameType)}
-                        <Typography
-                            style={{marginLeft: 5, textAlign: 'center'}}>{getGameTypeString(game.gameType)}</Typography>
+                        <GameIconWithName gameType={game.gameType}/>
                     </div>
                     <div style={{display: 'block'}} className={gameStyle.margins}>
                         <Typography

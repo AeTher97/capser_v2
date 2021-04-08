@@ -3,6 +3,7 @@ import {useUserPlots} from "../../data/UserData";
 import Plot from "./Plot";
 import {Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
+import GameIconWithName from "../../misc/GameIconWithName";
 
 const ProfilePlots = ({userId, width}) => {
     const [gameType, setGameType] = useState('SINGLES');
@@ -33,13 +34,13 @@ const ProfilePlotsSelector = ({selected, onClick}) => {
              style={{margin: 0, maxWidth: 500, flex: 1, display: 'flex', justifyContent: 'center', padding: 0}}>
 
             <SelectorElement selected={selected === "SINGLES"} value={"SINGLES"} onClick={onClick}>
-                Singles
+                <GameIconWithName gameType={"SINGLES"}/>
             </SelectorElement>
             <SelectorElement selected={selected === 'EASY_CAPS'} value={"EASY_CAPS"} onClick={onClick}>
-                Easy Caps
+                <GameIconWithName gameType={"EASY_CAPS"}/>
             </SelectorElement>
             <SelectorElement last selected={selected === "DOUBLES"} value={"DOUBLES"} onClick={onClick}>
-                Doubles
+                <GameIconWithName gameType={"DOUBLES"}/>
             </SelectorElement>
         </div>
     </div>

@@ -32,6 +32,23 @@ public class LogTimeSeriesTest {
     }
 
     @Test
+    public void whenOneDayDifferenceEndOfTheYear_correctlyRecordsNewValue() {
+        TimeSeries timeSeries = TimeSeriesCron.createEmptyTimeSeries();
+        LocalDate yesterdayDate = LocalDate.now().minusDays(1);
+        timeSeries.setLastLogged(yesterdayDate);
+        timeSeries.setLastElement(364);
+
+        timeSeries.logToday(12);
+
+        assertAll(
+                () -> assertEquals(1, DAYS.between(yesterdayDate, LocalDate.now())),
+                () -> assertEquals(LocalDate.now(), timeSeries.getLastLogged()),
+                () -> assertEquals(12, timeSeries.getData()[0]),
+                () -> assertEquals(0, timeSeries.getLastElement()));
+
+    }
+
+    @Test
     public void whenZeroDayDifference_correctlyOverwritesNewValue() {
         TimeSeries timeSeries = TimeSeriesCron.createEmptyTimeSeries();
         timeSeries.getData()[0] = 0.12f;
