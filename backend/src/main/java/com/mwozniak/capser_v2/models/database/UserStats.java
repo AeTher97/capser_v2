@@ -1,5 +1,7 @@
 package com.mwozniak.capser_v2.models.database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mwozniak.capser_v2.models.dto.PlotsDto;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -46,5 +48,19 @@ public class UserStats {
     private float sinksMadeLostRatio;
     private float pointsMadeLostRatio;
 
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private TimeSeries pointsSeries;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private TimeSeries rebuttalsSeries;
+
+    public PlotsDto getPlots() {
+        PlotsDto plotsDto = new PlotsDto();
+        plotsDto.setPointSeries(pointsSeries);
+        plotsDto.setRebuttalsSeries(rebuttalsSeries);
+        return plotsDto;
+    }
 
 }

@@ -54,6 +54,11 @@ public class UsersController {
         return ResponseEntity.ok(userService.getFullUser(userId));
     }
 
+    @GetMapping("/{userId}/plots")
+    public ResponseEntity<Object> getUserPlots(@PathVariable UUID userId, @RequestParam GameType gameType) throws UserNotFoundException {
+        return ResponseEntity.ok(userService.getUserPlots(userId, gameType));
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException {
         log.info("Creating user");

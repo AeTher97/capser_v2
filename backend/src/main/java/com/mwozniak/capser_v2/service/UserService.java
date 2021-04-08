@@ -1,10 +1,12 @@
 package com.mwozniak.capser_v2.service;
 
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.PasswordResetToken;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
+import com.mwozniak.capser_v2.models.dto.PlotsDto;
 import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
@@ -84,6 +86,25 @@ public class UserService {
             });
             userDto.setTeams(teams);
             return userDto;
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    public PlotsDto getUserPlots(UUID id, GameType gameType) throws UserNotFoundException {
+        Optional<User> userOptional = usersRepository.findUserById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            switch (gameType) {
+                case DOUBLES:
+                    return user.getUserDoublesStats().getPlots();
+                case SINGLES:
+                    return user.getUserSinglesStats().getPlots();
+                case EASY_CAPS:
+                    return user.getUserEasyStats().getPlots();
+                default:
+                    return null;
+            }
         } else {
             throw new UserNotFoundException("User not found");
         }
