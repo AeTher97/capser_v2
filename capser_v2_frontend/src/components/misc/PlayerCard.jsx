@@ -13,7 +13,8 @@ const PlayerCard = (props) => {
     const theme = useTheme();
 
     return (
-        <div className={classes.standardBorder} style={{margin: 0, backgroundColor: theme.palette.background.paper}}>
+        <div className={classes.standardBorder}
+             style={{margin: 0, backgroundColor: theme.palette.background.paper, boxShadow: '0px 0px 10px 5px black'}}>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <ProfilePicture avatarHash={player.avatarHash} size={'medium'}/>
             </div>
@@ -21,7 +22,7 @@ const PlayerCard = (props) => {
                 <Typography color={"primary"} variant={"h6"}>{player.username}</Typography>
             </div>
 
-            <div className={classes.header} style={{minWidth: 175}}>
+            <div className={classes.header} style={{minWidth: 190}}>
                 <Typography variant={"body2"} style={{flex: 1}}>Points</Typography>
                 <Typography variant={"body2"}>{stats.points.toFixed(2)}</Typography>
             </div>
