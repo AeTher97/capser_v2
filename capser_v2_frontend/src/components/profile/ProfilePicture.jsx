@@ -101,7 +101,8 @@ const ProfilePicture = ({changePictureOverlayEnabled = false, avatarHash, size =
                     <Typography>Profile pictures used by Global Caps League are global avatars attached to email
                         addresses. To change profile picture visit <Link
                             onClick={() => window.open('https://en.gravatar.com/')}>Gravatar</Link> and create an
-                        avatar attached to your email.</Typography>
+                        avatar attached to your email. For more information see <Link
+                            onClick={() => window.open('https://makeawebsitehub.com/gravatar/')}>details.</Link></Typography>
                     <Button onClick={() => setProfilePictureInfoOpen(false)}>Close</Button>
                 </div>
             </Dialog>}

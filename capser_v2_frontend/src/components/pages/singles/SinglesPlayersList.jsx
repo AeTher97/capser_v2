@@ -43,6 +43,9 @@ const SinglesPlayersList = ({type, pointsHidden = false}) => {
                             <Typography style={{minWidth: 75, flex: 0.2}}>Last Seen</Typography>
                             <Typography style={{minWidth: 80, flex: 0.2}}>Last Game</Typography>
                         </div>
+                        {players.length === 0 &&
+                        <Typography style={{textAlign: 'center', marginTop: 15, marginBottom: 15}} variant={"h5"}>
+                            No one has played 5 games</Typography>}
                         {players.map(player => {
                             index++;
                             const stats = player[getStatsString(type)];

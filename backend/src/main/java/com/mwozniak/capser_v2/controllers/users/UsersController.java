@@ -34,7 +34,7 @@ public class UsersController {
 
     @GetMapping
     public ResponseEntity<Object> getUsers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam GameType gameType) {
-        return ResponseEntity.ok(userService.getUsers(PageRequest.of(pageNumber, pageSize, Sort.by(getSortString(gameType)).descending())));
+        return ResponseEntity.ok(userService.getUsers(PageRequest.of(pageNumber, pageSize, Sort.by(getSortString(gameType)).descending()), gameType));
     }
 
     @GetMapping("/search")
