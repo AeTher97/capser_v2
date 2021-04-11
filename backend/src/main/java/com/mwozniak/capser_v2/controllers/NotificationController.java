@@ -24,7 +24,6 @@ public class NotificationController {
     @GetMapping
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Object> getAllNotifications() {
-        log.info("Getting all notifications");
         return ResponseEntity.ok(notificationService.getNotifications());
     }
 
