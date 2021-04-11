@@ -34,7 +34,8 @@ public class UsersController {
 
     @GetMapping
     public ResponseEntity<Object> getUsers(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam GameType gameType) {
-        return ResponseEntity.ok(userService.getUsers(PageRequest.of(pageNumber, pageSize, Sort.by(getSortString(gameType)).descending()), gameType));
+        log.info("Getting user list for game type " + gameType.toString());
+        return ResponseEntity.ok(userService.getUsers(PageRequest.of(pageNumber, pageSize, Sort.by(getSortString(gameType)).descending()), gameType, 5));
     }
 
     @GetMapping("/search")
@@ -44,6 +45,7 @@ public class UsersController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUser(@PathVariable UUID userId) throws UserNotFoundException {
+        log.info("Getting " + userId.toString() + " detailed info");
         UserMinimized userMinimized = new UserMinimized();
         BeanUtils.copyProperties(userService.getUser(userId), userMinimized);
         return ResponseEntity.ok(userMinimized);
@@ -51,11 +53,13 @@ public class UsersController {
 
     @GetMapping("/{userId}/full")
     public ResponseEntity<Object> getFullUser(@PathVariable UUID userId) throws UserNotFoundException {
+        log.info("Getting full user");
         return ResponseEntity.ok(userService.getFullUser(userId));
     }
 
     @GetMapping("/{userId}/plots")
     public ResponseEntity<Object> getUserPlots(@PathVariable UUID userId, @RequestParam GameType gameType) throws UserNotFoundException {
+        log.info("Getting plot data for " + userId.toString() + " game type " + gameType.toString());
         return ResponseEntity.ok(userService.getUserPlots(userId, gameType));
     }
 
@@ -68,11 +72,13 @@ public class UsersController {
     @PutMapping("/{userId}")
     @PreAuthorize("hasAuthority('USER') and @accessVerificationBean.hasAccessToUser(#userId)")
     public ResponseEntity<Object> updateUser(@RequestBody UpdateUserDto updateUserDto, @PathVariable UUID userId) throws UserNotFoundException, NoSuchAlgorithmException {
+        log.info("Updating " + userId.toString() + " user data");
         return ResponseEntity.ok(userService.updateUser(userId, updateUserDto));
     }
 
     @PostMapping("/resetPassword")
     public ResponseEntity<Object> resetPassword(@RequestParam String email) {
+        log.info("Initiating password reset for " + email);
         try {
             userService.resetPassword(email);
         } catch (Exception e) {
@@ -83,6 +89,7 @@ public class UsersController {
 
     @PostMapping("/updatePassword")
     public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) throws ResetTokenExpiredException, UserNotFoundException {
+        log.info("Updating password for " + updatePasswordDto.getCode());
         userService.updatePassword(updatePasswordDto);
         return ResponseEntity.ok().build();
     }

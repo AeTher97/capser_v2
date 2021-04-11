@@ -210,14 +210,14 @@ public class UserService {
         passwordTokenRepository.save(passwordResetToken);
     }
 
-    public Page<User> getUsers(Pageable pageable, GameType gameType) {
+    public Page<User> getUsers(Pageable pageable, GameType gameType, int numberOfGamesPlayed) {
         switch (gameType) {
             case EASY_CAPS:
-                return usersRepository.findByRoleNotAndUserEasyStatsGamesPlayedGreaterThanEqual(Roles.ADMIN, pageable, 5);
+                return usersRepository.findByRoleNotAndUserEasyStatsGamesPlayedGreaterThanEqual(Roles.ADMIN, pageable, numberOfGamesPlayed);
             case UNRANKED:
                 return usersRepository.findByRoleNot(Roles.ADMIN, pageable);
             case SINGLES:
-                return usersRepository.findByRoleNotAndUserSinglesStatsGamesPlayedGreaterThanEqual(Roles.ADMIN, pageable, 5);
+                return usersRepository.findByRoleNotAndUserSinglesStatsGamesPlayedGreaterThanEqual(Roles.ADMIN, pageable, numberOfGamesPlayed);
             default:
                 return null;
         }

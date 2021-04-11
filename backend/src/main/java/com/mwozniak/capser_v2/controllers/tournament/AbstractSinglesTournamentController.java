@@ -7,6 +7,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.tournament.AbstractSinglesTournamentService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+@Log4j
 public abstract class AbstractSinglesTournamentController<T extends AbstractSinglesTournament<?>> extends AbstractTournamentController<T> {
     private final AbstractSinglesTournamentService<T> tournamentService;
 
@@ -27,6 +29,7 @@ public abstract class AbstractSinglesTournamentController<T extends AbstractSing
     @PostMapping("/{tournamentId}/players")
     @PreAuthorize("hasAuthority('ADMIN')")
     public T addUser(@PathVariable UUID tournamentId, @RequestBody List<UUID> users) throws UserNotFoundException, TournamentNotFoundException {
+        log.info("Adding users to tournament " + tournamentId.toString());
         return tournamentService.addUsers(tournamentId, users);
     }
 
@@ -35,11 +38,13 @@ public abstract class AbstractSinglesTournamentController<T extends AbstractSing
     @PostMapping("/{tournamentId}/entry/{entryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public T addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SinglesGameDto singlesGameDto) throws CapserException {
+        log.info("Posting game in tournament " + tournamentId.toString());
         return tournamentService.postGame(tournamentId, entryId, singlesGameDto);
     }
 
     @PostMapping("/{tournamentId}/entry/{entryId}/skip")
     public T skipGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SkipDto skipDto) throws CapserException {
+        log.info("Skipping game in tournament " + tournamentId.toString());
         return tournamentService.skipGame(tournamentId, entryId, skipDto.getForfeitedId());
     }
 }

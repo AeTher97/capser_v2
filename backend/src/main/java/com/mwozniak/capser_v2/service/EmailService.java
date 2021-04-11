@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -11,12 +12,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Service
+@Log4j
 public class EmailService {
 
     private final JavaMailSender emailSender;
     private final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     public EmailService(JavaMailSender emailSender) {
+        log.info("Using email account " + System.getenv("EMAIL_USERNAME") + " to send notifications");
         this.emailSender = emailSender;
     }
 
@@ -35,6 +38,7 @@ public class EmailService {
     }
 
     public void sendHtmlMessage(String to, String subject, String content) {
+        log.info("Sending html email to " + to);
         executorService.submit(new SendMessageTask(to, subject, content, emailSender));
     }
 

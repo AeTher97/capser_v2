@@ -1,11 +1,10 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.tournament.EasyCapsTournament;
 import com.mwozniak.capser_v2.models.database.tournament.SinglesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.UnrankedTournament;
-import org.springframework.data.domain.Page;
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tournaments")
+@Log4j
 public class AggregatedTournamentController {
 
     private final EasyCapsTournamentController easyCapsTournamentController;
@@ -32,6 +32,7 @@ public class AggregatedTournamentController {
 
     @GetMapping
     public ResponseEntity<List<Tournament<?>>> getTournaments(@RequestParam int pageSize, @RequestParam int pageNumber) {
+        log.info("Getting aggregated tournament list");
         List<EasyCapsTournament> easyCapsTournaments = easyCapsTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
         List<SinglesTournament> singlesTournaments = singlesTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
         List<UnrankedTournament> unrankedTournaments = unrankedTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();

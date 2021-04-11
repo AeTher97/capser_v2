@@ -17,6 +17,7 @@ public class TimeSeriesCron {
 
 
     public TimeSeriesCron(StatsRepository statsRepository) {
+        log.info("Cron expression used: " + System.getenv("CRON_EXPRESSION"));
         this.statsRepository = statsRepository;
     }
 
@@ -31,7 +32,7 @@ public class TimeSeriesCron {
         return timeSeries;
     }
 
-    @Scheduled(cron = "0 0 23 * * *")
+    @Scheduled(cron = "${time.series.cron}")
     public void updateTimeSeries() {
         log.info("Running time series cron");
         createPointsCron();

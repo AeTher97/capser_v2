@@ -59,7 +59,7 @@ public class TeamService {
         return saved;
     }
 
-    public Page<TeamWithStats> getTeams(Pageable pageable) {
+    public Page<TeamWithStats> getTeams(Pageable pageable, int numberOfGamesPlayed) {
         return teamRepository.findByActiveTrueAndDoublesStatsGamesPlayedGreaterThanEqual(pageable, 5);
     }
 
