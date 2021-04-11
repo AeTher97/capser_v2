@@ -1,7 +1,9 @@
 package com.mwozniak.capser_v2;
 
+import com.mwozniak.capser_v2.configuration.EmailConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -13,6 +15,7 @@ import java.util.Properties;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableConfigurationProperties(EmailConfiguration.class)
 public class CapserV2Application {
 
     public static void main(String[] args) {
@@ -31,13 +34,13 @@ public class CapserV2Application {
     }
 
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public JavaMailSender getJavaMailSender(EmailConfiguration emailConfiguration) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("globalcapsleague@gmail.com");
-        mailSender.setPassword("89!F_=w^tcS%^\\we");
+        mailSender.setUsername(emailConfiguration.getUsername());
+        mailSender.setPassword(emailConfiguration.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
