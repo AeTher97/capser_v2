@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import useAcceptanceFetch from "../../../data/Acceptance";
 import PageHeader from "../../misc/PageHeader";
-import {Divider, TableBody, Typography} from "@material-ui/core";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import {Typography} from "@material-ui/core";
 import mainStyles from "../../../misc/styles/MainStyles";
-import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
+import {getGameModeString} from "../../../utils/Utils";
 import {useDispatch, useSelector} from "react-redux";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import YesNoDialog from "../../misc/YesNoDialog";
 import {useGameAcceptance} from "../../../data/SoloGamesData";
 import {showSuccess} from "../../../redux/actions/alertActions";
@@ -21,6 +16,7 @@ import {fetchUsername} from "../../../data/UsersFetch";
 import {listStyles} from "../singles/SinglesPlayersList";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import BoldTyphography from "../../misc/BoldTyphography";
+import GameIconWithName from "../../../misc/GameIconWithName";
 
 const AcceptanceComponent = props => {
 
@@ -173,20 +169,23 @@ const AcceptanceComponent = props => {
         const opponent = findUsername(game.player1 === userId ? game.player2 : game.player1);
         const playerStats = findPlayerStats(game, userId);
         const opponentStats = findPlayerStats(game, game.player1 === userId ? game.player2 : game.player1);
-        return (<div key={request.id} className={styles.row} style={{flexDirection: "column"}}>
-            <div className={classes.header} style={{flexDirection: small ? "column" : "row"}}>
-                <BoldTyphography>{getGameTypeString(game.gameType)}</BoldTyphography>
-                <Typography style={{marginLeft: 10, marginRight: 10}}>{getGameModeString(game.gameMode)}</Typography>
-                <Typography>{game.winner === userId ? 'Victory' : 'Loss'} against {opponent}</Typography>
-            </div>
-            <div className={classes.header} style={{flexWrap: 'wrap', width: '100%', flexDirection: small ? "column" : "row"}}>
-                <Typography style={{marginRight: 20}}>Score {playerStats.score} : {opponentStats.score}</Typography>
-                <Typography
-                    style={{marginRight: 20}}>Rebuttals {playerStats.rebuttals} : {opponentStats.rebuttals}</Typography>
-                <Typography style={{marginRight: 20}}>Sinks {playerStats.sinks} : {opponentStats.sinks}</Typography>
-                <Typography>Date {new Date(game.time).toDateString()}</Typography>
+        return (
+            <div className={styles.row} key={request.id} style={{justifyContent: 'space-between'}}>
+                <div style={{display: "flex", flexDirection: "column", alignItems: small ? 'center' : 'flex-start'}}>
+                    <BoldTyphography>{game.winner === userId ? 'Victory' : 'Loss'} against {opponent} {playerStats.score} : {opponentStats.score}</BoldTyphography>
 
-                {request.acceptanceRequestType !== 'PASSIVE' ? <div style={{flex: 1, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
+                    <GameIconWithName gameType={game.gameType}/>
+                    <Typography variant={"caption"}>{getGameModeString(game.gameMode)}</Typography>
+                    <Typography variant={"caption"}>Date {new Date(game.time).toDateString()}</Typography>
+
+                    <Typography
+                        variant={"caption"}>Rebuttals {playerStats.rebuttals} : {opponentStats.rebuttals}</Typography>
+                    <Typography variant={"caption"}>Sinks {playerStats.sinks} : {opponentStats.sinks}</Typography>
+                </div>
+
+                {request.acceptanceRequestType !== 'PASSIVE' ?
+                    <div
+                        style={{flex: 1, marginTop: 5, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
                         <Button onClick={() => {
                             handleAccept(game, opponent)
                         }} style={{marginRight: 5}}>
@@ -198,36 +197,38 @@ const AcceptanceComponent = props => {
                             Reject
                         </Button></div> :
                     <Typography>Pending game</Typography>}
-            </div>
 
-        </div>)
+            </div>)
     }
 
     const getMultipleRow = (game, request) => {
-        return (<div key={request.id} className={styles.row} style={{flexDirection: "column"}}>
-            <div className={classes.header} style={{flexDirection: small ? "column" : "row"}}>
-            <BoldTyphography>{getGameTypeString(game.gameType)}</BoldTyphography>
-            <Typography style={{marginLeft: 10, marginRight:10}}>{getGameModeString(game.gameMode)}</Typography>
-            <Typography>{getWinnerString(game)} against {findTeamName(findTeamId(game))}</Typography>
-            </div>
-            <div className={classes.header} style={{flexWrap: 'wrap', width: '100%', flexDirection: small ? "column" : "row"}}>
-            <Typography style={{marginRight: 20}}>Score {game.team1Score} : {game.team2Score}</Typography>
-            <Typography>{new Date(game.time).toDateString()}</Typography>
-            {request.acceptanceRequestType !== 'PASSIVE' ? <div style={{flex: 1, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
-                            <Button onClick={() => {
-                                handleAccept(game, findTeamName(findTeamId(game)))
-                            }} style={{marginRight: 5}}>
-                                Accept
-                            </Button>
-                            <Button variant={"outlined"} onClick={() => {
-                                handleReject(game, findTeamName(findTeamId(game)))
-                            }}>
-                                Reject
-                            </Button>
-                </div> :
-                <Typography>Pending game</Typography>}
-            </div>
-        </div>)
+
+        return (
+            <div key={request.id} className={styles.row}
+                 style={{flexDirection: "row", justifyContent: 'space-between'}}>
+                <div className={classes.header}
+                     style={{flexDirection: "column", alignItems: small ? "center" : "flex-start"}}>
+                    <BoldTyphography>{getWinnerString(game)} against {findTeamName(findTeamId(game))} {game.team1Score} : {game.team2Score}</BoldTyphography>
+                    <GameIconWithName gameType={game.gameType}/>
+                    <Typography variant={"caption"}>{getGameModeString(game.gameMode)}</Typography>
+                    <Typography variant={"caption"}>Date {new Date(game.time).toDateString()}</Typography>
+                </div>
+
+                {request.acceptanceRequestType !== 'PASSIVE' ?
+                    <div style={{flex: 1, display: "flex", justifyContent: small ? 'center' : "flex-end"}}>
+                        <Button onClick={() => {
+                            handleAccept(game, findTeamName(findTeamId(game)))
+                        }} style={{marginRight: 5}}>
+                            Accept
+                        </Button>
+                        <Button variant={"outlined"} onClick={() => {
+                            handleReject(game, findTeamName(findTeamId(game)))
+                        }}>
+                            Reject
+                        </Button>
+                    </div> :
+                    <Typography>Pending game</Typography>}
+            </div>)
     }
 
 
@@ -249,7 +250,8 @@ const AcceptanceComponent = props => {
                 <div style={{maxWidth: 800, flex: 1}}>
                     {!loading ? <div>
                             <div className={classes.standardBorder} style={{padding: 0}}>
-                                <div className={styles.row} style={{flexDirection: small ? "column" : "row", justifyContent: "flex-start"}}>
+                                <div className={styles.row}
+                                     style={{flexDirection: small ? "column" : "row", justifyContent: "flex-start"}}>
                                     <Typography>Games</Typography>
                                 </div>
                                 {acceptanceRequests.map(request => {

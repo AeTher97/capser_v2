@@ -144,7 +144,7 @@ const GameComponent = ({game, vertical = true}) => {
                     <Typography variant={"h6"} style={{fontWeight: 600, textAlign: 'center'}}
                                 className={gameStyle.margins}
                                 color={"primary"}>{team1Name} vs {team2Name}</Typography>
-                    <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')} style={{color: "white"}}>
+                    <div className={[classes.centeredRowNoFlex, gameStyle.margins].join(' ')}>
                         <GameIconWithName gameType={game.gameType}/>
                     </div>
                     <div style={{display: 'block'}} className={gameStyle.margins}>

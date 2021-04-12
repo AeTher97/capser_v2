@@ -1,14 +1,21 @@
 import React from 'react';
-import {Typography} from "@material-ui/core";
 import {getGameTypeString} from "../utils/Utils";
 import {getGameIcon} from "../components/game/GameComponent";
+import BoldTyphography from "../components/misc/BoldTyphography";
 
 const GameIconWithName = ({gameType}) => {
     return (
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-            {getGameIcon(gameType)}
-            <Typography
-                style={{marginLeft: 5, textAlign: 'center'}}>{getGameTypeString(gameType)}</Typography>
+        <div style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            color: "white",
+            alignItems: 'center'
+        }}>
+            <div style={{marginRight: 5, display: "flex", flexDirection: "row", justifyContent: "center"}}>
+                {getGameIcon(gameType)}
+            </div>
+            <BoldTyphography>{getGameTypeString(gameType)}</BoldTyphography>
         </div>
     );
 };
