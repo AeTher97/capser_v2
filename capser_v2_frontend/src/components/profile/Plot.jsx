@@ -14,14 +14,14 @@ const Plot = ({width, timeSeries, title}) => {
                 for (let i = cursor + 1; i < 365; i++) {
                     let date = new Date();
                     if (timeSeries.data[i] !== -100000) {
-                        unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i] === -100000 ? null : timeSeries.data[i]]);
+                        unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i] === -100000 ? null : timeSeries.data[i]]);
                     }
                     index++;
                 }
                 for (let i = 0; i <= cursor; i++) {
                     let date = new Date();
                     if (timeSeries.data[i] !== -100000) {
-                        unwrapped.push([date.setDate(startDate.getDate() - 365 + index), timeSeries.data[i]]);
+                        unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
                     }
                     index++;
                 }
