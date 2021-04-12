@@ -205,7 +205,7 @@ const AcceptanceComponent = props => {
 
         return (
             <div key={request.id} className={styles.row}
-                 style={{flexDirection: "row", justifyContent: 'space-between'}}>
+                 style={{flexDirection: small ? "column" : "row", justifyContent: 'space-between'}}>
                 <div className={classes.header}
                      style={{flexDirection: "column", alignItems: small ? "center" : "flex-start"}}>
                     <BoldTyphography>{getWinnerString(game)} against {findTeamName(findTeamId(game))} {game.team1Score} : {game.team2Score}</BoldTyphography>

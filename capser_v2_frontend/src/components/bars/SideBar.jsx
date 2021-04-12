@@ -63,7 +63,7 @@ const SideBar = ({open, setOpen}) => {
         {
             tooltip: "Tournaments",
             link: "/tournaments",
-            icon: <AccountTreeOutlinedIcon/>
+            icon: <AccountTreeOutlinedIcon style={{transform: 'scale(-1,1)'}}/>
         },
         {
             tooltip: "Singles",

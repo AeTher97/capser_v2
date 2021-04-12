@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useNotifications} from "../../data/NotificationData";
-import {Badge, Link} from "@material-ui/core";
+import {Badge, Link, MenuItem} from "@material-ui/core";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Menu from "@material-ui/core/Menu";
 import NotificationList from "./NotificationList";
@@ -54,10 +54,10 @@ const BellComponent = ({expanded = true}) => {
                       }
                   }}>
                 <div className={mainStyles0.standardBorder} style={{padding: 0, margin: 0}}>
-                    <NotificationList notifications={notifications} markSeen={markSeen}/>
-                    <div style={{padding: 10}}>
-                        <Link onClick={handleClose}>Hide</Link>
-                    </div>
+                    <NotificationList notifications={notifications} markSeen={markSeen} handleClose={handleClose}/>
+                    <MenuItem style={{padding: 10}} onClick={handleClose}>
+                        <Link>Hide</Link>
+                    </MenuItem>
                 </div>
             </Menu>
         </div>

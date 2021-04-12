@@ -116,8 +116,9 @@ const BracketEntry = ({bracketEntry, showPath, isOwner, openAddGameDialog, openS
                     <Typography color={"inherit"}>Forfeited</Typography>
                 </div>}
 
-                {!showPlus && bracketEntry.game && <Tooltip title={"Detailed game info"}
-                                                            onClick={() => history.push(`/${getRequestGameTypeString(bracketEntry.game.gameType)}/${bracketEntry.game.id}`)}>
+                {!showPlus && bracketEntry.game && <Tooltip
+                    title={<div style={{padding: 5, backgroundColor: theme.palette.divider}}>Detailed game info</div>}
+                    onClick={() => history.push(`/${getRequestGameTypeString(bracketEntry.game.gameType)}/${bracketEntry.game.id}`)}>
                     <div style={{
                         backgroundColor: plusBaseColor,
                         position: "relative",
