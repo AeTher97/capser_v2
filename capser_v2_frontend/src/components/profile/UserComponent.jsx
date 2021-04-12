@@ -182,7 +182,7 @@ const UserComponent = ({id}) => {
                         </TabPanel>
                     </>}
 
-                    {loading && <LoadingComponent/>}
+
                 </div>
 
                 {(!id || id === userId) && !loading && loaded &&
@@ -190,6 +190,7 @@ const UserComponent = ({id}) => {
 
 
             </div>
+            {loading && <LoadingComponent/>}
         </div>
     );
 };
