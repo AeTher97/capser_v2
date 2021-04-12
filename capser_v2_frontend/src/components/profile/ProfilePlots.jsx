@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useUserPlots} from "../../data/UserData";
 import Plot from "./Plot";
 import {Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import GameIconWithName from "../../misc/GameIconWithName";
+import useQuery from "../../utils/UserQuery";
+import {useHistory} from "react-router-dom";
+
 
 const ProfilePlots = ({userId, width}) => {
-    const [gameType, setGameType] = useState('SINGLES');
+    const query = useQuery();
+    const gameType = query.get('chart') || 'SINGLES';
+    const history = useHistory();
     const {data, loading, loaded} = useUserPlots(userId, gameType);
+
 
     return (
         <div>
-            <ProfilePlotsSelector selected={gameType} onClick={(value) => setGameType(value)}/>
+            <ProfilePlotsSelector selected={gameType}
+                                  onClick={(value) => history.push(`/players/${userId}?tab=charts&chart=${value}`)}/>
             <Typography variant={"h6"}>Results over time</Typography>
             {gameType === 'DOUBLES' &&
             <Typography>Plots in double stats are aggregated results from all teams</Typography>}
