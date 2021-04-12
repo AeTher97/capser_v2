@@ -176,7 +176,7 @@ const AcceptanceComponent = props => {
 
                     <GameIconWithName gameType={game.gameType}/>
                     <Typography variant={"caption"}>{getGameModeString(game.gameMode)}</Typography>
-                    <Typography variant={"caption"}>Date {new Date(game.time).toDateString()}</Typography>
+                    <Typography variant={"caption"}>{new Date(game.time).toDateString()}</Typography>
 
                     <Typography
                         variant={"caption"}>Rebuttals {playerStats.rebuttals} : {opponentStats.rebuttals}</Typography>
@@ -211,7 +211,7 @@ const AcceptanceComponent = props => {
                     <BoldTyphography>{getWinnerString(game)} against {findTeamName(findTeamId(game))} {game.team1Score} : {game.team2Score}</BoldTyphography>
                     <GameIconWithName gameType={game.gameType}/>
                     <Typography variant={"caption"}>{getGameModeString(game.gameMode)}</Typography>
-                    <Typography variant={"caption"}>Date {new Date(game.time).toDateString()}</Typography>
+                    <Typography variant={"caption"}>{new Date(game.time).toDateString()}</Typography>
                 </div>
 
                 {request.acceptanceRequestType !== 'PASSIVE' ?
