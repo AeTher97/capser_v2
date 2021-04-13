@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 import useFieldSearch from "../../data/UsersFetch";
-import {Divider, Typography} from "@material-ui/core";
+import {Divider, Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -11,10 +11,21 @@ import mainStyles from "../../misc/styles/MainStyles";
 import {useSelector} from "react-redux";
 
 
-const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, className, clearOnChange = false, disabled, searchYourself=false}) => {
+const FetchSelectField = ({
+                              onChange,
+                              label,
+                              url,
+                              resultSize = 5,
+                              nameParameter,
+                              className,
+                              clearOnChange = false,
+                              disabled,
+                              searchYourself = false
+                          }) => {
 
 
     const searchPhrase = useFieldSearch(url, resultSize || 5);
+    const theme = useTheme();
     const classes = fetchSelectFieldStyles();
     const styles = mainStyles();
     const {userId} = useSelector(state => state.auth)
@@ -36,8 +47,8 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
 
 
     useEffect(() => {
-        if(searchResult.length && enterPress){
-            if(clearOnChange){
+        if (searchResult.length && enterPress) {
+            if (clearOnChange) {
                 setPhrase('');
             } else {
                 setPhrase(searchResult[cursorPosition][nameParameter]);
@@ -45,13 +56,13 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
             ref.current.blur();
             onChange(searchResult[cursorPosition]);
         }
-    },[cursorPosition, enterPress])
+    }, [cursorPosition, enterPress])
 
     useEffect(() => {
-        if(searchResult.length && upPress){
-            setCursorPosition(prevState => (prevState > 0 ? prevState -1 : prevState));
+        if (searchResult.length && upPress) {
+            setCursorPosition(prevState => (prevState > 0 ? prevState - 1 : prevState));
         }
-    },[upPress])
+    }, [upPress])
 
     useEffect(() => {
         if (searchResult.length && downPress) {
@@ -66,10 +77,10 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
     }, [hovered]);
 
     useEffect(() => {
-        if(searchResult.length){
+        if (searchResult.length) {
             setHovered(searchResult[cursorPosition])
         }
-    },[cursorPosition])
+    }, [cursorPosition])
 
     let timeout;
 
@@ -79,13 +90,13 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
             setSearching(true)
             timeout = setTimeout(() => {
                 searchPhrase(phrase).then((response => {
-                    if(!searchYourself) {
+                    if (!searchYourself) {
                         setSearchResult(response.data.content.filter(obj => obj.id !== userId))
-                    }else {
+                    } else {
                         setSearchResult(response.data.content)
                     }
                     setSearching(false);
-                    if(response.data.content.length > 0) {
+                    if (response.data.content.length > 0) {
                         setHovered(response.data.content[cursorPosition]);
                     }
                 }))
@@ -102,9 +113,11 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
 
     const getNoResults = () => {
         if (phrase.length > 0 && searchResult.length === 0) {
-            return <Typography style={{padding: 5}}>No results</Typography>
+            return <div style={{borderBottom: '1px solid ' + theme.palette.divider}}><Typography style={{padding: 5}}>No
+                results</Typography></div>
         } else {
-            return <Typography style={{padding: 5}}>Type in a name</Typography>;
+            return <div style={{borderBottom: '1px solid ' + theme.palette.divider}}><Typography style={{padding: 5}}>Type
+                in a name</Typography></div>;
         }
     }
 
@@ -113,29 +126,34 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
             return null;
         }
         return (!searching ?
-            <div className={classes.recordContainer}>
-                {searchResult.length > 0 ? searchResult.map(user => {
-                    return (
-                        <div className={classes.record} key={user[nameParameter]} onMouseDown={() => {
-                            if (!clearOnChange) {
-                                setPhrase(user[nameParameter])
-                            } else {
-                                setPhrase('');
-                            }
-                            setFocused(false);
-                            onChange(user)}}
-                            onMouseEnter={() => {
-                                setHovered(user);
+            <div style={{position: 'relative'}}>
+                <div className={classes.recordContainer}>
+                    {searchResult.length > 0 ? searchResult.map(user => {
+                        return (
+                            <div className={classes.record} key={user[nameParameter]} onMouseDown={() => {
+                                if (!clearOnChange) {
+                                    setPhrase(user[nameParameter])
+                                } else {
+                                    setPhrase('');
+                                }
+                                setFocused(false);
+                                onChange(user)
                             }}
-                        >
-                            <Typography className={classes.record} style={{padding: 5}} color={hovered === user ? "primary" : "textPrimary"}>
-                                {user[nameParameter]}
-                            </Typography>
-                            <Divider/>
-                        </div>
-                    )
-                }) : getNoResults()}
+                                 onMouseEnter={() => {
+                                     setHovered(user);
+                                 }}
+                            >
+                                <Typography className={classes.record} style={{padding: 5}}
+                                            color={hovered === user ? "primary" : "textPrimary"}>
+                                    {user[nameParameter]}
+                                </Typography>
+                                <Divider/>
+                            </div>
+                        )
+                    }) : getNoResults()}
+                </div>
             </div> : <div className={classes.loadingContainer}>
+
                 <LoadingComponent size={"small"} wrapper={false} noPadding showText={false}/>
                 <Typography>Searching...</Typography>
             </div>)
@@ -151,7 +169,17 @@ const FetchSelectField = ({onChange, label, url, resultSize = 5, nameParameter, 
                        onBlur={() => {
                            setFocused(false)
                        }}
-                       InputProps={{endAdornment: <ExpandMoreIcon/>}}
+                       InputProps={{
+                           endAdornment: focused ?
+                               <ExpandMoreIcon style={{cursor: "pointer", transform: "scale(-1,-1)"}}
+                                               onMouseDown={() => {
+                                                   console.log("bluer")
+                                                   ref.current.blur()
+                                               }}/> : <ExpandMoreIcon style={{cursor: "pointer"}} onMouseDown={() => {
+                                   console.log("focus")
+                                   setTimeout(() => ref.current.focus(), 30)
+                               }}/>
+                       }}
                        className={[classes.input, className].join(' ')}
                        disabled={disabled}
                        inputRef={ref}
@@ -167,7 +195,11 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
         textAlign: "left",
         position: "absolute",
         zIndex: 1000,
-        minWidth: 200
+        minWidth: 200,
+        border: "1px solid " + theme.palette.divider,
+        borderBottom: 'none',
+        left: -1
+
     },
     loadingContainer: {
         backgroundColor: theme.palette.background.paper,
@@ -177,12 +209,13 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
         minWidth: 200,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        border: "1px solid " + theme.palette.divider
     },
     record: {
         '&:hover': {
             cursor: "pointer"
-        }
+        },
     },
     input: {
         cursor: 'pointer'

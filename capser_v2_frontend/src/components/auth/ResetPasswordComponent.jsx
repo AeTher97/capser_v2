@@ -23,12 +23,12 @@ const ResetPasswordComponent = () => {
     return (
         <div style={{color: 'white', display: 'flex', justifyContent: 'center', height: '100%', alignItems: 'center'}}>
             <div style={{flex: 1, maxWidth: 500}}>
-                <div className={classes.standardBorder}>
+                <form className={classes.standardBorder} onSubmit={sendResetRequest}>
                     <Typography variant={"h5"}>Reset password</Typography>
                     <Typography>To reset password please type in the email associated with your account.</Typography>
                     <ValidatedField field={emailField} label={emailField.value === '' ? 'Email' : ''}/>
-                    <Button style={{marginTop: 10}} onClick={sendResetRequest}>Reset</Button>
-                </div>
+                    <Button style={{marginTop: 10}} type={"submit"}>Reset</Button>
+                </form>
             </div>
         </div>
     );

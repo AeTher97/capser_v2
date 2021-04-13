@@ -39,10 +39,20 @@ const MainNavigation = () => {
 
                 <Route exact path={"/reset"}>
                     <ResetPasswordComponent/>
+                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={severity}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
                 </Route>
 
                 <Route exact path={"/resetUpdate"}>
                     <UpdatePasswordComponent/>
+                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={severity}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
                 </Route>
 
                 <SecureRoute path='/secure*'>

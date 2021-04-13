@@ -20,11 +20,15 @@ const UpdatePasswordComponent = () => {
 
     const {updatePassword} = useResetPassword();
 
-    const onUpdatePassword = () => {
+    const onUpdatePassword = (e) => {
+        e.preventDefault();
         if (password.validate() || repeatPassword.validate()) {
             return;
         }
-        updatePassword(code, password.value);
+        updatePassword(code, password.value, () => {
+            password.setValue("")
+            repeatPassword.setValue("")
+        });
     }
 
 
@@ -32,14 +36,14 @@ const UpdatePasswordComponent = () => {
     return (
         <div style={{color: 'white', display: 'flex', justifyContent: 'center', height: '100%', alignItems: 'center'}}>
             <div style={{flex: 1, maxWidth: 500}}>
-                <div className={classes.standardBorder}>
+                <form className={classes.standardBorder} onSubmit={onUpdatePassword}>
                     <Typography variant={"h5"}>Change password</Typography>
                     <Typography>Type in your new password.</Typography>
                     <ValidatedField field={password} label={password.value === '' ? 'Password' : ''} type={"password"}/>
                     <ValidatedField field={repeatPassword} label={repeatPassword.value === '' ? 'RepeatPassword' : ''}
                                     type={'password'}/>
-                    <Button style={{marginTop: 10}} onClick={onUpdatePassword}>Update</Button>
-                </div>
+                    <Button style={{marginTop: 10}} type={"submit"}>Update</Button>
+                </form>
             </div>
         </div>
     );

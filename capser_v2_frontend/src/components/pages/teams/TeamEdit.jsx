@@ -130,7 +130,7 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
         <Dialog open={open} fullWidth id={"xd"}>
             <div className={classes.standardBorder} style={{margin: 0}}>
 
-                <div className={classes.header}>
+                <div className={classes.header} style={{alignItems: "flex-start"}}>
                     <Typography variant={"h5"} style={{marginRight: 10, flex: 1}}>Create Team</Typography>
                     <div style={{maxWidth: 150}}>
                         <ValidatedField field={nameField} label={'Team Name'}/>

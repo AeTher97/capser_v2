@@ -45,7 +45,7 @@ const EditUserDataDialog = ({open, setOpen, editData, data}) => {
     return (
         <Dialog open={open}>
             <form onSubmit={saveData}>
-                <div className={classes.standardBorder} style={{margin: 0}}>
+                <div className={classes.standardBorder} style={{margin: 0, maxWidth: 300}}>
                     <Typography variant={"h5"}>Change account data</Typography>
                     <ValidatedField field={usernameField} label={usernameField.value === "" ? "Username" : ""}/>
                     <ValidatedField field={emailField} label={emailField.value === "" ? "Email" : ""}/>

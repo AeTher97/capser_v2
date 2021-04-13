@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TextField} from "@material-ui/core";
+import {TextField, Typography} from "@material-ui/core";
 
 const ValidatedField = props => {
 
@@ -18,17 +18,20 @@ const ValidatedField = props => {
 
 
     return (
-        <TextField
-            {...props}
-            value={value}
-            error={!!error && showError}
-            onBlur={handleBlur}
-            helperText={showError && error ? error : ''}
-            onChange={handleChange}
-            disabled={disabled}
-            style={{flex: 1, width: "100%"}}
-            label={!value ? label : ''}
-        />
+        <>
+            <TextField
+                {...props}
+                value={value}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                disabled={disabled}
+                style={{flex: 1, width: "100%", marginBottom: showError ? 20 : 0}}
+                label={!value ? label : ''}
+            />
+            {!!error && showError && <div style={{position: "relative", top: -17}}>
+                <Typography style={{position: "absolute"}} variant={"caption"} color={"primary"}>{error}</Typography>
+            </div>}
+        </>
     );
 };
 

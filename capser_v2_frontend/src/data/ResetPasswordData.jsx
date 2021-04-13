@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {showSuccess} from "../redux/actions/alertActions";
+import {showError, showSuccess} from "../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
 
 export const useResetPassword = () => {
@@ -15,12 +15,15 @@ export const useResetPassword = () => {
         )
     }
 
-    const updatePassword = (code, newPassword) => {
+    const updatePassword = (code, newPassword, callback = () => {
+    }) => {
         axios.post(`/users/updatePassword`, {code, password: newPassword}).then(r => {
             dispatch(showSuccess("Password was updated"));
             history.push("/login");
         }).catch(e => {
-            console.log(e);
+            dispatch(showError(e.response.data.error))
+            console.log(e.response.data.error);
+            callback()
         })
     }
 
