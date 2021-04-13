@@ -56,6 +56,7 @@ public class UserStats {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private TimeSeries rebuttalsSeries;
 
+    @JsonIgnore
     public PlotsDto getPlots() {
         PlotsDto plotsDto = new PlotsDto();
         plotsDto.setPointSeries(pointsSeries);

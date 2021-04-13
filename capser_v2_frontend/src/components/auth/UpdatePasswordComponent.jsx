@@ -40,7 +40,7 @@ const UpdatePasswordComponent = () => {
                     <Typography variant={"h5"}>Change password</Typography>
                     <Typography>Type in your new password.</Typography>
                     <ValidatedField field={password} label={password.value === '' ? 'Password' : ''} type={"password"}/>
-                    <ValidatedField field={repeatPassword} label={repeatPassword.value === '' ? 'RepeatPassword' : ''}
+                    <ValidatedField field={repeatPassword} label={repeatPassword.value === '' ? 'Repeat Password' : ''}
                                     type={'password'}/>
                     <Button style={{marginTop: 10}} type={"submit"}>Update</Button>
                 </form>
