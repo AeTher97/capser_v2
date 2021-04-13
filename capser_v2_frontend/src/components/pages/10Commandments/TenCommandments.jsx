@@ -33,21 +33,18 @@ const TenCommandments = () => {
         <div >
             <PageHeader title={"10 Commandments"} noSpace/>
             <div style={{display: 'flex',justifyContent: 'center'}}>
-            <div className={classes.paddedContent} style={{maxWidth:800}}>
+            <div style={{maxWidth: 800, flex: 1}}>
 
-                <div className={!xSmall ? classes.root : null}>
-                    <div className={classes.leftOrientedWrapperNoPadding}>
-                        {commandments.map(commandment => {
-                            index++;
-                            return (
-                                <div className={[classes.header,classes.standardBorder].join(' ')} key={commandment.text} style={{marginBottom:5}}>
-                                    <OutlinedNumber value={index}/>
-                                    <Typography
-                                        variant={xSmall ? null : "h5"}>{commandment.text}</Typography>
-                                </div>)
-                        })}
-                    </div>
-                </div>
+                {commandments.map(commandment => {
+                    index++;
+                    return (
+                        <div className={[classes.header, classes.standardBorder].join(' ')} key={commandment.text}
+                             style={{marginBottom: 5}}>
+                            <OutlinedNumber value={index}/>
+                            <Typography
+                                variant={xSmall ? null : "h5"}>{commandment.text}</Typography>
+                        </div>)
+                })}
             </div>
             </div>
         </div>

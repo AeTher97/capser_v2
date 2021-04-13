@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Typography} from "@material-ui/core";
 
 const BoldTypography = (props) => {
     return (
-        <Typography style={{fontWeight: 600, color: props.color}} {...props}>
+        <Typography {...props} style={{fontWeight: 600, ...props.style}}>
             {props.children}
         </Typography>);
 };

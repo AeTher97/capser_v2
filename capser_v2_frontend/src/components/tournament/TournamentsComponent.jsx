@@ -7,11 +7,12 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useTournamentsList} from "../../data/TournamentData";
 import {useHistory} from "react-router-dom";
 import {useHasRole} from "../../utils/SecurityUtils";
-import {getGameTypeString, getRequestGameTypeString} from "../../utils/Utils";
-import {getGameIcon} from "../game/GameComponent";
+import {getRequestGameTypeString} from "../../utils/Utils";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
 import LoadingComponent from "../../utils/LoadingComponent";
+import GameIconWithName from "../../misc/GameIconWithName";
+import BoldTyphography from "../misc/BoldTyphography";
 
 export const getInProgressString = (seeded, finished) => {
     if (seeded && finished) {
@@ -78,30 +79,32 @@ const TournamentsComponent = () => {
                         {tournaments.map(tournament => {
                             return <div key={tournament.id} onClick={() => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
-                            }} className={classes.standardBorder} style={{marginBottom: 10, cursor: "pointer"}}>
-                                <div className={classes.header}>
-                                    <Typography variant={"h6"} color={"primary"} style={{flex: 1}}>
+                            }} className={classes.standardBorder}
+                                        style={{marginBottom: 10, cursor: "pointer", paddingTop: 7}}>
+                                <div className={classes.header} style={{alignItems: "center"}}>
+                                    <BoldTyphography variant={"h5"} color={"primary"} style={{flex: 1}}>
                                         {tournament.tournamentName}
-                                    </Typography>
+                                    </BoldTyphography>
                                     <Typography
-                                        variant={"caption"}>{new Date(tournament.date).toDateString()}</Typography>
+                                        variant={"caption"}>{new Date(tournament.date).toDateString()}
+                                    </Typography>
                                 </div>
-                                <Typography className={classes.header}>
-                                    {getGameIcon(tournament.gameType)} {getGameTypeString(tournament.gameType)}
-                                </Typography>
-                                <Typography>
-                                    {getInProgressString(tournament.seeded, tournament.finished)}
-                                </Typography>
-                                <Typography>
-                                    {getTournamentTypeString(tournament.tournamentType)}
-                                </Typography>
-                                <Typography>
-                                    {getSeedTypeString(tournament.seedType)}
-                                </Typography>
-                                <Typography>
-                                    {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Players
-                                </Typography>
 
+                                <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                                    <GameIconWithName gameType={tournament.gameType}/>
+                                    <Typography variant={"caption"}>
+                                        {getInProgressString(tournament.seeded, tournament.finished)}
+                                    </Typography>
+                                    <Typography variant={"caption"}>
+                                        {getTournamentTypeString(tournament.tournamentType)}
+                                    </Typography>
+                                    <Typography variant={"caption"}>
+                                        {getSeedTypeString(tournament.seedType)}
+                                    </Typography>
+                                    <Typography variant={"caption"}>
+                                        {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Players
+                                    </Typography>
+                                </div>
                             </div>
                         })}
                     </>}
@@ -166,7 +169,7 @@ const TournamentsComponent = () => {
 
 const tournamentListStyles = makeStyles(theme => ({
     column: {
-        maxWidth: 700
+        maxWidth: 600
     }
 }))
 
