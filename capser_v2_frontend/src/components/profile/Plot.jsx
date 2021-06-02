@@ -11,20 +11,37 @@ const Plot = ({width, timeSeries, title}) => {
                 const startDate = new Date(timeSeries.lastLogged);
                 const unwrapped = [];
                 let index = 0;
+                let last = 0;
                 for (let i = cursor + 1; i < 365; i++) {
                     let date = new Date();
                     if (timeSeries.data[i] !== -100000) {
-                        unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i] === -100000 ? null : timeSeries.data[i]]);
+                        if (i === 0) {
+                            unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                        } else {
+                            if (timeSeries.data[i] !== unwrapped[last][1]) {
+                                unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                                last++;
+                            }
+                        }
                     }
                     index++;
                 }
+                last = 0;
                 for (let i = 0; i <= cursor; i++) {
                     let date = new Date();
                     if (timeSeries.data[i] !== -100000) {
-                        unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                        if (i === 0) {
+                            unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                        } else {
+                            if (timeSeries.data[i] !== unwrapped[last][1]) {
+                                unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                                last++;
+                            }
+                        }
                     }
                     index++;
                 }
+                console.log(unwrapped)
                 return unwrapped;
             } else {
                 return [];
