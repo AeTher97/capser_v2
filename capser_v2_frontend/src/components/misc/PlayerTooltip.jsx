@@ -12,6 +12,7 @@ const PlayerTooltip = ({playerId, children, gameType}) => {
     const history = useHistory();
     const {data} = useUserData(playerId);
     return (
+        <>{data &&
         <Tooltip title={<PlayerCard player={data} type={gameType}/>}
                  TransitionComponent={Fade}>
             <div style={{cursor: 'pointer'}} onClick={() => {
@@ -19,7 +20,8 @@ const PlayerTooltip = ({playerId, children, gameType}) => {
             }}>
                 {children}
             </div>
-        </Tooltip>
+        </Tooltip>}
+        </>
     );
 };
 
