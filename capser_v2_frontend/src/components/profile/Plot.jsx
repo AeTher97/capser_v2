@@ -41,6 +41,26 @@ const Plot = ({width, timeSeries, title}) => {
                     }
                     index++;
                 }
+                if (unwrapped.length === 1) {
+                    let date = new Date();
+                    index = 364;
+                    for (let i = cursor; i >= 0; i--) {
+                        if (timeSeries.data[i] !== -1000000) {
+                            unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                            break;
+                        }
+                        index--;
+                    }
+                    if (unwrapped.length === 1) {
+                        for (let i = 364; i >= cursor + 1; i--) {
+                            if (timeSeries.data[i] !== -1000000) {
+                                unwrapped.push([date.setDate(startDate.getDate() - 364 + index), timeSeries.data[i]]);
+                                break;
+                            }
+                        }
+                        index--;
+                    }
+                }
                 console.log(unwrapped)
                 return unwrapped;
             } else {
