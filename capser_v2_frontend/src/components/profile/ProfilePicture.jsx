@@ -54,6 +54,9 @@ const ProfilePicture = ({changePictureOverlayEnabled = false, avatarHash, size =
         case 'tiny':
             baseSize = 30;
             break;
+        case 'micro':
+            baseSize = 10;
+            break;
         default:
             baseSize = 160;
     }

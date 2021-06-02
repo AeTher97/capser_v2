@@ -145,6 +145,7 @@ const TournamentComponent = () => {
 
                     {tournament.seeded && tournament.tournamentType === "SINGLE_ELIMINATION" &&
                     <SingleEliminationLadder isOwner={isOwner()}
+                                             gameType={tournament.gameType}
                                              bracketEntries={tournament.bracketEntries}
                                              lowestRound={tournament.size}
                                              openAddGameDialog={openAddGameDialog}
@@ -153,6 +154,7 @@ const TournamentComponent = () => {
                     />}
                     {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
                     <DoubleEliminationLadder isOwner={isOwner()}
+                                             gameType={tournament.gameType}
                                              bracketEntries={tournament.bracketEntries}
                                              lowestRound={tournament.size}
                                              openAddGameDialog={openAddGameDialog}

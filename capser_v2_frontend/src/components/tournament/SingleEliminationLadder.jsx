@@ -22,7 +22,15 @@ export const getRoString = (round) =>{
     }
 }
 
-const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddGameDialog, openSkipDialog, winner}) => {
+const SingleEliminationLadder = ({
+                                     gameType,
+                                     bracketEntries,
+                                     lowestRound,
+                                     isOwner,
+                                     openAddGameDialog,
+                                     openSkipDialog,
+                                     winner
+                                 }) => {
     const styles = ladderStyles();
 
     const ref = useRef();
@@ -82,6 +90,7 @@ const SingleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                     }}>
                         <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
                                       openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
+                                      gameType={gameType}
                         />
                         {level.type !== lowestRound && <>
                             <BracketPath height={verticalOffsetLevel / 4 }

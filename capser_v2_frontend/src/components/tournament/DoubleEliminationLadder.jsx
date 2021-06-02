@@ -3,7 +3,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Typography} from "@material-ui/core";
 import BracketEntry from "./BracketEntry";
 import BracketPath from "./BracketPath";
-import {getRoString} from "./SingleEliminationLadder";
 
 
 export const getDroString = (round) => {
@@ -33,7 +32,15 @@ function powerOfTwo(x) {
 }
 
 
-const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddGameDialog, openSkipDialog, winner}) => {
+const DoubleEliminationLadder = ({
+                                     gameType,
+                                     bracketEntries,
+                                     lowestRound,
+                                     isOwner,
+                                     openAddGameDialog,
+                                     openSkipDialog,
+                                     winner
+                                 }) => {
     const styles = ladderStyles();
 
     const ref = useRef();
@@ -99,6 +106,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                                       pathElongation={0}
                                                       openAddGameDialog={openAddGameDialog}
                                                       openSkipDialog={openSkipDialog}
+                                                      gameType={gameType}
                                         />
                                         {level.type !== lowestRound &&  <>
                                             <BracketPath height={verticalOffsetLevel / 4}
@@ -148,6 +156,7 @@ const DoubleEliminationLadder = ({bracketEntries, lowestRound, isOwner, openAddG
                                                       pathElongation={100}
                                                       openAddGameDialog={openAddGameDialog}
                                                       openSkipDialog={openSkipDialog}
+                                                      gameType={gameType}
                                         />
                                         {level.type !== lowestRound &&   <>
                                                    { !firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}

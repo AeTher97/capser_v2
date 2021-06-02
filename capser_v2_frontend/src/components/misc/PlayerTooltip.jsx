@@ -1,21 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayerCard from "./PlayerCard";
-import Grow from "@material-ui/core/Grow";
-import {Typography} from "@material-ui/core";
-import TableCell from "@material-ui/core/TableCell";
 import mainStyles from "../../misc/styles/MainStyles";
+import {useUserData} from "../../data/UserData";
+import Fade from "@material-ui/core/Fade";
+import {useHistory} from "react-router-dom";
 
-const PlayerTooltip = ({playerId}) => {
+const PlayerTooltip = ({playerId, children, gameType}) => {
 
     const classes = mainStyles();
+    const history = useHistory();
+    const {data} = useUserData(playerId);
     return (
-        <Tooltip title={<PlayerCard player={player} type={type}/>}
-                 classes={{tooltip: classes.neonTooltip}}
-                 TransitionComponent={Grow}>
-            <div>
-                <Typography color={"primary"}>{player.username}</Typography>
+        <Tooltip title={<PlayerCard player={data} type={gameType}/>}
+                 TransitionComponent={Fade}>
+            <div style={{cursor: 'pointer'}} onClick={() => {
+                history.push(`/players/${playerId}`)
+            }}>
+                {children}
             </div>
         </Tooltip>
     );

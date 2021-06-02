@@ -8,14 +8,16 @@ import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
 import ProfilePicture from "../../profile/ProfilePicture";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import {getGameIcon} from "../../game/GameComponent";
+import PlayerTooltip from "../../misc/PlayerTooltip";
 
 
-const PlayerSplash = ({avatarHash, username}) => {
+const PlayerSplash = ({avatarHash, username, gameType, playerId}) => {
     return (
         <div style={{margin: 40, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <ProfilePicture size={'large'} avatarHash={avatarHash}/>
-            <Typography style={{marginTop: 10}} variant={"h5"}>{username}</Typography>
-
+            <PlayerTooltip gameType={gameType} playerId={playerId}>
+                <Typography style={{marginTop: 10}} variant={"h5"}>{username}</Typography>
+            </PlayerTooltip>
         </div>
     )
 }
@@ -79,10 +81,12 @@ const SinglesGame = () => {
                             <div className={classes.header}
                                  style={{justifyContent: 'center', flexDirection: small ? 'column' : 'row'}}>
                                 <PlayerSplash avatarHash={game.player1Data.avatarHash} username={game.player1Name}
-                                              winner={game.winner === game.player1}/>
+                                              winner={game.winner === game.player1} playerId={game.player1}
+                                              gameType={game.gameType}/>
                                 <Typography variant={"h3"}>VS</Typography>
                                 <PlayerSplash avatarHash={game.player2Data.avatarHash} username={game.player2Name}
-                                              winner={game.winner === game.player2}/>
+                                              winner={game.winner === game.player2} playerId={game.player2}
+                                              gameType={game.gameType}/>
                                 />
                             </div>
                             <div className={classes.standardBorder}>

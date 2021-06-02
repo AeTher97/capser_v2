@@ -61,7 +61,6 @@ const Plot = ({width, timeSeries, title}) => {
                         index--;
                     }
                 }
-                console.log(unwrapped)
                 return unwrapped;
             } else {
                 return [];
