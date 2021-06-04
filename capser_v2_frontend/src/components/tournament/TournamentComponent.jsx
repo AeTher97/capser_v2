@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import AddSinglesGameComponent from "../pages/singles/AddSinglesGameComponent";
 import {getInProgressString, getSeedTypeString, getTournamentTypeString} from "./TournamentsComponent";
 import BoldTyphography from "../misc/BoldTyphography";
-import TournamentsPlayers from "./TournamentsPlayers";
+import TournamentsCompetitors from "./TournamentsCompetitors";
 import YesNoDialog from "../misc/YesNoDialog";
 import {useHasRole} from "../../utils/SecurityUtils";
 import {getGameIcon} from "../game/GameComponent";
@@ -45,26 +45,31 @@ const TournamentComponent = () => {
             return tournament.owner === userId && hasRole('ADMIN');
         }
 
-        const [players, setPlayers] = useState();
+        const [competitors, setCompetitors] = useState();
         useEffect(() => {
             if (tournament) {
-                setPlayers(tournament.players.map(player => player.user));
+                if(tournament.gameType === 'DOUBLES'){
+                    setCompetitors(tournament.teams.map(teams => teams.team));
+                } else {
+                    setCompetitors(tournament.players.map(player => player.user));
+                }
             }
         }, [tournament]);
 
-        const addPlayer = (obj) => {
-            const copy = players.slice();
-            if (players.find(player => player.id === obj.id)) {
+        const addCompetitor = (obj) => {
+            console.log(obj)
+            const copy = competitors.slice();
+            if (competitors.find(player => player.id === obj.id)) {
                 return;
             }
             copy.push(obj);
             setEdited(true);
-            setPlayers(copy);
+            setCompetitors(copy);
         }
 
-        const removePlayer = (obj) => {
-            const copy = players.slice();
-            setPlayers(copy.filter(player => player.id !== obj));
+        const removeCompetitor = (obj) => {
+            const copy = competitors.slice();
+            setCompetitors(copy.filter(player => player.id !== obj));
             setEdited(true);
         }
 
@@ -130,14 +135,15 @@ const TournamentComponent = () => {
 
                         <div style={{borderTop: `1px solid ${theme.palette.divider}`, padding: 0, flex: 1, minWidth: 300}}
                              className={classes.standardBorder}>
-                            {players && <TournamentsPlayers players={players} addPlayer={addPlayer}
-                                                            savePlayers={(ids) => {
+                            {competitors && <TournamentsCompetitors players={competitors} addPlayer={addCompetitor}
+                                                                    savePlayers={(ids) => {
                                                                 savePlayers(ids)
                                                                 setEdited(false);
                                                             }}
-                                                            removePlayer={removePlayer}
-                                                            adding={!tournament.seeded && isOwner()}
-                                                            max={parseInt(tournament.size.split("_")[1])}
+                                                                    teams={tournament.gameType ==='DOUBLES'}
+                                                                    removePlayer={removeCompetitor}
+                                                                    adding={!tournament.seeded && isOwner()}
+                                                                    max={parseInt(tournament.size.split("_")[1])}
                             />}
 
                         </div>

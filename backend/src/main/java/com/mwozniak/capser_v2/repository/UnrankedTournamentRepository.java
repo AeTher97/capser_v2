@@ -1,7 +1,6 @@
 package com.mwozniak.capser_v2.repository;
 
-import com.mwozniak.capser_v2.models.database.tournament.SinglesTournament;
-import com.mwozniak.capser_v2.models.database.tournament.UnrankedTournament;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedTournament;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

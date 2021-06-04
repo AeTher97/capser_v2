@@ -71,6 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/api/singles/tournaments/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/easy/tournaments/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/unranked/tournaments/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/doubles/tournaments/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/tournaments").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/users/resetPassword").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/users/updatePassword").permitAll()

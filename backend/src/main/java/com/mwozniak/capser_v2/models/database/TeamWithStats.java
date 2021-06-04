@@ -1,7 +1,5 @@
 package com.mwozniak.capser_v2.models.database;
 
-import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
-import com.mwozniak.capser_v2.models.database.game.multiple.Team;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TeamWithStats {
+public class TeamWithStats implements Competitor{
 
 
     @Id

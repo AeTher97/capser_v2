@@ -18,7 +18,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Table(name = "users")
-public class User {
+public class User implements Competitor{
 
     @Id
     @GeneratedValue(generator = "UUID")

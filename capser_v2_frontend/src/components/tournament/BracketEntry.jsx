@@ -18,7 +18,7 @@ const BracketEntry = ({
                           openAddGameDialog,
                           openSkipDialog,
                           pathElongation = 0
-                      }) => {
+}) => {
         const entryStyle = entryStyles();
         const theme = useTheme();
         const classes = mainStyles();

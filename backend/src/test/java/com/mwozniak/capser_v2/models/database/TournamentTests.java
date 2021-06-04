@@ -4,10 +4,10 @@ import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
-import com.mwozniak.capser_v2.models.database.tournament.EasyCapsBracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.EasyCapsTournament;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
+import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsBracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsTournament;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

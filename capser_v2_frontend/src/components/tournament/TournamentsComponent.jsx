@@ -77,6 +77,7 @@ const TournamentsComponent = () => {
                     {loading && <LoadingComponent/>}
                     {tournaments && <>
                         {tournaments.map(tournament => {
+                            const multiplier = tournament.gameType === 'DOUBLES' ? 2:1;
                             return <div key={tournament.id} onClick={() => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
                             }} className={classes.standardBorder}
@@ -102,7 +103,7 @@ const TournamentsComponent = () => {
                                         {getSeedTypeString(tournament.seedType)}
                                     </Typography>
                                     <Typography variant={"caption"}>
-                                        {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Players
+                                        {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2]*multiplier : tournament.size.split("_")[1]*multiplier} Players {multiplier === 2 && <>{ tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Teams</>}
                                     </Typography>
                                 </div>
                             </div>

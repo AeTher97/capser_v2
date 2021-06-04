@@ -1,15 +1,16 @@
-package com.mwozniak.capser_v2.models.database.tournament;
+package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
-import lombok.*;
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,7 @@ public class SinglesTournament extends AbstractSinglesTournament<SinglesGame> {
     }
 
     @Override
-    protected void setBracketEntries(List<AbstractSinglesBracketEntry> entries) {
+    protected void setBracketEntries(List<BracketEntry> entries) {
         bracketEntries = (List<SinglesBracketEntry>) (List<?>) entries;
     }
 

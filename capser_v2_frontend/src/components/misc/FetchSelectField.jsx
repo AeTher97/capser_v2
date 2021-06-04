@@ -90,6 +90,7 @@ const FetchSelectField = ({
             setSearching(true)
             timeout = setTimeout(() => {
                 searchPhrase(phrase).then((response => {
+                    console.log(response)
                     if (!searchYourself) {
                         setSearchResult(response.data.content.filter(obj => obj.id !== userId))
                     } else {
