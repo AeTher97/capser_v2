@@ -31,7 +31,7 @@ const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, 
                     marginRight: 10,
                     flex: 1
                 }}>{players.length} {teams ? 'Teams' : 'Players'} < /Typography>
-                {adding && <FetchSelectField label={"Select Player"} onChange={(value) => {
+                {adding && <FetchSelectField label={teams ? "Select Team" :"Select Player"} onChange={(value) => {
                     if (playersIds.length === max) {
                         dispatch(showError("Too many players"))
                         return;

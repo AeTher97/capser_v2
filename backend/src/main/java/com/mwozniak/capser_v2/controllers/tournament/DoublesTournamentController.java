@@ -6,6 +6,7 @@ import com.mwozniak.capser_v2.models.dto.SkipDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
+import com.mwozniak.capser_v2.models.exception.UpdatePlayersException;
 import com.mwozniak.capser_v2.service.tournament.DoublesTournamentService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +30,7 @@ public class DoublesTournamentController  extends AbstractTournamentController<D
 
     @PostMapping("/{tournamentId}/players")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public DoublesTournament addUser(@PathVariable UUID tournamentId, @RequestBody List<UUID> teams) throws TeamNotFoundException, TournamentNotFoundException {
+    public DoublesTournament addUser(@PathVariable UUID tournamentId, @RequestBody List<UUID> teams) throws TeamNotFoundException, TournamentNotFoundException, UpdatePlayersException {
         log.info("Adding users to tournament " + tournamentId.toString());
         return doublesTournamentService.addTeams(tournamentId, teams);
     }

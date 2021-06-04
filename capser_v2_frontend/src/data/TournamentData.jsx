@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {showError} from "../redux/actions/alertActions";
 
 export const useTournamentsList = (type, pageNumber = 0, pageSize = 10) => {
     const {accessToken} = useSelector(state => state.auth);
@@ -66,6 +67,7 @@ export const useTournamentData = (type, tournamentId) => {
     const [tournament, setTournament] = useState(null);
     const {accessToken} = useSelector(state => state.auth);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let shouldUpdate = true;
@@ -145,6 +147,7 @@ export const useTournamentData = (type, tournamentId) => {
             setTournament(response.data);
         }).catch(e => {
             console.log(e.message)
+            dispatch(showError(e.response.data.error))
         }).finally(() => {
             if (shouldUpdate) {
                 setLoading(false);

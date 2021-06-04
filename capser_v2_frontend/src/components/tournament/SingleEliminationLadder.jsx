@@ -4,8 +4,8 @@ import BracketEntry from "./BracketEntry";
 import BracketPath from "./BracketPath";
 import {Typography} from "@material-ui/core";
 
-export const getRoString = (round) =>{
-    switch (round){
+export const getRoString = (round) => {
+    switch (round) {
         case "RO_64":
             return "Ro 64"
         case "RO_32":
@@ -29,7 +29,8 @@ const SingleEliminationLadder = ({
                                      isOwner,
                                      openAddGameDialog,
                                      openSkipDialog,
-                                     winner
+                                     winner,
+                                     teams
                                  }) => {
     const styles = ladderStyles();
 
@@ -56,8 +57,8 @@ const SingleEliminationLadder = ({
     })
 
     levels.forEach(level => {
-        level.entries.sort((a,b) => {
-            return a.coordinate-b.coordinate
+        level.entries.sort((a, b) => {
+            return a.coordinate - b.coordinate
         })
     })
 
@@ -70,56 +71,60 @@ const SingleEliminationLadder = ({
 
     return (
         <>
-        <div className={[styles.container].join(' ')} ref={ref}>
-            {levels.map(level => {
-                const value = (
-                    <div key={level.type}>
-                        <div style={{
-                            position: "absolute",
-                            top: -60 + additionalVerticalOffset,
-                            left: currentHorizontalOffset
-                        }}>
-                            <Typography variant={"h5"} color={"textSecondary"} noWrap>
-                                {getRoString(level.type)}
-                            </Typography>
-                        </div>
-                        {level.entries.map((entry) => {
-                    const value = (<div key={entry.id} className={styles.entry} style={{
-                        top: verticalOffsetLevel * currentVertical + additionalVerticalOffset,
-                        left: currentHorizontalOffset
-                    }}>
-                        <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
-                                      openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
-                                      gameType={gameType}
-                        />
-                        {level.type !== lowestRound && <>
-                            <BracketPath height={verticalOffsetLevel / 4 }
-                                                                      width={100} left={-100}
-                                                                      top={-verticalOffsetLevel / 4 + 35}
-                                                                      pathType={"top"}/>
-                            <BracketPath height={verticalOffsetLevel / 4 }
-                                         width={100} left={-100}
-                                         top={35}
-                                         pathType={"bottom"}
-                            /></>}
-                    </div>)
-                    currentVertical += 1;
+            <div className={[styles.container].join(' ')} ref={ref}>
+                {levels.map(level => {
+                    const value = (
+                        <div key={level.type}>
+                            <div style={{
+                                position: "absolute",
+                                top: -60 + additionalVerticalOffset,
+                                left: currentHorizontalOffset
+                            }}>
+                                <Typography variant={"h5"} color={"textSecondary"} noWrap>
+                                    {getRoString(level.type)}
+                                </Typography>
+                            </div>
+                            {level.entries.map((entry) => {
+                                const value = (<div key={entry.id} className={styles.entry} style={{
+                                    top: verticalOffsetLevel * currentVertical + additionalVerticalOffset,
+                                    left: currentHorizontalOffset
+                                }}>
+                                    <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
+                                                  openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
+                                                  gameType={gameType} teams={teams}
+                                    />
+                                    {level.type !== lowestRound && <>
+                                        <BracketPath height={verticalOffsetLevel / 4}
+                                                     width={100} left={-100}
+                                                     top={-verticalOffsetLevel / 4 + 35}
+                                                     pathType={"top"}/>
+                                        <BracketPath height={verticalOffsetLevel / 4}
+                                                     width={100} left={-100}
+                                                     top={35}
+                                                     pathType={"bottom"}
+                                        /></>}
+                                </div>)
+                                currentVertical += 1;
+                                return value;
+                            })
+                            }</div>)
+                    currentVertical = 0;
+                    currentHorizontalOffset += horizontalOffsetLevel;
+                    additionalVerticalOffset += verticalOffsetLevel / 2;
+                    verticalOffsetLevel *= 2;
                     return value;
-                })
-                }</div>)
-                currentVertical = 0;
-                currentHorizontalOffset += horizontalOffsetLevel;
-                additionalVerticalOffset += verticalOffsetLevel / 2;
-                verticalOffsetLevel *= 2;
-                return value;
 
-            })}
-            <div className={styles.entry} style={{top: verticalOffsetLevel * currentVertical + additionalVerticalOffset - verticalOffsetLevel/2/2+20,left: currentHorizontalOffset-90}}>
-                <Typography variant={"h5"}>Winner</Typography>
-                <Typography variant={"h5"}>{winner ? winner.user.username : "TBD"}</Typography>
+                })}
+                <div className={styles.entry} style={{
+                    top: verticalOffsetLevel * currentVertical + additionalVerticalOffset - verticalOffsetLevel / 2 / 2 + 20,
+                    left: currentHorizontalOffset - 90
+                }}>
+                    <Typography variant={"h5"}>Winner</Typography>
+                    <Typography variant={"h5"}>{winner ? teams ? winner.team.name : winner.user.username : "TBD"}</Typography>
+                </div>
             </div>
-        </div>
-            <div style={{height: levels.slice().sort((a,b)=> a.entries.length - b.entries.length)[0].entries.length /2 *verticalOffsetLevel}}/>
+            <div
+                style={{height: levels.slice().sort((a, b) => a.entries.length - b.entries.length)[0].entries.length / 2 * verticalOffsetLevel}}/>
         </>
     );
 };

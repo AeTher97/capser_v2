@@ -14,6 +14,7 @@ import {useHasRole} from "../../utils/SecurityUtils";
 import {getGameIcon} from "../game/GameComponent";
 import {getGameTypeString} from "../../utils/Utils";
 import DoubleEliminationLadder from "./DoubleEliminationLadder";
+import AddDoublesGameComponent from "../pages/doubles/AddDoublesGameComponent";
 
 const TournamentComponent = () => {
 
@@ -37,7 +38,6 @@ const TournamentComponent = () => {
         const theme = useTheme();
         const history = useHistory();
         const hasRole = useHasRole();
-        const {roles} = useSelector(state => state.auth)
         const [forfeitingPlayer, setForfeitingPlayer] = useState("e");
 
 
@@ -57,7 +57,6 @@ const TournamentComponent = () => {
         }, [tournament]);
 
         const addCompetitor = (obj) => {
-            console.log(obj)
             const copy = competitors.slice();
             if (competitors.find(player => player.id === obj.id)) {
                 return;
@@ -100,6 +99,15 @@ const TournamentComponent = () => {
             setAddGameOpen(false);
         }
 
+        const handleSaveDoubles = (request) =>{
+            console.log(request);
+            postTournamentGame(overrides.id, request);
+            setAddGameOpen(false);
+        }
+
+        const teams = tournament && tournament.gameType ==='DOUBLES';
+        const playerMultiplier = teams ? 2 : 1;
+
         return (
             <>
                 {tournament && <div style={{height: '500vh'}}>
@@ -113,7 +121,8 @@ const TournamentComponent = () => {
                                 </div>
                                 <BoldTyphography
                                     className={classes.header}>{getGameIcon(tournament.gameType)} {getGameTypeString(tournament.gameType)}</BoldTyphography>
-                                <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} players</BoldTyphography>
+                                <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? playerMultiplier * tournament.size.split("_")[2] : playerMultiplier * tournament.size.split("_")[1]} players</BoldTyphography>
+                                {teams && <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ?  tournament.size.split("_")[2] :  tournament.size.split("_")[1]} teams</BoldTyphography>}
                                 <BoldTyphography>{getTournamentTypeString(tournament.tournamentType)} tournament</BoldTyphography>
                                 <Typography>{getSeedTypeString(tournament.seedType)}</Typography>
                                 <Typography>{getInProgressString(tournament.seeded, tournament.finished)}</Typography>
@@ -140,7 +149,7 @@ const TournamentComponent = () => {
                                                                 savePlayers(ids)
                                                                 setEdited(false);
                                                             }}
-                                                                    teams={tournament.gameType ==='DOUBLES'}
+                                                                    teams={teams}
                                                                     removePlayer={removeCompetitor}
                                                                     adding={!tournament.seeded && isOwner()}
                                                                     max={parseInt(tournament.size.split("_")[1])}
@@ -157,6 +166,7 @@ const TournamentComponent = () => {
                                              openAddGameDialog={openAddGameDialog}
                                              winner={tournament.winner}
                                              openSkipDialog={openSkipDialog}
+                                             teams={teams}
                     />}
                     {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
                     <DoubleEliminationLadder isOwner={isOwner()}
@@ -166,19 +176,32 @@ const TournamentComponent = () => {
                                              openAddGameDialog={openAddGameDialog}
                                              winner={tournament.winner}
                                              openSkipDialog={openSkipDialog}
+                                             teams={teams}
                     />}
                     {overrides.player1 && <Dialog open={addGameOpen}>
                         <div className={classes.standardBorder}
                              style={{margin: 0, maxWidth: 250, paddingLeft: 50, paddingRight: 50}}>
-                            <AddSinglesGameComponent type={"singles"} showBorder={false} displayGameDataSection={false}
-                                                     choosePlayers={false}
-                                                     onCancel={() => {
-                                                         setAddGameOpen(false)
-                                                     }}
-                                                     overridePlayer1Name={overrides.player1.username}
-                                                     overridePlayer2Name={overrides.player2.username}
-                                                     handleSaveExternal={handleSave}
-                            />
+                            {!teams && <AddSinglesGameComponent type={"singles"} showBorder={false} displayGameDataSection={false}
+                                                      choosePlayers={false}
+                                                      onCancel={() => {
+                                                          setAddGameOpen(false)
+                                                      }}
+                                                      overridePlayer1Name={overrides.player1.username}
+                                                      overridePlayer2Name={overrides.player2.username}
+                                                      handleSaveExternal={handleSave}
+                            />}
+                            {teams && <AddDoublesGameComponent
+                                showBorder={false}
+                                chooseTeams={false}
+                                onCancel={() => {
+                                    setAddGameOpen(false)
+                                }}
+                                externalSave={handleSaveDoubles}
+                                overrideTeam1Name={overrides.player1.name}
+                                overrideTeam2Name={overrides.player2.name}
+                                team1={overrides.player1}
+                                team2={overrides.player2}
+                            />}
                         </div>
                     </Dialog>}
 
@@ -190,8 +213,9 @@ const TournamentComponent = () => {
                                 <Select value={forfeitingPlayer} onChange={e => setForfeitingPlayer(e.target.value)}
                                         style={{width: 150}}>
                                     <MenuItem value={"e"} disabled>Choose</MenuItem>
-                                    <MenuItem value={overrides.player1.id}>{overrides.player1.username}</MenuItem>
-                                    <MenuItem value={overrides.player2.id}>{overrides.player2.username}</MenuItem>
+                                     <MenuItem value={overrides.player1.id}>{teams ? overrides.player1.name : overrides.player1.username}</MenuItem>
+                                    <MenuItem value={overrides.player2.id}>{teams ? overrides.player2.name : overrides.player2.username}</MenuItem>
+
                                 </Select>
                             </div>
 
@@ -221,8 +245,7 @@ const TournamentComponent = () => {
                                  question={"Are you sure you want to DELETE the tournament?"}/>
                 </div>}
             </>
-        );
-    }
+        );}
 ;
 
 export default TournamentComponent;

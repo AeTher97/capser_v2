@@ -11,6 +11,7 @@ import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
+import com.mwozniak.capser_v2.models.exception.UpdatePlayersException;
 import com.mwozniak.capser_v2.repository.DoublesTournamentRepository;
 import com.mwozniak.capser_v2.service.DoublesService;
 import com.mwozniak.capser_v2.service.TeamService;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Log4j
 @Service
@@ -40,7 +42,7 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
     }
 
     @Transactional
-    public DoublesTournament addTeams(UUID id, List<UUID> teams)throws TeamNotFoundException, TournamentNotFoundException {
+    public DoublesTournament addTeams(UUID id, List<UUID> teams) throws TeamNotFoundException, UpdatePlayersException,TournamentNotFoundException {
         List<TeamBridge> teamObjects = new ArrayList<>();
         List<TeamNotFoundException> errors = new ArrayList<>();
         teams.stream().distinct().forEach(uuid -> {
@@ -52,6 +54,23 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         });
         if (errors.size() > 0) {
             throw errors.get(0);
+        }
+
+        List<UUID> playerIds = new ArrayList<>();
+        AtomicBoolean error = new AtomicBoolean(false);
+        teamObjects.forEach(teamBridge -> {
+            teamBridge.getTeam().getPlayerList().forEach(uuid -> {
+                        if (playerIds.contains(uuid)) {
+                            error.set(true);
+                        } else {
+                            playerIds.add(uuid);
+                        }
+                    }
+            );
+        });
+
+        if (error.get()) {
+            throw new UpdatePlayersException("Cannot add team containing player that is already in the tournament");
         }
 
         DoublesTournament tournament = getTournament(id);
@@ -83,14 +102,14 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
     @Override
     public DoublesTournament getTournament(UUID id) throws TournamentNotFoundException {
         Optional<DoublesTournament> doublesTournamentOptional = doublesTournamentRepository.findDoublesTournamentById(id);
-        if(doublesTournamentOptional.isPresent()){
+        if (doublesTournamentOptional.isPresent()) {
             return doublesTournamentOptional.get();
         } else {
             throw new TournamentNotFoundException();
         }
     }
 
-    protected DoublesBracketEntry getBracketEntry(UUID tournamentId, UUID entryId) throws TournamentNotFoundException{
+    protected DoublesBracketEntry getBracketEntry(UUID tournamentId, UUID entryId) throws TournamentNotFoundException {
         DoublesTournament tournament = getTournament(tournamentId);
         Optional<? extends BracketEntry> singlesBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!singlesBracketEntryOptional.isPresent()) {
@@ -99,19 +118,19 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         return (DoublesBracketEntry) singlesBracketEntryOptional.get();
     }
 
-    protected DoublesBracketEntry saveBracketEntry(UUID tournamentId, UUID entryId, DoublesBracketEntry newEntry) throws TournamentNotFoundException{
+    protected DoublesBracketEntry saveBracketEntry(UUID tournamentId, UUID entryId, DoublesBracketEntry newEntry) throws TournamentNotFoundException {
         DoublesTournament tournament = getTournament(tournamentId);
         Optional<? extends BracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!easyCapsBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }
-        DoublesBracketEntry entry =(DoublesBracketEntry) easyCapsBracketEntryOptional.get();
+        DoublesBracketEntry entry = (DoublesBracketEntry) easyCapsBracketEntryOptional.get();
         BeanUtils.copyProperties(newEntry, entry);
         doublesTournamentRepository.save(tournament);
         return entry;
     }
 
-    public  DoublesTournament postGame(UUID tournamentId, UUID entryId, MultipleGameDto multipleGameDto) throws CapserException{
+    public DoublesTournament postGame(UUID tournamentId, UUID entryId, MultipleGameDto multipleGameDto) throws CapserException {
         DoublesTournament tournament = getTournament(tournamentId);
         Optional<? extends BracketEntry> singlesBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!singlesBracketEntryOptional.isPresent()) {
@@ -130,7 +149,7 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         return doublesTournamentRepository.save(tournament);
     }
 
-    private DoublesGame createGameObject(){
+    private DoublesGame createGameObject() {
         return new DoublesGame();
     }
 

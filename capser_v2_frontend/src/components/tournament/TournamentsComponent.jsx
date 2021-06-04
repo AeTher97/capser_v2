@@ -133,6 +133,7 @@ const TournamentsComponent = () => {
                             <MenuItem value={"SINGLES"}>Singles</MenuItem>
                             <MenuItem value={"EASY_CAPS"}>Easy caps</MenuItem>
                             <MenuItem value={"UNRANKED"}>Unranked</MenuItem>
+                            <MenuItem value={"DOUBLES"}>Doubles</MenuItem>
                         </Select>
                         <Select style={{width: 200, marginBottom: 10}} value={tournamentType}
                                 onChange={event => {

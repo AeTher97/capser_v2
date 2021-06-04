@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import mainStyles from "../../../misc/styles/MainStyles";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -11,7 +11,16 @@ import {useMultipleGamePost} from "../../../data/MultipleGamesData";
 import {usePlayerTeams} from "../../../data/TeamsData";
 import {fetchUsername} from "../../../data/UsersFetch";
 
-const AddDoublesGameComponent = props => {
+const AddDoublesGameComponent = ({
+                                     showBorder,
+                                     externalSave,
+                                     team1,
+                                     team2,
+                                     overrideTeam1Name,
+                                     overrideTeam2Name,
+                                     chooseTeams,
+                                     onCancel
+                                 }) => {
     const classes = mainStyles()
     const [gameMode, setGameMode] = useState("SUDDEN_DEATH");
     const {postGame} = useMultipleGamePost("DOUBLES");
@@ -21,7 +30,7 @@ const AddDoublesGameComponent = props => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const {teams, loading} = usePlayerTeams(userId);
+    const {teams, loading} = usePlayerTeams(externalSave ? null : userId);
 
 
     const [teamScore, setTeamScore] = useState(0);
@@ -42,6 +51,15 @@ const AddDoublesGameComponent = props => {
         }
     }
 
+    useEffect(() => {
+        console.log(team1,team2)
+        if (team1 && team2) {
+            handleTeamChange({target: {value: team1}})
+            handleOpponentTeamChange(team2)
+            updateUsernames([...team1.playerList, ...team2.playerList])
+        }
+    }, [externalSave, team1, team2])
+
 
     const handleChange = (e) => {
         setGameMode(e.target.value);
@@ -54,15 +72,28 @@ const AddDoublesGameComponent = props => {
         })
     }
     const handleTeamChange = (e) => {
-        setTeam(e.target.value);
-        updateUsernames(teams.find(team => team.id === e.target.value).playerList);
-        setTeamStats(teams.find(team => team.id === e.target.value).playerList.map(player => {
-            return {
-                playerId: player,
-                score: 0,
-                sinks: 0
-            }
-        }))
+        if(externalSave){
+            setTeam(e.target.value.id);
+            updateUsernames(e.target.value.playerList);
+            setTeamStats(e.target.value.playerList.map(player => {
+                return {
+                    playerId: player,
+                    score: 0,
+                    sinks: 0
+                }
+            }))
+        } else {
+            setTeam(e.target.value);
+            updateUsernames(teams.find(team => team.id === e.target.value).playerList);
+            setTeamStats(teams.find(team => team.id === e.target.value).playerList.map(player => {
+                return {
+                    playerId: player,
+                    score: 0,
+                    sinks: 0
+                }
+            }))
+        }
+
     }
 
     if (teams.length > 0 && team === null) {
@@ -101,14 +132,20 @@ const AddDoublesGameComponent = props => {
             gameMode: gameMode,
             team1Score: teamScore,
             team2Score: opposingTeamScore,
-            team1: team,
+            team1: externalSave ? team1.id : team,
             team2: opposingTeam.id,
-            team1Players: teams.find(o => o.id === team).playerList,
+            team1Players: externalSave ? team1.playerList : teams.find(o => o.id === team).playerList,
             team2Players: opposingTeam.playerList,
             playerStatsDtos: opposingTeamStats.concat(teamStats),
             gameEventList: []
         }
         console.log(request)
+
+        if(externalSave){
+            externalSave(request);
+            return;
+        }
+
         postGame(request).then(() => {
             console.log("posted")
             dispatch(showSuccess("Game posted"))
@@ -159,7 +196,7 @@ const AddDoublesGameComponent = props => {
 
                 <div style={{padding: 8}}>
                     <div
-                        className={[classes.column, classes.standardBorder].join(' ')}>
+                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
                         <Typography variant={"h5"}>Game Data</Typography>
                         <Divider/>
                         <div className={classes.margin}>
@@ -171,10 +208,10 @@ const AddDoublesGameComponent = props => {
                         </div>
                     </div>
                     <div
-                        className={[classes.column, classes.standardBorder].join(' ')}>
-                        <Typography variant={"h5"}>Player Team Data</Typography>
+                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                        <Typography variant={"h5"}>{!externalSave ? 'Player Team Data' : overrideTeam1Name}</Typography>
                         <div className={classes.margin}>
-                            {teams.length === 0 &&
+                            {teams.length === 0 && !externalSave &&
                             <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams
                                 page</Typography>}
                             {teams.length > 0 &&
@@ -218,15 +255,15 @@ const AddDoublesGameComponent = props => {
                     </div>
 
                     <div
-                        className={[classes.column, classes.standardBorder].join(' ')}>
-                        <Typography variant={"h5"}>Opponent Team Data</Typography>
+                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                        <Typography variant={"h5"}>{!externalSave ? 'Opponent Team Data' : overrideTeam2Name}</Typography>
 
-                        <div className={classes.margin}>
+                        {!externalSave && <div className={classes.margin}>
                             <FetchSelectField label={"Select Opposing Team"}
                                               onChange={handleOpponentTeamChange}
                                               url={"/teams/search"}
                                               nameParameter={"name"}/>
-                        </div>
+                        </div>}
 
                         <div className={classes.margin}>
                             <Typography>Points</Typography>
@@ -266,10 +303,10 @@ const AddDoublesGameComponent = props => {
                 </div>
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: 0}}>
                     <Button onClick={handleSave}>Add a game</Button>
+                    {onCancel &&
+                    <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
                 </div>
-                <div style={{height: 100}}/>
             </div>
-            <div style={{height: 50}}/>
 
         </div>
     );
