@@ -7,21 +7,19 @@ import PlayerCard from "./PlayerCard";
 import Fade from "@material-ui/core/Fade";
 import {useTeamData} from "../../data/TeamsData";
 import TeamCard from "./TeamCard";
+import TeamCardWrapper from "./TeamCardWrapper";
 
 const TeamTooltip = ({teamId,children}) => {
     const history = useHistory();
-    const {team} = useTeamData(teamId);
     return (
-        <>{team &&
-        <Tooltip title={<TeamCard team={team}/>}
+        <Tooltip title={<TeamCardWrapper teamId={teamId}/>}
                  TransitionComponent={Fade}>
             <div style={{cursor: 'pointer'}} onClick={() => {
                 // history.push(`/teams/${id}`)
             }}>
                 {children}
             </div>
-        </Tooltip>}
-        </>
+        </Tooltip>
     );
 };
 

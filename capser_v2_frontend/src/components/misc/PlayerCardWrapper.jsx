@@ -7,7 +7,9 @@ const PlayerCardWrapper = ({type,playerId}) => {
     const {data} = useUserData(playerId);
 
     return (
-        <PlayerCard player={data} type={type}/>
+        <>
+            {data && <PlayerCard player={data} type={type}/>}
+        </>
     );
 };
 
