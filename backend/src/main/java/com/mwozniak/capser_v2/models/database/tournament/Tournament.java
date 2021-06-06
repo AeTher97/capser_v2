@@ -4,11 +4,10 @@ import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
-import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -93,5 +92,10 @@ public abstract class Tournament<T extends AbstractGame> {
     public abstract List<? extends BracketEntry> getBracketEntries();
 
     public abstract List<UserBridge> getPlayers();
+
+
+    protected abstract void setBracketEntries(List<BracketEntry> entries);
+
+    protected abstract BracketEntry createBracketEntry();
 
 }

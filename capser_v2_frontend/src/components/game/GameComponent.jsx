@@ -110,9 +110,7 @@ const GameComponent = ({game, vertical = true}) => {
             ref={containerDiv}
             onMouseUp={() => {
                 if (!small) {
-                    if (game.gameType !== 'DOUBLES') {
                         history.push(`/${getRequestGameTypeString(game.gameType)}/${game.id}`)
-                    }
                 } else {
                     setExpanded(!expanded);
 
@@ -211,9 +209,7 @@ const GameComponent = ({game, vertical = true}) => {
                     </div>
                     {small && <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
                         <Link onClick={() => {
-                            if (game.gameType !== 'DOUBLES') {
                                 history.push(`/${getRequestGameTypeString(game.gameType)}/${game.id}`)
-                            }
                         }}>Details</Link>
                     </div>}
                 </div>

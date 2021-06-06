@@ -39,7 +39,8 @@ const DoubleEliminationLadder = ({
                                      isOwner,
                                      openAddGameDialog,
                                      openSkipDialog,
-                                     winner
+                                     winner,
+                                     teams
                                  }) => {
     const styles = ladderStyles();
 
@@ -102,25 +103,31 @@ const DoubleEliminationLadder = ({
                                         top: verticalOffsetLevel * currentVertical + additionalVerticalOffset,
                                         left: currentHorizontalOffset
                                     }}>
-                                        <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={level.type !== "D_RO_1"}
+                                        <BracketEntry isOwner={isOwner} bracketEntry={entry}
+                                                      showPath={level.type !== "D_RO_1"}
                                                       pathElongation={0}
                                                       openAddGameDialog={openAddGameDialog}
                                                       openSkipDialog={openSkipDialog}
                                                       gameType={gameType}
+                                                      teams={teams}
                                         />
-                                        {level.type !== lowestRound &&  <>
+                                        {level.type !== lowestRound && <>
                                             <BracketPath height={verticalOffsetLevel / 4}
-                                                         width={level.type === "D_RO_1" ? 50 : 300} left={level.type === "D_RO_1" ? -50 :-300}
+                                                         width={level.type === "D_RO_1" ? 50 : 300}
+                                                         left={level.type === "D_RO_1" ? -50 : -300}
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>
-                                            { level.type !== 'D_RO_1' && currentVertical>parseInt(level.type.split("_")[2])/2-1 && <BracketPath height={verticalOffsetLevel / 4}
+                                            {level.type !== 'D_RO_1' && currentVertical > parseInt(level.type.split("_")[2]) / 2 - 1 &&
+                                            <BracketPath height={verticalOffsetLevel / 4}
                                                          width={50} left={-50}
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>}
-                                            { currentVertical<parseInt(level.type.split("_")[2])/2 && <BracketPath height={verticalOffsetLevel / 4}
-                                                          width={level.type === "D_RO_1" ? 50 : 300} left={level.type === "D_RO_1" ? -50 :-300}
-                                                          top={35}
-                                                          pathType={"bottom"}
+                                            {currentVertical < parseInt(level.type.split("_")[2]) / 2 &&
+                                            <BracketPath height={verticalOffsetLevel / 4}
+                                                         width={level.type === "D_RO_1" ? 50 : 300}
+                                                         left={level.type === "D_RO_1" ? -50 : -300}
+                                                         top={35}
+                                                         pathType={"bottom"}
                                             />}</>}
                                     </div>)
                                     currentVertical += 1;
@@ -135,7 +142,7 @@ const DoubleEliminationLadder = ({
                         verticalOffsetLevel *= 2;
                         return value;
                     } else {
-                        currentVertical = parseInt(lastPower2.split("_")[2])/4;
+                        currentVertical = parseInt(lastPower2.split("_")[2]) / 4;
                         const value = (
                             <div key={level.type}>
                                 <div style={{
@@ -157,12 +164,13 @@ const DoubleEliminationLadder = ({
                                                       openAddGameDialog={openAddGameDialog}
                                                       openSkipDialog={openSkipDialog}
                                                       gameType={gameType}
+                                                      teams={teams}
                                         />
-                                        {level.type !== lowestRound &&   <>
-                                                   { !firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}
-                                                          width={50} left={-50}
-                                                          top={35}
-                                                          pathType={"bottom"}
+                                        {level.type !== lowestRound && <>
+                                            {!firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}
+                                                                            width={50} left={-50}
+                                                                            top={35}
+                                                                            pathType={"bottom"}
                                             />}</>}
                                     </div>)
                                     currentVertical += 1;
@@ -170,7 +178,7 @@ const DoubleEliminationLadder = ({
                                 })
                                 }</div>)
                         currentVertical = 0;
-                        if(firstLowerRow){
+                        if (firstLowerRow) {
                             firstLowerRow = false;
                         }
 
@@ -184,7 +192,7 @@ const DoubleEliminationLadder = ({
                     left: currentHorizontalOffset - 80
                 }}>
                     <Typography variant={"h5"}>Winner</Typography>
-                    <Typography variant={"h5"}>{winner ? winner.user.username : "TBD"}</Typography>
+                    <Typography variant={"h5"}>{winner ? teams ? winner.team.name : winner.user.username : "TBD"}</Typography>
                 </div>
             </div>
             <div

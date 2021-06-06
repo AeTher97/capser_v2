@@ -1,6 +1,6 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
-import com.mwozniak.capser_v2.models.database.tournament.SinglesTournament;
+import com.mwozniak.capser_v2.models.database.tournament.singles.SinglesTournament;
 import com.mwozniak.capser_v2.service.tournament.SinglesTournamentService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

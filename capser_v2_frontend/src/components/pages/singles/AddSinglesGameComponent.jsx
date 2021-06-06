@@ -102,9 +102,9 @@ const AddSinglesGameComponent = ({
             <div style={{display: "flex", justifyContent: "center"}}>
                 <div style={{maxWidth: 400, flex: 1}}>
 
-                    <div style={{padding: 8}}>
+                    <div style={{padding: 8}} className={showBorder ? classes.standardBorder : null}>
                         {displayGameDataSection && <div
-                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                            className={[classes.column].join(' ')}>
                             <Typography variant={"h5"}>Game Data</Typography>
                             <Divider/>
                             <div className={classes.margin}>
@@ -117,7 +117,7 @@ const AddSinglesGameComponent = ({
                         </div>}
 
                         <div
-                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                            className={[classes.column].join(' ')}>
                             <Typography variant={"h5"}>{overridePlayer1Name || "Player data"}</Typography>
 
                             <div className={classes.margin}>
@@ -140,7 +140,7 @@ const AddSinglesGameComponent = ({
                         </div>
 
                         <div
-                            className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                            className={[classes.column].join(' ')}>
                             <Typography variant={"h5"}>{overridePlayer2Name || "Opponent data"}</Typography>
                             {choosePlayers && <div className={classes.margin}>
                                 <FetchSelectField label={"Select Opponent"} onChange={(value) => setOpponent(value)}

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import {Button, Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
@@ -10,12 +9,13 @@ import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
 import ClearIcon from '@material-ui/icons/Clear';
 
-const TournamentsPlayers = ({players, addPlayer, removePlayer, savePlayers, adding, max}) => {
+const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, adding, max, teams}) => {
     const classes = mainStyles();
     const theme = useTheme();
     const dispatch = useDispatch();
 
     const [playersIds, setPlayersIds] = useState();
+
 
     useEffect(() => {
         setPlayersIds(players.map(player => player.id));
@@ -27,8 +27,11 @@ const TournamentsPlayers = ({players, addPlayer, removePlayer, savePlayers, addi
     return (
         <div>
             <div style={{padding: 10, display: "flex", borderBottom: '1px solid ' + theme.palette.divider}}>
-                <Typography variant={"h5"} style={{marginRight: 10, flex: 1}}>{players.length} Players</Typography>
-                {adding && <FetchSelectField label={"Select Player"} onChange={(value) => {
+                <Typography variant={"h5"} style={{
+                    marginRight: 10,
+                    flex: 1
+                }}>{players.length} {teams ? 'Teams' : 'Players'} < /Typography>
+                {adding && <FetchSelectField label={teams ? "Select Team" :"Select Player"} onChange={(value) => {
                     if (playersIds.length === max) {
                         dispatch(showError("Too many players"))
                         return;
@@ -37,13 +40,13 @@ const TournamentsPlayers = ({players, addPlayer, removePlayer, savePlayers, addi
                 }}
                                              clearOnChange
                                              searchYourself
-                                             url={"/users/search"}
-                                             nameParameter={"username"}/>}
+                                             url={ teams ? "/teams/search" : "/users/search"}
+                                             nameParameter={teams ? "name" : "username"}/>}
             </div>
             {players.map(player => {
                 return <div key={player.id} className={[styles.player, classes.header].join(' ')}>
                     <PersonOutlineIcon fontSize={"small"}/>
-                    <BoldTyphography>{player.username}</BoldTyphography>
+                    <BoldTyphography>{teams ? player.name : player.username}</BoldTyphography>
                     {adding && <div style={{flex: 1, display: "flex", justifyContent: "flex-end", color: "red"}}>
                         <div style={{cursor: "pointer"}} onClick={() => {
                             removePlayer(player.id);
@@ -63,7 +66,7 @@ const TournamentsPlayers = ({players, addPlayer, removePlayer, savePlayers, addi
     );
 };
 
-TournamentsPlayers.propTypes = {};
+TournamentsCompetitors.propTypes = {};
 
 const playersStyles = makeStyles(theme => ({
     player: {
@@ -73,4 +76,4 @@ const playersStyles = makeStyles(theme => ({
     }
 }))
 
-export default TournamentsPlayers;
+export default TournamentsCompetitors;

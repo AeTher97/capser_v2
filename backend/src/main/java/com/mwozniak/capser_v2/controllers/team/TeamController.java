@@ -72,4 +72,11 @@ public class TeamController {
     }
 
 
+    @GetMapping("/name/{teamId}/full")
+    public ResponseEntity<Object> getFullTeam(@PathVariable UUID teamId) throws TeamNotFoundException {
+        log.info("Getting " + teamId.toString() + " team info");
+        return ResponseEntity.ok(teamService.getFullTeam(teamId));
+    }
+
+
 }

@@ -4,6 +4,7 @@ import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.dto.CreateTeamDto;
+import com.mwozniak.capser_v2.models.dto.TeamWithPlayersDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -105,6 +106,25 @@ public class TeamService {
         Optional<TeamWithStats> teamWithStatsOptional = teamRepository.findTeamById(teamId);
         if (teamWithStatsOptional.isPresent()) {
             return teamWithStatsOptional.get();
+        } else {
+            throw new TeamNotFoundException("Team with this id not found");
+        }
+    }
+
+    public TeamWithPlayersDto getFullTeam(UUID teamId) throws TeamNotFoundException {
+        Optional<TeamWithStats> teamWithStatsOptional = teamRepository.findTeamById(teamId);
+        if (teamWithStatsOptional.isPresent()) {
+            TeamWithPlayersDto teamWithPlayersDto = new TeamWithPlayersDto();
+            teamWithPlayersDto.setTeamWithStats(teamWithStatsOptional.get());
+            teamWithPlayersDto.setPlayers(teamWithStatsOptional.get().getPlayerList().stream().map(uuid -> {
+                try {
+                    return userService.getUser(uuid);
+                } catch (UserNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).collect(Collectors.toList()));
+            return teamWithPlayersDto;
         } else {
             throw new TeamNotFoundException("Team with this id not found");
         }

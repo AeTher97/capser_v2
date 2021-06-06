@@ -2,15 +2,14 @@ package com.mwozniak.capser_v2.service.tournament;
 
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesBracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesTournament;
-import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
+import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesTournament;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.UserService;
-import com.mwozniak.capser_v2.service.game.AbstractGameService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,12 +22,12 @@ import java.util.UUID;
 public abstract class AbstractSinglesTournamentService<T extends AbstractSinglesTournament<?>> extends AbstractTournamentService<T> {
 
     private final JpaRepository<T, UUID> repository;
-    private final AbstractGameService abstractGameService;
+    private final UserService userService;
 
-    protected AbstractSinglesTournamentService(JpaRepository<T, UUID> repository, UserService userService, AbstractGameService abstractGameService1) {
-        super(userService, repository);
+    protected AbstractSinglesTournamentService(JpaRepository<T, UUID> repository, UserService userService) {
+        super(repository);
         this.repository = repository;
-        this.abstractGameService = abstractGameService1;
+        this.userService= userService;
     }
 
     @Transactional

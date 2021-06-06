@@ -158,4 +158,9 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     public int getPointsLost(User user) {
         return getOpponentStats(user).getScore();
     }
+
+    @Override
+    public UUID getWinnerId(){
+        return winner;
+    }
 }

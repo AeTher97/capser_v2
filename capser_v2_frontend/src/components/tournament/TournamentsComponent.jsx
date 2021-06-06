@@ -77,16 +77,17 @@ const TournamentsComponent = () => {
                     {loading && <LoadingComponent/>}
                     {tournaments && <>
                         {tournaments.map(tournament => {
+                            const multiplier = tournament.gameType === 'DOUBLES' ? 2:1;
                             return <div key={tournament.id} onClick={() => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
                             }} className={classes.standardBorder}
                                         style={{marginBottom: 10, cursor: "pointer", paddingTop: 7}}>
-                                <div className={classes.header} style={{alignItems: "center"}}>
+                                <div className={classes.header} style={{alignItems: "flex-start"}}>
                                     <BoldTyphography variant={"h5"} color={"primary"} style={{flex: 1}}>
                                         {tournament.tournamentName}
                                     </BoldTyphography>
                                     <Typography
-                                        variant={"caption"}>{new Date(tournament.date).toDateString()}
+                                        variant={"caption"} style={{marginTop: 5}}>{new Date(tournament.date).toDateString()}
                                     </Typography>
                                 </div>
 
@@ -102,7 +103,7 @@ const TournamentsComponent = () => {
                                         {getSeedTypeString(tournament.seedType)}
                                     </Typography>
                                     <Typography variant={"caption"}>
-                                        {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Players
+                                        {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2]*multiplier : tournament.size.split("_")[1]*multiplier} Players {multiplier === 2 && <>{ tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Teams</>}
                                     </Typography>
                                 </div>
                             </div>
@@ -132,6 +133,7 @@ const TournamentsComponent = () => {
                             <MenuItem value={"SINGLES"}>Singles</MenuItem>
                             <MenuItem value={"EASY_CAPS"}>Easy caps</MenuItem>
                             <MenuItem value={"UNRANKED"}>Unranked</MenuItem>
+                            <MenuItem value={"DOUBLES"}>Doubles</MenuItem>
                         </Select>
                         <Select style={{width: 200, marginBottom: 10}} value={tournamentType}
                                 onChange={event => {

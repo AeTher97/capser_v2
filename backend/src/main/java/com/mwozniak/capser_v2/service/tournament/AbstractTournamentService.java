@@ -4,7 +4,6 @@ import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.dto.CreateTournamentDto;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
-import com.mwozniak.capser_v2.service.UserService;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +17,8 @@ import java.util.UUID;
 public abstract class AbstractTournamentService<T extends Tournament<?>> {
 
 
-    protected final UserService userService;
     private final JpaRepository<T,UUID> repository;
-    public AbstractTournamentService(UserService userService, JpaRepository<T, UUID> repository){
-        this.userService = userService;
+    public AbstractTournamentService(JpaRepository<T, UUID> repository){
         this.repository = repository;
     }
 

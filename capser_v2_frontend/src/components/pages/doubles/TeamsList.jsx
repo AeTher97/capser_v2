@@ -5,6 +5,7 @@ import {Typography} from "@material-ui/core";
 import CapserPagination from "../../misc/CapserPagination";
 import {listStyles} from "../singles/SinglesPlayersList";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
+import TeamTooltip from "../../misc/TeamTooltip";
 
 const TeamsList = props => {
 
@@ -32,9 +33,13 @@ const TeamsList = props => {
                         const stats = team.doublesStats;
                         return <div key={team.id} className={styles.row}
                                     style={teams.length === 1 ? {borderWidth: 0} : {}}>
-                            <Typography color={"primary"} className={classes.link} style={{flex: 0.4}}>
-                                {(currentPage - 1) * 10 + index}. {team.name}
-                            </Typography>
+                            <div style={{flex: 0.4}}>
+                                <TeamTooltip teamId={team.id}>
+                                    <Typography color={"primary"} className={classes.link}>
+                                        {(currentPage - 1) * 10 + index}. {team.name}
+                                    </Typography>
+                                </TeamTooltip>
+                            </div>
                             <Typography style={{flex: 0.3}}>{stats.points.toFixed(2)}</Typography>
                             <div style={{flex: 0.3}}>
                                 <div className={classes.header}>

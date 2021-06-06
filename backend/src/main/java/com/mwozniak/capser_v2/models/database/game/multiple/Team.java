@@ -1,7 +1,7 @@
 package com.mwozniak.capser_v2.models.database.game.multiple;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mwozniak.capser_v2.models.database.game.GameEventEntity;
+import com.mwozniak.capser_v2.models.database.Competitor;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Team {
+public class Team implements Competitor {
 
 
     @Id

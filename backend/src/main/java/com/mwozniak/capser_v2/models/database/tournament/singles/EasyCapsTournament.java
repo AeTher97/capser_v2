@@ -1,12 +1,11 @@
-package com.mwozniak.capser_v2.models.database.tournament;
+package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
-import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,31 +16,34 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class UnrankedTournament extends AbstractSinglesTournament<UnrankedGame> {
+public class EasyCapsTournament extends AbstractSinglesTournament<EasyCapsGame> {
 
-    public UnrankedTournament() {
+
+    public EasyCapsTournament() {
 
     }
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    protected List<UnrankedBracketEntry> bracketEntries;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    protected List<EasyCapsBracketEntry> bracketEntries;
+
+    @Override
     public List<? extends AbstractSinglesBracketEntry> getBracketEntries(){
         return bracketEntries;
     }
 
     @Override
     public GameType getGameType() {
-        return GameType.UNRANKED;
+        return GameType.EASY_CAPS;
     }
 
+
     @Override
-    protected void setBracketEntries(List<AbstractSinglesBracketEntry> entries) {
-        bracketEntries = (List<UnrankedBracketEntry>) (List<?>) entries;
+    protected void setBracketEntries(List<BracketEntry> entries) {
+        bracketEntries = (List<EasyCapsBracketEntry>) (List<?>) entries;
     }
 
     @Override
     protected AbstractSinglesBracketEntry createBracketEntry() {
-        return new UnrankedBracketEntry();
+        return new EasyCapsBracketEntry();
     }
-
 }

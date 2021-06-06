@@ -2,9 +2,9 @@ package com.mwozniak.capser_v2.service.tournament;
 
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
-import com.mwozniak.capser_v2.models.database.tournament.AbstractSinglesBracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.EasyCapsBracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.EasyCapsTournament;
+import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsBracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsTournament;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
@@ -26,7 +26,7 @@ public class EasyCapsTournamentService extends AbstractSinglesTournamentService<
     private final EasyCapsGameService easyCapsGameService;
 
     public EasyCapsTournamentService(UserService userService, EasyCapsTournamentRepository tournamentRepository, EasyCapsGameService easyCapsGameService) {
-        super(tournamentRepository, userService, easyCapsGameService);
+        super(tournamentRepository, userService);
         this.tournamentRepository = tournamentRepository;
         this.easyCapsGameService = easyCapsGameService;
     }

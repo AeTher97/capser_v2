@@ -2,7 +2,6 @@ package com.mwozniak.capser_v2.models.database.game;
 
 import com.mwozniak.capser_v2.enums.GameMode;
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
@@ -10,7 +9,6 @@ import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import com.mwozniak.capser_v2.models.exception.UpdateStatsException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -136,5 +134,8 @@ public abstract class AbstractGame {
 
         public static final Comparator<AbstractGame> DATE = Comparator.comparing(AbstractGame::getTime);
     }
+
+    public abstract UUID getWinnerId();
+
 
 }

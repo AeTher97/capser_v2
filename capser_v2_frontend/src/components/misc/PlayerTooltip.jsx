@@ -25,8 +25,6 @@ const PlayerTooltip = ({playerId, children, gameType}) => {
     );
 };
 
-PlayerTooltip.propTypes = {
 
-};
 
 export default PlayerTooltip;

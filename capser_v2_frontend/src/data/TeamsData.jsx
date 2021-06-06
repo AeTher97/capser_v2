@@ -151,3 +151,29 @@ export const useAllTeams = (pageNumber = 0, pageSize = 10) => {
 
 }
 
+export const useTeamData = (id) => {
+    const [team,setTeam] = useState();
+    const [loading,setLoading] = useState();
+
+    useEffect(() => {
+        setLoading(true);
+        let shouldUpdate = true;
+        axios.get(`/teams/name/${id}/full`)
+            .then(data => {
+                setTeam(data.data);
+
+
+            }).catch(e => {
+            if (shouldUpdate) {
+                setLoading(false);
+            }
+            console.error(e.message);
+        })
+        return () => {
+            shouldUpdate = false;
+        }
+    }, [id])
+
+    return {loading, team}
+}
+

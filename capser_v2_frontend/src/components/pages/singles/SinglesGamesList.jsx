@@ -9,6 +9,9 @@ import Grid from "@material-ui/core/Grid";
 export  const findPlayerStats = (game, id) => {
     return game.gamePlayerStats.find(o => o.playerId === id)
 }
+
+
+
 const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
 
     const [currentPage, setPage] = useState(1);

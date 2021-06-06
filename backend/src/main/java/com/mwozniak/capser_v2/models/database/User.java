@@ -18,7 +18,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Table(name = "users")
-public class User {
+public class User implements Competitor {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -74,6 +74,7 @@ public class User {
     private String email;
     private String avatarHash;
 
+    @JsonIgnore
     public static User createUserFromDto(CreateUserDto createUserDto, String encodedPassword) throws NoSuchAlgorithmException {
         User user = new User();
         user.setPassword(encodedPassword);
@@ -96,7 +97,7 @@ public class User {
         avatarHash = stringBuffer.toString();
     }
 
-    protected void setId(UUID id){
+    protected void setId(UUID id) {
         this.id = id;
     }
 }
