@@ -5,24 +5,21 @@ import mainStyles from "../../misc/styles/MainStyles";
 import {useUserData} from "../../data/UserData";
 import Fade from "@material-ui/core/Fade";
 import {useHistory} from "react-router-dom";
+import PlayerCardWrapper from "./PlayerCardWrapper";
 
 const PlayerTooltip = ({playerId, children, gameType}) => {
 
     const classes = mainStyles();
     const history = useHistory();
-    const {data} = useUserData(playerId);
     return (
-        <>{data &&
-        <Tooltip title={<PlayerCard player={data} type={gameType}/>}
+        <Tooltip title={<PlayerCardWrapper type={gameType} playerId={playerId}/>}
                  TransitionComponent={Fade}>
             <div style={{cursor: 'pointer'}} onClick={() => {
                 history.push(`/players/${playerId}`)
             }}>
                 {children}
             </div>
-        </Tooltip>}
-        </>
-    );
+        </Tooltip>);
 };
 
 
