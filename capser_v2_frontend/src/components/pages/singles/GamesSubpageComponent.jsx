@@ -4,7 +4,7 @@ import useQuery from "../../../utils/UserQuery";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
 import {useHasRole} from "../../../utils/SecurityUtils";
 import PageHeader from "../../misc/PageHeader";
-import {SinglesIcon} from "../../../misc/icons/CapsIcons";
+import {EasyIcon, SinglesIcon, UnrankedIcon} from "../../../misc/icons/CapsIcons";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "../../misc/TabPanel";
@@ -38,8 +38,18 @@ const GamesSubpageComponent = ({title, type}) => {
         history.push(`/${getRequestGameTypeString(type)}/?tab=${value}`)
     }
 
+    const getIcon = () => {
+        if(type === 'SINGLES'){
+            return <SinglesIcon fontSize={'large'}/>
+        } else if(type === 'EASY_CAPS'){
+            return <EasyIcon fontSize={'large'}/>
+        } else {
+            return <UnrankedIcon fontSize={'large'}/>
+        }
+    }
+
     return (<div>
-        <PageHeader title={title} icon={<SinglesIcon fontSize={"large"}/>}/>
+        <PageHeader title={title} icon={getIcon()}/>
 
         <Tabs value={tab} onChange={handleTabChange} style={{marginTop: 5}} centered>
             <Tab value={'games'} label={'Games'}/>

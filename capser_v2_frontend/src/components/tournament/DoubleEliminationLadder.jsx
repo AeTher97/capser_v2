@@ -164,6 +164,7 @@ const DoubleEliminationLadder = ({
                                                       openAddGameDialog={openAddGameDialog}
                                                       openSkipDialog={openSkipDialog}
                                                       gameType={gameType}
+                                                      teams={teams}
                                         />
                                         {level.type !== lowestRound && <>
                                             {!firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}
@@ -191,7 +192,7 @@ const DoubleEliminationLadder = ({
                     left: currentHorizontalOffset - 80
                 }}>
                     <Typography variant={"h5"}>Winner</Typography>
-                    <Typography variant={"h5"}>{winner ? winner.user.username : "TBD"}</Typography>
+                    <Typography variant={"h5"}>{winner ? teams ? winner.team.name : winner.user.username : "TBD"}</Typography>
                 </div>
             </div>
             <div

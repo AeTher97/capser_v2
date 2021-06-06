@@ -5,8 +5,7 @@ import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.AbstractTournament;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.TeamBridge;
-import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,7 +57,7 @@ public class DoublesTournament extends AbstractTournament<DoublesGame> {
         if (entry.getCoordinate() == 0) {
             if (entry.getGame() != null) {
                 setFinished(true);
-                setWinner(entry.getTeam1().getId().equals(entry.getGame().getWinner()) ? new TeamBridge(entry.getTeam1()) : new TeamBridge(entry.getTeam2()));
+                setWinner(entry.getTeam1().getId().equals(entry.getGame().getWinnerId()) ? new TeamBridge(entry.getTeam1()) : new TeamBridge(entry.getTeam2()));
             } else if (entry.isForfeited()) {
                 setFinished(true);
                 setWinner(entry.getTeam2().getId().equals(entry.getForfeitedId()) ? new TeamBridge(entry.getTeam2()) : new TeamBridge(entry.getTeam1()));

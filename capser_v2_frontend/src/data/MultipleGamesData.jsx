@@ -2,6 +2,7 @@ import {useSelector} from "react-redux";
 import axios from "axios";
 import {getRequestGameTypeString} from "../utils/Utils";
 import {useEffect, useState} from "react";
+import {fetchUsername} from "./UsersFetch";
 
 
 export const useMultipleGamePost = (type) =>{
@@ -68,3 +69,44 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
         pagesNumber
     }
 }
+
+
+
+export const useTeamGame = ( gameId) => {
+
+    const [game, setGame] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        let shouldUpdate = true;
+        setLoading(true);
+        axios.get(`/doubles/${gameId}`).then(result => {
+            if (shouldUpdate) {
+                const game = result.data;
+
+
+                        if (shouldUpdate) {
+
+                            setGame(game);
+
+                        }
+
+            }
+        }).catch(e => {
+            console.log(e.message)
+        }).finally(() => {
+            if (shouldUpdate) {
+                setLoading(false);
+            }
+        })
+
+        return () => {
+            shouldUpdate = false;
+        }
+
+
+    }, [gameId])
+
+    return {game, loading}
+}
+

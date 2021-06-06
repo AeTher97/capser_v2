@@ -39,13 +39,15 @@ const getTeamName = (team) => {
 }
 
 
-const getFlexType = (bracketEntry) => {
+const getFlexType = (bracketEntry, teams) => {
+    let player1 = teams ? bracketEntry.team1 : bracketEntry.player1;
+    let player2 = teams ? bracketEntry.team2 : bracketEntry.player2;
     let flexType;
-    if (!bracketEntry.player1 && !bracketEntry.player2) {
+    if (!player1 && !player2) {
         flexType = 'center';
-    } else if (!bracketEntry.player2) {
+    } else if (!player2) {
         flexType = 'flex-start';
-    } else if (!bracketEntry.player1) {
+    } else if (!player1) {
         flexType = 'flex-end'
     }
     return flexType;
@@ -61,31 +63,29 @@ const getShowPlus = (isOwner, bracketEntry, hasRole, teams) => {
 }
 
 
-const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles, border, teams}) => {
+const TooltipContents = ({game, player, forfeitedId, teams}) => {
+    return <div style={{display: "flex", flexDirection: "row", alignItems: 'center', color: 'white'}}>
+        {teams && <PeopleIcon style={{position:'relative', left:-5}} fontSize={"small"}/>}
+        <Typography style={{
+            flex: 1,
+            textOverflow: "ellipsis", overflow: "hidden",
+            opacity: teams ? (game && player.id !== game.winnerId) || (player && forfeitedId === player.id) ? 0.5 : 1 : (game && player.id !== game.winner) || (player && forfeitedId === player.id) ? 0.5 : 1
+        }}>{teams ? getTeamName(player) : getUsername(player)}</Typography>
+        {player && game && <Typography noWrap
+                                       style={{marginRight: 15}}>{teams ? findTeamStats(game, player.id) : findPlayerStats(game, player.id).score}</Typography>}
+    </div>
+}
+
+
+const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles, border, teams, cord}) => {
 
     return (
         <div className={[entryStyles.padding, border ? entryStyles.border : null].join(' ')}>
             {!teams && player &&
             <PlayerTooltip playerId={player.id} gameType={gameType}>
-                <div style={{display: "flex", flexDirection: "row"}}>
-                    <Typography style={{
-                        flex: 1,
-                        opacity: (game && player.id !== game.winner) || (player && forfeitedId === player.id) ? 0.5 : 1
-                    }}>{teams ? getTeamName(player) : getUsername(player)}</Typography>
-                    {player && game && <Typography
-                        style={{marginRight: 15}}>{findPlayerStats(game, player.id).score}</Typography>}
-                </div>
+                <TooltipContents game={game} forfeitedId={forfeitedId} teams={teams} player={player}/>
             </PlayerTooltip>}
-            {teams && player &&
-            <div style={{display: "flex", flexDirection: "row", alignItems: 'center', color: 'white'}}>
-                <PeopleIcon fontSize={"small"}/>
-                <Typography style={{
-                    flex: 1,
-                    opacity: (game && player.id !== game.winner) || (player && forfeitedId === player.id) ? 0.5 : 1
-                }}>{teams ? getTeamName(player) : getUsername(player)}</Typography>
-                {player && game && <Typography
-                    style={{marginRight: 15}}>{findTeamStats(game, player.id)}</Typography>}
-            </div>}
+            {teams && player && <TooltipContents game={game} forfeitedId={forfeitedId} teams={teams} player={player}/>}
         </div>)
 }
 
@@ -120,12 +120,13 @@ const BracketEntry = ({
                     height: 71,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: getFlexType(bracketEntry)
+                    justifyContent: getFlexType(bracketEntry, teams)
                 }}>
                     <div
                         className={[entryStyle.entry, !bracketEntry.bye ? classes.standardBorder : classes.disabledBorder].join(' ')}
                         style={{padding: 0, margin: 0}}>
                         <PlayerPart
+                            cord = {bracketEntry.coordinate}
                             forfeitedId={bracketEntry.forfeitedId}
                             game={bracketEntry.game}
                             player={teams ? bracketEntry.team1 : bracketEntry.player1}
@@ -134,6 +135,8 @@ const BracketEntry = ({
                             teams={teams}
                             border={true}/>
                         <PlayerPart
+                            cord = {bracketEntry.coordinate}
+
                             forfeitedId={bracketEntry.forfeitedId}
                             game={bracketEntry.game}
                             player={teams ? bracketEntry.team2 : bracketEntry.player2}

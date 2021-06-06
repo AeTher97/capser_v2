@@ -5,6 +5,7 @@ import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

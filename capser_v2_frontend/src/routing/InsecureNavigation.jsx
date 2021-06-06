@@ -15,6 +15,7 @@ import {useTheme} from "@material-ui/core";
 import TournamentComponent from "../components/tournament/TournamentComponent";
 import TournamentsComponent from "../components/tournament/TournamentsComponent";
 import PlayerComponent from "../components/profile/PlayerComponent";
+import DoublesGame from "../components/pages/doubles/DoublesGame";
 
 const InsecureNavigation = () => {
 
@@ -70,7 +71,7 @@ const InsecureNavigation = () => {
                     </Route>
 
                     <Route exact path={"/doubles/:gameId"}>
-                        <SinglesGame/>
+                        <DoublesGame/>
                     </Route>
 
 

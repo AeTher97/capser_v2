@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
 import com.mwozniak.capser_v2.models.database.tournament.AbstractTournament;
-import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
 import lombok.Getter;
 import lombok.Setter;
 

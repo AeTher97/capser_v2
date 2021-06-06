@@ -82,12 +82,12 @@ const TournamentsComponent = () => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
                             }} className={classes.standardBorder}
                                         style={{marginBottom: 10, cursor: "pointer", paddingTop: 7}}>
-                                <div className={classes.header} style={{alignItems: "center"}}>
+                                <div className={classes.header} style={{alignItems: "flex-start"}}>
                                     <BoldTyphography variant={"h5"} color={"primary"} style={{flex: 1}}>
                                         {tournament.tournamentName}
                                     </BoldTyphography>
                                     <Typography
-                                        variant={"caption"}>{new Date(tournament.date).toDateString()}
+                                        variant={"caption"} style={{marginTop: 5}}>{new Date(tournament.date).toDateString()}
                                     </Typography>
                                 </div>
 

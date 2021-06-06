@@ -12,7 +12,7 @@ import {usePlayerTeams} from "../../../data/TeamsData";
 import {fetchUsername} from "../../../data/UsersFetch";
 
 const AddDoublesGameComponent = ({
-                                     showBorder,
+                                     showBorder = true,
                                      externalSave,
                                      team1,
                                      team2,
@@ -194,9 +194,9 @@ const AddDoublesGameComponent = ({
         <div style={{display: "flex", justifyContent: "center"}}>
             <div style={{maxWidth: 400, flex: 1}}>
 
-                <div style={{padding: 8}}>
+                <div style={{padding: 8}} className={showBorder ? classes.standardBorder : null}>
                     <div
-                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                        className={[classes.column].join(' ')}>
                         <Typography variant={"h5"}>Game Data</Typography>
                         <Divider/>
                         <div className={classes.margin}>
@@ -208,7 +208,7 @@ const AddDoublesGameComponent = ({
                         </div>
                     </div>
                     <div
-                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                        className={[classes.column].join(' ')}>
                         <Typography variant={"h5"}>{!externalSave ? 'Player Team Data' : overrideTeam1Name}</Typography>
                         <div className={classes.margin}>
                             {teams.length === 0 && !externalSave &&
@@ -255,7 +255,7 @@ const AddDoublesGameComponent = ({
                     </div>
 
                     <div
-                        className={[classes.column, showBorder ? classes.standardBorder : null].join(' ')}>
+                        className={[classes.column].join(' ')}>
                         <Typography variant={"h5"}>{!externalSave ? 'Opponent Team Data' : overrideTeam2Name}</Typography>
 
                         {!externalSave && <div className={classes.margin}>
@@ -306,8 +306,8 @@ const AddDoublesGameComponent = ({
                     {onCancel &&
                     <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
                 </div>
+                {!externalSave && <div style={{height:100}}/>}
             </div>
-
         </div>
     );
 };

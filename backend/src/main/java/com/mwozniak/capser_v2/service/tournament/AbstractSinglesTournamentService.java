@@ -2,7 +2,7 @@ package com.mwozniak.capser_v2.service.tournament;
 
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.tournament.UserBridge;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesTournament;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
