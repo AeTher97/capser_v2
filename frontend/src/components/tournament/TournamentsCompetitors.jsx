@@ -7,6 +7,7 @@ import FetchSelectField from "../misc/FetchSelectField";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
 import ClearIcon from '@material-ui/icons/Clear';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, adding, max, teams}) => {
     const classes = mainStyles();
@@ -29,7 +30,7 @@ const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, 
                 <Typography variant={"h5"} style={{
                     marginRight: 10,
                     flex: 1
-                }}>{players.length} {teams ? 'Teams' : 'Players'} < /Typography>
+                }}>{players.length} {teams ? 'Teams' : 'Players'} </Typography>
                     {adding && <FetchSelectField label={teams ? "Select Team" : "Select Player"} onChange={(value) => {
                         if (playersIds.length === max) {
                             dispatch(showError("Too many players"))
@@ -61,8 +62,7 @@ const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, 
                     savePlayers(playersIds);
                 }}>Save</Button>
             </div>}
-        </div>
-);
+        </div>);
 };
 
 TournamentsCompetitors.propTypes = {};
