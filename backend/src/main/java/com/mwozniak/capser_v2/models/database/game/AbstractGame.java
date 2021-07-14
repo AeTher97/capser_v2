@@ -30,6 +30,7 @@ public abstract class AbstractGame {
             strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false)
     @Getter
+    @Setter
     private UUID id;
 
     @Setter

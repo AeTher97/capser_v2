@@ -40,6 +40,11 @@ public class DoublesService extends AbstractMultipleGameService {
 
     @Override
     public AbstractGame saveGame(AbstractGame abstractGame) {
+        if (abstractGame instanceof DoublesGameDto) {
+            DoublesGame tempObject = doublesRepository.findDoublesGameById(abstractGame.getId()).get();
+            BeanUtils.copyProperties(abstractGame, tempObject);
+            return doublesRepository.save(tempObject);
+        }
         return doublesRepository.save((DoublesGame) abstractGame);
     }
 
@@ -53,7 +58,8 @@ public class DoublesService extends AbstractMultipleGameService {
         Optional<DoublesGame> doublesGameOptional = doublesRepository.findDoublesGameById(id);
         if (doublesGameOptional.isPresent()) {
             DoublesGameDto doublesGameDto = new DoublesGameDto();
-            BeanUtils.copyProperties(doublesGameOptional.get(),doublesGameDto);
+            doublesGameDto.setId(id);
+            BeanUtils.copyProperties(doublesGameOptional.get(), doublesGameDto);
             TeamWithPlayersDto team1 = new TeamWithPlayersDto();
             TeamWithPlayersDto team2 = new TeamWithPlayersDto();
             team1.setTeamWithStats(teamService.findTeam(doublesGameDto.getTeam1DatabaseId()));
