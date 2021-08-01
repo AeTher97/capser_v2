@@ -20,7 +20,7 @@ const HomeComponent = () => {
 
     return (
         <div style={{height: '100%', overflow: 'scroll'}}>
-            <PageHeader title={"Global Caps League"} font={"BankGothic"}/>
+            {!small && <PageHeader title={"Global Caps League"} font={"BankGothic"} fontWeight={1000}/>}
             <Grid className={classes.root} container style={{padding: 0}}>
                 {!gamesLoading && !postsLoading ? <Grid container>
                     <Grid item sm={8} xs={12}>

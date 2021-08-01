@@ -9,11 +9,11 @@ const MobileTopBar = ({open, setOpen}) => {
     return (
         <AppBar position={"sticky"} className={classes.bar}>
             <Toolbar variant={"dense"}>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu"
+                <IconButton edge="start" color="inherit" aria-label="menu"
                             onClick={() => setOpen(!open)}>
                     <MenuIcon/>
                 </IconButton>
-
+                <img alt={'Gcl wordmark logo'} style={{height: 32, marginTop: 2}} src={'/gcl_logo_wordmark.svg'}/>
             </Toolbar>
         </AppBar>
     );

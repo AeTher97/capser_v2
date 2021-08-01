@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 
-const PageHeader = ({title, font, showLogo, icon, noSpace}) => {
+const PageHeader = ({title, font, showLogo, icon, noSpace, fontWeight = 400}) => {
     const classes = mainStyles();
     const theme = useTheme();
 
-    const style = font ? {fontFamily: font} : {};
+    const style = font ? {fontFamily: font, fontWeight: fontWeight} : {};
     return (
         <div style={{paddingLeft: 10, borderBottom: '1px solid ' + theme.palette.divider, height: 94, fontFamily: font}}
              className={[classes.header].join(' ')}>
