@@ -37,12 +37,14 @@ const BellComponent = ({expanded = true}) => {
 
     return (
         <div>
-            <div className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')} onClick={handleClick}>
+            <div className={[mainStyles0.centeredRowNoFlex, classes.redHover, mainStyles0.twichHighlight].join(' ')}
+                 onClick={handleClick}>
                 {notSeen ?
-                    <div style={{padding: 12.5}}>
+                    <div style={{padding: '1px 0px 1px 5px', marginRight: 11}}>
                         <Badge color={"primary"} badgeContent={5} variant={"dot"}>
                             <NotificationsIcon/>
-                        </Badge></div> : <div style={{padding: 11}}><NotificationsOutlinedIcon/></div>}
+                        </Badge></div> :
+                    <div style={{padding: '1px 0px 1px 5px', marginRight: 11}}><NotificationsOutlinedIcon/></div>}
                 <div style={{transition: "all 0,2s"}}>
                     <BoldTyphography noWrap color={"inherit"}>Notifications</BoldTyphography>
                 </div>
@@ -55,7 +57,7 @@ const BellComponent = ({expanded = true}) => {
                   }}>
                 <div className={mainStyles0.standardBorder} style={{padding: 0, margin: 0}}>
                     <NotificationList notifications={notifications} markSeen={markSeen} handleClose={handleClose}/>
-                    <MenuItem style={{padding: 10}} onClick={handleClose}>
+                    <MenuItem className={mainStyles0.twichHighlight} onClick={handleClose}>
                         <Link>Hide</Link>
                     </MenuItem>
                 </div>

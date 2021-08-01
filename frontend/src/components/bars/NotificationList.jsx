@@ -30,11 +30,9 @@ const NotificationList = ({notifications, markSeen}) => {
         return notifications.map(notification => {
             return (
                 <MenuItem key={notification.id}
-                          className={notification.seen ? notificationListClasses.seen : notificationListClasses.unseen}
+                          className={[notification.seen ? notificationListClasses.seen : notificationListClasses.unseen, mainClasses.twichHighlight].join(' ')}
                           style={{
                               width: size.width < 400 ? size.width - 60 : 350,
-                              padding: 10,
-                              borderBottom: '1px solid ' + theme.palette.divider
                           }}
                           onClick={() => {
                               if (notification.notificationType === 'ACCEPT_REQUEST') {

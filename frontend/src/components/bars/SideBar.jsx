@@ -28,14 +28,14 @@ const SideBar = ({open, setOpen}) => {
     const small = useXtraSmallSize();
     const [state, setState] = useState({
         expanded: false,
-        width: 44
+        width: 50
     });
 
 
     useEffect(() => {
         setState({
             expanded: open && small,
-            width: open && small ? 300 : 44
+            width: open && small ? 300 : 50
         });
         if (!small) {
             setOpen(false);
@@ -131,12 +131,13 @@ const SideBar = ({open, setOpen}) => {
                         expanded: true,
                         width: 300
                     })
-                }} onMouseLeave={() => {
-            setState({
-                expanded: open,
-                width: 44
-            })
-        }}>
+                }}
+                onMouseLeave={() => {
+                    setState({
+                        expanded: open,
+                        width: 50
+                    })
+                }}>
             {small && <div style={{height: 48}}/>}
             <div style={{width: state.width, overflow: "hidden"}} className={classes.expanding}>
                 {!small && <div onClick={() => {
@@ -159,11 +160,12 @@ const SideBar = ({open, setOpen}) => {
                     }
                 }).map(icon => {
                     return (
-                        <div key={icon.link} className={[mainStyles0.centeredRowNoFlex, classes.redHover].join(' ')}
+                        <div key={icon.link}
+                             className={[mainStyles0.centeredRowNoFlex, classes.redHover, mainStyles0.twichHighlight].join(' ')}
                              style={{paddingRight: 0}} onClick={() => go(icon.link)}>
-                            {icon.icon !== 10 && <div style={{padding: 10}}> {icon.icon}</div>}
+                            {icon.icon !== 10 && <div style={{padding: 5, marginRight: 7}}> {icon.icon}</div>}
                             {icon.icon === 10 &&
-                            <div style={{padding: 4, paddingLeft: 11, paddingRight: 10}}>
+                            <div style={{padding: 5, paddingLeft: 5, paddingRight: 10, marginRight: 5}}>
                                 <Typography variant={"h6"} color={"inherit"}>
                                     {icon.icon}
                                 </Typography>
@@ -177,11 +179,14 @@ const SideBar = ({open, setOpen}) => {
                 {hasRole('USER') || hasRole('ADMIN') ?
                     <>
                         <Divider/>
-                        <div className={[classes.redHover, mainStyles0.centeredRowNoFlex].join(' ')} onClick={() => {
-                            dispatch(logoutAction())
-                            history.push('/')
-                        }}>
-                            <div style={{padding: 11}}><ExitToAppOutlinedIcon style={{transform: 'scale(-1,1)'}}/></div>
+                        <div
+                            className={[classes.redHover, mainStyles0.centeredRowNoFlex, mainStyles0.twichHighlight].join(' ')}
+                            onClick={() => {
+                                dispatch(logoutAction())
+                                history.push('/')
+                            }}>
+                            <div style={{padding: 5, marginRight: 7}}><ExitToAppOutlinedIcon
+                                style={{transform: 'scale(-1,1)'}}/></div>
                             <div style={{transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Logout</BoldTyphography>
                             </div>
@@ -189,10 +194,12 @@ const SideBar = ({open, setOpen}) => {
                     </> :
                     <>
                         <Divider/>
-                        <div className={[classes.redHover, mainStyles0.centeredRowNoFlex].join(' ')} onClick={() => {
-                            history.push('/login')
-                        }}>
-                            <div style={{padding: 11}}><ExitToAppOutlinedIcon/></div>
+                        <div
+                            className={[classes.redHover, mainStyles0.centeredRowNoFlex, mainStyles0.twichHighlight].join(' ')}
+                            onClick={() => {
+                                history.push('/login')
+                            }}>
+                            <div style={{padding: 5, marginRight: 7}}><ExitToAppOutlinedIcon/></div>
                             <div style={{transition: "all 0,2s"}}>
                                 <BoldTyphography noWrap color={"inherit"}>Login</BoldTyphography>
                             </div>

@@ -106,7 +106,9 @@ const GameComponent = ({game, vertical = true}) => {
 
     return (
         <div
-            style={{height: baseHeight}}
+            style={{
+                height: baseHeight
+            }}
             ref={containerDiv}
             onMouseUp={() => {
                 if (!small) {
@@ -123,7 +125,6 @@ const GameComponent = ({game, vertical = true}) => {
                  style={{
                      borderRadius: 7,
                      margin: 0,
-                     backgroundColor: theme.palette.background.default,
                      maxHeight: maxHeight,
                      zIndex: expanded ? 1000 : 0
                  }}
@@ -137,7 +138,7 @@ const GameComponent = ({game, vertical = true}) => {
                 clearTimeout(delay);
                 setExpanded(false)
             }}>
-                <div className={vertical ? classes.centeredColumn : classes.centeredRowNoFlex}>
+                <div className={[vertical ? classes.centeredColumn : classes.centeredRowNoFlex].join(' ')}>
 
                     <Typography variant={"h6"} style={{fontWeight: 600, textAlign: 'center'}}
                                 className={gameStyle.margins}
@@ -226,7 +227,15 @@ const gameStyles = makeStyles(theme => ({
         cursor: "pointer",
         overflow: "hidden",
         transition: 'all 0.15s',
-        position: "relative"
+        position: "relative",
+        padding: 15,
+        margin: 10,
+        backgroundColor: theme.palette.background.default,
+        '&:hover': {
+            backgroundColor: 'rgba(45,50,57,1)',
+            border: '1px solid transparent'
+        },
+        border: `1px solid ${theme.palette.divider}`
     },
     elevated: {
         boxShadow: '0px 5px 10px 5px rgba(0, 0, 0,0.8)',

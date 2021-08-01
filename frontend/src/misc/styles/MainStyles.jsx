@@ -117,6 +117,23 @@ const mainStyles = makeStyles(theme => ({
         border: "1px solid #1e2126",
         borderRadius: 6,
         padding: 15
+    },
+    twichHighlight: {
+        margin: 10,
+        '&:hover': {backgroundColor: 'rgba(255,255,255,0.15)'},
+        borderRadius: 7
+    },
+    twichZoom: {
+        borderRadius: 7,
+        position: 'relative',
+        left: 0,
+        top: 0,
+        transition: "all 0.2s",
+        '&:hover': {
+            left: 5,
+            top: -7,
+
+        }
     }
 
 }))
