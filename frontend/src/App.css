@@ -49,7 +49,7 @@
 
 @font-face {
     font-family: 'BankGothic';
-    src: local('BankGothic'), url(/static/fonts/BankGothic.ttf) format('ttf');
+    src: local('BankGothic'), url(./fonts/BankGothic.ttf) format('ttf'), url(/static/fonts/BankGothic.ttf) format('ttf');
     /* other formats include: 'woff2', 'truetype, 'opentype',
                               'embedded-opentype', and 'svg' */
 }
