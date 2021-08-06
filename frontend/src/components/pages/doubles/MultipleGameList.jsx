@@ -30,8 +30,7 @@ const MultipleGameList = ({hiddenPoints = false, type, render = true}) => {
                         </div>}
                     {!loading && pagesNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                        <CapserPagination onNext={() => setPage(currentPage + 1)}
-                                          onPrevious={() => setPage(currentPage - 1)}
+                        <CapserPagination onChange={(page) => setPage(page)}
                                           currentPage={currentPage}
                                           pageCount={pagesNumber}/>
                     </div>}

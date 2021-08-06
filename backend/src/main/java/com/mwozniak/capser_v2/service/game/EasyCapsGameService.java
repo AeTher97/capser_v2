@@ -62,12 +62,17 @@ public class EasyCapsGameService extends AbstractGameService {
 
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findAll(pageable);
+        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findAll(pageable);
     }
 
     @Override
     public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>)(Page<?>)easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
+        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
 

@@ -1,11 +1,43 @@
 import React from 'react';
-import Button from "@material-ui/core/Button";
+import mainStyles from "../../misc/styles/MainStyles";
+import {useTheme} from "@material-ui/core";
 
-const CapserPagination = ({currentPage, onNext, onPrevious, minPage = 1, pageCount}) => {
+const CapserPagination = ({currentPage, onChange, minPage = 1, pageCount, edgeButtons = true}) => {
+    const mainStyle = mainStyles();
+    const theme = useTheme();
+
+    const active = {
+        cursor: 'pointer',
+        padding: 3,
+        margin: 1
+    }
+
+    const disabled = {
+        ...active,
+        visibility: 'hidden'
+    }
+
     return (
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-            {currentPage !== 1 && <Button variant={"text"} onClick={onPrevious}>{"< Previous"}</Button>}
-            {currentPage !== pageCount && <Button variant={"text"} onClick={onNext}>Next ></Button>}
+        <div style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: 'center',
+            color: theme.palette.primary.main,
+            fontWeight: 'bold'
+        }}>
+            {edgeButtons && <div style={currentPage !== 1 ? active : disabled} className={mainStyle.twichHighlight}
+                                 onClick={() => onChange(1)}>{"<<"}</div>}
+            <div style={currentPage !== 1 ? active : disabled} className={mainStyle.twichHighlight}
+                 onClick={() => onChange(currentPage - 1)}>{"<"}</div>
+            {pageCount !== 1 && pageCount !== 0 && <div style={{margin: 3}}>
+                {currentPage}/{pageCount}
+            </div>}
+            {<div style={currentPage !== pageCount ? active : disabled} className={mainStyle.twichHighlight}
+                  onClick={() => onChange(currentPage + 1)}>></div>}
+            {edgeButtons &&
+            <div style={currentPage !== pageCount ? active : disabled} className={mainStyle.twichHighlight}
+                 onClick={() => onChange(pageCount)}>>></div>}
         </div>
     );
 };

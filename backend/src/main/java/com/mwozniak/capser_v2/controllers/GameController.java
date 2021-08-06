@@ -17,7 +17,7 @@ public interface GameController {
 
     ResponseEntity<Object> rejectGame(@PathVariable @Valid UUID gameId) throws CapserException;
 
-    ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber) throws CapserException;
+    ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam UUID player) throws CapserException;
 
     ResponseEntity<Object> getGame(@PathVariable UUID gameId) throws CapserException;
 

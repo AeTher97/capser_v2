@@ -56,9 +56,9 @@ public abstract class AbstractGameController implements GameController {
 
     @Override
     @GetMapping
-    public ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<Object> getGames(@RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam(required = false) UUID player) {
         log.info("Getting games list");
-        return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time").descending())));
+        return ResponseEntity.ok().body(abstractGameService.listAcceptedGames(PageRequest.of(pageNumber, pageSize, Sort.by("time").descending()), player));
     }
 
     @Override

@@ -20,6 +20,8 @@ public interface GameService {
 
     Page<AbstractGame> listAcceptedGames(Pageable pageable);
 
+    Page<AbstractGame> listAcceptedGames(Pageable pageable, UUID player);
+
     UUID queueGame(AbstractGame abstractGame) throws CapserException;
 
     UUID queueGame(AbstractGame abstractGame, boolean notify) throws CapserException;

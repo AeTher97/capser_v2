@@ -67,12 +67,17 @@ public class SinglesGameService extends AbstractGameService {
 
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>)(Page<?>)singlesRepository.findAll(pageable);
+        return (Page<AbstractGame>) (Page<?>) singlesRepository.findAll(pageable);
     }
 
     @Override
     public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        return  (Page<AbstractGame>)(Page<?>)singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
+        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.mwozniak.capser_v2.repository;
 
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,8 @@ public interface UnrankedRepository extends JpaRepository<UnrankedGame, UUID> {
     List<UnrankedGame> findUnrankedGameByPlayer1OrPlayer2(UUID id, UUID id2);
 
     Page<UnrankedGame> findUnrankedGameByAcceptedTrue(Pageable pageable);
+
+    Page<UnrankedGame> findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(Pageable pageable, UUID player1, UUID player2);
 
 
 }

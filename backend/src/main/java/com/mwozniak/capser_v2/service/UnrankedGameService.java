@@ -59,13 +59,19 @@ public class UnrankedGameService extends AbstractGameService {
 
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>)(Page<?>) unrankedRepository.findAll(pageable);
+        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findAll(pageable);
     }
 
     @Override
     public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>)(Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
+        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
     }
+
+    @Override
+    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
+    }
+
 
     @Override
     public AcceptanceRequestType getAcceptanceRequestType() {

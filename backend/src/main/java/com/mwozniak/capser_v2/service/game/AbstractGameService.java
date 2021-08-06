@@ -18,6 +18,8 @@ import com.mwozniak.capser_v2.service.UserService;
 import com.mwozniak.capser_v2.utils.EloRating;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.extern.log4j.Log4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
@@ -184,6 +186,17 @@ public abstract class AbstractGameService implements GameService {
 
     }
 
+
+    @Override
+    public Page<AbstractGame> listAcceptedGames(Pageable pageable, UUID player) {
+        if (player == null) {
+            return listAcceptedGames(pageable);
+        } else {
+            return doListAcceptedGames(pageable, player);
+        }
+    }
+
+    protected abstract Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player);
 
     protected AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);

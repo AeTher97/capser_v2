@@ -95,12 +95,17 @@ public class DoublesService extends AbstractMultipleGameService {
 
     @Override
     public Page<AbstractGame> listGames(Pageable pageable) {
-        return  (Page<AbstractGame>)(Page<?>)doublesRepository.findAll(pageable);
+        return (Page<AbstractGame>) (Page<?>) doublesRepository.findAll(pageable);
     }
 
     @Override
     public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        return  (Page<AbstractGame>)(Page<?>)doublesRepository.findDoublesGameByAcceptedTrue(pageable);
+        return (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrue(pageable);
+    }
+
+    @Override
+    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID team) {
+        return (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrueAndTeam1DatabaseIdEqualsOrTeam2DatabaseIdEquals(pageable, team, team);
     }
 
     @Override

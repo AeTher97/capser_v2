@@ -14,4 +14,6 @@ public interface EasyCapsRepository extends JpaRepository<EasyCapsGame, UUID> {
 
     Page<EasyCapsGame> findEasyCapsGamesByAcceptedTrue(Pageable pageable);
 
+    Page<EasyCapsGame> findEasyCapsGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(Pageable pageable, UUID player1, UUID player2);
+
 }

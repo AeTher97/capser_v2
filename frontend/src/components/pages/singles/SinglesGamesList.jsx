@@ -32,9 +32,8 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
                             <LoadingComponent/>
                         </div>}
                     {!loading && pagesNumber > 1 &&
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                        <CapserPagination onNext={() => setPage(currentPage + 1)}
-                                          onPrevious={() => setPage(currentPage - 1)}
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 10}}>
+                        <CapserPagination onChange={(page) => setPage(page)}
                                           currentPage={currentPage}
                                           pageCount={pagesNumber}/>
                     </div>}

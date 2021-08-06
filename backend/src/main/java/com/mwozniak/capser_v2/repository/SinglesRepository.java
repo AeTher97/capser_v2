@@ -15,6 +15,8 @@ public interface SinglesRepository extends JpaRepository<SinglesGame, UUID> {
 
     Page<SinglesGame> findSinglesGamesByAcceptedTrue(Pageable pageable);
 
+    Page<SinglesGame> findSinglesGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(Pageable pageable, UUID player1, UUID player2);
+
     List<SinglesGame> findSinglesGamesByPlayer1OrPlayer2(UUID id, UUID id2);
 
 }
