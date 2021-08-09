@@ -3,6 +3,8 @@ import {Button, Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import BoldTyphography from "../misc/BoldTyphography";
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import PeopleIcon from '@material-ui/icons/People';
+
 import FetchSelectField from "../misc/FetchSelectField";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
@@ -48,7 +50,7 @@ const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, 
             </div>
             {players.map(player => {
                 return <div key={player.id} className={[styles.player, classes.header, highlighted && player.id === highlighted ? classes.twichHighlighted : ''].join(' ')} onMouseEnter={() => onHighlight(player.id)} onMouseLeave={onHighlightEnd}>
-                    <PersonOutlineIcon fontSize={"small"}/>
+                    {teams? <PeopleIcon fontSize={"small"}/> : <PersonOutlineIcon fontSize={"small"}/>}
                     <BoldTyphography>{teams ? player.name : player.username}</BoldTyphography>
                     {adding && <div style={{flex: 1, display: "flex", justifyContent: "flex-end", color: "red"}}>
                         <div style={{cursor: "pointer"}} onClick={() => {
