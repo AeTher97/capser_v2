@@ -13,6 +13,7 @@ import {showError} from "../../redux/actions/alertActions";
 import LoadingComponent from "../../utils/LoadingComponent";
 import GameIconWithName from "../../misc/GameIconWithName";
 import BoldTyphography from "../misc/BoldTyphography";
+import TwichZoom from "../misc/TwichZoom";
 
 export const getInProgressString = (seeded, finished) => {
     if (seeded && finished) {
@@ -78,10 +79,10 @@ const TournamentsComponent = () => {
                     {tournaments && <>
                         {tournaments.map(tournament => {
                             const multiplier = tournament.gameType === 'DOUBLES' ? 2 : 1;
-                            return <div key={tournament.id} onClick={() => {
+                            return <TwichZoom key={tournament.id} onClick={() => {
                                 history.push(`${getRequestGameTypeString(tournament.gameType)}/tournament/${tournament.id}`)
                             }} className={classes.standardBorder}
-                                        style={{marginBottom: 10, cursor: "pointer", paddingTop: 7}}>
+                                              style={{marginBottom: 10, cursor: "pointer", paddingTop: 7}}>
                                 <div className={classes.header} style={{alignItems: "flex-start"}}>
                                     <BoldTyphography variant={"h5"} color={"primary"} style={{flex: 1}}>
                                         {tournament.tournamentName}
@@ -107,7 +108,7 @@ const TournamentsComponent = () => {
                                         {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] * multiplier : tournament.size.split("_")[1] * multiplier} Players {multiplier === 2 && <>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Teams</>}
                                     </Typography>
                                 </div>
-                            </div>
+                            </TwichZoom>
                         })}
                     </>}
                     {!loading && tournaments.length && tournaments === 0 &&

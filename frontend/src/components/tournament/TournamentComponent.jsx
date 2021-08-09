@@ -41,6 +41,17 @@ const TournamentComponent = () => {
         const [forfeitingPlayer, setForfeitingPlayer] = useState("e");
 
 
+        const [highlighted, setHighlighted] = useState(null);
+
+        const onHighlight = (id) => {
+            setHighlighted(id);
+        }
+
+        const onHighlightEnd = () => {
+            setHighlighted(null)
+        }
+
+
         const isOwner = () => {
             return tournament.owner === userId && hasRole('ADMIN');
         }
@@ -151,6 +162,9 @@ const TournamentComponent = () => {
                                                                         setEdited(false);
                                                                     }}
                                                                     teams={teams}
+                                                                    onHighlight={onHighlight}
+                                                                    onHighlightEnd={onHighlightEnd}
+                                                                    highlighted={highlighted}
                                                                     removePlayer={removeCompetitor}
                                                                     adding={!tournament.seeded && isOwner()}
                                                                     max={parseInt(tournament.size.split("_")[1])}
@@ -168,6 +182,9 @@ const TournamentComponent = () => {
                                              winner={tournament.winner}
                                              openSkipDialog={openSkipDialog}
                                              teams={teams}
+                                             onHighlight={onHighlight}
+                                             onHighlightEnd={onHighlightEnd}
+                                             highlighted={highlighted}
                     />}
                     {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
                     <DoubleEliminationLadder isOwner={isOwner()}
@@ -178,6 +195,9 @@ const TournamentComponent = () => {
                                              winner={tournament.winner}
                                              openSkipDialog={openSkipDialog}
                                              teams={teams}
+                                             onHighlight={onHighlight}
+                                             onHighlightEnd={onHighlightEnd}
+                                             highlighted={highlighted}
                     />}
                     {overrides.player1 && <Dialog open={addGameOpen}>
                         <div className={classes.standardBorder}

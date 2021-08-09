@@ -9,7 +9,10 @@ import {showError} from "../../redux/actions/alertActions";
 import ClearIcon from '@material-ui/icons/Clear';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, adding, max, teams}) => {
+const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, adding, max, teams,
+                                    onHighlight,
+                                    onHighlightEnd,
+                                    highlighted}) => {
     const classes = mainStyles();
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -44,7 +47,7 @@ const TournamentsCompetitors = ({players, addPlayer, removePlayer, savePlayers, 
                                                  nameParameter={teams ? "name" : "username"}/>}
             </div>
             {players.map(player => {
-                return <div key={player.id} className={[styles.player, classes.header].join(' ')}>
+                return <div key={player.id} className={[styles.player, classes.header, highlighted && player.id === highlighted ? classes.twichHighlighted : ''].join(' ')} onMouseEnter={() => onHighlight(player.id)} onMouseLeave={onHighlightEnd}>
                     <PersonOutlineIcon fontSize={"small"}/>
                     <BoldTyphography>{teams ? player.name : player.username}</BoldTyphography>
                     {adding && <div style={{flex: 1, display: "flex", justifyContent: "flex-end", color: "red"}}>
@@ -71,6 +74,7 @@ const playersStyles = makeStyles(theme => ({
     player: {
     color: "white",
     padding: 10,
+        cursor: 'default',
     borderBottom: '1px solid ' + theme.palette.divider
 }
 }))

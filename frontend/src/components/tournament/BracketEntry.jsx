@@ -11,6 +11,7 @@ import {useHistory} from "react-router-dom";
 import PlayerTooltip from "../misc/PlayerTooltip";
 import PeopleIcon from '@material-ui/icons/People';
 import TeamTooltip from "../misc/TeamTooltip";
+import TwichZoom from "../misc/TwichZoom";
 
 export const findTeamStats = (game, id) => {
     if (game.team1DatabaseId === id) {
@@ -67,7 +68,7 @@ const getShowPlus = (isOwner, bracketEntry, hasRole, teams) => {
 const TooltipContents = ({game, player, forfeitedId, teams}) => {
     return <div style={{display: "flex", flexDirection: "row", alignItems: 'center', color: 'white'}}>
         {teams && <PeopleIcon style={{position: 'relative', left: -5}} fontSize={"small"}/>}
-        <Typography style={{
+        <Typography noWrap style={{
             flex: 1,
             textOverflow: "ellipsis", overflow: "hidden",
             opacity: teams ? (game && player.id !== game.winnerId) || (player && forfeitedId === player.id) ? 0.5 : 1 : (game && player.id !== game.winner) || (player && forfeitedId === player.id) ? 0.5 : 1
@@ -78,10 +79,21 @@ const TooltipContents = ({game, player, forfeitedId, teams}) => {
 }
 
 
-const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles, border, teams, cord}) => {
+const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles,mainStyles, border, teams, onHighlight, onHighlightEnd,highlighted}) => {
 
     return (
-        <div className={[entryStyles.padding, border ? entryStyles.border : null].join(' ')}>
+        <div className={[entryStyles.padding, border ? entryStyles.border : null,player && highlighted && highlighted===player.id ? mainStyles.twichHighlighted : ''].join(' ')} style={{margin: 0}} onMouseEnter={() =>{
+            if(player){
+                console.log("xd")
+                onHighlight(player.id);
+            }
+        }}
+             onMouseLeave={() =>{
+                 if(player){
+                     onHighlightEnd(player.id);
+                 }
+             }}
+        >
             {!teams && player &&
             <PlayerTooltip playerId={player.id} gameType={gameType}>
                 <TooltipContents game={game} forfeitedId={forfeitedId} teams={teams} player={player}/>
@@ -103,7 +115,10 @@ const BracketEntry = (
         openAddGameDialog,
         openSkipDialog,
         pathElongation = 0,
-        teams
+        teams,
+        onHighlight,
+        onHighlightEnd,
+        highlighted
     }
     ) => {
         const theme = useTheme();
@@ -122,7 +137,7 @@ const BracketEntry = (
 
 
         return (
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}} >
                 <div style={{
                     height: 71,
                     display: "flex",
@@ -133,23 +148,31 @@ const BracketEntry = (
                         className={[entryStyle.entry, !bracketEntry.bye ? classes.standardBorder : classes.disabledBorder].join(' ')}
                         style={{padding: 0, margin: 0}}>
                         <PlayerPart
+                            onHighlight={onHighlight}
+                            onHighlightEnd={onHighlightEnd}
                             cord={bracketEntry.coordinate}
                             forfeitedId={bracketEntry.forfeitedId}
                             game={bracketEntry.game}
                             player={teams ? bracketEntry.team1 : bracketEntry.player1}
                             gameType={gameType}
                             entryStyles={entryStyle}
+                            mainStyles={classes}
                             teams={teams}
+                            highlighted={highlighted}
                             border={true}/>
                         <PlayerPart
+                            onHighlight={onHighlight}
+                            onHighlightEnd={onHighlightEnd}
+                            highlighted={highlighted}
                             cord={bracketEntry.coordinate}
-
                             forfeitedId={bracketEntry.forfeitedId}
                             game={bracketEntry.game}
                             player={teams ? bracketEntry.team2 : bracketEntry.player2}
                             gameType={gameType}
                             teams={teams}
-                            entryStyles={entryStyle}/>
+                            entryStyles={entryStyle}
+                            mainStyles={classes}
+                        />
                     </div>
 
 

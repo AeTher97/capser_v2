@@ -123,8 +123,13 @@ const mainStyles = makeStyles(theme => ({
         '&:hover': {backgroundColor: 'rgba(255,255,255,0.15)'},
         borderRadius: 7
     },
+    twichHighlighted: {
+        backgroundColor: 'rgba(255,255,255,0.15)',
+    },
     twichZoom: {
         borderRadius: 7,
+        padding: 10,
+        backgroundColor: theme.palette.background.default,
         position: 'relative',
         left: 0,
         top: 0,

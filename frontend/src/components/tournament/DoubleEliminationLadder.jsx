@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Typography} from "@material-ui/core";
 import BracketEntry from "./BracketEntry";
@@ -40,7 +40,10 @@ const DoubleEliminationLadder = ({
                                      openAddGameDialog,
                                      openSkipDialog,
                                      winner,
-                                     teams
+                                     teams,
+                                     onHighlight,
+                                     onHighlightEnd,
+                                     highlighted
                                  }) => {
     const styles = ladderStyles();
 
@@ -51,6 +54,7 @@ const DoubleEliminationLadder = ({
             ref.current.id = "tournamentContainer"
         }
     }, [ref])
+
 
     const levels = [];
     bracketEntries.forEach(entry => {
@@ -110,6 +114,9 @@ const DoubleEliminationLadder = ({
                                                       openSkipDialog={openSkipDialog}
                                                       gameType={gameType}
                                                       teams={teams}
+                                                      onHighlightEnd={onHighlightEnd}
+                                                      onHighlight={onHighlight}
+                                                      highlighted={highlighted}
                                         />
                                         {level.type !== lowestRound && <>
                                             <BracketPath height={verticalOffsetLevel / 4}
@@ -157,7 +164,7 @@ const DoubleEliminationLadder = ({
                                 {level.entries.map((entry) => {
                                     const value = (<div key={entry.id} className={styles.entry} style={{
                                         top: verticalOffsetLevel * currentVertical + additionalVerticalOffset,
-                                        left: currentHorizontalOffset
+                                        left: currentHorizontalOffset, zIndex: 100
                                     }}>
                                         <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
                                                       pathElongation={100}
@@ -165,6 +172,9 @@ const DoubleEliminationLadder = ({
                                                       openSkipDialog={openSkipDialog}
                                                       gameType={gameType}
                                                       teams={teams}
+                                                      onHighlightEnd={onHighlightEnd}
+                                                      onHighlight={onHighlight}
+                                                      highlighted={highlighted}
                                         />
                                         {level.type !== lowestRound && <>
                                             {!firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}

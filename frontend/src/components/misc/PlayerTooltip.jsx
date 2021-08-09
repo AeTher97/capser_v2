@@ -11,7 +11,7 @@ const PlayerTooltip = ({playerId, children, gameType}) => {
     const history = useHistory();
     return (
         <Tooltip title={<PlayerCardWrapper type={gameType} playerId={playerId}/>}
-                 TransitionComponent={Fade}>
+         >
             <div style={{cursor: 'pointer'}} onClick={() => {
                 history.push(`/players/${playerId}`)
             }}>

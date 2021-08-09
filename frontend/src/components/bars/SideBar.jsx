@@ -118,7 +118,7 @@ const SideBar = ({open, setOpen}) => {
         history.push(address);
         setState({
             expanded: open,
-            width: 44
+            width: 50
         })
         setOpen(false);
     }

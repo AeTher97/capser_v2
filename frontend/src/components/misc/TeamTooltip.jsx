@@ -7,8 +7,7 @@ import TeamCardWrapper from "./TeamCardWrapper";
 const TeamTooltip = ({teamId, children}) => {
     const history = useHistory();
     return (
-        <Tooltip title={<TeamCardWrapper teamId={teamId}/>}
-                 TransitionComponent={Fade}>
+        <Tooltip title={<TeamCardWrapper teamId={teamId}/>}>
             <div style={{cursor: 'pointer'}} onClick={() => {
                 // history.push(`/teams/${id}`)
             }}>

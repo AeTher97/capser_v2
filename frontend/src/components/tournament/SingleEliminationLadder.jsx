@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import BracketEntry from "./BracketEntry";
 import BracketPath from "./BracketPath";
@@ -30,7 +30,10 @@ const SingleEliminationLadder = ({
                                      openAddGameDialog,
                                      openSkipDialog,
                                      winner,
-                                     teams
+                                     teams,
+                                     highlighted,
+                                     onHighlight,
+                                     onHighlightEnd
                                  }) => {
     const styles = ladderStyles();
 
@@ -41,6 +44,7 @@ const SingleEliminationLadder = ({
             ref.current.id = "tournamentContainer"
         }
     }, [ref])
+
 
     const levels = [];
     bracketEntries.forEach(entry => {
@@ -69,6 +73,7 @@ const SingleEliminationLadder = ({
     let additionalVerticalOffset = 60;
 
 
+    console.log(onHighlight)
     return (
         <>
             <div className={[styles.container].join(' ')} ref={ref}>
@@ -91,7 +96,8 @@ const SingleEliminationLadder = ({
                                 }}>
                                     <BracketEntry isOwner={isOwner} bracketEntry={entry} showPath={true}
                                                   openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
-                                                  gameType={gameType} teams={teams}
+                                                  gameType={gameType} teams={teams} highlighted={highlighted}
+                                                  onHighlight={onHighlight} onHighlightEnd={onHighlightEnd}
                                     />
                                     {level.type !== lowestRound && <>
                                         <BracketPath height={verticalOffsetLevel / 4}
