@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import RefreshProvider from "./components/misc/RefreshProvider";
+import RefreshProvider from "./utils/RefreshProvider";
 import MainNavigation from "./routing/MainNavigation";
 import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {darkTheme} from "./misc/Theme";

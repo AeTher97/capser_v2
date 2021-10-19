@@ -111,7 +111,8 @@ const mainStyles = makeStyles(theme => ({
         border: "1px solid #5a6572",
         borderRadius: 6,
         padding: 15,
-        margin: 10
+        margin: 10,
+        backgroundColor: theme.palette.background.paper
     },
     disabledBorder: {
         border: "1px solid #1e2126",

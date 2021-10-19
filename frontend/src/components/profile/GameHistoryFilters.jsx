@@ -1,6 +1,6 @@
 import React from 'react';
 import mainStyles from "../../misc/styles/MainStyles";
-import UserFetchSelectField from "../misc/UserFetchSelectField";
+import UserFetchSelectField from "../../utils/UserFetchSelectField";
 import {MenuItem, Select, Typography} from "@material-ui/core";
 
 const GameHistoryFilters = ({setOpponent, setGameType, selectedGameType}) => {

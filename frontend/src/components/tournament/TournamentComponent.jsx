@@ -5,16 +5,20 @@ import {Button, Dialog, MenuItem, Select, Typography, useTheme} from "@material-
 import SingleEliminationLadder from "./SingleEliminationLadder";
 import mainStyles from "../../misc/styles/MainStyles";
 import {useSelector} from "react-redux";
-import AddSinglesGameComponent from "../pages/singles/AddSinglesGameComponent";
-import {getInProgressString, getSeedTypeString, getTournamentTypeString} from "./TournamentsComponent";
+import AddSinglesGameComponent from "../game/AddSinglesGameComponent";
+import {
+    getInProgressString,
+    getSeedTypeString,
+    getTournamentTypeString
+} from "../../screens/tournament/TournamentsComponent";
 import BoldTyphography from "../misc/BoldTyphography";
 import TournamentsCompetitors from "./TournamentsCompetitors";
-import YesNoDialog from "../misc/YesNoDialog";
+import YesNoDialog from "../dialogs/YesNoDialog";
 import {useHasRole} from "../../utils/SecurityUtils";
-import {getGameIcon} from "../game/GameComponent";
+import {getGameIcon} from "../game/details/GameComponent";
 import {getGameTypeString} from "../../utils/Utils";
 import DoubleEliminationLadder from "./DoubleEliminationLadder";
-import AddDoublesGameComponent from "../pages/doubles/AddDoublesGameComponent";
+import AddDoublesGameComponent from "../game/AddDoublesGameComponent";
 
 const TournamentComponent = () => {
 

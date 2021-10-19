@@ -316,7 +316,7 @@ export const darkTheme = createTheme({
         secondary: grey,
         background: {
             default: '#0a1018',
-            paper: 'rgb(0,14,24)'
+            paper: 'rgb(0,19,31)'
         },
         divider: '#353b43',
         action: {

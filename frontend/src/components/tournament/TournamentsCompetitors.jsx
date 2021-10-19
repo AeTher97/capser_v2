@@ -5,7 +5,7 @@ import BoldTyphography from "../misc/BoldTyphography";
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import PeopleIcon from '@material-ui/icons/People';
 
-import FetchSelectField from "../misc/FetchSelectField";
+import FetchSelectField from "../../utils/FetchSelectField";
 import {useDispatch} from "react-redux";
 import {showError} from "../../redux/actions/alertActions";
 import ClearIcon from '@material-ui/icons/Clear';

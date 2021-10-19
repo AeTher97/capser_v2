@@ -3,14 +3,14 @@ import {Tooltip, Typography, useTheme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
-import {findPlayerStats} from "../pages/singles/SinglesGamesList";
+import {findPlayerStats} from "../game/list/SoloGamesList";
 import {useHasRole} from "../../utils/SecurityUtils";
 import SkipNextOutlinedIcon from '@material-ui/icons/SkipNextOutlined';
 import {getRequestGameTypeString} from "../../utils/Utils";
 import {useHistory} from "react-router-dom";
-import PlayerTooltip from "../misc/PlayerTooltip";
+import PlayerTooltip from "../tooltips/PlayerTooltip";
 import PeopleIcon from '@material-ui/icons/People';
-import TeamTooltip from "../misc/TeamTooltip";
+import TeamTooltip from "../tooltips/TeamTooltip";
 
 export const findTeamStats = (game, id) => {
     if (game.team1DatabaseId === id) {

@@ -1,13 +1,13 @@
 import {Route, Switch} from "react-router-dom";
 import React, {useState} from 'react';
-import SideBar from "../components/bars/SideBar";
-import AddSinglesGameComponent from "../components/pages/singles/AddSinglesGameComponent";
-import AcceptanceComponent from "../components/pages/acceptance/AcceptanceComponent";
-import TeamsComponent from "../components/pages/teams/TeamsComponent";
+import SideBar from "../bars/SideBar";
+import AddSinglesGameComponent from "../components/game/AddSinglesGameComponent";
+import AcceptanceScreen from "../screens/private/AcceptanceScreen";
+import TeamsScreen from "../screens/private/TeamsScreen";
 import {useXtraSmallSize} from "../utils/SizeQuery";
-import MobileTopBar from "../components/bars/TopBar";
+import MobileTopBar from "../bars/TopBar";
 import {useTheme} from "@material-ui/core";
-import UserComponent from "../components/profile/UserComponent";
+import ProfileScreen from "../screens/profile/ProfileScreen";
 
 const SecureNavigation = () => {
 
@@ -31,20 +31,20 @@ const SecureNavigation = () => {
 
                     <Route exact path={"/secure/acceptance"}>
                         <div>
-                            <AcceptanceComponent/>
+                            <AcceptanceScreen/>
                         </div>
 
                     </Route>
 
                     <Route exact path={"/secure/teams"}>
                         <div>
-                            <TeamsComponent/>
+                            <TeamsScreen/>
                         </div>
                     </Route>
 
                     <Route exact path={"/secure/profile"}>
                         <div>
-                            <UserComponent/>
+                            <ProfileScreen/>
                         </div>
                     </Route>
 

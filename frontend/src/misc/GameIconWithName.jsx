@@ -1,6 +1,6 @@
 import React from 'react';
 import {getGameTypeString} from "../utils/Utils";
-import {getGameIcon} from "../components/game/GameComponent";
+import {getGameIcon} from "../components/game/details/GameComponent";
 import BoldTyphography from "../components/misc/BoldTyphography";
 
 const GameIconWithName = ({gameType}) => {

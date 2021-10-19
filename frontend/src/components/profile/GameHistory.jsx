@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useLatestPlayerGames, usePlayerGamesWithOpponent} from "../../data/SoloGamesData";
-import GameComponent from "../game/GameComponent";
+import GameComponent from "../game/details/GameComponent";
 import GameHistoryFilters from "./GameHistoryFilters";
 
 const GameHistory = ({userId}) => {

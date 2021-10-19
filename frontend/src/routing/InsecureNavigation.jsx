@@ -1,21 +1,21 @@
 import {Route, Switch} from "react-router-dom";
 import React, {useState} from 'react';
-import SideBar from "../components/bars/SideBar";
-import HomeScreen from "../screens/HomeScreen";
-import SinglesScreen from "../screens/SinglesScreen";
-import EasyComponent from "../components/pages/easy/EasyComponent";
-import UnrankedComponent from "../components/pages/unranked/UnrankedComponent";
-import DoublesComponent from "../components/pages/doubles/DoublesComponent";
-import TenCommandments from "../components/pages/10Commandments/TenCommandments";
-import Rules from "../components/pages/rules/Rules";
-import SinglesGame from "../components/pages/singles/SinglesGame";
+import SideBar from "../bars/SideBar";
+import SinglesScreen from "../screens/games/solo/SinglesScreen";
+import EasyCapsGamesScreen from "../screens/games/solo/EasyCapsGamesScreen";
+import UnrankedScreen from "../screens/games/solo/UnrankedScreen";
+import DoublesScreen from "../screens/games/team/DoublesScreen";
+import TenCommandmentsScreen from "../screens/public/TenCommandmentsScreen";
+import RulesScreen from "../screens/public/RulesScreen";
+import SoloGame from "../components/game/details/SoloGame";
 import {useXtraSmallSize} from "../utils/SizeQuery";
-import MobileTopBar from "../components/bars/TopBar";
+import MobileTopBar from "../bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import TournamentComponent from "../components/tournament/TournamentComponent";
-import TournamentsComponent from "../components/tournament/TournamentsComponent";
-import PlayerComponent from "../components/profile/PlayerComponent";
-import DoublesGame from "../components/pages/doubles/DoublesGame";
+import TournamentsComponent from "../screens/tournament/TournamentsComponent";
+import DoublesGame from "../components/game/details/DoublesGame";
+import ProfileScreen from "../screens/profile/ProfileScreen";
+import HomeScreen from "../screens/public/HomeScreen";
 
 const InsecureNavigation = () => {
 
@@ -44,34 +44,34 @@ const InsecureNavigation = () => {
                     </Route>
 
                     <Route exact path={"/singles/:gameId"}>
-                        <SinglesGame/>
+                        <SoloGame/>
                     </Route>
 
                     <Route exact path={"/players/:playerId"}>
-                        <PlayerComponent/>
+                        <ProfileScreen/>
                     </Route>
 
 
                     <Route exact path={"/easy"}>
-                        <EasyComponent/>
+                        <EasyCapsGamesScreen/>
                     </Route>
 
                     <Route exact path={"/easy/:gameId"}>
-                        <SinglesGame/>
+                        <SoloGame/>
                     </Route>
 
 
                     <Route exact path={"/unranked"}>
-                        <UnrankedComponent/>
+                        <UnrankedScreen/>
                     </Route>
 
                     <Route exact path={"/unranked/:gameId"}>
-                        <SinglesGame/>
+                        <SoloGame/>
                     </Route>
 
 
                     <Route exact path={"/doubles"}>
-                        <DoublesComponent/>
+                        <DoublesScreen/>
                     </Route>
 
                     <Route exact path={"/doubles/:gameId"}>
@@ -80,12 +80,12 @@ const InsecureNavigation = () => {
 
 
                     <Route exact path={"/10commandments"}>
-                        <TenCommandments/>
+                        <TenCommandmentsScreen/>
                     </Route>
 
 
                     <Route exact path={"/rules"}>
-                        <Rules/>
+                        <RulesScreen/>
                     </Route>
 
                     <Route exact path={"/tournaments"}>

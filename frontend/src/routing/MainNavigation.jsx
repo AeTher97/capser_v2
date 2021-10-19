@@ -8,10 +8,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeAlert} from "../redux/actions/alertActions";
 import SecureNavigation from "./SecureNavigation";
 import InsecureNavigation from "./InsecureNavigation";
-import SignInScreen from "../screens/SignInScreen";
-import RegisterComponent from "../components/auth/RegisterComponent";
-import ResetPasswordComponent from "../components/auth/ResetPasswordComponent";
-import UpdatePasswordComponent from "../components/auth/UpdatePasswordComponent";
+import SignInScreen from "../screens/administration/SignInScreen";
+import RegisterScreen from "../screens/administration/RegisterScreen";
+import ResetPasswordScreen from "../screens/administration/ResetPasswordScreen";
+import FinishResettingPasswordScreen from "../screens/administration/FinishResettingPasswordScreen";
 import ScrollToTop from "../utils/ScrollToTop";
 
 const MainNavigation = () => {
@@ -34,11 +34,11 @@ const MainNavigation = () => {
                 </>}/>
 
                 <Route exact path={"/register"}>
-                    <RegisterComponent/>
+                    <RegisterScreen/>
                 </Route>
 
                 <Route exact path={"/reset"}>
-                    <ResetPasswordComponent/>
+                    <ResetPasswordScreen/>
                     <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
                         <Alert severity={severity}>
                             {message}
@@ -47,7 +47,7 @@ const MainNavigation = () => {
                 </Route>
 
                 <Route exact path={"/resetUpdate"}>
-                    <UpdatePasswordComponent/>
+                    <FinishResettingPasswordScreen/>
                     <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
                         <Alert severity={severity}>
                             {message}
