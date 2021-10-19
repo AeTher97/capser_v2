@@ -18,7 +18,7 @@ const ValidatedField = props => {
 
 
     return (
-        <>
+        <div style={{display: 'flex', flexDirection: 'column', flex: 1}}>
             <TextField
                 {...props}
                 value={value}
@@ -31,7 +31,7 @@ const ValidatedField = props => {
             {!!error && showError && <div style={{position: "relative", top: -17}}>
                 <Typography style={{position: "absolute"}} variant={"caption"} color={"primary"}>{error}</Typography>
             </div>}
-        </>
+        </div>
     );
 };
 

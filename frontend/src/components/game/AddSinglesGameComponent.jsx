@@ -108,7 +108,7 @@ const AddSinglesGameComponent = ({
                         <Typography variant={"h5"}>Game Data</Typography>
                         <Divider/>
                         <div className={classes.margin}>
-                            <Select label={"Game mode"} style={{minWidth: 200}} value={gameMode}
+                            <Select style={{minWidth: 200}} value={gameMode}
                                     onChange={handleChange}>
                                 <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
                                 <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
@@ -122,7 +122,7 @@ const AddSinglesGameComponent = ({
 
                         <div className={classes.margin}>
                             <Typography>Points</Typography>
-                            <Select label={"Points"} style={{minWidth: 200}} value={playerScore} onChange={(e) => {
+                            <Select style={{minWidth: 200}} value={playerScore} onChange={(e) => {
                                 setPlayerScore(e.target.value)
                             }}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
@@ -131,7 +131,7 @@ const AddSinglesGameComponent = ({
 
                         <div className={classes.margin}>
                             <Typography>Sinks</Typography>
-                            <Select label={"Sinks"} style={{minWidth: 200}} value={playerSinks} onChange={(e) => {
+                            <Select style={{minWidth: 200}} value={playerSinks} onChange={(e) => {
                                 setPlayerSinks(e.target.value)
                             }}>
                                 {getScoreOptions(21)}
@@ -149,7 +149,7 @@ const AddSinglesGameComponent = ({
                         <div className={classes.margin}>
                             <Typography>Points</Typography>
 
-                            <Select label={"Points"} value={opponentScore} onChange={(e) => {
+                            <Select value={opponentScore} onChange={(e) => {
                                 setOpponentScore(e.target.value)
                             }} className={classes.width200}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
@@ -157,7 +157,7 @@ const AddSinglesGameComponent = ({
                         </div>
                         <div className={classes.margin}>
                             <Typography>Sinks</Typography>
-                            <Select label={"Sinks"} className={classes.width200} value={opponentSinks}
+                            <Select className={classes.width200} value={opponentSinks}
                                     onChange={(e) => {
                                         setOpponentSinks(e.target.value)
                                     }}>

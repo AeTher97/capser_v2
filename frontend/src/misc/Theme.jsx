@@ -53,7 +53,17 @@ const getOverrides = (divider, baseTheme, type) => {
         MuiInputLabel: {
             formControl: {
                 transform: 'translate(0, 8px) scale(1)'
-            }
+            },
+            outlined: {
+                transform: 'translate(10px, 9px) scale(1)'
+
+            },
+
+        },
+        MuiOutlinedInput: {
+            input: {padding: 6, paddingLeft: 10, height: 20},
+
+
         },
         MuiInput: {
             formControl: {
@@ -242,6 +252,9 @@ const getOverrides = (divider, baseTheme, type) => {
             docked: {
                 minHeight: 0
             }
+        },
+        MuiTextField: {
+            root: {borderRadius: 10}
         }
 
 
@@ -261,7 +274,14 @@ const getProps = (baseTheme) => {
             InputLabelProps: {
                 shrink: false,
                 disableAnimation: true,
+            },
+            variant: 'outlined'
+        },
+        MuiOutlinedInput: {
+            root: {
+                padding: 0
             }
+
         },
         MuiAppBar: {
             color: "transparent",
@@ -303,6 +323,10 @@ const getProps = (baseTheme) => {
         MuiCard: {
             elevation: 0
         },
+        MuiSelect: {
+            variant: 'outlined',
+            displayEmpty: true,
+        }
 
 
     }
@@ -326,7 +350,7 @@ export const darkTheme = createTheme({
 
     overrides: getOverrides(dividerDark, baseDarkTheme, "dark"),
     shape: {
-        borderRadius: 2
+        borderRadius: 7
     },
     props: getProps(baseDarkTheme)
 })

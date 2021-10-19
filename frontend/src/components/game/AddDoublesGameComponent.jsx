@@ -37,7 +37,7 @@ const AddDoublesGameComponent = ({
     const [opposingTeamScore, setOpposingTeamScore] = useState(0);
     const [usernames, setUsernames] = useState([]);
 
-    const [team, setTeam] = useState(null);
+    const [team, setTeam] = useState('none');
     const [opposingTeam, setOpposingTeam] = useState(null);
 
     const [teamStats, setTeamStats] = useState([]);
@@ -72,6 +72,12 @@ const AddDoublesGameComponent = ({
         })
     }
     const handleTeamChange = (e) => {
+        if (e.target.value === 'none') {
+            setTeam('none');
+            setTeamStats([]);
+            updateUsernames([]);
+            return;
+        }
         if (externalSave) {
             setTeam(e.target.value.id);
             updateUsernames(e.target.value.playerList);
@@ -109,6 +115,12 @@ const AddDoublesGameComponent = ({
     }
 
     const handleOpponentTeamChange = (e) => {
+        if (!e) {
+            updateUsernames([]);
+            setOpposingTeam(null);
+            setOpposingTeamStats([]);
+            return;
+        }
         setOpposingTeam(e);
         updateUsernames(e.playerList);
         setOpposingTeamStats(e.playerList.map(player => {
@@ -192,36 +204,39 @@ const AddDoublesGameComponent = ({
 
     return (
         <div style={{display: "flex", justifyContent: "center"}}>
-            <div style={{maxWidth: 400, flex: 1}}>
+            <div style={{maxWidth: 600, flex: 1}}>
 
-                <div style={{padding: 8}} className={showBorder ? classes.standardBorder : null}>
-                    <div
-                        className={[classes.column].join(' ')}>
-                        <Typography variant={"h5"}>Game Data</Typography>
-                        <Divider/>
-                        <div className={classes.margin}>
-                            <Select label={"Game mode"} style={{minWidth: 200}} value={gameMode}
-                                    onChange={handleChange}>
-                                <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
-                                <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
-                            </Select>
+                <div style={{padding: 8, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}
+                     className={showBorder ? classes.standardBorder : null}>
+                    <div>
+                        <div
+                            className={[classes.column].join(' ')}>
+                            <Typography variant={"h5"}>Game Data</Typography>
+                            <Divider/>
+                            <div className={classes.margin}>
+                                <Select style={{minWidth: 200}} value={gameMode}
+                                        onChange={handleChange}>
+                                    <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
+                                    <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
+                                </Select>
                         </div>
                     </div>
                     <div
                         className={[classes.column].join(' ')}>
                         <Typography variant={"h5"}>{!externalSave ? 'Player Team Data' : overrideTeam1Name}</Typography>
                         <div className={classes.margin}>
-                            {teams.length === 0 && !externalSave &&
+                            {teams.length === 0 && !externalSave && !loading &&
                             <Typography color={"primary"} variant={"caption"}>No teams, create one in Teams
                                 page</Typography>}
                             {teams.length > 0 &&
                             <Select className={classes.width200} value={team} onChange={handleTeamChange}>
+                                <MenuItem value={'none'}>Select your team</MenuItem>
                                 {teams.map(team => <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>)}
                             </Select>}
                         </div>
                         <div className={classes.margin}>
                             <Typography>Points</Typography>
-                            <Select label={"Points"} style={{minWidth: 200}} value={teamScore} onChange={(e) => {
+                            <Select style={{minWidth: 200}} value={teamScore} onChange={(e) => {
                                 setTeamScore(e.target.value)
                             }}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
@@ -231,7 +246,7 @@ const AddDoublesGameComponent = ({
                             variant={"h6"}>{findUsername(stats.playerId)} Stats</Typography>
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
-                                <Select label={"Points"} style={{minWidth: 200}}
+                                <Select style={{minWidth: 200}}
                                         value={stats.score}
                                         onChange={(e) => {
                                             setTeamStatsValue(stats.playerId, e.target.value, 'score');
@@ -242,7 +257,7 @@ const AddDoublesGameComponent = ({
 
                             <div className={classes.margin}>
                                 <Typography>Sinks</Typography>
-                                <Select label={"Sinks"} style={{minWidth: 200}}
+                                <Select style={{minWidth: 200}}
                                         value={stats.sinks}
                                         onChange={(e) => {
                                             setTeamStatsValue(stats.playerId, e.target.value, 'sinks');
@@ -253,14 +268,15 @@ const AddDoublesGameComponent = ({
                         </div>)}
 
                     </div>
+                    </div>
 
                     <div
                         className={[classes.column].join(' ')}>
                         <Typography
-                            variant={"h5"}>{!externalSave ? 'Opponent Team Data' : overrideTeam2Name}</Typography>
+                            variant={"h5"}>{!externalSave ? 'Opposing Team Data' : overrideTeam2Name}</Typography>
 
                         {!externalSave && <div className={classes.margin}>
-                            <FetchSelectField label={"Select Opposing Team"}
+                            <FetchSelectField label={"Opposing Team"}
                                               onChange={handleOpponentTeamChange}
                                               url={"/teams/search"}
                                               nameParameter={"name"}/>
@@ -269,7 +285,7 @@ const AddDoublesGameComponent = ({
                         <div className={classes.margin}>
                             <Typography>Points</Typography>
 
-                            <Select label={"Points"} value={opposingTeamScore} onChange={(e) => {
+                            <Select value={opposingTeamScore} onChange={(e) => {
                                 setOpposingTeamScore(e.target.value)
                             }} className={classes.width200}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
@@ -280,7 +296,7 @@ const AddDoublesGameComponent = ({
 
                             <div className={classes.margin}>
                                 <Typography>Points</Typography>
-                                <Select label={"Points"} style={{minWidth: 200}}
+                                <Select style={{minWidth: 200}}
                                         value={stats.score}
                                         onChange={(e) => {
                                             setOpposingTeamStatsValue(stats.playerId, e.target.value, 'score');
@@ -291,7 +307,7 @@ const AddDoublesGameComponent = ({
 
                             <div className={classes.margin}>
                                 <Typography>Sinks</Typography>
-                                <Select label={"Sinks"} style={{minWidth: 200}}
+                                <Select style={{minWidth: 200}}
                                         value={stats.sinks}
                                         onChange={(e) => {
                                             setOpposingTeamStatsValue(stats.playerId, e.target.value, 'sinks');

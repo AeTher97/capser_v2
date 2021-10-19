@@ -7,7 +7,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import LoadingComponent from "./LoadingComponent";
 import PropTypes from 'prop-types';
 import {useKeyPress} from "./UseKeyPress";
-import mainStyles from "../misc/styles/MainStyles";
 import {useSelector} from "react-redux";
 
 
@@ -27,7 +26,6 @@ const FetchSelectField = ({
     const searchPhrase = useFieldSearch(url, resultSize || 5);
     const theme = useTheme();
     const classes = fetchSelectFieldStyles();
-    const styles = mainStyles();
     const {userId} = useSelector(state => state.auth)
 
     const [phrase, setPhrase] = useState('')
@@ -143,7 +141,7 @@ const FetchSelectField = ({
                                      setHovered(user);
                                  }}
                             >
-                                <Typography className={classes.record} style={{padding: 5}}
+                                <Typography className={classes.record} style={{padding: 3}}
                                             color={hovered === user ? "primary" : "textPrimary"}>
                                     {user[nameParameter]}
                                 </Typography>
