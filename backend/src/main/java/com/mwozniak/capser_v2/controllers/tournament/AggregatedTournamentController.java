@@ -1,11 +1,13 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
+import com.mwozniak.capser_v2.models.database.tournament.TournamentDto;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.SinglesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedTournament;
 import lombok.extern.log4j.Log4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +36,12 @@ public class AggregatedTournamentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Tournament<?>>> getTournaments(@RequestParam int pageSize, @RequestParam int pageNumber) {
+    public ResponseEntity<List<TournamentDto>> getTournaments(@RequestParam int pageSize, @RequestParam int pageNumber) {
         log.info("Getting aggregated tournament list");
-        List<EasyCapsTournament> easyCapsTournaments = easyCapsTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
-        List<SinglesTournament> singlesTournaments = singlesTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
-        List<UnrankedTournament> unrankedTournaments = unrankedTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
-        List<DoublesTournament> doublesTournaments = doublesTournamentController.getTournaments(pageSize,pageNumber).getBody().getContent();
+        List<EasyCapsTournament> easyCapsTournaments = easyCapsTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
+        List<SinglesTournament> singlesTournaments = singlesTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
+        List<UnrankedTournament> unrankedTournaments = unrankedTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
+        List<DoublesTournament> doublesTournaments = doublesTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
 
         List<Tournament<?>> aggregatedList = new ArrayList<>();
         aggregatedList.addAll(easyCapsTournaments);
@@ -50,10 +52,19 @@ public class AggregatedTournamentController {
 
         aggregatedList.sort(Tournament.Comparators.DATE);
         Collections.reverse(aggregatedList);
-        if (aggregatedList.size() > 10) {
-            return ResponseEntity.ok().body(aggregatedList.subList(0, 9));
+
+        List<TournamentDto> finalList = new ArrayList<>();
+        aggregatedList.forEach(tournament -> {
+            TournamentDto dto = new TournamentDto();
+            dto.setGameType(tournament.getGameType());
+            BeanUtils.copyProperties(tournament, dto);
+            finalList.add(dto);
+        });
+
+        if (finalList.size() > 10) {
+            return ResponseEntity.ok().body(finalList.subList(0, 9));
         } else {
-            return ResponseEntity.ok().body(aggregatedList);
+            return ResponseEntity.ok().body(finalList);
         }
     }
 }

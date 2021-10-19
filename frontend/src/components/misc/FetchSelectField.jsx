@@ -126,11 +126,11 @@ const FetchSelectField = ({
             return null;
         }
         return (!searching ?
-            <div style={{position: 'relative'}}>
+            <div style={{position: 'relative', borderRadius: 10}}>
                 <div className={classes.recordContainer}>
                     {searchResult.length > 0 ? searchResult.map(user => {
                         return (
-                            <div className={classes.record} key={user[nameParameter]} onMouseDown={() => {
+                            <div className={classes.record} key={user[nameParameter]} onMouseDown={(e) => {
                                 if (!clearOnChange) {
                                     setPhrase(user[nameParameter])
                                 } else {
@@ -168,15 +168,16 @@ const FetchSelectField = ({
                        value={phrase}
                        onBlur={() => {
                            setFocused(false)
+                           if (phrase === '') {
+                               onChange(null);
+                           }
                        }}
                        InputProps={{
                            endAdornment: focused ?
                                <ExpandMoreIcon style={{cursor: "pointer", transform: "scale(-1,-1)"}}
                                                onMouseDown={() => {
-                                                   console.log("bluer")
                                                    ref.current.blur()
                                                }}/> : <ExpandMoreIcon style={{cursor: "pointer"}} onMouseDown={() => {
-                                   console.log("focus")
                                    setTimeout(() => ref.current.focus(), 30)
                                }}/>
                        }}
@@ -198,7 +199,8 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
         minWidth: 200,
         border: "1px solid " + theme.palette.divider,
         borderBottom: 'none',
-        left: -1
+        left: -1,
+        borderRadius: 10
 
     },
     loadingContainer: {
@@ -210,7 +212,8 @@ const fetchSelectFieldStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        border: "1px solid " + theme.palette.divider
+        border: "1px solid " + theme.palette.divider,
+        borderRadius: 10
     },
     record: {
         '&:hover': {

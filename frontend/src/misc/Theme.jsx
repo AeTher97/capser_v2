@@ -1,10 +1,10 @@
-import {createMuiTheme} from "@material-ui/core/styles";
 import Fade from "@material-ui/core/Fade";
 import red from "@material-ui/core/colors/red";
 import {grey} from "@material-ui/core/colors";
+import {createTheme} from "@material-ui/core";
 
 
-export const baseDarkTheme = createMuiTheme({
+export const baseDarkTheme = createTheme({
     palette: {
         primary: red,
         secondary: grey,
@@ -21,7 +21,7 @@ export const baseDarkTheme = createMuiTheme({
 
 const FakeTransitionComponent = ({children}) => children;
 
-const dividerDark = "rgba(255, 255, 255, 0.8)"
+const dividerDark = 'rgba(255, 255, 255, 0.8)'
 const paperColor = 'rgb(29,29,29)'
 
 
@@ -32,6 +32,11 @@ const getOverrides = (divider, baseTheme, type) => {
                 textTransform: "none",
                 padding: '2px 15px 2px 15px',
                 borderRadius: 7,
+                backgroundColor: baseTheme.palette.primary.main,
+                color: baseTheme.palette.text.disabled
+            },
+            textPrimary: {
+                color: baseTheme.palette.text.primary
             },
             outlinedPrimary: {
                 color: divider,
@@ -247,7 +252,7 @@ const getProps = (baseTheme) => {
     return {
         MuiButton: {
             disableRipple: true,
-            variant: "contained",
+            variant: "text",
             color: "primary",
             disableElevation: true,
             size: "small"
@@ -304,7 +309,7 @@ const getProps = (baseTheme) => {
 }
 
 
-export const darkTheme = createMuiTheme({
+export const darkTheme = createTheme({
     palette: {
         type: "dark",
         primary: red,
@@ -313,8 +318,10 @@ export const darkTheme = createMuiTheme({
             default: '#0a1018',
             paper: 'rgb(0,14,24)'
         },
-        divider: '#353b43'
-
+        divider: '#353b43',
+        action: {
+            hoverOpacity: 0.7
+        }
     },
 
     overrides: getOverrides(dividerDark, baseDarkTheme, "dark"),

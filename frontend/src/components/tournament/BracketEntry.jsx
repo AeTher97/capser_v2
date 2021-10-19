@@ -11,7 +11,6 @@ import {useHistory} from "react-router-dom";
 import PlayerTooltip from "../misc/PlayerTooltip";
 import PeopleIcon from '@material-ui/icons/People';
 import TeamTooltip from "../misc/TeamTooltip";
-import TwichZoom from "../misc/TwichZoom";
 
 export const findTeamStats = (game, id) => {
     if (game.team1DatabaseId === id) {
@@ -79,20 +78,33 @@ const TooltipContents = ({game, player, forfeitedId, teams}) => {
 }
 
 
-const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles,mainStyles, border, teams, onHighlight, onHighlightEnd,highlighted}) => {
+const PlayerPart = ({
+                        player,
+                        game,
+                        gameType,
+                        forfeitedId,
+                        entryStyles,
+                        mainStyles,
+                        border,
+                        teams,
+                        onHighlight,
+                        onHighlightEnd,
+                        highlighted
+                    }) => {
 
     return (
-        <div className={[entryStyles.padding, border ? entryStyles.border : null,player && highlighted && highlighted===player.id ? mainStyles.twichHighlighted : ''].join(' ')} style={{margin: 0}} onMouseEnter={() =>{
-            if(player){
-                console.log("xd")
+        <div
+            className={[entryStyles.padding, border ? entryStyles.border : null, player && highlighted && highlighted === player.id ? mainStyles.twichHighlighted : ''].join(' ')}
+            style={{margin: 0}} onMouseEnter={() => {
+            if (player) {
                 onHighlight(player.id);
             }
         }}
-             onMouseLeave={() =>{
-                 if(player){
-                     onHighlightEnd(player.id);
-                 }
-             }}
+            onMouseLeave={() => {
+                if (player) {
+                    onHighlightEnd(player.id);
+                }
+            }}
         >
             {!teams && player &&
             <PlayerTooltip playerId={player.id} gameType={gameType}>
@@ -107,19 +119,19 @@ const PlayerPart = ({player, game, gameType, forfeitedId, entryStyles,mainStyles
 }
 
 const BracketEntry = (
-    {
-        bracketEntry,
-        gameType,
-        showPath,
-        isOwner,
-        openAddGameDialog,
-        openSkipDialog,
-        pathElongation = 0,
-        teams,
-        onHighlight,
-        onHighlightEnd,
-        highlighted
-    }
+        {
+            bracketEntry,
+            gameType,
+            showPath,
+            isOwner,
+            openAddGameDialog,
+            openSkipDialog,
+            pathElongation = 0,
+            teams,
+            onHighlight,
+            onHighlightEnd,
+            highlighted
+        }
     ) => {
         const theme = useTheme();
         const borderColor = theme.palette.divider;
@@ -137,7 +149,7 @@ const BracketEntry = (
 
 
         return (
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}} >
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
                 <div style={{
                     height: 71,
                     display: "flex",
@@ -237,7 +249,7 @@ const BracketEntry = (
                         <div
                             className={entryStyle.additionalButtons}
                             style={{
-                                backgroundColor: plusBaseColor,
+                                borderRadius: 0,
                                 top: -47,
                                 left: 140,
                                 width: 20,
@@ -246,10 +258,12 @@ const BracketEntry = (
                                 fontSize: 12,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                border: '1px solid grey',
                             }} onMouseEnter={() => setSkipColor(plusActiveColor)}
                             onMouseLeave={() => setSkipColor(plusBaseColor)}>
-                            i
+                            <div className={classes.twichButtonBackground}
+                                 style={{padding: 0, width: '100%', height: '100%'}}>
+                                i
+                            </div>
                         </div>
                     </Tooltip>}
 
@@ -272,48 +286,26 @@ const entryStyles = (pathElongation, borderColor) => makeStyles(theme => (
         ,
         border: {
             padding: 5,
-            borderBottom
-    :
-    '1px solid ' + borderColor
-}
-,
-padding: {
-    padding: 5,
-        paddingLeft
-:
-    10
-}
-,
-addedPathStyles: {
-    width: 49 + pathElongation,
-        height
-:
-    35,
-        display
-:
-    "inline-block",
-        borderBottom
-:
-    `1px solid ${borderColor}`
-}
-,
-additionalButtons: {
-    position: "relative",
-        borderRadius
-:
-    '50%',
-        zIndex
-:
-    10,
-        cursor
-:
-    "pointer",
-        color
-:
-    'white',
-
-}
-}
+            borderBottom: '1px solid ' + borderColor
+        },
+        padding: {
+            padding: 5,
+            paddingLeft: 10
+        },
+        addedPathStyles: {
+            width: 49 + pathElongation,
+            height: 35,
+            display: "inline-block",
+            borderBottom: `1px solid ${borderColor}`
+        },
+        additionalButtons: {
+            position: "relative",
+            borderRadius: '50%',
+            zIndex: 10,
+            cursor: "pointer",
+            color: 'white',
+        }
+    }
 ))
 
 export default BracketEntry;

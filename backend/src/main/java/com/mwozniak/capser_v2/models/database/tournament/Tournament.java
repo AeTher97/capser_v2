@@ -58,7 +58,7 @@ public abstract class Tournament<T extends AbstractGame> {
 
     private Date date;
 
-    protected abstract GameType getGameType();
+    public abstract GameType getGameType();
 
     protected abstract void populateEntryList();
 

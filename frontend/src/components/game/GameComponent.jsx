@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Link, Typography, useTheme} from "@material-ui/core";
+import {Link, Typography} from "@material-ui/core";
 import {getRequestGameTypeString} from "../../utils/Utils";
 import mainStyles from "../../misc/styles/MainStyles";
 import {makeStyles} from "@material-ui/core/styles";
@@ -32,7 +32,6 @@ const GameComponent = ({game, vertical = true}) => {
     const containerDiv = useRef();
     const [baseHeight, setBaseHeight] = useState(0);
     const history = useHistory();
-    const theme = useTheme();
     const small = useXtraSmallSize();
 
 
@@ -110,7 +109,7 @@ const GameComponent = ({game, vertical = true}) => {
                 height: baseHeight
             }}
             ref={containerDiv}
-            onMouseUp={() => {
+            onClick={() => {
                 if (!small) {
                     history.push(`/${getRequestGameTypeString(game.gameType)}/${game.id}`)
                 } else {

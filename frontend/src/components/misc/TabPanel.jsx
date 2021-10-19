@@ -1,13 +1,16 @@
 import React from 'react';
 
 const TabPanel = ({children, showValue, value, ...other}) => {
-    return (
-        <div
-            role={"tabpanel"}
-            hidden={value !== showValue}
-            {...other}>
-            {children}
-        </div>)
+    if (value === showValue) {
+        return (
+            <div
+                role={"tabpanel"}
+                {...other}>
+                {children}
+            </div>)
+    } else {
+        return <></>;
+    }
 
 };
 

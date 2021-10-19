@@ -5,6 +5,7 @@ import GameComponent from "../../game/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import CapserPagination from "../../misc/CapserPagination";
 import Grid from "@material-ui/core/Grid";
+import {Skeleton} from "@material-ui/lab";
 
 export const findPlayerStats = (game, id) => {
     return game.gamePlayerStats.find(o => o.playerId === id)
@@ -18,6 +19,7 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
 
     const {games, loading, pagesNumber} = useSinglesGames(type, currentPage - 1, 10);
 
+    console.log((!loading && pagesNumber > 1) || games)
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
             <div style={{maxWidth: 800}}>
@@ -31,12 +33,13 @@ const SinglesGamesList = ({type, hiddenPoints = false, render = true}) => {
                         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                             <LoadingComponent/>
                         </div>}
-                    {!loading && pagesNumber > 1 &&
+                    {((!loading && pagesNumber > 1) || games) &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center", marginTop: 10}}>
                         <CapserPagination onChange={(page) => setPage(page)}
                                           currentPage={currentPage}
                                           pageCount={pagesNumber}/>
                     </div>}
+                    {loading && <Skeleton style={{width: 500, height: 100}}/>}
                 </div>
             </div>
         </div>

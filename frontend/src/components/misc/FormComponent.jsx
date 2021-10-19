@@ -34,7 +34,7 @@ const FormComponent = ({title, fields, secondaryTitle, onSubmit, buttonText, str
                     </div>
                 })}
 
-                {onSubmit && <Button fullWidth={stretchButton} variant={"contained"} type={"submit"}
+                {onSubmit && <Button fullWidth={stretchButton} type={"submit"}
                                      className={classes.button}>
                     {buttonText ? buttonText : 'Wyślij'}
                 </Button>}

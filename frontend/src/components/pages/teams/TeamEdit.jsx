@@ -5,7 +5,7 @@ import {validateLength} from "../../../utils/Validators";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {showError} from "../../../redux/actions/alertActions";
 import Dialog from "@material-ui/core/Dialog";
-import {Divider, Grid, IconButton, Typography} from "@material-ui/core";
+import {Divider, Grid, Typography} from "@material-ui/core";
 import ValidatedField from "../../misc/ValidatedField";
 import CloseIcon from "@material-ui/icons/Close";
 import FetchSelectField from "../../misc/FetchSelectField";
@@ -78,6 +78,9 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
 
 
     const addUser = (user) => {
+        if (!user) {
+            return;
+        }
         const copy = players.slice();
         copy.push({
             username: user.username,
@@ -147,11 +150,12 @@ const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []
                                     return <div key={player.id} style={{padding: 5}} className={classes.header}>
                                         <Typography style={{flex: 1}}>{player.username}</Typography>
                                         {player.deletable &&
-                                        <IconButton style={{color: 'red', padding: 0}} onClick={() => {
+
+                                        <CloseIcon fontSize={"small"} style={{color: 'red'}}
+                                                   className={classes.twichButton} onClick={() => {
                                             deleteUser(player.id)
-                                        }}>
-                                            <CloseIcon fontSize={"small"}/>
-                                        </IconButton>}
+                                        }}/>
+                                        }
                                     </div>
                                 })}
                             </div>

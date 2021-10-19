@@ -3,7 +3,7 @@ import PageHeader from "../../misc/PageHeader";
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import mainStyles from "../../../misc/styles/MainStyles";
 import Grid from "@material-ui/core/Grid";
-import {Divider, IconButton, Typography} from "@material-ui/core";
+import {Divider, Typography, useTheme} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CreateTeamDialog from "./CreateTeamDialog";
 import {usePlayerTeams} from "../../../data/TeamsData";
@@ -31,6 +31,9 @@ const TeamsComponent = () => {
     const [deleteTeamFunc, setDeleteTeam] = useState(() => () => {
     })
 
+    const theme = useTheme();
+
+    console.log(theme)
     const {teams, createTeam, deleteTeam, loading, updateTeam} = usePlayerTeams(userId)
 
 
@@ -78,28 +81,30 @@ const TeamsComponent = () => {
                                 if (!team.active) {
                                     return null;
                                 }
-                                return <div key={team.id} style={{cursor: "pointer", padding: 10}}>
-                                    <div className={classes.header} style={{padding: 5}}>
+                                return <div key={team.id}>
+                                    <div className={[classes.header].join(' ')} style={{padding: 5}}>
                                         <Typography color={"primary"}
-                                                    className={classes.link}
-                                                    style={{flex: 1}}
+                                                    style={{flex: 1, cursor: 'pointer', margin: 5}}
+                                                    className={classes.twichHighlightPadding}
                                                     onClick={() => {
                                                         setSelectedTeam(team)
                                                     }}>
                                             {team.name}
                                         </Typography>
-                                        <IconButton style={{padding: 0, marginRight: 10}}
-                                                    onClick={() => {
-                                                        clickEdit(team)
-                                                    }}>
+                                        <div style={{marginRight: 10, color: 'white'}}
+                                             className={classes.twichButton}
+                                             onClick={() => {
+                                                 clickEdit(team)
+                                             }}>
                                             <EditIcon fontSize={"small"}/>
-                                        </IconButton>
-                                        <IconButton color={"primary"} style={{padding: 0}}
-                                                    onClick={() => {
-                                                        clickDelete(team.id, team.name)
-                                                    }}>
-                                            <CloseIcon/>
-                                        </IconButton>
+                                        </div>
+                                        <div style={{color: 'red'}}
+                                             className={classes.twichButton}
+                                             onClick={() => {
+                                                 clickDelete(team.id, team.name)
+                                             }}>
+                                            <CloseIcon fontSize={"small"}/>
+                                        </div>
                                     </div>
                                 </div>
                             })}

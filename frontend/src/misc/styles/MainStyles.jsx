@@ -121,7 +121,31 @@ const mainStyles = makeStyles(theme => ({
     twichHighlight: {
         margin: 10,
         '&:hover': {backgroundColor: 'rgba(255,255,255,0.15)'},
-        borderRadius: 7
+        borderRadius: 5
+    },
+    twichHighlightPadding: {
+        padding: 5,
+        '&:hover': {backgroundColor: 'rgba(255,255,255,0.15)'},
+        borderRadius: 5
+    },
+    twichButton: {
+        padding: 5,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        '&:hover': {backgroundColor: 'rgba(255,255,255,0.15)'},
+        borderRadius: 5
+    },
+    twichButtonBackground: {
+        padding: 5,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgb(54,54,54)',
+        '&:hover': {backgroundColor: 'rgb(96,96,96)'},
+        borderRadius: 5
     },
     twichHighlighted: {
         backgroundColor: 'rgba(255,255,255,0.15)',

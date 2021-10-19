@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import FetchSelectField from "../../misc/FetchSelectField";
 import {Button, Divider, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -8,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useSoloGamePost} from "../../../data/SoloGamesData";
 import {showError, showSuccess} from "../../../redux/actions/alertActions";
 import {useHistory} from "react-router-dom";
+import UserFetchSelectField from "../../misc/UserFetchSelectField";
 
 const AddSinglesGameComponent = ({
                                      type, choosePlayers = true, displayGameDataSection = true, showBorder = true,
@@ -143,9 +143,7 @@ const AddSinglesGameComponent = ({
                         className={[classes.column].join(' ')}>
                         <Typography variant={"h5"}>{overridePlayer2Name || "Opponent data"}</Typography>
                         {choosePlayers && <div className={classes.margin}>
-                            <FetchSelectField label={"Select Opponent"} onChange={(value) => setOpponent(value)}
-                                              url={"/users/search"}
-                                              nameParameter={"username"}/>
+                            <UserFetchSelectField label={"Select Opponent"} onChange={(value) => setOpponent(value)}/>
                         </div>}
 
                         <div className={classes.margin}>

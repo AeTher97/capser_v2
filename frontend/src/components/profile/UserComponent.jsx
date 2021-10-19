@@ -15,6 +15,7 @@ import ProfilePicture from "./ProfilePicture";
 import {useWindowSize} from "../../utils/UseSize";
 import ProfilePlots from "./ProfilePlots";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
+import GameHistory from "./GameHistory";
 
 
 const displayStats = (type, stats, showPoints = true) => {
@@ -131,7 +132,7 @@ const UserComponent = ({id}) => {
                         }}/>
                         <Tab label={"Charts"} value={"charts"} onChange={() => {
                         }}/>
-                        {/*<Tab label={"Game history"} value={"history"}/>*/}
+                        <Tab label={"Game history"} value={"history"}/>
                     </Tabs>
 
                     {!loading && loaded && <>
@@ -177,6 +178,13 @@ const UserComponent = ({id}) => {
                                 <div ref={measuredRef}>
 
                                     <ProfilePlots userId={id ? id : userId} width={plotWidth}/>
+                                </div>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value={tab} showValue={'history'}>
+                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                                <div ref={measuredRef}>
+                                    <GameHistory userId={id ? id : userId}/>
                                 </div>
                             </div>
                         </TabPanel>
