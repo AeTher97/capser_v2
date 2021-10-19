@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {useAllTeams} from "../../data/TeamsData";
 import mainStyles from "../../misc/styles/MainStyles";
 import {Typography} from "@material-ui/core";
-import CapserPagination from "../list/CapserPagination";
+import CapserPagination from "../game/list/CapserPagination";
 import {listStyles} from "./SoloPlayersList";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import TeamTooltip from "../tooltips/TeamTooltip";
 import {useHistory} from "react-router-dom";
 import BoldTyphography from "../misc/BoldTyphography";
+import {Skeleton} from "@material-ui/lab";
 
 const TeamsList = () => {
 
@@ -66,6 +67,15 @@ const TeamsList = () => {
                         </div>
                     })}
                 </div>}
+                {loading && Array.from(Array(10)).map(() => <div
+                    style={{display: 'flex', alignItems: 'center', margin: '5px 0 5px 0'}}>
+                    <Skeleton variant={"circle"} style={{width: 60, height: 60}}/><Skeleton variant={"rect"}
+                                                                                            style={{
+                                                                                                margin: '5px 0 5px 10px',
+                                                                                                height: 35,
+                                                                                                flex: 1,
+                                                                                                borderRadius: 7
+                                                                                            }}/></div>)}
                 <div className={[classes.paddedContent].join(' ')}>
 
                     {!loading && pageNumber > 1 &&

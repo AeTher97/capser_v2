@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {useMultipleGames} from "../../../data/MultipleGamesData";
-import LoadingComponent from "../../../utils/LoadingComponent";
 import GameComponent from "../details/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";
-import CapserPagination from "../../list/CapserPagination";
+import CapserPagination from "./CapserPagination";
+import {Skeleton} from "@material-ui/lab";
 
 const TeamGamesList = ({hiddenPoints = false, type, render = true}) => {
 
@@ -17,7 +17,7 @@ const TeamGamesList = ({hiddenPoints = false, type, render = true}) => {
 
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
-            <div style={{maxWidth: 800}}>
+            <div style={{maxWidth: 800, flex: 1}}>
                 <div style={{padding: 15}}>
                     {!loading && render ?
                         <Grid container spacing={2}>{games.map(game => <Grid xs={12} item key={game.id}
@@ -25,9 +25,10 @@ const TeamGamesList = ({hiddenPoints = false, type, render = true}) => {
                             <GameComponent game={game}
                                            vertical={small}/>
                         </Grid>)} </Grid> :
-                        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                            <LoadingComponent showText/>
-                        </div>}
+                        loading && Array.from(Array(10)).map(() => <Skeleton variant={"rect"} style={{
+                            width: '100%', height: 62, borderRadius: 7
+                            , margin: '0 0px 8px 0'
+                        }}/>)}
                     {!loading && pagesNumber > 1 &&
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                         <CapserPagination onChange={(page) => setPage(page)}

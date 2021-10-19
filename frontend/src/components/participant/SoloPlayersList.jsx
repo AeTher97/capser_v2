@@ -2,17 +2,17 @@ import React, {useState} from 'react';
 import mainStyles from "../../misc/styles/MainStyles";
 import {Typography} from "@material-ui/core";
 import {usePlayersListFetch} from "../../data/Players";
-import LoadingComponent from "../../utils/LoadingComponent";
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayerCard from "../tooltips/PlayerCard";
 import {getStatsString} from "../../utils/Utils";
 import Fade from '@material-ui/core/Fade';
 import BoldTyphography from "../misc/BoldTyphography";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
-import CapserPagination from "../list/CapserPagination";
+import CapserPagination from "../game/list/CapserPagination";
 import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router-dom";
 import ProfilePicture from "../profile/ProfilePicture";
+import {Skeleton} from "@material-ui/lab";
 
 
 const SoloPlayersList = ({type, pointsHidden = false}) => {
@@ -101,8 +101,16 @@ const SoloPlayersList = ({type, pointsHidden = false}) => {
                         })
                         }
                     </div> :
-                    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                        <LoadingComponent/></div>}
+                    Array.from(Array(10)).map(() => <div
+                        style={{display: 'flex', alignItems: 'center', margin: '5px 0 5px 0'}}>
+                        <Skeleton variant={"circle"} style={{width: 60, height: 60}}/><Skeleton variant={"rect"}
+                                                                                                style={{
+                                                                                                    margin: '5px 0 5px 10px',
+                                                                                                    height: 35,
+                                                                                                    flex: 1,
+                                                                                                    borderRadius: 7
+                                                                                                }}/></div>)
+                }
                 {!loading && pageCount > 1 &&
                 <CapserPagination onNext={() => setPage(currentPage + 1)}
                                   onPrevious={() => setPage(currentPage + -1)}

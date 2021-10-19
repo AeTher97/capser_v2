@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useSinglesGames} from "../../../data/SoloGamesData";
 import GameComponent from "../details/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
-import CapserPagination from "../../list/CapserPagination";
+import CapserPagination from "./CapserPagination";
 import Grid from "@material-ui/core/Grid";
 import {Skeleton} from "@material-ui/lab";
 

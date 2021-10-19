@@ -1,5 +1,5 @@
 import React from 'react';
-import mainStyles from "../../misc/styles/MainStyles";
+import mainStyles from "../../../misc/styles/MainStyles";
 import {useTheme} from "@material-ui/core";
 
 const CapserPagination = ({currentPage, onChange, minPage = 1, pageCount, edgeButtons = true}) => {
