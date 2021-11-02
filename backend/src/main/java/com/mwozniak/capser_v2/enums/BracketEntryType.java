@@ -1,6 +1,5 @@
 package com.mwozniak.capser_v2.enums;
 
-import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -61,23 +60,27 @@ public enum BracketEntryType {
         }
     }
 
-    public static boolean isPowerOf2(BracketEntryType entryType){
-        int n = Integer.parseInt(entryType.name().split("_")[entryType.name().split("_").length-1]);
-        return (n & n-1)==0;
+    public static boolean isPowerOf2(BracketEntryType entryType) {
+        int n = Integer.parseInt(entryType.name().split("_")[entryType.name().split("_").length - 1]);
+        return (n & n - 1) == 0;
     }
 
-    public static BracketEntryType getHigherPowerOf2(BracketEntryType entryType){
-        if(isPowerOf2(entryType) && entryType.name().contains("D_RO")){
+    public static int getNumberInName(BracketEntryType entryType) {
+        return Integer.parseInt(entryType.name().split("_")[entryType.name().split("_").length - 1]);
+    }
+
+    public static BracketEntryType getHigherPowerOf2(BracketEntryType entryType) {
+        if (isPowerOf2(entryType) && entryType.name().contains("D_RO")) {
             return getHigher(getHigher(entryType));
-        } else if(!isPowerOf2(entryType) && entryType.name().contains("D_RO")){
+        } else if (!isPowerOf2(entryType) && entryType.name().contains("D_RO")) {
             return getHigher(entryType);
         } else {
             return getHigher(entryType);
         }
     }
 
-    public static int getSingleEliminationCountAbove(BracketEntryType bracketEntryType){
-        int number =0;
+    public static int getSingleEliminationCountAbove(BracketEntryType bracketEntryType) {
+        int number = 0;
         for(BracketEntryType entry : BracketEntryType.values()){
             if(entry.getValue() < bracketEntryType.getValue()){
                 number += entry.getValue()/2;

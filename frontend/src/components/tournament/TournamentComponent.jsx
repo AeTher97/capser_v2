@@ -73,6 +73,9 @@ const TournamentComponent = () => {
 
         const addCompetitor = (obj) => {
             const copy = competitors.slice();
+            if (!obj) {
+                return;
+            }
             if (competitors.find(player => player.id === obj.id)) {
                 return;
             }

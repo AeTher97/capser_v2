@@ -26,6 +26,8 @@ function App() {
                     <MainNavigation/>
                 </ThemeProvider>
             </Router>
+
+
         </div>
     );
 }

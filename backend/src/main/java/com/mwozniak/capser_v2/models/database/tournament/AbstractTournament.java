@@ -396,10 +396,9 @@ public abstract class AbstractTournament<T extends AbstractGame> extends Tournam
 
     }
 
-    protected int getUpperBracketCoord(int lowerBracketCoord, BracketEntryType row) {
-        int upperAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getLower(row), true);
-        int lowerAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(row, false);
-        return upperAbsoluteCoord + lowerBracketCoord - lowerAbsoluteCoord;
+    public static boolean isPowerOfFour(int num) {
+        return (((num & (num - 1)) == 0)    // check whether num is a power of 2
+                && ((num & 0xaaaaaaaa) == 0));  // make sure it's an even power of 2
     }
 
     @Override
@@ -436,5 +435,18 @@ public abstract class AbstractTournament<T extends AbstractGame> extends Tournam
 
     protected BracketEntry getBracketEntry(int coord) {
         return getBracketEntries().stream().filter(entry -> entry.getCoordinate() == coord).findFirst().get();
+    }
+
+    protected int getUpperBracketCoord(int lowerBracketCoord, BracketEntryType row) {
+        int upperAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getLower(row), true);
+
+        if (isPowerOfFour(BracketEntryType.getNumberInName(BracketEntryType.getHigher(row)))) {
+            int lowerAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(row, false);
+            return upperAbsoluteCoord + lowerBracketCoord - lowerAbsoluteCoord;
+        } else {
+            int rowStart = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(row), false) - 1;
+            int offset = lowerBracketCoord - rowStart;
+            return upperAbsoluteCoord - offset;
+        }
     }
 }
