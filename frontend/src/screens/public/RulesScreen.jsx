@@ -71,7 +71,7 @@ const RulesScreen = () => {
 
     return (
         <div>
-            <PageHeader title={'RulesScreen'} icon={<GavelIcon fontSize={"large"}/>}/>
+            <PageHeader title={'Rules'} icon={<GavelIcon fontSize={"large"}/>}/>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <div className={classes.standardBorder} style={{maxWidth: 800}}>
                     <Typography color={"primary"} variant={"h4"}>Official Game of Caps rulebook</Typography>
