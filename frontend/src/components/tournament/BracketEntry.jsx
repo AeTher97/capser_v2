@@ -118,17 +118,17 @@ const PlayerPart = ({
         </div>)
 }
 
-const BracketEntry = (
-        {
-            bracketEntry,
-            gameType,
-            showPath,
-            isOwner,
-            openAddGameDialog,
-            openSkipDialog,
-            pathElongation = 0,
-            teams,
-            onHighlight,
+const BracketEntry = React.memo((
+    {
+        bracketEntry,
+        gameType,
+        showPath,
+        isOwner,
+        openAddGameDialog,
+        openSkipDialog,
+        pathElongation = 0,
+        teams,
+        onHighlight,
             onHighlightEnd,
             highlighted
         }
@@ -271,8 +271,7 @@ const BracketEntry = (
                 {showPath && <div className={entryStyle.addedPathStyles}/>}
             </div>
         );
-    }
-;
+});
 
 BracketEntry.propTypes =
     {}
