@@ -41,6 +41,14 @@ public abstract class AbstractGame {
     @Getter
     private boolean nakedLap;
 
+    @Getter
+    @Setter
+    private String team1Name;
+
+    @Getter
+    @Setter
+    private String team2Name;
+
 
     @Setter
     @Getter

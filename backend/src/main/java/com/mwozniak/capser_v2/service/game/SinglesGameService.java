@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SinglesGameService extends AbstractGameService {
+public class SinglesGameService extends SoloGameService {
 
     private final SinglesRepository singlesRepository;
 
@@ -71,12 +71,12 @@ public class SinglesGameService extends AbstractGameService {
     }
 
     @Override
-    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+    public Page<AbstractGame> getAcceptedGames(Pageable pageable) {
         return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
     }
 
     @Override
-    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player) {
         return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
     }
 

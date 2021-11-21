@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EasyCapsGameService extends AbstractGameService {
+public class EasyCapsGameService extends SoloGameService {
 
     private final EasyCapsRepository easyCapsRepository;
 
@@ -66,12 +66,12 @@ public class EasyCapsGameService extends AbstractGameService {
     }
 
     @Override
-    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+    public Page<AbstractGame> getAcceptedGames(Pageable pageable) {
         return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
     }
 
     @Override
-    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player) {
         return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 

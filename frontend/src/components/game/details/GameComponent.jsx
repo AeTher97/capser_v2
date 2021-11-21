@@ -70,8 +70,8 @@ const GameComponent = ({game, vertical = true}) => {
     let team2Sinks = 0;
 
     if (game.gameType === 'DOUBLES') {
-        team1Name = game.team1Name.name;
-        team2Name = game.team2Name.name;
+        team1Name = game.team1Name;
+        team2Name = game.team2Name;
         team1Score = game.team1Score;
         team2Score = game.team2Score;
         const player1Stats = findPlayerStats(game, game.team1.playerList[0]);
@@ -91,8 +91,8 @@ const GameComponent = ({game, vertical = true}) => {
     } else {
         const player1Stats = findPlayerStats(game, game.player1)
         const player2Stats = findPlayerStats(game, game.player2)
-        team1Name = game.player1Name.username || game.player1Name;
-        team2Name = game.player2Name.username || game.player2Name;
+        team1Name = game.team1Name;
+        team2Name = game.team2Name;
         team1Score = player1Stats.score;
         team2Score = player2Stats.score;
         team1Rebuttals = player1Stats.rebuttals;

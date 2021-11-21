@@ -5,9 +5,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.responses.AcceptanceRequestWithAGame;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
-import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
-import com.mwozniak.capser_v2.service.game.GameService;
-import com.mwozniak.capser_v2.service.game.SinglesGameService;
+import com.mwozniak.capser_v2.service.game.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

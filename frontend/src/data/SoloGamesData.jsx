@@ -36,28 +36,16 @@ export const useSinglesGames = (type, pageNumber = 0, pageSize = 10) => {
         setLoading(true);
         let shouldUpdate = true;
         fetchGames().then((response) => {
-            Promise.all(response.data.content.map(game => {
-                return [fetchUsername(game.player1), fetchUsername(game.player2)]
-            }).flat()).then((value) => {
-                const usernames = value.map(obj => {
-                    return {username: obj.data.username, id: obj.data.id}
-                });
-                const games = response.data.content.slice();
-                games.map(game => {
-                    game.player1Name = usernames.find(obj => obj.id === game.player1).username;
-                    game.player2Name = usernames.find(obj => obj.id === game.player2).username;
-                })
-                if (shouldUpdate) {
-                    setGames(games);
-                    setPagesNumber(response.data.totalPages);
-                    setGames(response.data.content);
-                }
-            }).finally(() => {
+
+            if (shouldUpdate) {
+                setPagesNumber(response.data.totalPages);
+                setGames(response.data.content);
+            }
+        }).finally(() => {
                 if (shouldUpdate) {
                     setLoading(false);
                 }
             })
-        })
         return () => {
             shouldUpdate = false;
         }

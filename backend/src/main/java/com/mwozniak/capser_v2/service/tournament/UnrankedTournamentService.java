@@ -9,8 +9,8 @@ import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.repository.UnrankedTournamentRepository;
-import com.mwozniak.capser_v2.service.UnrankedGameService;
 import com.mwozniak.capser_v2.service.UserService;
+import com.mwozniak.capser_v2.service.game.UnrankedGameService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

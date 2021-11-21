@@ -192,11 +192,11 @@ public abstract class AbstractGameService implements GameService {
         if (player == null) {
             return listAcceptedGames(pageable);
         } else {
-            return doListAcceptedGames(pageable, player);
+            return listPlayerAcceptedGames(pageable, player);
         }
     }
 
-    protected abstract Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player);
+    protected abstract Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player);
 
     protected AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);

@@ -33,25 +33,14 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
         setLoading(true);
         let shouldUpdate = true;
         axios.get(`/${getRequestGameTypeString(type)}?pageNumber=${pageNumber}&pageSize=${pageSize}`).then(response => {
-            Promise.all(response.data.content.map(game => {
+
                 if (shouldUpdate) {
-                    setPagesNumber(response.data.totalPages)
-                }
-                return [fetchTeamName(game.team1DatabaseId), fetchTeamName(game.team2DatabaseId)]
-            }).flat()).then((value) => {
-                value = value.map(o => o.data);
-                if (shouldUpdate) {
-                    setGames(response.data.content.map(game => {
-                        game.team1Name = value.find(o => o.id === game.team1DatabaseId);
-                        game.team2Name = value.find(o => o.id === game.team2DatabaseId);
-                        return game;
-                    }))
+                    setGames(response.data.content);
                 }
             }).finally(() => {
                 if (shouldUpdate) {
                     setLoading(false);
                 }
-            })
         })
 
         return () => {

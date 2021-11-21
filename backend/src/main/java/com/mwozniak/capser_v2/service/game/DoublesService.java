@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.service;
+package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
@@ -10,7 +10,10 @@ import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.DoublesRepository;
-import com.mwozniak.capser_v2.service.game.AbstractMultipleGameService;
+import com.mwozniak.capser_v2.service.EmailService;
+import com.mwozniak.capser_v2.service.NotificationService;
+import com.mwozniak.capser_v2.service.TeamService;
+import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -100,11 +103,23 @@ public class DoublesService extends AbstractMultipleGameService {
 
     @Override
     public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrue(pageable);
+        Page<AbstractGame> games = (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrue(pageable);
+        games = games.map(game -> {
+            try {
+                DoublesGame doublesGame = (DoublesGame) game;
+                doublesGame.setTeam1Name(teamService.findTeam(((DoublesGame) game).getTeam1DatabaseId()).getName());
+                doublesGame.setTeam2Name(teamService.findTeam(((DoublesGame) game).getTeam2DatabaseId()).getName());
+                return doublesGame;
+            } catch (CapserException e) {
+                e.printStackTrace();
+                return game;
+            }
+        });
+        return games;
     }
 
     @Override
-    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID team) {
+    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID team) {
         return (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrueAndTeam1DatabaseIdEqualsOrTeam2DatabaseIdEquals(pageable, team, team);
     }
 

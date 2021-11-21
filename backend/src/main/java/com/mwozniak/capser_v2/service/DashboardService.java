@@ -2,7 +2,11 @@ package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.models.database.Post;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.repository.*;
+import com.mwozniak.capser_v2.repository.BlobPostRepository;
+import com.mwozniak.capser_v2.service.game.DoublesService;
+import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
+import com.mwozniak.capser_v2.service.game.SinglesGameService;
+import com.mwozniak.capser_v2.service.game.UnrankedGameService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,31 +18,31 @@ import java.util.List;
 @Service
 public class DashboardService {
 
-    private final SinglesRepository singlesRepository;
-    private final DoublesRepository doublesRepository;
-    private final EasyCapsRepository easyCapsRepository;
-    private final UnrankedRepository unrankedRepository;
+    private final SinglesGameService singlesGameService;
+    private final DoublesService doublesService;
+    private final EasyCapsGameService easyCapsGameService;
+    private final UnrankedGameService unrankedGameService;
 
     private final BlobPostRepository blobPostRepository;
 
 
-    public DashboardService(SinglesRepository singlesRepository,
-                            DoublesRepository doublesRepository,
-                            EasyCapsRepository easyCapsRepository,
-                            UnrankedRepository unrankedRepository,
+    public DashboardService(SinglesGameService singlesGameService,
+                            DoublesService doublesService,
+                            EasyCapsGameService easyCapsGameService,
+                            UnrankedGameService unrankedGameService,
                             BlobPostRepository blobPostRepository) {
-        this.singlesRepository = singlesRepository;
-        this.doublesRepository = doublesRepository;
-        this.easyCapsRepository = easyCapsRepository;
-        this.unrankedRepository = unrankedRepository;
+        this.singlesGameService = singlesGameService;
+        this.doublesService = doublesService;
+        this.easyCapsGameService = easyCapsGameService;
+        this.unrankedGameService = unrankedGameService;
         this.blobPostRepository = blobPostRepository;
     }
 
     public List<AbstractGame> getDashboardGames() {
-        List<AbstractGame> singlesGames = (List<AbstractGame>) (List<?>) singlesRepository.findSinglesGamesByAcceptedTrue(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> doublesGames = (List<AbstractGame>) (List<?>) doublesRepository.findDoublesGameByAcceptedTrue(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> easyCapsGames = (List<AbstractGame>) (List<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrue(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> unrankedGames = (List<AbstractGame>) (List<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<AbstractGame> singlesGames = singlesGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<AbstractGame> doublesGames = doublesService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<AbstractGame> easyCapsGames = easyCapsGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<AbstractGame> unrankedGames = unrankedGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
 
         List<AbstractGame> aggregatedList = new ArrayList<>();
         aggregatedList.addAll(singlesGames);

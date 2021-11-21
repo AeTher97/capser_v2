@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.service;
+package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
@@ -8,7 +8,9 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.UnrankedRepository;
-import com.mwozniak.capser_v2.service.game.AbstractGameService;
+import com.mwozniak.capser_v2.service.EmailService;
+import com.mwozniak.capser_v2.service.NotificationService;
+import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UnrankedGameService extends AbstractGameService {
+public class UnrankedGameService extends SoloGameService {
 
     private final UnrankedRepository unrankedRepository;
 
@@ -63,12 +65,12 @@ public class UnrankedGameService extends AbstractGameService {
     }
 
     @Override
-    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
+    public Page<AbstractGame> getAcceptedGames(Pageable pageable) {
         return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
     }
 
     @Override
-    public Page<AbstractGame> doListAcceptedGames(Pageable pageable, UUID player) {
+    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player) {
         return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
