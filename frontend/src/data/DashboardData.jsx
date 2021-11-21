@@ -23,31 +23,13 @@ export const useDashboard = () => {
     const fetchDashboardGames = () => {
         let shouldUpdate = true;
         axios.get(`/dashboard/games`).then(response => {
-            Promise.all(response.data.map(game => {
-                if (game.gameType === 'DOUBLES') {
-                    return [fetchTeamName(game.team1DatabaseId), fetchTeamName(game.team2DatabaseId)];
-                }
-                return [fetchUsername(game.player1), fetchUsername(game.player2)]
-            }).flat()).then((value) => {
-                if (shouldUpdate) {
-                    value = value.map(o => o.data);
-                    setGames(response.data.map(game => {
-                        if (game.gameType === 'DOUBLES') {
-                            game.team1Name = value.find(o => o.id === game.team1DatabaseId);
-                            game.team2Name = value.find(o => o.id === game.team2DatabaseId);
-                            return game;
-                        } else {
-                            game.player1Name = value.find(o => o.id === game.player1);
-                            game.player2Name = value.find(o => o.id === game.player2);
-                            return game;
-                        }
-                    }))
-                }
-            }).finally(() => {
-                if (shouldUpdate) {
-                    setGamesLoading(false);
-                }
-            })
+
+                setGames(response.data)
+            }
+        ).finally(() => {
+            if (shouldUpdate) {
+                setGamesLoading(false);
+            }
         }).catch(e => {
             dispatch(showError("Failed loading games"))
         })
