@@ -142,18 +142,8 @@ export const useLatestPlayerGames = (playerId) => {
         setLoading(true);
         let shouldUpdate = true;
         axios.get(`games/user/${playerId}`).then((response) => {
-            Promise.all(response.data.map(game => {
-                return [fetchUsername(game.player1), fetchUsername(game.player2)]
-            }).flat()).then((value) => {
-                const usernames = value.map(obj => {
-                    return {username: obj.data.username, id: obj.data.id}
-                });
-                const games = response.data.slice();
-                games.map(game => {
-                    game.player1Name = usernames.find(obj => obj.id === game.player1).username;
-                    game.player2Name = usernames.find(obj => obj.id === game.player2).username;
-                })
-                if (shouldUpdate) {
+
+            if (shouldUpdate) {
                     setGames(games);
                     setGames(response.data);
                 }
@@ -162,7 +152,6 @@ export const useLatestPlayerGames = (playerId) => {
                     setLoading(false);
                 }
             })
-        })
         return () => {
             shouldUpdate = false;
         }
@@ -186,18 +175,8 @@ export const usePlayerGamesWithOpponent = (playerId, opponentId, gameType) => {
         setLoading(true);
         let shouldUpdate = true;
         axios.get(`games/user/${playerId}/${gameType}${opponentId ? `?opponentId=${opponentId}` : ''}`).then((response) => {
-            Promise.all(response.data.content.map(game => {
-                return [fetchUsername(game.player1), fetchUsername(game.player2)]
-            }).flat()).then((value) => {
-                const usernames = value.map(obj => {
-                    return {username: obj.data.username, id: obj.data.id}
-                });
-                const games = response.data.content.slice();
-                games.map(game => {
-                    game.player1Name = usernames.find(obj => obj.id === game.player1).username;
-                    game.player2Name = usernames.find(obj => obj.id === game.player2).username;
-                })
-                if (shouldUpdate) {
+
+            if (shouldUpdate) {
                     setGames(games);
                     setGames(response.data.content);
                 }
@@ -206,7 +185,6 @@ export const usePlayerGamesWithOpponent = (playerId, opponentId, gameType) => {
                     setLoading(false);
                 }
             })
-        })
         return () => {
             shouldUpdate = false;
         }

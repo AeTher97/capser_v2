@@ -22,13 +22,13 @@ public interface GameService {
 
     Page<AbstractGame> listAcceptedGames(Pageable pageable, UUID player);
 
-    UUID queueGame(AbstractGame abstractGame) throws CapserException;
+    void queueGame(AbstractGame abstractGame) throws CapserException;
 
     UUID queueGame(AbstractGame abstractGame, boolean notify) throws CapserException;
 
     AbstractGame acceptGame(UUID gameId, boolean notify) throws CapserException;
 
-    AbstractGame acceptGame(UUID gameId) throws CapserException;
+    void acceptGame(UUID gameId) throws CapserException;
 
     int acceptOverdueGames();
 

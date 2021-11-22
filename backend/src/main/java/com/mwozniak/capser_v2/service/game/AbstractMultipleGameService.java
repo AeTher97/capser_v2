@@ -40,13 +40,12 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     @Transactional
     @Override
-    public UUID queueGame(AbstractGame abstractGame) throws CapserException {
+    public void queueGame(AbstractGame abstractGame) throws CapserException {
         AbstractMultipleGame abstractMultipleGame = (AbstractMultipleGame) abstractGame;
         teamService.findTeam(abstractMultipleGame.getTeam1DatabaseId());
         teamService.findTeam(abstractMultipleGame.getTeam2DatabaseId());
         AbstractGame saved = saveGame(abstractGame);
         addAcceptanceAndNotify(saved);
-        return saved.getId();
     }
 
     @Override
@@ -134,7 +133,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     @Transactional
     @Override
-    public AbstractGame acceptGame(UUID gameId) throws CapserException {
+    public void acceptGame(UUID gameId) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
@@ -155,7 +154,6 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
                 log.error("Failed to get team name.");
             }
         });
-        return game;
     }
 
     @Transactional

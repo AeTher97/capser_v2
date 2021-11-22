@@ -12,7 +12,9 @@ import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,15 +67,21 @@ public class UnrankedGameService extends SoloGameService {
     }
 
     @Override
-    public Page<AbstractGame> getAcceptedGames(Pageable pageable) {
+    protected Page<AbstractGame> getAcceptedGames(Pageable pageable) {
         return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
     }
 
     @Override
-    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player) {
+    protected Page<AbstractGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
         return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
+
+    @Override
+    protected Page<? extends AbstractGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
+        return unrankedRepository.findUnrankedGamesWithPlayerAndOpponent(PageRequest.of(0, 10, Sort.by("time").descending()),
+                player1, player2);
+    }
 
     @Override
     public AcceptanceRequestType getAcceptanceRequestType() {

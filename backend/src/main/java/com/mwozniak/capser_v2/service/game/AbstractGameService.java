@@ -49,8 +49,8 @@ public abstract class AbstractGameService implements GameService {
     }
 
     @Override
-    public UUID queueGame(AbstractGame abstractGame) throws CapserException {
-        return queueGame(abstractGame, true);
+    public void queueGame(AbstractGame abstractGame) throws CapserException {
+        queueGame(abstractGame, true);
     }
 
     @Transactional
@@ -85,8 +85,8 @@ public abstract class AbstractGameService implements GameService {
     }
 
     @Override
-    public AbstractGame acceptGame(UUID gameId) throws CapserException {
-        return acceptGame(gameId, true);
+    public void acceptGame(UUID gameId) throws CapserException {
+        acceptGame(gameId, true);
     }
 
     @Transactional
