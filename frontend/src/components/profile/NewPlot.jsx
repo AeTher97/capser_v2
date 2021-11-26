@@ -12,48 +12,42 @@ const NewPlot = ({seriesData}) => {
     const horizontalAxisOffset = 30;
 
 
-    const drawContent = (ctx, frame, series) => {
+    const drawContent = (ctx, frame, series, actualLength, min, max) => {
         const width = ctx.canvas.width;
         const height = ctx.canvas.height;
 
         const step = frame > 100 ? 100 : frame;
 
 
-        const min = Math.min(...series.data.filter(obj => obj > -100000));
-        const max = Math.max(...series.data);
         const center = (max + min) / 2;
         const span = (max - min);
-        const actualLength = series.data.filter(obj => obj > -100000).length;
         const horizontalOffset = (width - verticalAxisOffset) / actualLength;
 
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
-        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - (series.data[0] - center) / span * (height - horizontalAxisOffset));
+        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[0] - center) / span * (height - horizontalAxisOffset)) * step / 100);
         for (let i = 0; i < 365; i++) {
             if (series.data[i] === -100000) {
                 continue;
             }
-            ctx.lineTo(verticalAxisOffset + horizontalOffset * i, (height - horizontalAxisOffset) / 2 - (series.data[i] - center) / span * (height - horizontalAxisOffset));
+            ctx.lineTo(verticalAxisOffset + horizontalOffset * i, (height - horizontalAxisOffset) / 2 - ((series.data[i] - center) / span * (height - horizontalAxisOffset)) * step / 100);
         }
 
         ctx.stroke();
 
     }
 
-    const drawAxes = (ctx, series) => {
+    const drawAxes = (ctx, series, actualLength, min, max) => {
         const width = ctx.canvas.width;
         const height = ctx.canvas.height;
-        const actualLength = series.data.filter(obj => obj > -100000).length;
-        const min = Math.min(...series.data.filter(obj => obj > -100000));
-        const max = Math.max(...series.data);
+
 
         const span = (max - min);
 
         const verticalAxisPoints = Math.floor((height - horizontalAxisOffset) / 40);
 
 
-        ctx.font = '12px Arial'
         ctx.fillStyle = textColor;
 
 
@@ -62,8 +56,17 @@ const NewPlot = ({seriesData}) => {
             verticalLabels.push(min + span / verticalAxisPoints * i);
         }
 
+
         for (let i = 0; i < verticalLabels.length; i++) {
-            ctx.fillText(verticalLabels[i].toFixed(0), 1, 3 + (height - horizontalAxisOffset) - (verticalLabels[i] - min) / span * (height - horizontalAxisOffset));
+            let text;
+            if (Math.abs(verticalLabels[i]) < 10) {
+                text = verticalLabels[i].toFixed(2);
+            } else if (Math.abs(verticalLabels[i]) < 100) {
+                text = verticalLabels[i].toFixed(1);
+            } else {
+                text = verticalLabels[i].toFixed(0);
+            }
+            ctx.fillText(text, 1, 3 + (height - horizontalAxisOffset) - (verticalLabels[i] - min) / span * (height - horizontalAxisOffset));
         }
 
         ctx.strokeStyle = lineColor;
@@ -108,12 +111,22 @@ const NewPlot = ({seriesData}) => {
         <div style={{padding: 20}}>
             <Canvas drawFunction={(ctx, frame) => {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-                frame = 100;
+                ctx.font = '12px Arial'
 
+                const actualLength = seriesData.data.filter(obj => obj > -100000).length;
+                const min = Math.min(...seriesData.data.filter(obj => obj > -100000));
+                const max = Math.max(...seriesData.data);
 
-                console.log(seriesData)
-                drawAxes(ctx, seriesData);
-                drawContent(ctx, frame, seriesData, 30);
+                if (actualLength !== 0) {
+
+                    drawAxes(ctx, seriesData, actualLength, min, max);
+                    drawContent(ctx, frame, seriesData, actualLength, min, max);
+                } else {
+                    ctx.fillStyle = lineColor;
+                    const width = ctx.measureText('No data').width;
+                    const height = ctx.measureText('No data').height;
+                    ctx.fillText('No data', ctx.canvas.width / 2 - width / 2, ctx.canvas.height / 2 - height / 2)
+                }
 
 
             }}/>
