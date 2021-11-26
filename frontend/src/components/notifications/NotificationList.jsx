@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography, useTheme} from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -13,7 +13,6 @@ const NotificationList = ({notifications, markSeen}) => {
     const notificationListClasses = notificationListStyle();
     const history = useHistory();
     const size = useWindowSize();
-    const theme = useTheme();
 
     const getDescription = (type) => {
         switch (type) {

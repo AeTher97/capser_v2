@@ -1,11 +1,11 @@
 import React from 'react';
 import {useUserPlots} from "../../data/UserData";
-import Plot from "./Plot";
 import {Typography, useTheme} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import GameIconWithName from "../../misc/GameIconWithName";
 import useQuery from "../../utils/UserQuery";
 import {useHistory} from "react-router-dom";
+import NewPlot from "./NewPlot";
 
 
 const ProfilePlots = ({userId, width}) => {
@@ -13,6 +13,7 @@ const ProfilePlots = ({userId, width}) => {
     const gameType = query.get('chart') || 'SINGLES';
     const history = useHistory();
     const {data, loading, loaded} = useUserPlots(userId, gameType);
+
 
 
     return (
@@ -23,9 +24,10 @@ const ProfilePlots = ({userId, width}) => {
             {gameType === 'DOUBLES' &&
             <Typography>Plots in double stats are aggregated results from all teams</Typography>}
             {loaded && <>
-                <Plot width={width} timeSeries={data.pointSeries} title={"Points"}/>
-                <Plot width={width} timeSeries={data.rebuttalsSeries} title={"Average rebuttals"}/>
+                <NewPlot seriesData={data.pointSeries}/>
+                <NewPlot seriesData={data.rebuttalsSeries}/>
             </>}
+
 
         </div>
     );

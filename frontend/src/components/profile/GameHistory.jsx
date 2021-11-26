@@ -10,7 +10,6 @@ const GameHistory = ({userId}) => {
     const [gameType, setGameType] = useState('ALL');
     const {games: filteredGames} = usePlayerGamesWithOpponent(userId, opponentId, gameType);
 
-    console.log(filteredGames)
     return (
         <div>
             <GameHistoryFilters setOpponent={setOpponentId} selectedGameType={gameType} setGameType={setGameType}/>

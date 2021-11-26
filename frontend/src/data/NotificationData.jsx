@@ -46,6 +46,7 @@ export const useNotifications = () => {
                 setNotSeen(false);
             }
         }
+
     }, [notifications]);
 
     const markNotificationAsSeen = (notificationId) => {
@@ -57,31 +58,27 @@ export const useNotifications = () => {
     }
 
     const markSeen = () => {
+        let shouldUpdate = true;
         Promise.all(notifications.filter(notification => !notification.seen).map(notification => {
             return markNotificationAsSeen(notification.id)
         })).then((value) => {
             value = value.map(o => o.data.id);
             const copy = notifications.slice();
-            setNotifications(copy.map(notification => {
-                if (value.includes(notification.id)) {
-                    notification.seen = true;
-                }
-                return notification;
-            }))
+            if (shouldUpdate) {
+                setNotifications(copy.map(notification => {
+                    if (value.includes(notification.id)) {
+                        notification.seen = true;
+                    }
+                    return notification;
+                }))
+            }
 
         })
+        return () => {
+            shouldUpdate = false;
+        }
 
-        // .then(result => {
-        //     const copy = notifications.slice();
-        //
-        //     setNotifications(copy.map(note => {
-        //         if (note.id === notificationId) {
-        //             return result.data;
-        //         } else {
-        //             return note;
-        //         }
-        //     }));
-        // })
+
     }
 
     return {notifications: notifications, markSeen: markSeen, notSeen: notSeen}

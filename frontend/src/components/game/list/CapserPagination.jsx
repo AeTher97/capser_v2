@@ -17,6 +17,7 @@ const CapserPagination = ({currentPage, onChange, minPage = 1, pageCount, edgeBu
         visibility: 'hidden'
     }
 
+
     return (
         <div style={{
             display: "flex",
@@ -33,10 +34,12 @@ const CapserPagination = ({currentPage, onChange, minPage = 1, pageCount, edgeBu
             {pageCount !== 1 && pageCount !== 0 && <div style={{margin: 3}}>
                 {currentPage}/{pageCount}
             </div>}
-            {<div style={currentPage !== pageCount ? active : disabled} className={mainStyle.twichHighlight}
+            {<div style={(currentPage !== pageCount && pageCount > 0) ? active : disabled}
+                  className={mainStyle.twichHighlight}
                   onClick={() => onChange(currentPage + 1)}>></div>}
             {edgeButtons &&
-            <div style={currentPage !== pageCount ? active : disabled} className={mainStyle.twichHighlight}
+            <div style={(currentPage !== pageCount && pageCount > 0) ? active : disabled}
+                 className={mainStyle.twichHighlight}
                  onClick={() => onChange(pageCount)}>>></div>}
         </div>
     );
