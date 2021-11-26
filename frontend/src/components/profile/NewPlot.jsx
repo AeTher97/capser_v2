@@ -115,14 +115,14 @@ const NewPlot = ({seriesData}) => {
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
                 const min = Math.min(...seriesData.data.filter(obj => obj > -100000));
                 const max = Math.max(...seriesData.data);
-                const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj > -100000).length;
+                const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj !== 500 && obj > -100000).length;
 
                 if (onlyZeros !== 0) {
 
                     drawAxes(ctx, seriesData, actualLength, min, max);
                     drawContent(ctx, frame, seriesData, actualLength, min, max);
                 } else {
-                    ctx.fillStyle = lineColor;
+                    ctx.fillStyle = textColor;
                     const width = ctx.measureText('No data').width;
                     const height = ctx.measureText('No data').height;
                     ctx.fillText('No data', ctx.canvas.width / 2 - width / 2, ctx.canvas.height / 2 - height / 2)
