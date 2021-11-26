@@ -74,6 +74,7 @@ export const useUserPlots = (id, gameType) => {
         let shouldUpdate = true;
         if (id) {
             setLoading(true);
+            setLoaded(false);
             axios.get(`/users/${id}/plots?gameType=${gameType}`).then(response => {
                 if (shouldUpdate) {
                     setData(response.data);
