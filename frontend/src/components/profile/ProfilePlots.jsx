@@ -24,7 +24,9 @@ const ProfilePlots = ({userId, width}) => {
             {gameType === 'DOUBLES' &&
             <Typography>Plots in double stats are aggregated results from all teams</Typography>}
             {loaded && <>
+                <Typography>Points</Typography>
                 <NewPlot seriesData={data.pointSeries}/>
+                <Typography>Rebuttals</Typography>
                 <NewPlot seriesData={data.rebuttalsSeries}/>
             </>}
 

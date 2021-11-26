@@ -43,7 +43,7 @@ const Canvas = ({drawFunction}) => {
     }
 
     return (
-        <div ref={containerRef} style={{minHeight: 300}}>
+        <div ref={containerRef}>
             <canvas ref={canvasRef} style={{width: '100%', height: '100%'}}/>
         </div>
     );

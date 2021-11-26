@@ -79,7 +79,6 @@ const NewPlot = ({seriesData}) => {
         }
 
 
-        console.log(verticalLabels)
         const daysSpan = Math.floor(new Date(series.lastLogged).getTime() / 86400000) - Math.floor(new Date(series.lastLogged).getTime() / 86400000) + actualLength;
         const startDateDays = Math.floor(new Date(series.lastLogged).getTime() / 86400000) - daysSpan
 
@@ -108,7 +107,7 @@ const NewPlot = ({seriesData}) => {
     }
 
     return (
-        <div style={{padding: 20}}>
+        <div style={{padding: 5}}>
             <Canvas drawFunction={(ctx, frame) => {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
                 ctx.font = '12px Arial'
