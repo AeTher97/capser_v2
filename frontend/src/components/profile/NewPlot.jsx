@@ -1,16 +1,53 @@
 import React from 'react';
 import Canvas from "../../utils/Canvas";
+import {useTheme} from "@material-ui/core";
 
-const NewPlot = ({seriesData}) => {
+const NewPlot = React.memo(({seriesData}) => {
 
     const lineColor = 'rgba(255,255,255,0.4)';
     const textColor = 'rgba(255,255,255,1)';
 
     const dateOptions = {month: 'long', day: 'numeric'};
+    const theme = useTheme();
 
     const verticalAxisOffset = 30;
     const horizontalAxisOffset = 30;
 
+
+    const roundRect = (ctx, x, y, width, height, radius, fill, stroke) => {
+        if (typeof stroke === 'undefined') {
+            stroke = true;
+        }
+        if (typeof radius === 'undefined') {
+            radius = 5;
+        }
+        if (typeof radius === 'number') {
+            radius = {tl: radius, tr: radius, br: radius, bl: radius};
+        } else {
+            var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+            for (var side in defaultRadius) {
+                radius[side] = radius[side] || defaultRadius[side];
+            }
+        }
+        ctx.beginPath();
+        ctx.moveTo(x + radius.tl, y);
+        ctx.lineTo(x + width - radius.tr, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+        ctx.lineTo(x + width, y + height - radius.br);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+        ctx.lineTo(x + radius.bl, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+        ctx.lineTo(x, y + radius.tl);
+        ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+        ctx.closePath();
+        if (fill) {
+            ctx.fill();
+        }
+        if (stroke) {
+            ctx.stroke();
+        }
+
+    }
 
     const drawContent = (ctx, frame, series, actualLength, min, max) => {
         const width = ctx.canvas.width;
@@ -102,15 +139,55 @@ const NewPlot = ({seriesData}) => {
         ctx.lineTo(verticalAxisOffset, height - horizontalAxisOffset);
         ctx.lineTo(width, height - horizontalAxisOffset);
         ctx.stroke();
+        ctx.closePath();
+    }
+
+    const drawTooltip = (ctx, series, actualLength, event, min, max, step) => {
+        if (step > 100) {
+            step = 100;
+        }
+        const center = (max + min) / 2;
+        const span = (max - min);
+
+        const size = ctx.canvas.width - verticalAxisOffset;
+        const entry = series.data[Math.floor((event.x - verticalAxisOffset) / size * actualLength)];
+
+        const padding = 10;
+        let height = (ctx.canvas.height - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.height - horizontalAxisOffset)) * step / 100;
+        const circleHeight = height;
+        height += 10;
+        if (ctx.canvas.height - horizontalAxisOffset - height < 30) {
+            height -= 50;
+        }
+
+        if (entry) {
+            // ctx.strokeStyle = 'rgb(197,197,197)';
+            // ctx.lineWidth = 0.3;
+            // ctx.beginPath()
+            // ctx.moveTo(event.x,0)
+            // ctx.lineTo(event.x,ctx.canvas.height-horizontalAxisOffset);
+            // ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(event.x, circleHeight, 3, 50, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgb(51,51,51)';
+            ctx.beginPath();
+            roundRect(ctx, event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - 30, height, 60, 35, 7, true, false)
+            ctx.fill()
 
 
+            ctx.fillStyle = textColor;
+            ctx.fillText(entry.toFixed(2), event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - 30 + padding, height + padding + 12);
+        }
     }
 
     return (
         <div style={{padding: 5}}>
-            <Canvas drawFunction={(ctx, frame) => {
+            <Canvas drawFunction={(ctx, frame, event) => {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-                ctx.font = '12px Arial'
+                ctx.font = '13px Arial'
 
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
                 const min = Math.min(...seriesData.data.filter(obj => obj > -100000));
@@ -118,20 +195,23 @@ const NewPlot = ({seriesData}) => {
                 const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj !== 500 && obj > -100000).length;
 
                 if (onlyZeros !== 0) {
-
                     drawAxes(ctx, seriesData, actualLength, min, max);
                     drawContent(ctx, frame, seriesData, actualLength, min, max);
+                    if (event) {
+                        drawTooltip(ctx, seriesData, actualLength, event, min, max, frame)
+                    }
                 } else {
                     ctx.fillStyle = textColor;
+                    ctx.font = '15px Arial';
                     const width = ctx.measureText('No data').width;
-                    const height = ctx.measureText('No data').height;
-                    ctx.fillText('No data', ctx.canvas.width / 2 - width / 2, ctx.canvas.height / 2 - height / 2)
+
+                    ctx.fillText('No data', ctx.canvas.width / 2 - width / 2, ctx.canvas.height / 2 - 3)
                 }
 
 
             }}/>
         </div>
     );
-};
+});
 
 export default NewPlot;
