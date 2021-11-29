@@ -29,6 +29,7 @@ const ProfilePlots = ({userId, width}) => {
                 <Typography>Rebuttals</Typography>
                 <NewPlot seriesData={data.rebuttalsSeries}/>
             </>}
+            {!loaded && <div style={{height: 1000}}/>}
 
 
         </div>

@@ -67,7 +67,6 @@ const RulesScreen = () => {
     ]
 
 
-    let index = 0;
 
     return (
         <div>
@@ -93,58 +92,56 @@ const RulesScreen = () => {
                             more loosely (differences will be marked and explained).
                         </Typography>
                     </div>
-                    <Typography variant={"h5"}>Basic rules</Typography>
 
-                    {basicRules.map(rule => {
-                            index++;
+                    <Typography variant={"h5"}>1. Basic rules</Typography>
+
+                    {basicRules.map((rule, index) => {
                             return <div className={styles.section} key={rule}>
-                                <Typography>{index}. {rule}</Typography>
+                                <Typography>({index + 1}). {rule}</Typography>
                             </div>
                         }
                     )}
-                    <Typography variant={"h5"}>Playing field rules</Typography>
+                    <Typography variant={"h5"}>2. Playing field specifications</Typography>
 
-                    {fieldRules.map(rule => {
-                            index++;
+                    {fieldRules.map((rule, index) => {
                             return <div className={styles.section} key={rule}>
-                                <Typography>{index}. {rule}</Typography>
-                            </div>
-                        }
-                    )}
-
-                    <Typography variant={"h5"}>Scoring rules</Typography>
-
-                    {scoringRules.map(rule => {
-                            index++;
-                            return <div className={styles.section} key={rule}>
-                                <Typography>{index}. {rule}</Typography>
+                                <Typography>({index + 1}). {rule}</Typography>
                             </div>
                         }
                     )}
 
-                    <Typography variant={"h5"}>Conflict resolution</Typography>
+                    <Typography variant={"h5"}>3. Scoring rules</Typography>
 
-                    {conflictRules.map(rule => {
-                            index++;
+                    {scoringRules.map((rule, index) => {
                             return <div className={styles.section} key={rule}>
-                                <Typography>{index}. {rule}</Typography>
+                                <Typography>({index + 1}). {rule}</Typography>
                             </div>
                         }
                     )}
 
-                    <Typography variant={"h5"}>Good manners</Typography>
+                    <Typography variant={"h5"}>4. Conflict resolution</Typography>
 
-                    {goodManners.map(rule => {
-                            index++;
+                    {conflictRules.map((rule, index) => {
                             return <div className={styles.section} key={rule}>
-                                <Typography>{index}. {rule}</Typography>
+                                <Typography>({index + 1}). {rule}</Typography>
                             </div>
                         }
                     )}
 
-                    <Typography color={"primary"} variant={"h4"}>Rules version</Typography>
+                    <Typography variant={"h5"}>5. Good manners</Typography>
+
+                    {goodManners.map((rule, index) => {
+                            return <div className={styles.section} key={rule}>
+                                <Typography>({index + 1}). {rule}</Typography>
+                            </div>
+                        }
+                    )}
+
+                    <Typography color={"primary"} variant={"h4"}>Rules changes</Typography>
                     <div className={styles.section}>
                         <Typography>16.10.2020 - Caps rules written down.
+                        </Typography>
+                        <Typography>29.11.2021 - Improved numbering and changes playing field rules paragraph name.
                         </Typography>
                     </div>
                 </div>
