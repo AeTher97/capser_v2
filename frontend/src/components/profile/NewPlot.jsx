@@ -160,8 +160,10 @@ const NewPlot = React.memo(({seriesData}) => {
             height -= 50;
         }
 
-        if (entry) {
+        if (entry || entry === 0) {
 
+            console.log("xd")
+            ctx.fillStyle = 'rgb(171,171,171)';
             ctx.beginPath();
             ctx.arc(event.x, circleHeight, 3, 50, 0, 2 * Math.PI);
             ctx.fill();
