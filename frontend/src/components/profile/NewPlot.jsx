@@ -161,12 +161,6 @@ const NewPlot = React.memo(({seriesData}) => {
         }
 
         if (entry) {
-            // ctx.strokeStyle = 'rgb(197,197,197)';
-            // ctx.lineWidth = 0.3;
-            // ctx.beginPath()
-            // ctx.moveTo(event.x,0)
-            // ctx.lineTo(event.x,ctx.canvas.height-horizontalAxisOffset);
-            // ctx.stroke();
 
             ctx.beginPath();
             ctx.arc(event.x, circleHeight, 3, 50, 0, 2 * Math.PI);
@@ -174,12 +168,14 @@ const NewPlot = React.memo(({seriesData}) => {
 
             ctx.fillStyle = 'rgb(51,51,51)';
             ctx.beginPath();
-            roundRect(ctx, event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - 30, height, 60, 35, 7, true, false)
+            const tooltipWidth = ctx.measureText(entry.toFixed(2)).width + 20;
+            roundRect(ctx, event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - tooltipWidth / 2,
+                height, ctx.measureText(entry.toFixed(2)).width + 20, 35, 7, true, false)
             ctx.fill()
 
 
             ctx.fillStyle = textColor;
-            ctx.fillText(entry.toFixed(2), event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - 30 + padding, height + padding + 12);
+            ctx.fillText(entry.toFixed(2), event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - tooltipWidth / 2 + padding, height + padding + 12);
         }
     }
 
