@@ -18,6 +18,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(youTubeHandler, "/api/ytremote/remote").setAllowedOrigins("*");
+        registry.addHandler(youTubeHandler, "/remote").setAllowedOrigins("*");
     }
 }
