@@ -6,7 +6,6 @@ import com.mwozniak.capser_v2.ytremote.models.MemberSession;
 import com.mwozniak.capser_v2.ytremote.models.RemoteSession;
 import com.mwozniak.capser_v2.ytremote.models.User;
 import lombok.extern.log4j.Log4j;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -18,7 +17,6 @@ import java.util.*;
 
 @Service
 @Log4j
-@EnableScheduling
 public class WebSocketSessionManager {
 
     private final ObjectMapper objectMapper = new ObjectMapper();

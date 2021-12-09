@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private YouTubeHandler youTubeHandler;
+    private final YouTubeHandler youTubeHandler;
 
     public WebSocketConfig(YouTubeHandler youTubeHandler) {
         this.youTubeHandler = youTubeHandler;

@@ -44,9 +44,8 @@ public class RemoteSession {
             mediaPlayer = memberSession;
         }
 
-        if (memberType.equals(MemberType.CONTROLLER)) {
-            emitReceivers();
-        }
+        emitReceivers();
+
         notifyReceivers();
     }
 
