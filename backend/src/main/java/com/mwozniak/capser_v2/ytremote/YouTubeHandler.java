@@ -84,6 +84,7 @@ public class YouTubeHandler implements WebSocketHandler, SubProtocolCapable {
                     break;
                 case MEDIA_CONTROL:
                 case QUEUE_CONTROL:
+                case SEARCH_CONTROL:
                     handleMediaControl(message, user, webSocketSession);
                     break;
                 case SET_RECEIVER:
