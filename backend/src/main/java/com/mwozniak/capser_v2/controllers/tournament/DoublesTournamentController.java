@@ -8,7 +8,7 @@ import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UpdatePlayersException;
 import com.mwozniak.capser_v2.service.tournament.DoublesTournamentService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/doubles/tournaments")
-@Log4j
+@Log4j2
 public class DoublesTournamentController  extends AbstractTournamentController<DoublesTournament> {
 
     private final DoublesTournamentService doublesTournamentService;

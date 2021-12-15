@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTourname
 import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.SinglesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedTournament;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tournaments")
-@Log4j
+@Log4j2
 public class AggregatedTournamentController {
 
     private final EasyCapsTournamentController easyCapsTournamentController;

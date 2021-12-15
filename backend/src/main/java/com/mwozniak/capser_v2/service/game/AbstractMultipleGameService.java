@@ -19,14 +19,14 @@ import com.mwozniak.capser_v2.service.TeamService;
 import com.mwozniak.capser_v2.service.UserService;
 import com.mwozniak.capser_v2.utils.EloRating;
 import com.mwozniak.capser_v2.utils.EmailLoader;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Log4j
+@Log4j2
 public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     private final TeamService teamService;

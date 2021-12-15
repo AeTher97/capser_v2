@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.controllers.GameController;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.service.game.AbstractGameService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.util.UUID;
 
-@Log4j
+@Log4j2
 public abstract class AbstractGameController implements GameController {
 
     protected final AbstractGameService abstractGameService;

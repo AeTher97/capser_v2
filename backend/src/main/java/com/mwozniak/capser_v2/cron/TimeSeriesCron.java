@@ -3,14 +3,14 @@ package com.mwozniak.capser_v2.cron;
 import com.mwozniak.capser_v2.models.database.TimeSeries;
 import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.repository.StatsRepository;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Log4j
+@Log4j2
 public class TimeSeriesCron {
 
     private final StatsRepository statsRepository;

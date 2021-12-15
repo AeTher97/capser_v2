@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GamemodeInvalidException;
 import com.mwozniak.capser_v2.service.game.*;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/games")
-@Log4j
+@Log4j2
 public class GameById {
 
     private final List<GameService> gameServiceList;

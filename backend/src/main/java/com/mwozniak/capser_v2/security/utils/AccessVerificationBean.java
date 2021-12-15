@@ -8,7 +8,7 @@ import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.TeamRepository;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-@Log4j
+@Log4j2
 public class AccessVerificationBean {
 
     private final AcceptanceRequestRepository acceptanceRequestRepository;

@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.configuration.JwtConfiguration;
 import com.mwozniak.capser_v2.security.JwtTokenAuthentication;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -12,13 +12,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@Log4j
+@Log4j2
 public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtConfiguration jwtConfiguration;

@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.dto.CreateTournamentDto;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.service.tournament.AbstractTournamentService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 
-@Log4j
+@Log4j2
 public abstract class AbstractTournamentController<T extends Tournament<?>>{
 
     private final AbstractTournamentService<T> tournamentService;

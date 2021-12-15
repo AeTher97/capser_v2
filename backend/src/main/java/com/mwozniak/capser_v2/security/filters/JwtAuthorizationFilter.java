@@ -1,7 +1,7 @@
 package com.mwozniak.capser_v2.security.filters;
 
 import com.mwozniak.capser_v2.security.JwtTokenAuthentication;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Log4j
+@Log4j2
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;

@@ -20,7 +20,7 @@ import com.mwozniak.capser_v2.repository.UsersRepository;
 import com.mwozniak.capser_v2.security.providers.UsernamePasswordProvider;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Log4j
+@Log4j2
 public class UserService {
 
     private final UsersRepository usersRepository;

@@ -2,15 +2,15 @@ package com.mwozniak.capser_v2.service.tournament;
 
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesTournament;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.UserService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Log4j
+@Log4j2
 public abstract class AbstractSinglesTournamentService<T extends AbstractSinglesTournament<?>> extends AbstractTournamentService<T> {
 
     private final JpaRepository<T, UUID> repository;

@@ -1,6 +1,6 @@
 package com.mwozniak.capser_v2.security.filters;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Log4j
+@Log4j2
 public class UsernamePasswordFilter extends UsernamePasswordAuthenticationFilter {
 
     private UsernamePasswordFilter(){

@@ -15,7 +15,7 @@ import com.mwozniak.capser_v2.models.exception.UpdatePlayersException;
 import com.mwozniak.capser_v2.repository.DoublesTournamentRepository;
 import com.mwozniak.capser_v2.service.TeamService;
 import com.mwozniak.capser_v2.service.game.DoublesService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Log4j
+@Log4j2
 @Service
 public class DoublesTournamentService extends AbstractTournamentService<DoublesTournament> {
 

@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.ytremote.enums.MemberType;
 import com.mwozniak.capser_v2.ytremote.models.messages.server.CurrentReceiver;
 import com.mwozniak.capser_v2.ytremote.models.messages.server.Receivers;
 import javassist.NotFoundException;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Log4j
+@Log4j2
 public class RemoteSession {
 
     private final Map<String, MemberSession> memberSessions;

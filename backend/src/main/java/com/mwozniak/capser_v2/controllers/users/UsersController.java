@@ -9,7 +9,7 @@ import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;
 import com.mwozniak.capser_v2.service.UserService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
-@Log4j
+@Log4j2
 public class UsersController {
 
     private final UserService userService;

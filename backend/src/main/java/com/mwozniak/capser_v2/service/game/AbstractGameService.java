@@ -17,7 +17,7 @@ import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
 import com.mwozniak.capser_v2.utils.EloRating;
 import com.mwozniak.capser_v2.utils.EmailLoader;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j
+@Log4j2
 public abstract class AbstractGameService implements GameService {
 
     protected final AcceptanceRequestRepository acceptanceRequestRepository;

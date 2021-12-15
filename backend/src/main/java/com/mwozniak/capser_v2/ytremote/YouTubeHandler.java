@@ -15,7 +15,7 @@ import com.mwozniak.capser_v2.ytremote.models.messages.client.Stop;
 import com.mwozniak.capser_v2.ytremote.models.messages.server.Error;
 import com.sun.corba.se.spi.activation.InitialNameServicePackage.NameAlreadyBound;
 import javassist.NotFoundException;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@Log4j
+@Log4j2
 public class YouTubeHandler implements WebSocketHandler, SubProtocolCapable {
 
 

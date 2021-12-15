@@ -7,7 +7,7 @@ import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.tournament.AbstractSinglesTournamentService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-@Log4j
+@Log4j2
 public abstract class AbstractSinglesTournamentController<T extends AbstractSinglesTournament<?>> extends AbstractTournamentController<T> {
     private final AbstractSinglesTournamentService<T> tournamentService;
 

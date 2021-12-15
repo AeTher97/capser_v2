@@ -2,7 +2,7 @@ package com.mwozniak.capser_v2.controllers;
 
 import com.mwozniak.capser_v2.models.exception.NotificationNotFoundException;
 import com.mwozniak.capser_v2.service.NotificationService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/notifications")
-@Log4j
+@Log4j2
 public class NotificationController {
 
 

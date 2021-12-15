@@ -7,13 +7,13 @@ import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.exception.NotificationNotFoundException;
 import com.mwozniak.capser_v2.repository.NotificationRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@Log4j
+@Log4j2
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;

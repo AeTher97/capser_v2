@@ -4,7 +4,7 @@ import com.mwozniak.capser_v2.models.dto.CreateTeamDto;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.service.TeamService;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/teams")
-@Log4j
+@Log4j2
 public class TeamController {
 
     private final TeamService teamService;
