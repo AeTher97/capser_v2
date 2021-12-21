@@ -116,6 +116,13 @@ const SideBar = ({open, setOpen}) => {
 
     const go = (address) => {
         history.push(address);
+        if (small) {
+            setState({
+                expanded: open,
+                width: 50
+            })
+            setOpen(false);
+        }
     }
 
     return (
