@@ -1,7 +1,7 @@
 # Capser V2
 
 Second version of caps games tracking service. With revamped interface and backend. New version allows hosting tournaments and improved statistics.
-This version currently powers [Global Caps League official site](globalcapsleague.com).
+This version currently powers [Global Caps League official site](https://globalcapsleague.com).
 
 ## Startup
 
