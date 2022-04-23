@@ -8,5 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class EmailConfiguration {
 
     private String username;
-    private String password;
+    private String token;
+    private String clientId;
+    private String clientSecret;
+    private int port = 587;
+    private String smtpHost = "smtp.gmail.com";
 }
