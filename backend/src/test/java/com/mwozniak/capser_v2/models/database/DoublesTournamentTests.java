@@ -3,8 +3,8 @@ package com.mwozniak.capser_v2.models.database;
 import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
-import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
+import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTournament;
@@ -31,7 +31,6 @@ public class DoublesTournamentTests {
         doublesTournament.setTournamentName("Test");
         doublesTournament.setSeedType(SeedType.RANDOM);
         doublesTournament.setSize(BracketEntryType.RO_16);
-
 
         assertEquals(15, doublesTournament.getBracketEntries().size());
     }

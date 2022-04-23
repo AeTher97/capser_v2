@@ -45,7 +45,6 @@ public class UsersController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<Object> getUser(@PathVariable UUID userId) throws UserNotFoundException {
-//        log.info("Getting " + userId.toString() + " detailed info");
         UserMinimized userMinimized = new UserMinimized();
         BeanUtils.copyProperties(userService.getUser(userId), userMinimized);
         return ResponseEntity.ok(userMinimized);

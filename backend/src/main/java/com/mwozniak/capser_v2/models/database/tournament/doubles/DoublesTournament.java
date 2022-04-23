@@ -2,9 +2,9 @@ package com.mwozniak.capser_v2.models.database.tournament.doubles;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.Competitor;
-import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
-import com.mwozniak.capser_v2.models.database.tournament.AbstractTournament;
+import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 @AllArgsConstructor
-public class DoublesTournament extends AbstractTournament<DoublesGame> {
+public class DoublesTournament extends Tournament<DoublesGame> {
 
     public DoublesTournament() {
 
@@ -47,7 +47,7 @@ public class DoublesTournament extends AbstractTournament<DoublesGame> {
     }
 
     @Override
-    protected List<Competitor> getCompetitorList() {
+    public List<Competitor> getCompetitorList() {
         return teams.stream().map(TeamBridge::getTeam).collect(Collectors.toList());
     }
 
@@ -86,12 +86,12 @@ public class DoublesTournament extends AbstractTournament<DoublesGame> {
     }
 
     @Override
-    protected void setBracketEntries(List<BracketEntry> entries) {
+    public void setBracketEntries(List<BracketEntry> entries) {
         bracketEntries = (List<DoublesBracketEntry>) (List<?>) entries;
     }
 
     @Override
-    protected DoublesBracketEntry createBracketEntry() {
+    public DoublesBracketEntry createBracketEntry() {
         return new DoublesBracketEntry();
     }
 }

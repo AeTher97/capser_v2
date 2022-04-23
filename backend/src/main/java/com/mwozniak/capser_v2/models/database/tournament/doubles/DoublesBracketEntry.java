@@ -2,8 +2,8 @@ package com.mwozniak.capser_v2.models.database.tournament.doubles;
 
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
-import com.mwozniak.capser_v2.models.database.game.multiple.AbstractMultipleGame;
-import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
+import com.mwozniak.capser_v2.models.database.game.team.AbstractTeamGame;
+import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class DoublesBracketEntry extends BracketEntry {
     private DoublesGame game;
 
 
-    public AbstractMultipleGame getGame(){
+    public AbstractTeamGame getGame() {
         return game;
     }
 

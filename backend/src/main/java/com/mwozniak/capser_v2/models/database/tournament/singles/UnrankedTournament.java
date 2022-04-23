@@ -34,12 +34,12 @@ public class UnrankedTournament extends AbstractSinglesTournament<UnrankedGame> 
     }
 
     @Override
-    protected void setBracketEntries(List<BracketEntry> entries) {
+    public void setBracketEntries(List<BracketEntry> entries) {
         bracketEntries = (List<UnrankedBracketEntry>) (List<?>) entries;
     }
 
     @Override
-    protected AbstractSinglesBracketEntry createBracketEntry() {
+    public AbstractSinglesBracketEntry createBracketEntry() {
         return new UnrankedBracketEntry();
     }
 

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 
 @Log4j2
-public abstract class AbstractMultipleGameController extends AbstractGameController {
+public abstract class AbstractTeamGameController extends AbstractGameController {
 
-    public AbstractMultipleGameController(AbstractGameService abstractGameService) {
+    public AbstractTeamGameController(AbstractGameService abstractGameService) {
         super(abstractGameService);
     }
 

@@ -2,7 +2,7 @@ package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.multiple.DoublesGame;
+import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.dto.DoublesGameDto;
 import com.mwozniak.capser_v2.models.dto.TeamWithPlayersDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;

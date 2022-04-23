@@ -38,12 +38,12 @@ public class EasyCapsTournament extends AbstractSinglesTournament<EasyCapsGame> 
 
 
     @Override
-    protected void setBracketEntries(List<BracketEntry> entries) {
+    public void setBracketEntries(List<BracketEntry> entries) {
         bracketEntries = (List<EasyCapsBracketEntry>) (List<?>) entries;
     }
 
     @Override
-    protected AbstractSinglesBracketEntry createBracketEntry() {
+    public AbstractSinglesBracketEntry createBracketEntry() {
         return new EasyCapsBracketEntry();
     }
 }

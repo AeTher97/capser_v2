@@ -17,8 +17,9 @@ import java.util.UUID;
 public abstract class AbstractTournamentService<T extends Tournament<?>> {
 
 
-    private final JpaRepository<T,UUID> repository;
-    public AbstractTournamentService(JpaRepository<T, UUID> repository){
+    private final JpaRepository<T, UUID> repository;
+
+    public AbstractTournamentService(JpaRepository<T, UUID> repository) {
         this.repository = repository;
     }
 
@@ -36,7 +37,7 @@ public abstract class AbstractTournamentService<T extends Tournament<?>> {
 
     public T seedPlayers(UUID id) throws TournamentNotFoundException {
         Optional<T> tournamentOptional = repository.findById(id);
-        if(!tournamentOptional.isPresent()){
+        if (!tournamentOptional.isPresent()) {
             throw new TournamentNotFoundException();
         }
         T tournament = tournamentOptional.get();
@@ -44,15 +45,15 @@ public abstract class AbstractTournamentService<T extends Tournament<?>> {
         return repository.save(tournament);
     }
 
-    public Page<T> getTournaments(PageRequest pageRequest){
+    public Page<T> getTournaments(PageRequest pageRequest) {
         return repository.findAll(pageRequest);
     }
 
     @Transactional
     public void deleteTournament(UUID tournamentId) throws TournamentNotFoundException {
         Optional<T> tournament = repository.findById(tournamentId);
-        if(tournament.isPresent()){
-             repository.delete(tournament.get());
+        if (tournament.isPresent()) {
+            repository.delete(tournament.get());
         } else {
             throw new TournamentNotFoundException("Tournament not found");
         }
@@ -60,6 +61,7 @@ public abstract class AbstractTournamentService<T extends Tournament<?>> {
 
 
     protected abstract T createTournamentClass();
+
     public abstract T getTournament(UUID id) throws TournamentNotFoundException;
 
 

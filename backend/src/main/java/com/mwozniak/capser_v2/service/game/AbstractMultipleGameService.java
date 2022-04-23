@@ -7,7 +7,7 @@ import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.multiple.AbstractMultipleGame;
+import com.mwozniak.capser_v2.models.database.game.team.AbstractTeamGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -32,7 +32,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
     private final TeamService teamService;
     private final EmailService emailService;
 
-    public AbstractMultipleGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, TeamService teamService) {
+    protected AbstractMultipleGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, TeamService teamService) {
         super(acceptanceRequestRepository, userService, emailService, notificationService);
         this.teamService = teamService;
         this.emailService = emailService;
@@ -41,16 +41,16 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
     @Transactional
     @Override
     public void queueGame(AbstractGame abstractGame) throws CapserException {
-        AbstractMultipleGame abstractMultipleGame = (AbstractMultipleGame) abstractGame;
-        teamService.findTeam(abstractMultipleGame.getTeam1DatabaseId());
-        teamService.findTeam(abstractMultipleGame.getTeam2DatabaseId());
+        AbstractTeamGame abstractTeamGame = (AbstractTeamGame) abstractGame;
+        teamService.findTeam(abstractTeamGame.getTeam1DatabaseId());
+        teamService.findTeam(abstractTeamGame.getTeam2DatabaseId());
         AbstractGame saved = saveGame(abstractGame);
         addAcceptanceAndNotify(saved);
     }
 
     @Override
     protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
-        AbstractMultipleGame multipleGame = (AbstractMultipleGame) abstractGame;
+        AbstractTeamGame multipleGame = (AbstractTeamGame) abstractGame;
 
         String winnerName = teamService.getTeam(multipleGame.getWinnerTeamId()).getName();
         String loserName = teamService.getTeam(multipleGame.getLoserTeamId()).getName();
@@ -99,7 +99,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
 
     @Override
     protected void updateEloAndStats(AbstractGame abstractGame) throws CapserException {
-        AbstractMultipleGame multipleGame = (AbstractMultipleGame) abstractGame;
+        AbstractTeamGame multipleGame = (AbstractTeamGame) abstractGame;
 
         TeamWithStats winner = teamService.findTeam(multipleGame.getWinnerTeamId());
         TeamWithStats loser = teamService.findTeam(multipleGame.getLoserTeamId());

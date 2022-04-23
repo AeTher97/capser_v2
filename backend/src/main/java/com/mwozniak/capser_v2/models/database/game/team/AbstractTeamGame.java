@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.models.database.game.multiple;
+package com.mwozniak.capser_v2.models.database.game.team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.enums.GameMode;
@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @MappedSuperclass
-public abstract class AbstractMultipleGame extends AbstractGame {
+public abstract class AbstractTeamGame extends AbstractGame {
 
     @Setter
     @Getter
@@ -110,7 +110,7 @@ public abstract class AbstractMultipleGame extends AbstractGame {
 
         }
 
-        continueValidation();
+        playerNumberSpecificValidation();
 
     }
 
@@ -311,6 +311,6 @@ public abstract class AbstractMultipleGame extends AbstractGame {
         return getWinner().getPlayerList().contains(user.getId());
     }
 
-    protected abstract void continueValidation() throws GameValidationException;
+    protected abstract void playerNumberSpecificValidation() throws GameValidationException;
 
 }

@@ -3,7 +3,7 @@ package com.mwozniak.capser_v2.models.database.tournament.singles;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
-import com.mwozniak.capser_v2.models.database.tournament.AbstractTournament;
+import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @MappedSuperclass
-public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> extends AbstractTournament<T> {
+public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> extends Tournament<T> {
 
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
@@ -31,7 +31,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
     private UserBridge winner;
 
     @Override
-    protected List<Competitor> getCompetitorList(){
+    public List<Competitor> getCompetitorList() {
         return players.stream().map(UserBridge::getUser).collect(Collectors.toList());
     }
 

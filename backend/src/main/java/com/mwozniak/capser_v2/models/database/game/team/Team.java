@@ -1,4 +1,4 @@
-package com.mwozniak.capser_v2.models.database.game.multiple;
+package com.mwozniak.capser_v2.models.database.game.team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mwozniak.capser_v2.models.database.Competitor;
