@@ -19,6 +19,7 @@ import {getGameIcon} from "../game/details/GameComponent";
 import {getGameTypeString} from "../../utils/Utils";
 import DoubleEliminationLadder from "./DoubleEliminationLadder";
 import AddDoublesGameComponent from "../game/AddDoublesGameComponent";
+import RoundRobinLadder from "./RoundRobinLadder";
 
 const TournamentComponent = () => {
 
@@ -139,9 +140,12 @@ const TournamentComponent = () => {
                                 </div>
                                 <BoldTyphography
                                     className={classes.header}>{getGameIcon(tournament.gameType)} {getGameTypeString(tournament.gameType)}</BoldTyphography>
-                                <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? playerMultiplier * tournament.size.split("_")[2] : playerMultiplier * tournament.size.split("_")[1]} players</BoldTyphography>
+                                {tournament.tournamentType === "ROUND_ROBIN" ?
+                                    <BoldTyphography>{tournament.players ? tournament.players.length : tournament.teams.length} players</BoldTyphography>
+                                    :
+                                    <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? playerMultiplier * tournament.size.split("_")[2] : playerMultiplier * tournament.size.split("_")[1]} players</BoldTyphography>}
                                 {teams &&
-                                <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} teams</BoldTyphography>}
+                                    <BoldTyphography>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} teams</BoldTyphography>}
                                 <BoldTyphography>{getTournamentTypeString(tournament.tournamentType)} tournament</BoldTyphography>
                                 <Typography>{getSeedTypeString(tournament.seedType)}</Typography>
                                 <Typography>{getInProgressString(tournament.seeded, tournament.finished)}</Typography>
@@ -151,7 +155,7 @@ const TournamentComponent = () => {
                                 <div>
                                     {!edited && <div style={{padding: 5}}>
                                         {!tournament.seeded && isOwner() &&
-                                        <Button onClick={() => setDialogOpen(true)}>Seed players and start</Button>}
+                                            <Button onClick={() => setDialogOpen(true)}>Seed players and start</Button>}
                                     </div>}
                                     <div style={{padding: 5}}>
                                         <Button variant={"outlined"} onClick={() => setDeleteDialogOpen(true)}>Delete
@@ -181,44 +185,61 @@ const TournamentComponent = () => {
                     </div>
 
                     {tournament.seeded && tournament.tournamentType === "SINGLE_ELIMINATION" &&
-                    <SingleEliminationLadder isOwner={isOwner()}
-                                             gameType={tournament.gameType}
-                                             bracketEntries={tournament.bracketEntries}
-                                             lowestRound={tournament.size}
-                                             openAddGameDialog={openAddGameDialog}
-                                             winner={tournament.winner}
-                                             openSkipDialog={openSkipDialog}
-                                             teams={teams}
-                                             onHighlight={onHighlight}
-                                             onHighlightEnd={onHighlightEnd}
-                                             highlighted={highlighted}
-                    />}
+                        <SingleEliminationLadder isOwner={isOwner()}
+                                                 gameType={tournament.gameType}
+                                                 bracketEntries={tournament.bracketEntries}
+                                                 lowestRound={tournament.size}
+                                                 openAddGameDialog={openAddGameDialog}
+                                                 winner={tournament.winner}
+                                                 openSkipDialog={openSkipDialog}
+                                                 teams={teams}
+                                                 onHighlight={onHighlight}
+                                                 onHighlightEnd={onHighlightEnd}
+                                                 highlighted={highlighted}
+                        />}
                     {tournament.seeded && tournament.tournamentType === "DOUBLE_ELIMINATION" &&
-                    <DoubleEliminationLadder isOwner={isOwner()}
-                                             gameType={tournament.gameType}
-                                             bracketEntries={tournament.bracketEntries}
-                                             lowestRound={tournament.size}
-                                             openAddGameDialog={openAddGameDialog}
-                                             winner={tournament.winner}
-                                             openSkipDialog={openSkipDialog}
-                                             teams={teams}
-                                             onHighlight={onHighlight}
-                                             onHighlightEnd={onHighlightEnd}
-                                             highlighted={highlighted}
-                    />}
+                        <DoubleEliminationLadder isOwner={isOwner()}
+                                                 gameType={tournament.gameType}
+                                                 bracketEntries={tournament.bracketEntries}
+                                                 lowestRound={tournament.size}
+                                                 openAddGameDialog={openAddGameDialog}
+                                                 winner={tournament.winner}
+                                                 openSkipDialog={openSkipDialog}
+                                                 teams={teams}
+                                                 onHighlight={onHighlight}
+                                                 onHighlightEnd={onHighlightEnd}
+                                                 highlighted={highlighted}
+                        />}
+                    {tournament.seeded && tournament.tournamentType === "ROUND_ROBIN" &&
+                        <RoundRobinLadder isOwner={isOwner()}
+                                          playerCount={tournament.players ? tournament.players.length : tournament.teams.length}
+                                          gameType={tournament.gameType}
+                                          bracketEntries={tournament.bracketEntries}
+                                          lowestRound={tournament.size}
+                                          competitorTournamentStats={tournament.competitorTournamentStats}
+                                          competitors={competitors}
+                                          openAddGameDialog={openAddGameDialog}
+                                          winner={tournament.winner}
+                                          openSkipDialog={openSkipDialog}
+                                          teams={teams}
+                                          onHighlight={onHighlight}
+                                          onHighlightEnd={onHighlightEnd}
+                                          highlighted={highlighted}
+                        />}
                     {overrides.player1 && <Dialog open={addGameOpen}>
                         <div className={classes.standardBorder}
                              style={{margin: 0, maxWidth: 250, paddingLeft: 50, paddingRight: 50}}>
                             {!teams &&
-                            <AddSinglesGameComponent type={"singles"} showBorder={false} displayGameDataSection={false}
-                                                     choosePlayers={false}
-                                                     onCancel={() => {
-                                                         setAddGameOpen(false)
-                                                     }}
-                                                     overridePlayer1Name={overrides.player1.username}
-                                                     overridePlayer2Name={overrides.player2.username}
-                                                     handleSaveExternal={handleSave}
-                            />}
+                                <AddSinglesGameComponent type={"singles"} showBorder={false}
+                                                         displayGameDataSection={false}
+                                                         choosePlayers={false}
+                                                         onCancel={() => {
+                                                             setAddGameOpen(false)
+                                                         }}
+                                                         overridePlayer1Name={overrides.player1.username}
+                                                         overridePlayer2Name={overrides.player2.username}
+                                                         handleSaveExternal={handleSave}
+                                />}
                             {teams && <AddDoublesGameComponent
                                 showBorder={false}
                                 chooseTeams={false}

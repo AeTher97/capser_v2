@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.models.database.tournament;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.SeedType;
@@ -10,12 +11,16 @@ import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.DoubleEliminationStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.EliminationStrategy;
+import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.RoundRobinStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.SingleEliminationStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.RandomSeedStrategy;
+import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.RoundRobinSeedingStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.SeedingStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -63,36 +68,56 @@ public abstract class Tournament<T extends AbstractGame> {
 
     private Date date;
 
+    @OneToMany
+    @Setter
+    @Getter
+    @Cascade(CascadeType.ALL)
+    @JsonIgnore
+    private List<CompetitorTournamentStats> competitorTournamentStats;
 
-    public Tournament() {
+    protected Tournament() {
         date = new Date();
     }
 
     public abstract GameType getGameType();
+
+    protected abstract void createCompetitorsArray();
 
     public static boolean isPowerOfFour(int num) {
         return (((num & (num - 1)) == 0)    // check whether num is a power of 2
                 && ((num & 0xaaaaaaaa) == 0));  // make sure it's an even power of 2
     }
 
-    protected abstract void createCompetitorsArray();
-
-    public abstract List<? extends BracketEntry> getBracketEntries();
-
     public abstract void setBracketEntries(List<BracketEntry> entries);
 
     public abstract List<UserBridge> getPlayers();
 
-    protected abstract void checkWinCondition();
-
     public abstract BracketEntry createBracketEntry();
 
+    public abstract List<BracketEntry> getBracketEntries();
+
+    @JsonIgnore
     public abstract List<Competitor> getCompetitorList();
+
+    public abstract void setWinner(UUID id);
+
+    @JsonProperty("competitorTournamentStats")
+    public List<CompetitorTournamentStats> competitorStats() {
+        if (competitorTournamentStats != null) {
+            competitorTournamentStats.sort(CompetitorTournamentStats.Comparators.DRAW_RESOLVE_CONDITIONS);
+
+        }
+        return competitorTournamentStats;
+    }
 
     @JsonIgnore
     public SeedingStrategy getSeedingStrategy() {
         // #TODO more strategies
-        return new RandomSeedStrategy();
+        if (seedType.equals(SeedType.ROUND_ROBIN_CIRCLE)) {
+            return new RoundRobinSeedingStrategy();
+        } else {
+            return new RandomSeedStrategy();
+        }
     }
 
     @JsonIgnore
@@ -102,6 +127,8 @@ public abstract class Tournament<T extends AbstractGame> {
                 return new DoubleEliminationStrategy(this);
             case SINGLE_ELIMINATION:
                 return new SingleEliminationStrategy(this);
+            case ROUND_ROBIN:
+                return new RoundRobinStrategy();
         }
         return null;
     }
@@ -118,11 +145,8 @@ public abstract class Tournament<T extends AbstractGame> {
 
     public void resolveAfterGame() {
         getEliminationStrategy().resolveAfterGame(this);
-
-        checkWinCondition();
+        getEliminationStrategy().checkWinCondition(this);
     }
-
-    ;
 
 
     public void setSize(BracketEntryType bracketEntryType) {
@@ -134,8 +158,8 @@ public abstract class Tournament<T extends AbstractGame> {
         if (isSeeded) {
             throw new IllegalStateException("Tournament already seeded");
         }
-        isSeeded = true;
         getSeedingStrategy().seedPlayers(this);
+        isSeeded = true;
         resolveByes();
     }
 

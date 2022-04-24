@@ -55,6 +55,7 @@ const TournamentsComponent = () => {
     const history = useHistory();
     const [creationOpen, setCreationOpen] = useState(false);
     const [size, setSize] = useState('RO_16');
+    const [seedType, setSeedType] = useState('RANDOM');
     const [gameType, setGameType] = useState('EASY_CAPS');
     const [tournamentType, setTournamentType] = useState('SINGLE_ELIMINATION');
     const [name, setName] = useState('');
@@ -121,22 +122,8 @@ const TournamentsComponent = () => {
                 <div className={classes.standardBorder} style={{margin: 0}}>
                     <Typography variant={"h5"}>Create new tournament</Typography>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <TextField label={name === '' ? "Name" : ''} style={{width: 200}} value={name}
+                        <TextField label={name === '' ? "Name" : ''} style={{width: 200, marginBottom: 10}} value={name}
                                    onChange={event => setName(event.target.value)}/>
-                        <Select style={{width: 200, marginBottom: 10}} value={size}
-                                onChange={(e) => setSize(e.target.value)} label={"Player count"}>
-                            <MenuItem value={"RO_8"}>8</MenuItem>
-                            <MenuItem value={"RO_16"}>16</MenuItem>
-                            {tournamentType !== "DOUBLE_ELIMINATION" && <MenuItem value={"RO_32"}>32</MenuItem>}
-                            {tournamentType !== "DOUBLE_ELIMINATION" && <MenuItem value={"RO_64"}>64</MenuItem>}
-                        </Select>
-                        <Select style={{width: 200, marginBottom: 10}} value={gameType}
-                                onChange={event => setGameType(event.target.value)}>
-                            <MenuItem value={"SINGLES"}>Singles</MenuItem>
-                            <MenuItem value={"EASY_CAPS"}>Easy caps</MenuItem>
-                            <MenuItem value={"UNRANKED"}>Unranked</MenuItem>
-                            <MenuItem value={"DOUBLES"}>Doubles</MenuItem>
-                        </Select>
                         <Select style={{width: 200, marginBottom: 10}} value={tournamentType}
                                 onChange={event => {
                                     setTournamentType(event.target.value)
@@ -146,7 +133,31 @@ const TournamentsComponent = () => {
                                 }}>
                             <MenuItem value={"SINGLE_ELIMINATION"}>Single Elimination</MenuItem>
                             <MenuItem value={"DOUBLE_ELIMINATION"}>Double Elimination</MenuItem>
+                            <MenuItem value={"ROUND_ROBIN"}>Round robin</MenuItem>
                         </Select>
+                        <Select style={{width: 200, marginBottom: 10}} value={gameType}
+                                onChange={event => setGameType(event.target.value)}>
+                            <MenuItem value={"SINGLES"}>Singles</MenuItem>
+                            <MenuItem value={"EASY_CAPS"}>Easy caps</MenuItem>
+                            <MenuItem value={"UNRANKED"}>Unranked</MenuItem>
+                            <MenuItem value={"DOUBLES"}>Doubles</MenuItem>
+                        </Select>
+                        {tournamentType !== "ROUND_ROBIN" && <Select style={{width: 200, marginBottom: 10}} value={size}
+                                                                     onChange={(e) => setSize(e.target.value)}
+                                                                     label={"Player count"}>
+                            <MenuItem value={"RO_8"}>8</MenuItem>
+                            <MenuItem value={"RO_16"}>16</MenuItem>
+                            {tournamentType !== "DOUBLE_ELIMINATION" && <MenuItem value={"RO_32"}>32</MenuItem>}
+                            {tournamentType !== "DOUBLE_ELIMINATION" && <MenuItem value={"RO_64"}>64</MenuItem>}
+                        </Select>}
+                        <Select style={{width: 200, marginBottom: 10}} value={seedType}
+                                onChange={(e) => setSeedType(e.target.value)} label={"Seed type"}>
+                            {tournamentType !== 'ROUND_ROBIN' && <MenuItem value={"RANDOM"}>Random</MenuItem>}
+                            {tournamentType === 'ROUND_ROBIN' &&
+                                <MenuItem value={"ROUND_ROBIN_CIRCLE"}>Round robin circle</MenuItem>}
+                        </Select>
+
+
                     </div>
                     <div>
 
@@ -157,7 +168,7 @@ const TournamentsComponent = () => {
                             }
                             createNew({
                                 tournamentName: name,
-                                seedType: "RANDOM",
+                                seedType: seedType,
                                 tournamentType: tournamentType,
                                 size: tournamentType === "SINGLE_ELIMINATION" ? size : "D_" + size
                             }, getRequestGameTypeString(gameType))
