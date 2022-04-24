@@ -1,6 +1,8 @@
 package com.mwozniak.capser_v2.models.database.tournament.strategy.elimination;
 
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
+import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 
 public abstract class FinalGameEliminationStrategy extends AbstractEliminationStrategy{
@@ -11,17 +13,35 @@ public abstract class FinalGameEliminationStrategy extends AbstractEliminationSt
 
     @Override
     public void checkWinCondition(Tournament<?> tournament) {
-        AbstractSinglesBracketEntry entry = (AbstractSinglesBracketEntry) tournament.getBracketEntry(0);
-        if (entry.getCoordinate() == 0) {
-            if (entry.getGame() != null) {
-                tournament.setFinished(true);
-                tournament.setWinner(entry.getGame().getWinner());
-            } else if (entry.isForfeited()) {
-                tournament.setFinished(true);
-                if (entry.getPlayer1().getId().equals(entry.getForfeitedId())) {
-                    tournament.setWinner(entry.getPlayer2().getId());
-                } else {
-                    tournament.setWinner(entry.getPlayer1().getId());
+        BracketEntry entry = tournament.getBracketEntry(0);
+        if (entry instanceof AbstractSinglesBracketEntry) {
+            AbstractSinglesBracketEntry abstractSinglesBracketEntry = (AbstractSinglesBracketEntry) entry;
+            if (entry.getCoordinate() == 0) {
+                if (entry.getGame() != null) {
+                    tournament.setFinished(true);
+                    tournament.setWinner(abstractSinglesBracketEntry.getGame().getWinnerId());
+                } else if (entry.isForfeited()) {
+                    tournament.setFinished(true);
+                    if (abstractSinglesBracketEntry.getPlayer1().getId().equals(entry.getForfeitedId())) {
+                        tournament.setWinner(abstractSinglesBracketEntry.getPlayer2().getId());
+                    } else {
+                        tournament.setWinner(abstractSinglesBracketEntry.getPlayer1().getId());
+                    }
+                }
+            }
+        } else {
+            DoublesBracketEntry doublesBracketEntry = (DoublesBracketEntry) entry;
+            if (entry.getCoordinate() == 0) {
+                if (entry.getGame() != null) {
+                    tournament.setFinished(true);
+                    tournament.setWinner(doublesBracketEntry.getGame().getWinnerId());
+                } else if (entry.isForfeited()) {
+                    tournament.setFinished(true);
+                    if (doublesBracketEntry.getTeam1().getId().equals(entry.getForfeitedId())) {
+                        tournament.setWinner(doublesBracketEntry.getTeam2().getId());
+                    } else {
+                        tournament.setWinner(doublesBracketEntry.getTeam1().getId());
+                    }
                 }
             }
         }

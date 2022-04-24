@@ -39,7 +39,7 @@ public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> e
 
     @Override
     public void setWinner(UUID id) {
-        winner = players.stream().filter(player -> player.getId().equals(id)).findFirst().get();
+        winner = players.stream().filter(player -> player.getUser().getId().equals(id)).findFirst().get();
     }
 
     @Override

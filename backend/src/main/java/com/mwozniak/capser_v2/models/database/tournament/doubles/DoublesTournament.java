@@ -53,7 +53,7 @@ public class DoublesTournament extends Tournament<DoublesGame> {
 
     @Override
     public void setWinner(UUID id) {
-        winner = teams.stream().filter(team -> team.getId().equals(id)).findFirst().get();
+        winner = teams.stream().filter(team -> team.getTeam().getId().equals(id)).findFirst().get();
 
     }
 
