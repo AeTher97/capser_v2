@@ -3,11 +3,13 @@ package com.mwozniak.capser_v2.models.database.tournament.strategy.elimination;
 import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
+import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
+import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DoubleEliminationStrategy extends AbstractEliminationStrategy {
+public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
 
 
     public DoubleEliminationStrategy(Tournament<?> tournament) {
@@ -162,4 +164,6 @@ public class DoubleEliminationStrategy extends AbstractEliminationStrategy {
 
         }
     }
+
+
 }

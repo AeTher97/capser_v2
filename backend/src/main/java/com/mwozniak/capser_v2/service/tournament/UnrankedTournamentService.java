@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.service.tournament;
 
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedTournament;
@@ -45,7 +46,7 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
     @Override
     public UnrankedTournament postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException {
         UnrankedTournament tournament = getTournament(tournamentId);
-        Optional<? extends AbstractSinglesBracketEntry> unrankedBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
+        Optional<BracketEntry> unrankedBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!unrankedBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }
@@ -75,23 +76,23 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
     @Override
     protected AbstractSinglesBracketEntry getBracketEntry(UUID tournamentId, UUID entryId) throws TournamentNotFoundException {
         UnrankedTournament tournament = getTournament(tournamentId);
-        Optional<? extends AbstractSinglesBracketEntry> unrankedBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
+        Optional<BracketEntry> unrankedBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!unrankedBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }
-        return unrankedBracketEntryOptional.get();
+        return (AbstractSinglesBracketEntry) unrankedBracketEntryOptional.get();
     }
 
     protected AbstractSinglesBracketEntry saveBracketEntry(UUID tournamentId, UUID entryId, AbstractSinglesBracketEntry newEntry) throws TournamentNotFoundException {
         UnrankedTournament tournament = getTournament(tournamentId);
-        Optional<? extends AbstractSinglesBracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
+        Optional<BracketEntry > easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!easyCapsBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }
-        AbstractSinglesBracketEntry entry = easyCapsBracketEntryOptional.get();
+        BracketEntry entry = easyCapsBracketEntryOptional.get();
         BeanUtils.copyProperties(newEntry, entry);
         tournamentRepository.save(tournament);
-        return entry;
+        return (AbstractSinglesBracketEntry) entry;
 
     }
 }

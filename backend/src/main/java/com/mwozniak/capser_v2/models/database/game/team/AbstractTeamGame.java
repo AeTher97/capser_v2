@@ -291,11 +291,11 @@ public abstract class AbstractTeamGame extends AbstractGame {
         }
     }
 
-    private int getTeamPoints(List<GamePlayerStats> stats) {
+    public int getTeamPoints(List<GamePlayerStats> stats) {
         return stats.stream().map(GamePlayerStats::getScore).mapToInt(Integer::intValue).sum();
     }
 
-    private int getTeamSinks(List<GamePlayerStats> stats) {
+    public int getTeamSinks(List<GamePlayerStats> stats) {
         return stats.stream().map(GamePlayerStats::getSinks).mapToInt(Integer::intValue).sum();
     }
 

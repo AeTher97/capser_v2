@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
@@ -38,7 +39,6 @@ public class DoublesTournament extends Tournament<DoublesGame> {
 
     @Setter
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonIgnoreProperties(value = {"userSinglesStats", "userEasyStats", "userUnrankedStats", "userDoublesStats", "teams", "lastSeen", "lastGame", "role"})
     private TeamBridge winner;
 
     @Override
@@ -52,17 +52,9 @@ public class DoublesTournament extends Tournament<DoublesGame> {
     }
 
     @Override
-    protected void checkWinCondition() {
-        DoublesBracketEntry entry = (DoublesBracketEntry) getBracketEntry(0);
-        if (entry.getCoordinate() == 0) {
-            if (entry.getGame() != null) {
-                setFinished(true);
-                setWinner(entry.getTeam1().getId().equals(entry.getGame().getWinnerId()) ? new TeamBridge(entry.getTeam1()) : new TeamBridge(entry.getTeam2()));
-            } else if (entry.isForfeited()) {
-                setFinished(true);
-                setWinner(entry.getTeam2().getId().equals(entry.getForfeitedId()) ? new TeamBridge(entry.getTeam2()) : new TeamBridge(entry.getTeam1()));
-            }
-        }
+    public void setWinner(UUID id) {
+        winner = teams.stream().filter(team -> team.getId().equals(id)).findFirst().get();
+
     }
 
 
@@ -72,8 +64,8 @@ public class DoublesTournament extends Tournament<DoublesGame> {
     }
 
     @Override
-    public List<? extends BracketEntry> getBracketEntries() {
-        return bracketEntries;
+    public List<BracketEntry> getBracketEntries() {
+        return  (List<BracketEntry>) (List<?>) bracketEntries;
     }
 
     @Override

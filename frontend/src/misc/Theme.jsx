@@ -162,9 +162,7 @@ const getOverrides = (divider, baseTheme, type) => {
         },
         MuiTableRow: {
 
-            head: {
-                boxShadow: '0 0 5px 2px rgba(255,255,255,0.4)'
-            }
+
 
         },
         MuiTableCell: {

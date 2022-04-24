@@ -9,5 +9,7 @@ public interface EliminationStrategy {
     void populateEntryList(Tournament<?> tournament);
 
     void resolveByes(Tournament<?> tournament);
+
+    void checkWinCondition(Tournament<?> tournament);
 }
 

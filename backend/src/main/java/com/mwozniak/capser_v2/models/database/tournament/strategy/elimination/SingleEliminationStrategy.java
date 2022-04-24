@@ -7,7 +7,7 @@ import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SingleEliminationStrategy extends AbstractEliminationStrategy {
+public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
 
     public SingleEliminationStrategy(Tournament<?> tournament) {
         super(tournament);
@@ -65,4 +65,5 @@ public class SingleEliminationStrategy extends AbstractEliminationStrategy {
 
         }
     }
+
 }
