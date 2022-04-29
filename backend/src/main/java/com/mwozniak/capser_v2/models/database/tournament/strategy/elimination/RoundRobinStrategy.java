@@ -21,9 +21,19 @@ public class RoundRobinStrategy implements EliminationStrategy {
             CompetitorTournamentStats tournamentStats = tournament.getCompetitorTournamentStats().stream()
                     .filter(competitorTournamentStats -> competitor.getId().equals(competitorTournamentStats.getCompetitorId())).findAny().get();
 
-            List<BracketEntry> competitorEntries = tournament.getBracketEntries().stream().filter(bracketEntry -> {
-                return bracketEntry.getCompetitor1().equals(competitor) || bracketEntry.getCompetitor2().equals(competitor);
-            }).collect(Collectors.toList());
+            List<BracketEntry> competitorEntries = tournament.getBracketEntries()
+                    .stream()
+                    .filter(bracketEntry -> {
+                        if (bracketEntry.getCompetitor1() != null && bracketEntry.getCompetitor2() != null) {
+                            return bracketEntry.getCompetitor1().equals(competitor) || bracketEntry.getCompetitor2().equals(competitor);
+                        } else if (bracketEntry.getCompetitor1() != null) {
+                            return bracketEntry.getCompetitor1().equals(competitor);
+                        } else if (bracketEntry.getCompetitor2() != null) {
+                            return bracketEntry.getCompetitor2().equals(competitor);
+                        }
+                        return false;
+                    })
+                    .collect(Collectors.toList());
 
             int wins = 0;
             int losses = 0;
