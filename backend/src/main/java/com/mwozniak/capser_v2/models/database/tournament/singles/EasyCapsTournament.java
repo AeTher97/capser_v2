@@ -1,9 +1,7 @@
 package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +15,7 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class EasyCapsTournament extends AbstractSinglesTournament<EasyCapsGame> {
+public class EasyCapsTournament extends AbstractSinglesTournament {
 
 
     public EasyCapsTournament() {

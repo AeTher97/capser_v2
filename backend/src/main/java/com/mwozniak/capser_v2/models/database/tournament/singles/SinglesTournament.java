@@ -1,9 +1,7 @@
 package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,14 +17,14 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SinglesTournament extends AbstractSinglesTournament<SinglesGame> {
+public class SinglesTournament extends AbstractSinglesTournament {
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     protected List<SinglesBracketEntry> bracketEntries;
 
-    public List< BracketEntry> getBracketEntries(){
-        return  (List<BracketEntry>) (List<?>) bracketEntries;
+    public List<BracketEntry> getBracketEntries() {
+        return (List<BracketEntry>) (List<?>) bracketEntries;
     }
 
 

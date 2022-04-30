@@ -11,7 +11,7 @@ import java.util.List;
 public class RandomSeedStrategy extends SeedFromOutsideStrategy {
 
     @Override
-    public void seedPlayers(Tournament<?> tournament) {
+    public void seedPlayers(Tournament tournament) {
 
         List<CompetitorTournamentStats> competitorTournamentStats = tournament.getCompetitorTournamentStats();
         if (competitorTournamentStats == null) {

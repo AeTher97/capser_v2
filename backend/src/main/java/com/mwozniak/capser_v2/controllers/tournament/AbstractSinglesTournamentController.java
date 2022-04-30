@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Log4j2
-public abstract class AbstractSinglesTournamentController<T extends AbstractSinglesTournament<?>> extends AbstractTournamentController<T> {
+public abstract class AbstractSinglesTournamentController<T extends AbstractSinglesTournament> extends AbstractTournamentController<T> {
     private final AbstractSinglesTournamentService<T> tournamentService;
 
     protected AbstractSinglesTournamentController(AbstractSinglesTournamentService<T> tournamentService) {

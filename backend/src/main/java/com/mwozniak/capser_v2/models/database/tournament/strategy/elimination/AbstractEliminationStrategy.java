@@ -7,9 +7,9 @@ import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 
 public abstract class AbstractEliminationStrategy implements EliminationStrategy {
 
-    protected final Tournament<?> tournament;
+    protected final Tournament tournament;
 
-    public AbstractEliminationStrategy(Tournament<?> tournament) {
+    public AbstractEliminationStrategy(Tournament tournament) {
         this.tournament = tournament;
     }
 

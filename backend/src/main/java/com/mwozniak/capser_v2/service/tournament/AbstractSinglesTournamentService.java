@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Log4j2
-public abstract class AbstractSinglesTournamentService<T extends AbstractSinglesTournament<?>> extends AbstractTournamentService<T> {
+public abstract class AbstractSinglesTournamentService<T extends AbstractSinglesTournament> extends AbstractTournamentService<T> {
 
     private final JpaRepository<T, UUID> repository;
     private final UserService userService;
@@ -27,7 +27,7 @@ public abstract class AbstractSinglesTournamentService<T extends AbstractSingles
     protected AbstractSinglesTournamentService(JpaRepository<T, UUID> repository, UserService userService) {
         super(repository);
         this.repository = repository;
-        this.userService= userService;
+        this.userService = userService;
     }
 
     @Transactional

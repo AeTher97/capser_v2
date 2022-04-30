@@ -7,7 +7,6 @@ import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
 import com.mwozniak.capser_v2.models.database.Competitor;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.DoubleEliminationStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.EliminationStrategy;
@@ -24,15 +23,12 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @MappedSuperclass
 @AllArgsConstructor
 @Getter
-public abstract class Tournament<T extends AbstractGame> {
+public abstract class Tournament {
 
 
     @Id
@@ -75,6 +71,7 @@ public abstract class Tournament<T extends AbstractGame> {
     @JsonIgnore
     private List<CompetitorTournamentStats> competitorTournamentStats;
 
+
     protected Tournament() {
         date = new Date();
     }
@@ -112,7 +109,6 @@ public abstract class Tournament<T extends AbstractGame> {
 
     @JsonIgnore
     public SeedingStrategy getSeedingStrategy() {
-        // #TODO more strategies
         if (seedType.equals(SeedType.ROUND_ROBIN_CIRCLE)) {
             return new RoundRobinSeedingStrategy();
         } else {
@@ -163,6 +159,12 @@ public abstract class Tournament<T extends AbstractGame> {
         resolveByes();
     }
 
+    public Optional<CompetitorTournamentStats> getCompetitorTournamentStatsForId(UUID id) {
+        return getCompetitorTournamentStats().stream()
+                .filter(competitorTournamentStats -> id.equals(competitorTournamentStats.getCompetitorId())).findAny();
+    }
+
+
     public BracketEntry getBracketEntry(int coord) {
         return getBracketEntries().stream().filter(entry -> entry.getCoordinate() == coord).findFirst().get();
     }
@@ -187,7 +189,10 @@ public abstract class Tournament<T extends AbstractGame> {
 
     public static class Comparators {
 
-        public static final Comparator<Tournament<?>> DATE = Comparator.comparing(Tournament::getDate);
+        public static final Comparator<Tournament> DATE = Comparator.comparing(Tournament::getDate);
+
+        private Comparators() {
+        }
     }
 
 }

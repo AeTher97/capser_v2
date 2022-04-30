@@ -11,7 +11,7 @@ import java.util.UUID;
 public class RoundRobinSeedingStrategy implements SeedingStrategy {
 
     @Override
-    public void seedPlayers(Tournament<?> tournament) {
+    public void seedPlayers(Tournament tournament) {
         int playerCount = tournament.getCompetitorList().size();
         boolean evenPlayerCount = playerCount % 2 == 0;
         int numberOfRounds = evenPlayerCount ? playerCount - 1 : playerCount;
@@ -30,7 +30,7 @@ public class RoundRobinSeedingStrategy implements SeedingStrategy {
 
     }
 
-    public void seedWithCircleMethod(Tournament<?> tournament, int numberOfRounds, int gamesInRound, boolean evenPlayerCount) {
+    public void seedWithCircleMethod(Tournament tournament, int numberOfRounds, int gamesInRound, boolean evenPlayerCount) {
         List<Competitor> competitors = tournament.getCompetitorList();
         //Make player number equal to put a game with bye in
         if (!evenPlayerCount) {
@@ -69,7 +69,7 @@ public class RoundRobinSeedingStrategy implements SeedingStrategy {
 
     }
 
-    private void populateEntryList(Tournament<?> tournament, int numberOfRounds, int gamesInRound) {
+    private void populateEntryList(Tournament tournament, int numberOfRounds, int gamesInRound) {
         List<BracketEntry> bracketEntryList = tournament.getBracketEntries();
 
 

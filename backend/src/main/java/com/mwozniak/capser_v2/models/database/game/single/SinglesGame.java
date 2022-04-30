@@ -7,7 +7,6 @@ import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
@@ -30,7 +29,7 @@ public class SinglesGame extends AbstractSinglesGame {
     public void updateUserPoints(User user, float pointsChange) throws GameValidationException {
         UserStats singlesStats = findCorrectStats(user);
         singlesStats.setPoints(singlesStats.getPoints() + pointsChange);
-        filterStats(user.getId()).setPointsChange(pointsChange);
+        findStats(user.getId()).setPointsChange(pointsChange);
 
     }
 
@@ -52,4 +51,3 @@ public class SinglesGame extends AbstractSinglesGame {
         return user.getUserSinglesStats();
     }
 }
-;

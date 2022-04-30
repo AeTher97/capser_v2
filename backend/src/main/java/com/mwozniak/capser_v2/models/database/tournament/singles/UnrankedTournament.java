@@ -1,9 +1,7 @@
 package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
-import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,16 +15,17 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor
-public class UnrankedTournament extends AbstractSinglesTournament<UnrankedGame> {
+public class UnrankedTournament extends AbstractSinglesTournament {
 
     public UnrankedTournament() {
 
     }
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     protected List<UnrankedBracketEntry> bracketEntries;
 
-    public List<  BracketEntry> getBracketEntries(){
-        return  (List<BracketEntry>) (List<?>)  bracketEntries;
+    public List<BracketEntry> getBracketEntries() {
+        return (List<BracketEntry>) (List<?>) bracketEntries;
     }
 
     @Override

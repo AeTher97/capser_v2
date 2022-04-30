@@ -19,7 +19,7 @@ import java.util.*;
 @AllArgsConstructor
 public abstract class AbstractGame {
 
-    public AbstractGame(){
+    protected AbstractGame() {
         time = new Date();
         accepted = false;
     }
@@ -77,7 +77,7 @@ public abstract class AbstractGame {
         try {
 
             UserStats userStats = findCorrectStats(user);
-            GamePlayerStats gamePlayerStats = filterStats(user.getId());
+            GamePlayerStats gamePlayerStats = findStats(user.getId());
 
             userStats.setGamesPlayed(userStats.getGamesPlayed() + 1);
             if (isWinner(user)) {
@@ -117,7 +117,7 @@ public abstract class AbstractGame {
         }
     }
 
-    protected GamePlayerStats filterStats(UUID id) throws GameValidationException {
+    protected GamePlayerStats findStats(UUID id) throws GameValidationException {
         Optional<GamePlayerStats> gamePlayerStatsOptional = gamePlayerStats.stream().filter(stats -> stats.getPlayerId().equals(id)).findFirst();
         if (gamePlayerStatsOptional.isPresent()) {
             return gamePlayerStatsOptional.get();
@@ -140,6 +140,10 @@ public abstract class AbstractGame {
     protected abstract boolean isWinner(User user);
 
     public static class Comparators {
+
+        private Comparators() {
+
+        }
 
         public static final Comparator<AbstractGame> DATE = Comparator.comparing(AbstractGame::getTime);
     }

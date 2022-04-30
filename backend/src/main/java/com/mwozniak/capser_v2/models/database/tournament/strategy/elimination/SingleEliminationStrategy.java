@@ -9,12 +9,12 @@ import java.util.List;
 
 public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
 
-    public SingleEliminationStrategy(Tournament<?> tournament) {
+    public SingleEliminationStrategy(Tournament tournament) {
         super(tournament);
     }
 
     @Override
-    public void resolveAfterGame(Tournament<?> tournament) {
+    public void resolveAfterGame(Tournament tournament) {
         BracketEntryType currentRow = tournament.getSize();
         while (!currentRow.equals(BracketEntryType.RO_2)) {
             tournament.getBracketEntries().sort(BracketEntry.Comparators.COORDINATE);
@@ -39,7 +39,7 @@ public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
     }
 
     @Override
-    public void populateEntryList(Tournament<?> tournament) {
+    public void populateEntryList(Tournament tournament) {
         List<BracketEntry> abstractBracketEntries = new ArrayList<>();
         int number = BracketEntryType.getSingleEliminationCountAboveAndEqual(tournament.getSize());
         for (int i = 0; i < number; i++) {
@@ -52,7 +52,7 @@ public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
     }
 
     @Override
-    public void resolveByes(Tournament<?> tournament) {
+    public void resolveByes(Tournament tournament) {
         BracketEntryType currentRow = tournament.getSize();
         while (!currentRow.equals(BracketEntryType.RO_2)) {
             tournament.getBracketEntries().sort(BracketEntry.Comparators.COORDINATE);

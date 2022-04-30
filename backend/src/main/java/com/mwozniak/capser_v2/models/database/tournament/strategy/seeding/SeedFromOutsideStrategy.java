@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class SeedFromOutsideStrategy implements SeedingStrategy {
 
-    public void seedEntriesFromOutside(Tournament<?> tournament, List<Competitor> playersInSeedingOrder) {
+    public void seedEntriesFromOutside(Tournament tournament, List<Competitor> playersInSeedingOrder) {
 
         BracketEntryType size = tournament.getSize();
         int lastRowCoordinateStart;

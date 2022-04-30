@@ -7,12 +7,12 @@ import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSingles
 
 public abstract class FinalGameEliminationStrategy extends AbstractEliminationStrategy{
 
-    public FinalGameEliminationStrategy(Tournament<?> tournament) {
+    public FinalGameEliminationStrategy(Tournament tournament) {
         super(tournament);
     }
 
     @Override
-    public void checkWinCondition(Tournament<?> tournament) {
+    public void checkWinCondition(Tournament tournament) {
         BracketEntry entry = tournament.getBracketEntry(0);
         if (entry instanceof AbstractSinglesBracketEntry) {
             AbstractSinglesBracketEntry abstractSinglesBracketEntry = (AbstractSinglesBracketEntry) entry;

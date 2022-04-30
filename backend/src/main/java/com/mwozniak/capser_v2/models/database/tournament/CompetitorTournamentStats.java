@@ -8,7 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Comparator;
 import java.util.UUID;
 
@@ -30,25 +33,25 @@ public class CompetitorTournamentStats {
     private UUID competitorId;
 
     @Setter
-    private int wins;
+    public int wins;
 
     @Setter
-    private int losses;
+    public int losses;
 
     @Setter
-    private int points;
+    public int points;
 
     @Setter
-    private int pointsLost;
+    public int pointsLost;
 
     @Setter
-    private int sinks;
+    public int sinks;
 
     @Setter
-    private int sinksLost;
+    public int sinksLost;
 
     public CompetitorTournamentStats() {
-
+        //public constructor
     }
 
 

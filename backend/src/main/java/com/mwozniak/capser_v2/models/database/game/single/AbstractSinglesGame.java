@@ -31,13 +31,23 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     private UUID winner;
 
     @JsonIgnore
-    public GamePlayerStats getPlayer1Stats() throws GameValidationException {
-        return filterStats(getPlayer1());
+    public GamePlayerStats getPlayer1Stats() {
+        try {
+            return findStats(getPlayer1());
+        } catch (GameValidationException e) {
+            // should never happen for this case
+            return null;
+        }
     }
 
     @JsonIgnore
-    public GamePlayerStats getPlayer2Stats() throws GameValidationException {
-        return filterStats(getPlayer2());
+    public GamePlayerStats getPlayer2Stats() {
+        try {
+            return findStats(getPlayer2());
+        } catch (GameValidationException e) {
+            // should never happen in this case
+            return null;
+        }
     }
 
 
@@ -109,15 +119,10 @@ public abstract class AbstractSinglesGame extends AbstractGame {
 
 
     protected GamePlayerStats getOpponentStats(User user) {
-        try {
-            if (user.getId().equals(player1)) {
-                return getPlayer2Stats();
-            } else {
-                return getPlayer1Stats();
-            }
-        } catch (GameValidationException e) {
-            e.printStackTrace();
-            return null;
+        if (user.getId().equals(player1)) {
+            return getPlayer2Stats();
+        } else {
+            return getPlayer1Stats();
         }
     }
 
@@ -160,7 +165,7 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     }
 
     @Override
-    public UUID getWinnerId(){
+    public UUID getWinnerId() {
         return winner;
     }
 }

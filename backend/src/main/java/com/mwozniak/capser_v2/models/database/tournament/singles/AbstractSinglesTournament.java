@@ -2,7 +2,6 @@ package com.mwozniak.capser_v2.models.database.tournament.singles;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mwozniak.capser_v2.models.database.Competitor;
-import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import lombok.Getter;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @MappedSuperclass
-public abstract class AbstractSinglesTournament<T extends AbstractSinglesGame> extends Tournament<T> {
+public abstract class AbstractSinglesTournament extends Tournament {
 
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)

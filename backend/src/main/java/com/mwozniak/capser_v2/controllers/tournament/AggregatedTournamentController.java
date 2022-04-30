@@ -43,7 +43,7 @@ public class AggregatedTournamentController {
         List<UnrankedTournament> unrankedTournaments = unrankedTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
         List<DoublesTournament> doublesTournaments = doublesTournamentController.getTournaments(pageSize, pageNumber).getBody().getContent();
 
-        List<Tournament<?>> aggregatedList = new ArrayList<>();
+        List<Tournament> aggregatedList = new ArrayList<>();
         aggregatedList.addAll(easyCapsTournaments);
         aggregatedList.addAll(singlesTournaments);
         aggregatedList.addAll(unrankedTournaments);

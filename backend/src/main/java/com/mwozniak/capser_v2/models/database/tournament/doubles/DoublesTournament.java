@@ -2,7 +2,6 @@ package com.mwozniak.capser_v2.models.database.tournament.doubles;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.Competitor;
-import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 @AllArgsConstructor
-public class DoublesTournament extends Tournament<DoublesGame> {
+public class DoublesTournament extends Tournament {
 
     public DoublesTournament() {
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
-public abstract class AbstractTournamentService<T extends Tournament<?>> {
+public abstract class AbstractTournamentService<T extends Tournament> {
 
 
     private final JpaRepository<T, UUID> repository;
