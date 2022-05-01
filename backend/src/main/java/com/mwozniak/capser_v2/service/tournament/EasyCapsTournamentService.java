@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.EasyCapsTournament;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.repository.EasyCapsTournamentRepository;
@@ -46,16 +46,16 @@ public class EasyCapsTournamentService extends AbstractSinglesTournamentService<
 
     @Transactional
     @Override
-    public EasyCapsTournament postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException {
+    public EasyCapsTournament postGame(UUID tournamentId, UUID entryId, SoloGameDto soloGameDto) throws CapserException {
         EasyCapsTournament tournament = getTournament(tournamentId);
-        Optional< BracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
+        Optional<BracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!easyCapsBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }
         EasyCapsBracketEntry easyCapsBracketEntry = (EasyCapsBracketEntry) easyCapsBracketEntryOptional.get();
 
         AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(singlesGameDto);
+        abstractGame.fillCommonProperties(soloGameDto);
         abstractGame.validateGame();
         abstractGame.calculateGameStats();
         AbstractGame game = easyCapsGameService.postGameWithoutAcceptance(abstractGame);

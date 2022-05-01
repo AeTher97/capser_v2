@@ -7,7 +7,7 @@ import com.mwozniak.capser_v2.models.database.UserStats;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
-import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
+import com.mwozniak.capser_v2.models.dto.TeamGameDto;
 import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import lombok.Getter;
 import lombok.Setter;
@@ -186,23 +186,23 @@ public abstract class AbstractTeamGame extends AbstractGame {
 
     @Override
     public void fillCommonProperties(AbstractGameDto abstractGameDto) {
-        MultipleGameDto multipleGameDtoCast = (MultipleGameDto) abstractGameDto;
-        setGameEventList(abstractGameDto.getGameEventList());
+        TeamGameDto teamGameDtoCast = (TeamGameDto) abstractGameDto;
+        setGameEventList(abstractGameDto.getGameEvents());
         setGameMode(abstractGameDto.getGameMode());
 
         team1 = new Team();
         team2 = new Team();
 
-        team1DatabaseId = multipleGameDtoCast.getTeam1();
-        team2DatabaseId = multipleGameDtoCast.getTeam2();
+        team1DatabaseId = teamGameDtoCast.getTeam1();
+        team2DatabaseId = teamGameDtoCast.getTeam2();
 
-        team1.setPlayerList(multipleGameDtoCast.getTeam1Players());
-        team2.setPlayerList(multipleGameDtoCast.getTeam2Players());
+        team1.setPlayerList(teamGameDtoCast.getTeam1Players());
+        team2.setPlayerList(teamGameDtoCast.getTeam2Players());
         setTeam1(team1);
         setTeam2(team2);
 
-        team1Score = multipleGameDtoCast.getTeam1Score();
-        team2Score = multipleGameDtoCast.getTeam2Score();
+        team1Score = teamGameDtoCast.getTeam1Score();
+        team2Score = teamGameDtoCast.getTeam2Score();
 
         if (team1Score > team2Score) {
             setWinnerId(team1DatabaseId);
@@ -210,7 +210,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
             setWinnerId(team2DatabaseId);
         }
 
-        setGamePlayerStats(multipleGameDtoCast.getPlayerStatsDtos().stream()
+        setGamePlayerStats(teamGameDtoCast.getPlayerStatsDtos().stream()
                 .map(dto -> GamePlayerStats.builder()
                         .score(dto.getScore())
                         .sinks(dto.getSinks())

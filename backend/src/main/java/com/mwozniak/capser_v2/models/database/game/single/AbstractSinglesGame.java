@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.dto.AbstractGameDto;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.GameValidationException;
 import lombok.Getter;
 import lombok.Setter;
@@ -129,22 +129,22 @@ public abstract class AbstractSinglesGame extends AbstractGame {
 
     @Override
     public void fillCommonProperties(AbstractGameDto abstractGameDto) {
-        SinglesGameDto singlesGameDto = (SinglesGameDto) abstractGameDto;
-        setGameEventList(singlesGameDto.getGameEventList());
+        SoloGameDto soloGameDto = (SoloGameDto) abstractGameDto;
+        setGameEventList(abstractGameDto.getGameEvents());
         setGamePlayerStats(new ArrayList<>(Arrays.asList(
                 GamePlayerStats.builder()
-                        .score(singlesGameDto.getPlayer1Stats().getScore())
-                        .sinks(singlesGameDto.getPlayer1Stats().getSinks())
-                        .playerId(singlesGameDto.getPlayer1Stats().getPlayerId())
+                        .score(soloGameDto.getPlayer1Stats().getScore())
+                        .sinks(soloGameDto.getPlayer1Stats().getSinks())
+                        .playerId(soloGameDto.getPlayer1Stats().getPlayerId())
                         .build(),
                 GamePlayerStats.builder()
-                        .score(singlesGameDto.getPlayer2Stats().getScore())
-                        .sinks(singlesGameDto.getPlayer2Stats().getSinks())
-                        .playerId(singlesGameDto.getPlayer2Stats().getPlayerId())
+                        .score(soloGameDto.getPlayer2Stats().getScore())
+                        .sinks(soloGameDto.getPlayer2Stats().getSinks())
+                        .playerId(soloGameDto.getPlayer2Stats().getPlayerId())
                         .build())));
-        setGameMode(singlesGameDto.getGameMode());
-        setPlayer1(singlesGameDto.getPlayer1Stats().getPlayerId());
-        setPlayer2(singlesGameDto.getPlayer2Stats().getPlayerId());
+        setGameMode(soloGameDto.getGameMode());
+        setPlayer1(soloGameDto.getPlayer1Stats().getPlayerId());
+        setPlayer2(soloGameDto.getPlayer2Stats().getPlayerId());
     }
 
 

@@ -62,8 +62,17 @@ public class EmailService {
 
     public void sendHtmlMessage(String to, String subject, String content) {
         log.info("Sending html email to " + to);
-        updateTokenIfNecessary();
-        executorService.submit(new SendMessageTask(to, subject, content, this, emailConfiguration));
+        try {
+            updateTokenIfNecessary();
+            executorService.submit(new SendMessageTask(to, subject, content, this, emailConfiguration));
+        } catch (Exception e) {
+            //don't propagate this exception to callers to avoid weird exceptions, save email for later and handle it here
+            saveFailedEmail(FailedEmail.builder()
+                    .recipient(to)
+                    .subject(subject)
+                    .content(content)
+                    .build());
+        }
     }
 
     @Scheduled(cron = "0 0 21 * * *")

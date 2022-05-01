@@ -5,7 +5,7 @@ import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UserBridge;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -54,7 +54,7 @@ public abstract class AbstractSinglesTournamentService<T extends AbstractSingles
         return repository.save(tournament);
     }
 
-    public abstract T postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException;
+    public abstract T postGame(UUID tournamentId, UUID entryId, SoloGameDto soloGameDto) throws CapserException;
 
     @Transactional
     public T skipGame(UUID tournamentId, UUID entryId, UUID forfeitingId) throws CapserException {

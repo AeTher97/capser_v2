@@ -7,7 +7,7 @@ import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTournament;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.TeamBridge;
-import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
+import com.mwozniak.capser_v2.models.dto.TeamGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
@@ -130,7 +130,7 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         return entry;
     }
 
-    public DoublesTournament postGame(UUID tournamentId, UUID entryId, MultipleGameDto multipleGameDto) throws CapserException {
+    public DoublesTournament postGame(UUID tournamentId, UUID entryId, TeamGameDto teamGameDto) throws CapserException {
         DoublesTournament tournament = getTournament(tournamentId);
         Optional<? extends BracketEntry> singlesBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!singlesBracketEntryOptional.isPresent()) {
@@ -139,7 +139,7 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         DoublesBracketEntry singlesBracketEntry = (DoublesBracketEntry) singlesBracketEntryOptional.get();
 
         AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(multipleGameDto);
+        abstractGame.fillCommonProperties(teamGameDto);
         abstractGame.validateGame();
         abstractGame.calculateGameStats();
         AbstractGame game = doublesService.postGameWithoutAcceptance(abstractGame);

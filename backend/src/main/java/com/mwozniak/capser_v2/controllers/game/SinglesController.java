@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/singles")
-public class SinglesController extends AbstractSinglesController {
+public class SinglesController extends AbstractSolosController {
 
     public SinglesController(SinglesGameService singlesGameService) {
         super(singlesGameService);

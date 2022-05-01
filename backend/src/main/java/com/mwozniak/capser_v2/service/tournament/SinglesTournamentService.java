@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.SinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.SinglesTournament;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.repository.SinglesTournamentRepository;
@@ -44,7 +44,7 @@ public class SinglesTournamentService  extends AbstractSinglesTournamentService<
 
     @Transactional
     @Override
-    public SinglesTournament postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException {
+    public SinglesTournament postGame(UUID tournamentId, UUID entryId, SoloGameDto soloGameDto) throws CapserException {
         SinglesTournament tournament = getTournament(tournamentId);
         Optional<BracketEntry> singlesBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!singlesBracketEntryOptional.isPresent()) {
@@ -53,7 +53,7 @@ public class SinglesTournamentService  extends AbstractSinglesTournamentService<
         SinglesBracketEntry singlesBracketEntry = (SinglesBracketEntry) singlesBracketEntryOptional.get();
 
         AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(singlesGameDto);
+        abstractGame.fillCommonProperties(soloGameDto);
         abstractGame.validateGame();
         abstractGame.calculateGameStats();
         AbstractGame game = singlesGameService.postGameWithoutAcceptance(abstractGame);

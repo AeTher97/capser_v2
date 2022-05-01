@@ -1,8 +1,8 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTournament;
-import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
 import com.mwozniak.capser_v2.models.dto.SkipDto;
+import com.mwozniak.capser_v2.models.dto.TeamGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
@@ -38,9 +38,9 @@ public class DoublesTournamentController  extends AbstractTournamentController<D
 
     @PostMapping("/{tournamentId}/entry/{entryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public DoublesTournament addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody MultipleGameDto multipleGameDto) throws CapserException {
+    public DoublesTournament addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody TeamGameDto teamGameDto) throws CapserException {
         log.info("Posting game in tournament " + tournamentId.toString());
-        return doublesTournamentService.postGame(tournamentId, entryId, multipleGameDto);
+        return doublesTournamentService.postGame(tournamentId, entryId, teamGameDto);
     }
 
     @PostMapping("/{tournamentId}/entry/{entryId}/skip")

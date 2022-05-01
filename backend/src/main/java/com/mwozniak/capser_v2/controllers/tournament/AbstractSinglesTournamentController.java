@@ -1,8 +1,8 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesTournament;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
 import com.mwozniak.capser_v2.models.dto.SkipDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
@@ -34,12 +34,11 @@ public abstract class AbstractSinglesTournamentController<T extends AbstractSing
     }
 
 
-
     @PostMapping("/{tournamentId}/entry/{entryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public T addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SinglesGameDto singlesGameDto) throws CapserException {
+    public T addGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SoloGameDto soloGameDto) throws CapserException {
         log.info("Posting game in tournament " + tournamentId.toString());
-        return tournamentService.postGame(tournamentId, entryId, singlesGameDto);
+        return tournamentService.postGame(tournamentId, entryId, soloGameDto);
     }
 
     @PostMapping("/{tournamentId}/entry/{entryId}/skip")

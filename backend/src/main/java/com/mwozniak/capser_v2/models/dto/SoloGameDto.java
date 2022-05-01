@@ -3,11 +3,10 @@ package com.mwozniak.capser_v2.models.dto;
 import lombok.Data;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class SinglesGameDto extends AbstractGameDto {
+public class SoloGameDto extends AbstractGameDto {
 
 
     @NotNull
@@ -17,5 +16,6 @@ public class SinglesGameDto extends AbstractGameDto {
     @NotNull
     @Valid
     private PlayerStatsDto player2Stats;
+
 
 }

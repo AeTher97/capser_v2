@@ -64,6 +64,7 @@ public abstract class AbstractGame {
 
 
     @Setter
+    @Getter
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameEventEntity> gameEventList;
 

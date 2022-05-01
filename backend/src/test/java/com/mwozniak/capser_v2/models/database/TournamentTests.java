@@ -22,7 +22,7 @@ public class TournamentTests {
 
     @Test
     public void singleEliminationTournamentCreation_shouldCreateRightNumberOfEntries() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -34,7 +34,7 @@ public class TournamentTests {
 
     @Test
     public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries14() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -49,7 +49,7 @@ public class TournamentTests {
 
     @Test
     public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries30() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -64,7 +64,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_seedsCorrectly() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -97,7 +97,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_seedsCorrectly() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -129,7 +129,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_seedsCorrectly8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -161,7 +161,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_resolveByesCorrectly8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -188,7 +188,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_resolveByesCorrectly8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -215,7 +215,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_resolveByesCorrectlyFinal8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -244,7 +244,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_resolveByesCorrectly16() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -271,7 +271,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_progressesCorrectly8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -317,7 +317,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_progressesCorrectly16() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -359,7 +359,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_progressesCorrectly8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -425,7 +425,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_progressesCorrectlyWithMemory8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -476,7 +476,7 @@ public class TournamentTests {
 
     @Test
     public void doubleElimination_progressesCorrectlyWithMemory16() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -611,7 +611,7 @@ public class TournamentTests {
 
     @Test
     public void singleElimination_progressesCorrectlyWithMemory16() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -747,7 +747,7 @@ public class TournamentTests {
     }
 
 
-    private void addGameToEntry(Tournament<?> easyCapsTournament, int coord, boolean player1Wins) {
+    private void addGameToEntry(Tournament easyCapsTournament, int coord, boolean player1Wins) {
         EasyCapsBracketEntry entry2 = getBracketEntry(easyCapsTournament, coord);
 
         EasyCapsGame game2 = new EasyCapsGame();
@@ -765,13 +765,13 @@ public class TournamentTests {
         easyCapsTournament.resolveAfterGame();
     }
 
-    private void skipGame(Tournament<?> tournament, User skippingUser, int coord) {
+    private void skipGame(Tournament tournament, User skippingUser, int coord) {
         EasyCapsBracketEntry entry2 = getBracketEntry(tournament, coord);
         entry2.forfeitGame(skippingUser);
         tournament.resolveAfterGame();
     }
 
-    private EasyCapsBracketEntry getBracketEntry(Tournament<?> tournament, int coord) {
+    private EasyCapsBracketEntry getBracketEntry(Tournament tournament, int coord) {
         return (EasyCapsBracketEntry) tournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == coord).findAny().get();
     }
 

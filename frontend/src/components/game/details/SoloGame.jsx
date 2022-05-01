@@ -9,6 +9,7 @@ import ProfilePicture from "../../profile/ProfilePicture";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import {getGameIcon} from "./GameComponent";
 import PlayerTooltip from "../../tooltips/PlayerTooltip";
+import Timeline from "./Timeline";
 
 
 const PlayerSplash = ({avatarHash, username, gameType, playerId}) => {
@@ -22,7 +23,7 @@ const PlayerSplash = ({avatarHash, username, gameType, playerId}) => {
     )
 }
 
-const PlayerStats = ({game, playerStats, winner, name}) => {
+const PlayerStats = ({playerStats, winner, name}) => {
     const classes = mainStyles();
     const theme = useTheme();
 
@@ -31,7 +32,7 @@ const PlayerStats = ({game, playerStats, winner, name}) => {
         style={{flex: 1, minWidth: 200, borderWidth: winner ? 3 : 1}}>
         <Typography color={"primary"} variant={"h5"}>{name}</Typography>
         {playerStats.nakedLap &&
-        <Typography variant={"caption"} color={"primary"}>Naked lap</Typography>}
+            <Typography variant={"caption"} color={"primary"}>Naked lap</Typography>}
         <Typography>Score: {playerStats.score}</Typography>
         <Typography>Points change: {playerStats.pointsChange.toFixed(2)}</Typography>
         <Typography>Beers downed: {playerStats.beersDowned}</Typography>
@@ -75,7 +76,7 @@ const SoloGame = () => {
                     }
                     <div style={{borderBottom: '1px solid ' + theme.palette.divider, minHeight: 94}}/>
 
-                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <div style={{display: 'flex', justifyContent: 'center', flexWrap: "wrap"}}>
                         <div
                             style={{position: 'relative', top: -100, maxWidth: 800, flex: 1}}>
                             <div className={classes.header}
@@ -104,10 +105,25 @@ const SoloGame = () => {
                                 <PlayerStats name={game.player2Name} game={game} playerStats={player2Stats}
                                              winner={game.winner === game.player2}/>
                             </div>
+                            {game.gameEventList && game.gameEventList.length > 0 && !small &&
+                                <div style={{display: "flex", justifyContent: "center"}}>
+                                    <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
+                                              leftPlayerName={game.player1Name}
+                                              rightPlayerName={game.player2Name}
+                                    /></div>}
                         </div>
+                        {game.gameEventList && game.gameEventList.length > 0 && small &&
+                            <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
+                                      leftPlayerName={game.player1Name}
+                                      rightPlayerName={game.player2Name}
+                            />}
+
                     </div>
+
+
                 </> :
                 <LoadingComponent/>}
+
         </div>
     );
 };

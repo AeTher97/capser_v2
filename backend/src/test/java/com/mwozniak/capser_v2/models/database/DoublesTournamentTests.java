@@ -3,7 +3,6 @@ package com.mwozniak.capser_v2.models.database;
 import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
-import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
@@ -219,7 +218,7 @@ public class DoublesTournamentTests {
 
     @Test
     public void doubleElimination_resolveByesCorrectlyFinal8() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
@@ -248,7 +247,7 @@ public class DoublesTournamentTests {
 
     @Test
     public void singleElimination_resolveByesCorrectly16() {
-        Tournament<EasyCapsGame> easyCapsTournament = new EasyCapsTournament();
+        Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);

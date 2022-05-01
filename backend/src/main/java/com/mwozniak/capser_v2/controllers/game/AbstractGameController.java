@@ -22,7 +22,7 @@ public abstract class AbstractGameController implements GameController {
 
     protected final AbstractGameService abstractGameService;
 
-    public AbstractGameController(AbstractGameService abstractGameService) {
+    protected AbstractGameController(AbstractGameService abstractGameService) {
         this.abstractGameService = abstractGameService;
     }
 

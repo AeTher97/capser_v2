@@ -4,8 +4,8 @@ import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.dto.CreateTeamDto;
-import com.mwozniak.capser_v2.models.dto.MultipleGameDto;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
+import com.mwozniak.capser_v2.models.dto.TeamGameDto;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.TeamRepository;
 import lombok.extern.log4j.Log4j2;
@@ -57,8 +57,8 @@ public class AccessVerificationBean {
         return false;
     }
 
-    public boolean isPresentInGameTeamGame(MultipleGameDto multipleGameDto) {
-        if (multipleGameDto.getTeam1Players().contains(SecurityUtils.getUserId()) || multipleGameDto.getTeam2Players().contains(SecurityUtils.getUserId())) {
+    public boolean isPresentInGameTeamGame(TeamGameDto teamGameDto) {
+        if (teamGameDto.getTeam1Players().contains(SecurityUtils.getUserId()) || teamGameDto.getTeam2Players().contains(SecurityUtils.getUserId())) {
             log.info("Present in game request, access granted");
             return true;
         } else {
@@ -67,8 +67,8 @@ public class AccessVerificationBean {
         }
     }
 
-    public boolean isPresentInSinglesGame(SinglesGameDto singlesGameDto) {
-        if (singlesGameDto.getPlayer1Stats().getPlayerId().equals(SecurityUtils.getUserId()) || singlesGameDto.getPlayer2Stats().getPlayerId().equals(SecurityUtils.getUserId())) {
+    public boolean isPresentInSinglesGame(SoloGameDto soloGameDto) {
+        if (soloGameDto.getPlayer1Stats().getPlayerId().equals(SecurityUtils.getUserId()) || soloGameDto.getPlayer2Stats().getPlayerId().equals(SecurityUtils.getUserId())) {
             log.info("Present in game request, access granted");
             return true;
         } else {

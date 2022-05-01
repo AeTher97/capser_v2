@@ -6,7 +6,7 @@ import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.UnrankedTournament;
-import com.mwozniak.capser_v2.models.dto.SinglesGameDto;
+import com.mwozniak.capser_v2.models.dto.SoloGameDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
 import com.mwozniak.capser_v2.repository.UnrankedTournamentRepository;
@@ -44,7 +44,7 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
 
     @Transactional
     @Override
-    public UnrankedTournament postGame(UUID tournamentId, UUID entryId, SinglesGameDto singlesGameDto) throws CapserException {
+    public UnrankedTournament postGame(UUID tournamentId, UUID entryId, SoloGameDto soloGameDto) throws CapserException {
         UnrankedTournament tournament = getTournament(tournamentId);
         Optional<BracketEntry> unrankedBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!unrankedBracketEntryOptional.isPresent()) {
@@ -53,7 +53,7 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
         UnrankedBracketEntry unrankedBracketEntry = (UnrankedBracketEntry) unrankedBracketEntryOptional.get();
 
         AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(singlesGameDto);
+        abstractGame.fillCommonProperties(soloGameDto);
         abstractGame.validateGame();
         abstractGame.calculateGameStats();
         AbstractGame game = unrankedGameService.postGameWithoutAcceptance(abstractGame);
