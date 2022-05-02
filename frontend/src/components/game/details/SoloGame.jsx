@@ -95,7 +95,7 @@ const SoloGame = () => {
                                     alignItems: 'center',
                                     display: 'flex'
                                 }}>{getGameIcon(game.gameType)} {getGameTypeString(game.gameType)}</Typography>
-                                <Typography>{new Date(game.time).toUTCString()}</Typography>
+                                <Typography>{new Date(game.time).toTimeString()}</Typography>
                                 <Typography>{getGameModeString(game.gameMode)}</Typography>
                             </div>
                             <div style={{display: 'flex', flexWrap: 'wrap'}}>
