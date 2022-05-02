@@ -24,6 +24,13 @@ const getIcon = (evenType, color) => {
 
 }
 
+const getElapsedTime = (startTimestamp, currentTimestamp) => {
+    const elapsed = currentTimestamp.getTime() - startTimestamp.getTime();
+    const minutes = Math.floor(elapsed / 60000);
+    const seconds = (elapsed % 60000) / 1000;
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+}
+
 const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
 
     const small = useXtraSmallSize();
@@ -41,6 +48,8 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
         }
     }, [ref.current])
 
+
+    const startTime = new Date(timeline[0].time)
 
     return (
         <div style={{
@@ -67,6 +76,9 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
 
                 <div className={classes.emptyDotLeft}/>
                 <div className={classes.emptyDotRight}/>
+                <Typography variant={"caption"} className={classes.startTime}>
+                    {new Date(startTime).getHours()}:{new Date(startTime).getMinutes() < 10 ? "0" : ""}
+                    {new Date(startTime).getMinutes()}</Typography>
                 <div className={classes.lineLeft}/>
                 <div className={classes.lineRight}/>
                 <div className={classes.emptyDotLeft} style={{bottom: small ? 0 : null, right: small ? null : -47}}/>
@@ -84,7 +96,9 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
                         variant={"h6"}>{rightPlayerName}</Typography>
                     </div>}
                     <div style={{height: small ? 30 : null, width: small ? null : 30}}/>
-                    {timeline.filter(event => event.gameEvent !== "SINK").map(event => {
+
+
+                    {timeline.filter(event => event.gameEvent !== "SINK").map((event, i) => {
                         const left = leftPlayer === event.userId;
                         return <div key={event.time + event.gameEvent} className={classes.row}>
                             {left && <div className={classes.dotLeft}/>}
@@ -95,14 +109,19 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
                                         {getIcon(event.gameEvent, left ? leftColor : rightColor)}
                                     </div>
                                 </Tooltip>
-                                <div style={{color: left ? leftColor : rightColor}}>
-                                    <Typography color={"inherit"} style={{position: "relative", top: -5}}
-                                                variant={"caption"}>
-                                        {new Date(event.time).getHours()}:{new Date(event.time).getMinutes()}</Typography>
+                                <div style={{
+                                    color: left ? leftColor : rightColor, display: "flex",
+                                    flexDirection: "column", alignItems: "center"
+                                }}>
+                                    <Typography color={"inherit"}
+                                                variant={"caption"}>{getElapsedTime(startTime, new Date(event.time))}
+                                    </Typography>
                                 </div>
                             </div>
                         </div>
                     })}
+
+
                 </div>
             </div>
             <div style={{height: 30}}/>
@@ -112,6 +131,12 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
 };
 
 const useTimelineHorizontalStyles = makeStyles(theme => ({
+    startTime: {
+        position: "absolute",
+        color: rightColor,
+        top: "50%",
+        transform: "translate(100%,30%)"
+    },
     leftItem: {
         padding: 0,
         transform: "translate(-12px,0)"
@@ -186,6 +211,12 @@ const useTimelineHorizontalStyles = makeStyles(theme => ({
 }))
 
 const useTimelineStyles = (height) => makeStyles(theme => ({
+    startTime: {
+        position: "absolute",
+        color: leftColor,
+        top: 5,
+        left: 25
+    },
     leftItem: {
         padding: 0,
         transform: "translate(-12px,0)"
