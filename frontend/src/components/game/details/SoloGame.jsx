@@ -107,10 +107,11 @@ const SoloGame = () => {
 
                         </div>
                         {game.gameEventList && game.gameEventList.length > 0 && small &&
-                            <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
-                                      leftPlayerName={game.player1Name}
-                                      rightPlayerName={game.player2Name}
-                            />}
+                            <div style={{display: "flex", position: "relative", top: -90}}>
+                                <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
+                                          leftPlayerName={game.player1Name}
+                                          rightPlayerName={game.player2Name}
+                                /></div>}
 
                     </div>
                     {game.gameEventList && game.gameEventList.length > 0 && !small &&
