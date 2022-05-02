@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd frontend || exit
+mkdir node_modules
 sudo chown -R $USER "./node_modules"
 sudo yarn install
 CI='' npm run build
