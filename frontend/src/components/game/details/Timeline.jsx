@@ -39,10 +39,13 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
         if (ref.current) {
             setHeight(ref.current.clientHeight);
         }
-    }, ref.current)
+    }, [ref.current])
+
 
     return (
         <div style={{
+            marginLeft: "auto",
+            marginRight: "auto",
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
@@ -83,7 +86,7 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
                     <div style={{height: small ? 30 : null, width: small ? null : 30}}/>
                     {timeline.filter(event => event.gameEvent !== "SINK").map(event => {
                         const left = leftPlayer === event.userId;
-                        return <div key={event.time} className={classes.row}>
+                        return <div key={event.time + event.gameEvent} className={classes.row}>
                             {left && <div className={classes.dotLeft}/>}
                             {!left && <div className={classes.dotRight}/>}
                             <div className={left ? classes.leftItem : classes.rightItem}>
@@ -108,7 +111,7 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
     );
 };
 
-const useTimelineHorizontalStyles = makeStyles((theme) => ({
+const useTimelineHorizontalStyles = makeStyles(theme => ({
     leftItem: {
         padding: 0,
         transform: "translate(-12px,0)"
@@ -182,7 +185,7 @@ const useTimelineHorizontalStyles = makeStyles((theme) => ({
     }
 }))
 
-const useTimelineStyles = (height) => makeStyles((theme) => ({
+const useTimelineStyles = (height) => makeStyles(theme => ({
     leftItem: {
         padding: 0,
         transform: "translate(-12px,0)"

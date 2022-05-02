@@ -73,7 +73,6 @@ const SoloGame = () => {
     return (
         <div>
             {!loading && game ? <>
-                    }
                     <div style={{borderBottom: '1px solid ' + theme.palette.divider, minHeight: 94}}/>
 
                     <div style={{display: 'flex', justifyContent: 'center', flexWrap: "wrap"}}>
@@ -105,12 +104,7 @@ const SoloGame = () => {
                                 <PlayerStats name={game.player2Name} game={game} playerStats={player2Stats}
                                              winner={game.winner === game.player2}/>
                             </div>
-                            {game.gameEventList && game.gameEventList.length > 0 && !small &&
-                                <div style={{display: "flex", justifyContent: "center"}}>
-                                    <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
-                                              leftPlayerName={game.player1Name}
-                                              rightPlayerName={game.player2Name}
-                                    /></div>}
+
                         </div>
                         {game.gameEventList && game.gameEventList.length > 0 && small &&
                             <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
@@ -119,7 +113,12 @@ const SoloGame = () => {
                             />}
 
                     </div>
-
+                    {game.gameEventList && game.gameEventList.length > 0 && !small &&
+                        <div style={{display: "flex", position: "relative", top: -90}}>
+                            <Timeline timeline={game.gameEventList} leftPlayer={game.player1}
+                                      leftPlayerName={game.player1Name}
+                                      rightPlayerName={game.player2Name}
+                            /></div>}
 
                 </> :
                 <LoadingComponent/>}

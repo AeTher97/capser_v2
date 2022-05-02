@@ -28,7 +28,7 @@ const InsecureNavigation = () => {
             <SideBar open={open} setOpen={setOpen}/>
             {small && <MobileTopBar open={open} setOpen={setOpen}/>}
             <div style={{
-                paddingLeft: small ? 0 : 44,
+                paddingLeft: small ? 0 : 50,
                 backgroundColor: theme.palette.background.default,
                 height: '100%'
             }}>

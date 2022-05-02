@@ -3,9 +3,9 @@ import {SvgIcon} from "@material-ui/core";
 
 
 export const PointIcon = (props) => {
-    const color = props.color;
+    const {color, ...rest} = props;
     return (
-        <SvgIcon {...props}>
+        <SvgIcon {...rest}>
             <svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 900 900">
 
@@ -20,9 +20,9 @@ export const PointIcon = (props) => {
 };
 
 export const RebuttalIcon = (props) => {
-    const color = props.color;
+    const {color, ...rest} = props;
     return (
-        <SvgIcon {...props}>
+        <SvgIcon {...rest}>
             <svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
                 <title>Rebuttal</title>
                 <path fill={color}
@@ -35,9 +35,9 @@ export const RebuttalIcon = (props) => {
 };
 
 export const SinkIcon = (props) => {
-    const color = props.color;
+    const {color, ...rest} = props;
     return (
-        <SvgIcon {...props}>
+        <SvgIcon {...rest}>
             <svg id="Warstwa_1" data-name="Warstwa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
                 <title>Sink</title>
                 <path fill={color}
