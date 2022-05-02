@@ -4,7 +4,7 @@ cd frontend || exit
 mkdir node_modules
 sudo chown -R $USER "./node_modules"
 sudo yarn install
-CI='' yarn run build
+CI='' sudo yarn run build
 cd ..
 cp -r frontend/build/. backend/src/main/resources/static
 mkdir temp
