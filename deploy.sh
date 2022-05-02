@@ -1,8 +1,7 @@
 #!/bin/bash
 
 cd frontend || exit
-npm install
-npm audit fix
+yarn install
 CI='' npm run build
 cd ..
 cp -r frontend/build/. backend/src/main/resources/static
