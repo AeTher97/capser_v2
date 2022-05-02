@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd frontend || exit
-yarn install
+sudo yarn install
 CI='' npm run build
 cd ..
 cp -r frontend/build/. backend/src/main/resources/static
