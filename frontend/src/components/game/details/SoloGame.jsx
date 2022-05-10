@@ -87,7 +87,6 @@ const SoloGame = () => {
                                 <PlayerSplash avatarHash={game.player2Data.avatarHash} username={game.player2Name}
                                               winner={game.winner === game.player2} playerId={game.player2}
                                               gameType={game.gameType}/>
-                                />
                             </div>
                             <div className={classes.standardBorder}>
                                 <Typography variant={"h6"} color={"primary"}>Game</Typography>
