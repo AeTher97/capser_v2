@@ -26,15 +26,17 @@ public class ScheduledTasksService {
     }
 
     @Scheduled(fixedRate = 1800000, initialDelay = 10000)
-    public void scheduleFixedRateTask() {
+    public void scheduledGameAcceptance() {
         log.info("Starting game accepting scan task");
         int totalAcceptedNumber = 0;
         totalAcceptedNumber += doublesService.acceptOverdueGames();
         totalAcceptedNumber += singlesGameService.acceptOverdueGames();
         totalAcceptedNumber += easyCapsGameService.acceptOverdueGames();
         totalAcceptedNumber += unrankedGameService.acceptOverdueGames();
-        log.info("Automatically accepted total of "+ totalAcceptedNumber + " games.");
+        log.info("Automatically accepted total of " + totalAcceptedNumber + " games.");
     }
+
+
 
 
 }

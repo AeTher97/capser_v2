@@ -24,16 +24,11 @@ public class User implements Competitor {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator")
-
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    public User() {
-        userDoublesStats = new UserStats();
-        userSinglesStats = new UserStats();
-        userEasyStats = new UserStats();
-        userUnrankedStats = new UserStats();
-    }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private final List<AchievementEntity> achievementEntities;
 
     @Setter
     private String username;
@@ -70,6 +65,15 @@ public class User implements Competitor {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "player_doubles_stats", referencedColumnName = "id", nullable = false)
     private final UserStats userDoublesStats;
+
+    public User() {
+        userDoublesStats = new UserStats();
+        userSinglesStats = new UserStats();
+        userEasyStats = new UserStats();
+        userUnrankedStats = new UserStats();
+        achievementEntities = new ArrayList<>();
+    }
+
     @JsonIgnore
     private String email;
     private String avatarHash;
@@ -87,12 +91,16 @@ public class User implements Competitor {
 
     public void setEmail(String email) throws NoSuchAlgorithmException {
         this.email = email;
+        calculateAndSetEmailHash(email);
+    }
+
+    private void calculateAndSetEmailHash(String email) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.update(email.toLowerCase().trim().getBytes());
         byte[] array = messageDigest.digest();
         StringBuilder stringBuffer = new StringBuilder();
         for (byte b : array) {
-            stringBuffer.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1, 3));
+            stringBuffer.append(Integer.toHexString((b & 0xFF) | 0x100), 1, 3);
         }
         avatarHash = stringBuffer.toString();
     }

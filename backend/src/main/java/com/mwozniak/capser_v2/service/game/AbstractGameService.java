@@ -12,6 +12,7 @@ import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
+import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
@@ -34,20 +35,23 @@ public abstract class AbstractGameService implements GameService {
 
     protected final AcceptanceRequestRepository acceptanceRequestRepository;
     protected final UserService userService;
+    protected final AchievementService achievementService;
     private final EmailService emailService;
 
     protected final NotificationService notificationService;
 
 
-    public AbstractGameService(AcceptanceRequestRepository acceptanceRequestRepository,
-                               UserService userService,
-                               EmailService emailService, NotificationService notificationService) {
+    protected AbstractGameService(AcceptanceRequestRepository acceptanceRequestRepository,
+                                  UserService userService,
+                                  AchievementService achievementService, EmailService emailService, NotificationService notificationService) {
         this.acceptanceRequestRepository = acceptanceRequestRepository;
         this.userService = userService;
+        this.achievementService = achievementService;
         this.emailService = emailService;
         this.notificationService = notificationService;
     }
 
+    @Transactional
     @Override
     public void queueGame(AbstractGame abstractGame) throws CapserException {
         queueGame(abstractGame, true);
@@ -84,6 +88,17 @@ public abstract class AbstractGameService implements GameService {
                         user2.getUsername()).replace("${opponent}", user1.getUsername()));
     }
 
+    private void processAchievements(AbstractGame abstractGame) {
+        List<UUID> players = abstractGame.getPlayers();
+        players.forEach(player -> {
+            User user = userService.getUser(player);
+            doProcessAchievements(user, abstractGame);
+        });
+    }
+
+    protected abstract void doProcessAchievements(User user, AbstractGame abstractGame);
+
+    @Transactional
     @Override
     public void acceptGame(UUID gameId) throws CapserException {
         acceptGame(gameId, true);
@@ -95,8 +110,9 @@ public abstract class AbstractGameService implements GameService {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
-        game.setAccepted(true);
+        game.setAccepted();
         updateEloAndStats(game);
+        processAchievements(game);
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
         saveGame(game);
         if (notify) {
@@ -116,7 +132,7 @@ public abstract class AbstractGameService implements GameService {
 
     @Transactional
     public AbstractGame postGameWithoutAcceptance(AbstractGame abstractGame) throws CapserException {
-        abstractGame.setAccepted(true);
+        abstractGame.setAccepted();
         updateEloAndStats(abstractGame);
         return saveGame(abstractGame);
     }
@@ -172,8 +188,7 @@ public abstract class AbstractGameService implements GameService {
         abstractSinglesGame.calculatePlayerStats(user1);
         abstractSinglesGame.calculatePlayerStats(user2);
 
-        boolean d;
-        d = abstractSinglesGame.getWinner().equals(user1.getId());
+        boolean d = abstractSinglesGame.getWinner().equals(user1.getId());
 
         EloRating.EloResult eloResult = EloRating.calculate(abstractSinglesGame.findCorrectStats(user1).getPoints(), abstractSinglesGame.findCorrectStats(user2).getPoints(), 30, d);
 

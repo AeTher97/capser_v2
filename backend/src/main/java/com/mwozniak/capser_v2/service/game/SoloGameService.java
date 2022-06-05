@@ -4,6 +4,7 @@ import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
+import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
@@ -15,8 +16,8 @@ import java.util.UUID;
 public abstract class SoloGameService extends AbstractGameService {
 
 
-    public SoloGameService(AcceptanceRequestRepository acceptanceRequestRepository, UserService userService, EmailService emailService, NotificationService notificationService) {
-        super(acceptanceRequestRepository, userService, emailService, notificationService);
+    public SoloGameService(AcceptanceRequestRepository acceptanceRequestRepository, AchievementService achievementService, UserService userService, EmailService emailService, NotificationService notificationService) {
+        super(acceptanceRequestRepository, userService, achievementService, emailService, notificationService);
     }
 
     @Override

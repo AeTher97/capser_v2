@@ -33,7 +33,6 @@ public abstract class AbstractGame {
     @Setter
     private UUID id;
 
-    @Setter
     @Getter
     private boolean accepted;
 
@@ -78,7 +77,7 @@ public abstract class AbstractGame {
         try {
 
             UserStats userStats = findCorrectStats(user);
-            GamePlayerStats gamePlayerStats = findStats(user.getId());
+            GamePlayerStats playerStats = findStats(user.getId());
 
             userStats.setGamesPlayed(userStats.getGamesPlayed() + 1);
             if (isWinner(user)) {
@@ -87,24 +86,24 @@ public abstract class AbstractGame {
                 userStats.setGamesLost(userStats.getGamesLost() + 1);
             }
 
-            if(gamePlayerStats.getSinks() > 0 || (gamePlayerStats.getScore() == 0 && gamePlayerStats.getSinks() == 0)){
+            if (playerStats.getSinks() > 0 || (playerStats.getScore() == 0 && playerStats.getSinks() == 0)) {
                 userStats.setGamesLoggedSinks(userStats.getGamesLoggedSinks() + 1);
             }
 
-            userStats.setBeersDowned(userStats.getBeersDowned() + gamePlayerStats.getBeersDowned());
+            userStats.setBeersDowned(userStats.getBeersDowned() + playerStats.getBeersDowned());
 
-            userStats.setTotalPointsMade(userStats.getTotalPointsMade() + gamePlayerStats.getScore());
+            userStats.setTotalPointsMade(userStats.getTotalPointsMade() + playerStats.getScore());
             userStats.setTotalPointsLost(userStats.getTotalPointsLost() + getPointsLost(user));
 
-            userStats.setTotalSinksMade(userStats.getTotalSinksMade() + gamePlayerStats.getSinks());
+            userStats.setTotalSinksMade(userStats.getTotalSinksMade() + playerStats.getSinks());
             userStats.setTotalSinksLost(userStats.getTotalSinksLost() + getSinksLost(user));
 
-            if(gamePlayerStats.isNakedLap()){
+            if (playerStats.isNakedLap()) {
                 userStats.setNakedLaps(userStats.getNakedLaps() + 1);
             }
 
 
-            userStats.setTotalRebuttals(userStats.getTotalRebuttals() + gamePlayerStats.getRebuttals());
+            userStats.setTotalRebuttals(userStats.getTotalRebuttals() + playerStats.getRebuttals());
 
 
             userStats.setAvgRebuttals(userStats.getGamesLoggedSinks() == 0 ? userStats.getTotalRebuttals() :(float) userStats.getTotalRebuttals() / userStats.getGamesLoggedSinks());
@@ -140,6 +139,8 @@ public abstract class AbstractGame {
 
     protected abstract boolean isWinner(User user);
 
+    public abstract List<UUID> getPlayers();
+
     public static class Comparators {
 
         private Comparators() {
@@ -151,5 +152,8 @@ public abstract class AbstractGame {
 
     public abstract UUID getWinnerId();
 
+    public void setAccepted() {
+        accepted = true;
+    }
 
 }

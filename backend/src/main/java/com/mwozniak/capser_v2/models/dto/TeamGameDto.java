@@ -1,12 +1,14 @@
 package com.mwozniak.capser_v2.models.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class TeamGameDto extends AbstractGameDto {
 
     @NotNull

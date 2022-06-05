@@ -22,6 +22,8 @@ const NotificationList = ({notifications, markSeen}) => {
                 return 'Game accepted'
             case      'GAME_REJECTED':
                 return 'Game rejected'
+            case 'ACHIEVEMENT_UNLOCKED':
+                return 'Achievement unlocked'
         }
     }
 
@@ -64,7 +66,7 @@ const NotificationList = ({notifications, markSeen}) => {
 
 };
 
-const notificationListStyle = makeStyles(theme => ({
+const notificationListStyle = makeStyles(() => ({
     seen: {
         padding: 10
     },

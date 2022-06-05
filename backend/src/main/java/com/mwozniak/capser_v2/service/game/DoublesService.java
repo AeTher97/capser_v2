@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.dto.DoublesGameDto;
@@ -10,10 +11,7 @@ import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.DoublesRepository;
-import com.mwozniak.capser_v2.service.EmailService;
-import com.mwozniak.capser_v2.service.NotificationService;
-import com.mwozniak.capser_v2.service.TeamService;
-import com.mwozniak.capser_v2.service.UserService;
+import com.mwozniak.capser_v2.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,11 +30,12 @@ public class DoublesService extends AbstractMultipleGameService {
 
     public DoublesService(AcceptanceRequestRepository acceptanceRequestRepository,
                           UserService userService,
+                          AchievementService achievementService,
                           NotificationService notificationService,
                           TeamService teamService,
                           EmailService emailService,
                           DoublesRepository doublesRepository, TeamService teamService1) {
-        super(acceptanceRequestRepository, emailService, userService, notificationService, teamService);
+        super(achievementService, acceptanceRequestRepository, emailService, userService, notificationService, teamService);
         this.doublesRepository = doublesRepository;
         this.teamService = teamService1;
     }
@@ -116,6 +115,11 @@ public class DoublesService extends AbstractMultipleGameService {
             }
         });
         return games;
+    }
+
+    @Override
+    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+        achievementService.processDoublesAchievements(user, abstractGame);
     }
 
     @Override

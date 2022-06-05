@@ -76,6 +76,15 @@ public class NotificationService {
         }
     }
 
+    public void notifyAboutAchievement(UUID userId, String name) {
+        notify(Notification.builder()
+                .notificationType(NotificationType.ACHIEVEMENT_UNLOCKED)
+                .text(name)
+                .userId(userId)
+                .date(new Date())
+                .build());
+    }
+
     public List<Notification> getNotifications() {
         List<Notification> notifications = notificationRepository.findNotificationByUserId(SecurityUtils.getUserId());
         notifications.sort(Notification.Comparators.DATE);
@@ -85,7 +94,7 @@ public class NotificationService {
             for (int i = 10; i < notifications.size(); i++) {
                 notificationRepository.delete(notifications.get(i));
             }
-            log.info("Deleted " + (size - notifications.size()) + " notifications for user" + SecurityUtils.getUserId().toString());
+            log.info("Deleted " + (size - notifications.size()) + " notifications for user" + SecurityUtils.getUserId());
             return notifications.subList(0, 9);
         } else {
             return notifications;
