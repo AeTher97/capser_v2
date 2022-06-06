@@ -25,6 +25,6 @@ public class FirstWinAchievement implements AchievementProcessor {
 
     @Override
     public Achievement getAchievement() {
-        return Achievement.WIN_FIRST_GAME;
+        return Achievement.FIRST_WIN;
     }
 }

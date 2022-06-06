@@ -8,7 +8,7 @@ public enum Achievement {
     PLACE_IN_SINGLES("Get placement in singles!"),
 
     PLAY_FIRST_GAME("Play first game!"),
-    WIN_FIRST_GAME("Win first game!"),
+    FIRST_WIN("Win first game!"),
 
     FIRST_NAKED_LAP("First naked lap!"),
 

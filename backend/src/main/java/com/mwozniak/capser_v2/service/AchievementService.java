@@ -8,6 +8,7 @@ import com.mwozniak.capser_v2.enums.Achievement;
 import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import org.assertj.core.util.VisibleForTesting;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +19,19 @@ import java.util.stream.Collectors;
 @Service
 public class AchievementService {
 
-    private final List<AchievementProcessor> easyAchievementProcessors;
-    private final List<AchievementProcessor> singlesAchievementProcessors;
-    private final List<AchievementProcessor> doublesAchievementsProcessors;
+    private List<AchievementProcessor> easyAchievementProcessors;
+    private List<AchievementProcessor> singlesAchievementProcessors;
+    private List<AchievementProcessor> doublesAchievementsProcessors;
 
     private final NotificationService notificationService;
 
-    public AchievementService(ApplicationContext applicationContext, UserService userService, NotificationService notificationService) {
+    public AchievementService(ApplicationContext applicationContext, NotificationService notificationService) {
+        initializeProcessors(applicationContext);
+        this.notificationService = notificationService;
+    }
+
+    @VisibleForTesting
+    public void initializeProcessors(ApplicationContext applicationContext) {
         easyAchievementProcessors = applicationContext.getBeansWithAnnotation(EasyAchievement.class)
                 .values().stream().map(AchievementProcessor.class::cast).collect(Collectors.toList());
 
@@ -34,8 +41,6 @@ public class AchievementService {
         doublesAchievementsProcessors = applicationContext.getBeansWithAnnotation(DoublesAchievement.class)
                 .values().stream().map(AchievementProcessor.class::cast).collect(Collectors.toList());
 
-
-        this.notificationService = notificationService;
     }
 
     public void processEasyAchievements(User user, AbstractGame easyCapsGame) {

@@ -5,6 +5,7 @@ import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import lombok.Getter;
 import lombok.Setter;
+import org.assertj.core.util.VisibleForTesting;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -72,6 +73,7 @@ public class User implements Competitor {
         userEasyStats = new UserStats();
         userUnrankedStats = new UserStats();
         achievementEntities = new ArrayList<>();
+        teams = new ArrayList<>();
     }
 
     @JsonIgnore
@@ -84,7 +86,6 @@ public class User implements Competitor {
         user.setPassword(encodedPassword);
         user.setRole(Roles.USER);
         user.setUsername(createUserDto.getUsername());
-        user.setTeams(new ArrayList<>());
         user.setEmail(createUserDto.getEmail());
         return user;
     }
@@ -105,7 +106,8 @@ public class User implements Competitor {
         avatarHash = stringBuffer.toString();
     }
 
-    protected void setId(UUID id) {
+    @VisibleForTesting
+    public void setId(UUID id) {
         this.id = id;
     }
 }
