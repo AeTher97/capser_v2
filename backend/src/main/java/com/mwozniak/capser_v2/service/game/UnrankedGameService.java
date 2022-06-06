@@ -2,12 +2,14 @@ package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.UnrankedRepository;
+import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
@@ -27,12 +29,18 @@ public class UnrankedGameService extends SoloGameService {
     private final UnrankedRepository unrankedRepository;
 
     public UnrankedGameService(AcceptanceRequestRepository acceptanceRequestRepository,
+                               AchievementService achievementService,
                                UserService userService,
                                NotificationService notificationService,
                                EmailService emailService,
                                UnrankedRepository unrankedRepository) {
-        super(acceptanceRequestRepository, userService, emailService, notificationService);
+        super(acceptanceRequestRepository, achievementService, userService, emailService, notificationService);
         this.unrankedRepository = unrankedRepository;
+    }
+
+    @Override
+    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+        //NO UNRANKED ACHIEVEMENTS!
     }
 
     @Override

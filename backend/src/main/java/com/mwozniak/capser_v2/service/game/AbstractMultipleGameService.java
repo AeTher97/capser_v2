@@ -13,10 +13,7 @@ import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.security.utils.SecurityUtils;
-import com.mwozniak.capser_v2.service.EmailService;
-import com.mwozniak.capser_v2.service.NotificationService;
-import com.mwozniak.capser_v2.service.TeamService;
-import com.mwozniak.capser_v2.service.UserService;
+import com.mwozniak.capser_v2.service.*;
 import com.mwozniak.capser_v2.utils.EloRating;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.extern.log4j.Log4j2;
@@ -32,8 +29,8 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
     private final TeamService teamService;
     private final EmailService emailService;
 
-    protected AbstractMultipleGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, TeamService teamService) {
-        super(acceptanceRequestRepository, userService, emailService, notificationService);
+    protected AbstractMultipleGameService(AchievementService achievementService, AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, TeamService teamService) {
+        super(acceptanceRequestRepository, userService, achievementService, emailService, notificationService);
         this.teamService = teamService;
         this.emailService = emailService;
     }
@@ -137,7 +134,7 @@ public abstract class AbstractMultipleGameService extends AbstractGameService {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
-        game.setAccepted(true);
+        game.setAccepted();
         updateEloAndStats(game);
         acceptanceRequestRepository.deleteAll(acceptanceRequestList);
         saveGame(game);

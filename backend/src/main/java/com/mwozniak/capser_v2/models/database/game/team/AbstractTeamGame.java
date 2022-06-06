@@ -78,8 +78,6 @@ public abstract class AbstractTeamGame extends AbstractGame {
 
     @Override
     public void validateGame() throws GameValidationException {
-
-
         if (getTeam1Score() == getTeam2Score()) {
             throw new GameValidationException("Game cannot end in a draw");
         }
@@ -103,11 +101,9 @@ public abstract class AbstractTeamGame extends AbstractGame {
             throw new GameValidationException("All players score in team 2 has to sum to team score");
         }
 
-        if (gamePlayerStats.stream().anyMatch(gamePlayerStats1 -> gamePlayerStats1.getSinks() > 0)) {
-            if (gamePlayerStats.stream().anyMatch(gamePlayerStats1 -> gamePlayerStats1.getSinks() < gamePlayerStats1.getScore())) {
-                throw new GameValidationException("All players have to log sinks if any are and sinks have to be higher or equal to score");
-            }
-
+        if (gamePlayerStats.stream().anyMatch(gamePlayerStats1 -> gamePlayerStats1.getSinks() > 0
+                && gamePlayerStats.stream().anyMatch(gamePlayerStats2 -> gamePlayerStats2.getSinks() < gamePlayerStats2.getScore()))) {
+            throw new GameValidationException("All players have to log sinks if any are and sinks have to be higher or equal to score");
         }
 
         playerNumberSpecificValidation();
@@ -226,7 +222,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
 
 
     protected void calculateBeers(List<GamePlayerStats> team1, List<GamePlayerStats> team2) {
-        float team1BeersToSplit = 0;
+        float team1BeersToSplit;
         if (team2Score > 8) {
             team1BeersToSplit = 3;
         } else if (team2Score > 4) {
@@ -235,7 +231,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
             team1BeersToSplit = 1;
         }
 
-        float team2BeersToSplit = 0;
+        float team2BeersToSplit;
         if (team1Score > 8) {
             team2BeersToSplit = 3;
         } else if (team1Score > 4) {

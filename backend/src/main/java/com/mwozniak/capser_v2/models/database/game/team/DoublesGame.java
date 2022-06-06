@@ -10,6 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -55,6 +58,14 @@ public class DoublesGame extends AbstractTeamGame {
     @JsonIgnore
     public UserStats findCorrectStats(User user) {
         return user.getUserDoublesStats();
+    }
+
+    @Override
+    public List<UUID> getPlayers() {
+        List<UUID> players = new ArrayList<>();
+        players.addAll(getTeam1().getPlayerList());
+        players.addAll(getTeam2().getPlayerList());
+        return players;
     }
 
 

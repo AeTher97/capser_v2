@@ -2,12 +2,14 @@ package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.SinglesRepository;
+import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
@@ -28,21 +30,27 @@ public class SinglesGameService extends SoloGameService {
 
     public SinglesGameService(SinglesRepository singlesRepository,
                               AcceptanceRequestRepository acceptanceRequestRepository,
+                              AchievementService achievementService,
                               UserService userService,
                               EmailService emailService,
                               NotificationService notificationService) {
-        super(acceptanceRequestRepository, userService, emailService, notificationService);
+        super(acceptanceRequestRepository, achievementService, userService, emailService, notificationService);
         this.singlesRepository = singlesRepository;
     }
 
     @Override
+    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+        achievementService.processSinglesAchievements(user, abstractGame);
+    }
+
+    @Override
     public AbstractGame saveGame(AbstractGame abstractGame) {
-        return singlesRepository.save((SinglesGame)abstractGame);
+        return singlesRepository.save((SinglesGame) abstractGame);
     }
 
     @Override
     public void removeGame(AbstractGame abstractGame) {
-        singlesRepository.delete((SinglesGame)abstractGame);
+        singlesRepository.delete((SinglesGame) abstractGame);
     }
 
 

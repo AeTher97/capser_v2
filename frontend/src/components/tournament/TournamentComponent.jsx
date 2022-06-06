@@ -131,8 +131,8 @@ const TournamentComponent = () => {
             <>
                 {tournament && <div style={{height: '500vh'}}>
                     <div style={{display: "flex", justifyContent: 'center', flexDirection: "row", flexWrap: "wrap"}}>
-                        <div style={{maxWidth: 800, flex: 1, padding: 0, minWidth: 300}}>
-                            <div style={{padding: 10}} className={classes.standardBorder}>
+                        <div style={{maxWidth: 800, flex: 1, padding: 0, minWidth: 300, alignItems: "stretch"}}>
+                            <div style={{padding: 10, height: 'calc(100% - 40px)'}} className={classes.standardBorder}>
                                 <div className={classes.header} style={{alignItems: 'flex-start', marginTop: 5}}>
                                     <Typography variant={"h4"} color={"primary"}
                                                 style={{flex: 1}}>{tournament.tournamentName}</Typography>
@@ -165,7 +165,13 @@ const TournamentComponent = () => {
                             </div>}
                         </div>
 
-                        <div style={{borderTop: `1px solid ${theme.palette.divider}`, padding: 0, flex: 1, minWidth: 300}}
+                        <div style={{
+                            borderTop: `1px solid ${theme.palette.divider}`,
+                            padding: 0,
+                            flex: 1,
+                            minWidth: 300,
+                            marginLeft: 0
+                        }}
                              className={classes.standardBorder}>
                             {competitors && <TournamentsCompetitors players={competitors} addPlayer={addCompetitor}
                                                                     savePlayers={(ids) => {

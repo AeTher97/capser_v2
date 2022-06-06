@@ -2,12 +2,14 @@ package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
 import com.mwozniak.capser_v2.repository.EasyCapsRepository;
+import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
@@ -32,9 +34,14 @@ public class EasyCapsGameService extends SoloGameService {
     }
 
 
-    public EasyCapsGameService(AcceptanceRequestRepository acceptanceRequestRepository, EmailService emailService, UserService userService, NotificationService notificationService, EasyCapsRepository easyCapsRepository) {
-        super(acceptanceRequestRepository, userService, emailService, notificationService);
+    public EasyCapsGameService(AcceptanceRequestRepository acceptanceRequestRepository, AchievementService achievementService, EmailService emailService, UserService userService, NotificationService notificationService, EasyCapsRepository easyCapsRepository) {
+        super(acceptanceRequestRepository, achievementService, userService, emailService, notificationService);
         this.easyCapsRepository = easyCapsRepository;
+    }
+
+    @Override
+    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+        achievementService.processEasyAchievements(user, abstractGame);
     }
 
     @Override

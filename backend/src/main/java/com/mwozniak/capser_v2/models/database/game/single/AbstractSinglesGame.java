@@ -14,6 +14,7 @@ import lombok.Setter;
 import javax.persistence.MappedSuperclass;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -147,6 +148,10 @@ public abstract class AbstractSinglesGame extends AbstractGame {
         setPlayer2(soloGameDto.getPlayer2Stats().getPlayerId());
     }
 
+    @Override
+    public List<UUID> getPlayers() {
+        return Arrays.asList(player1, player2);
+    }
 
     protected boolean isWinner(User user) {
         return winner.equals(user.getId());
