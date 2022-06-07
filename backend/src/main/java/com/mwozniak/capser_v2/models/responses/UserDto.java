@@ -1,6 +1,7 @@
 package com.mwozniak.capser_v2.models.responses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
@@ -32,5 +33,6 @@ public class UserDto {
     private UserStats userUnrankedStats;
 
     private UserStats userDoublesStats;
+    @JsonProperty("achievements")
     private List<AchievementEntity> achievementEntities;
 }

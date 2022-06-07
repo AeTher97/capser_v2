@@ -23,7 +23,7 @@ const NotificationList = ({notifications, markSeen}) => {
             case      'GAME_REJECTED':
                 return 'Game rejected'
             case 'ACHIEVEMENT_UNLOCKED':
-                return 'Achievement unlocked'
+                return 'Achievement unlocked!'
         }
     }
 
