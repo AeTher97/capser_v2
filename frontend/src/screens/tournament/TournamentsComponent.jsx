@@ -105,9 +105,9 @@ const TournamentsComponent = () => {
                                     <Typography variant={"caption"}>
                                         {getSeedTypeString(tournament.seedType)}
                                     </Typography>
-                                    <Typography variant={"caption"}>
+                                    {tournament.tournamentType !== 'ROUND_ROBIN' && <Typography variant={"caption"}>
                                         {tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] * multiplier : tournament.size.split("_")[1] * multiplier} Players {multiplier === 2 && <>{tournament.tournamentType === "DOUBLE_ELIMINATION" ? tournament.size.split("_")[2] : tournament.size.split("_")[1]} Teams</>}
-                                    </Typography>
+                                    </Typography>}
                                 </div>
                             </TwichZoom>
                         })}

@@ -15,9 +15,9 @@ HEROKU_API_TOKEN=$1
 
 cd temp || exit
 
+git init
 git config user.email "michael93509@gmail.com"
 git config user.name "Michal Wozniak"
-git init
 git add .
 git commit -m $2
 
