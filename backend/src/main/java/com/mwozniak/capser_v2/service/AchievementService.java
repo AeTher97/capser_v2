@@ -8,7 +8,6 @@ import com.mwozniak.capser_v2.enums.Achievement;
 import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import org.assertj.core.util.VisibleForTesting;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,6 @@ public class AchievementService {
         this.notificationService = notificationService;
     }
 
-    @VisibleForTesting
     public void initializeProcessors(ApplicationContext applicationContext) {
         easyAchievementProcessors = applicationContext.getBeansWithAnnotation(EasyAchievement.class)
                 .values().stream().map(AchievementProcessor.class::cast).collect(Collectors.toList());

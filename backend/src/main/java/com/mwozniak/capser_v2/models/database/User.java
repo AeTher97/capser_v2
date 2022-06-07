@@ -6,7 +6,6 @@ import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import lombok.Getter;
 import lombok.Setter;
-import org.assertj.core.util.VisibleForTesting;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -108,7 +107,6 @@ public class User implements Competitor {
         avatarHash = stringBuffer.toString();
     }
 
-    @VisibleForTesting
     public void setId(UUID id) {
         this.id = id;
     }
