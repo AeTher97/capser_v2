@@ -28,7 +28,6 @@ jobs:
       # Runs a single command using the runners shell
       - name: Heroku bash
         run: |  
-          sudo apt-get install expect
           sudo chmod +x "${GITHUB_WORKSPACE}/deploy.sh"
           sudo "${GITHUB_WORKSPACE}/deploy.sh" ${HEROKU_API_TOKEN} github.event.commits[0].message
         shell: bash
