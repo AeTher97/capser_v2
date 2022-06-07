@@ -15,18 +15,20 @@ HEROKU_API_TOKEN=$1
 
 cd temp || exit
 
-
 git config user.email "michael93509@gmail.com"
 git config user.name "Michal Wozniak"
 git init
 git add .
 git commit -m "Deploy"
 
+if git push -f https://heroku:${HEROKU_API_TOKEN}@git.heroku.com/capser.git master; then
+  echo "Push successful"
+else
+  echo "Git push failed"
+  exit 125
+fi
 
-
-git push -f https://heroku:${HEROKU_API_TOKEN}@git.heroku.com/capser.git master
 cd ..
 rm -r -f temp
 
 echo "Deploy successful"
-
