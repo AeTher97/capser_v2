@@ -19,6 +19,9 @@ public class RebutOnLastChanceAchievement implements AchievementProcessor {
     @Override
     public boolean checkConditions(User user, AbstractGame abstractGame) {
         List<GameEventEntity> gameEventEntityList = abstractGame.getGameEventList();
+        if (gameEventEntityList == null) {
+            return false;
+        }
 
         int currentOpponentScore = 0;
 
@@ -26,8 +29,7 @@ public class RebutOnLastChanceAchievement implements AchievementProcessor {
             if (eventEntity.getGameEvent().equals(GameEvent.POINT) && !eventEntity.getUserId().equals(user.getId())) {
                 currentOpponentScore++;
             }
-            if (eventEntity.getGameEvent().equals(GameEvent.REBUTTAL)
-                    && eventEntity.getUserId().equals(user.getId()) && currentOpponentScore == 10) {
+            if (eventEntity.getGameEvent().equals(GameEvent.REBUTTAL) && eventEntity.getUserId().equals(user.getId()) && currentOpponentScore == 10) {
                 return true;
             }
         }
