@@ -134,6 +134,7 @@ public abstract class AbstractGameService implements GameService {
     public AbstractGame postGameWithoutAcceptance(AbstractGame abstractGame) throws CapserException {
         abstractGame.setAccepted();
         updateEloAndStats(abstractGame);
+        processAchievements(abstractGame);
         return saveGame(abstractGame);
     }
 
