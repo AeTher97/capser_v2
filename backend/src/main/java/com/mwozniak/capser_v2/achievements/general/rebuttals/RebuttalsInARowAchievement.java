@@ -17,6 +17,9 @@ public abstract class RebuttalsInARowAchievement implements AchievementProcessor
 
     protected boolean checkRebuttalsInARow(User user, AbstractGame abstractGame) {
         List<GameEventEntity> gameEvents = abstractGame.getGameEventList();
+        if (gameEvents == null) {
+            return false;
+        }
 
         int rebuttalsInARow = 0;
         for (GameEventEntity gameEventEntity : gameEvents) {
