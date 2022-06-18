@@ -2,7 +2,7 @@ import React from 'react';
 import mainStyles from "../../../misc/styles/MainStyles";
 import {useTheme} from "@material-ui/core";
 
-const CapserPagination = ({currentPage, onChange, minPage = 1, pageCount, edgeButtons = true}) => {
+const CapserPagination = ({currentPage, onChange, pageCount, edgeButtons = true}) => {
     const mainStyle = mainStyles();
     const theme = useTheme();
 

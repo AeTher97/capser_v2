@@ -133,38 +133,40 @@ export const useGameAcceptance = () => {
     }
 }
 
-export const useLatestPlayerGames = (playerId) => {
+export const useLatestPlayerGames = (playerId, page = 1) => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [pages, setPages] = useState(0);
 
 
     useEffect(() => {
         setLoading(true);
         let shouldUpdate = true;
-        axios.get(`games/user/${playerId}`).then((response) => {
+        axios.get(`games/user/${playerId}?pageNumber=${page - 1}`).then((response) => {
 
             if (shouldUpdate) {
-                    setGames(games);
-                    setGames(response.data);
-                }
-            }).finally(() => {
-                if (shouldUpdate) {
-                    setLoading(false);
-                }
-            })
+                setGames(response.data.content);
+                setPages(response.data.totalPages)
+            }
+        }).finally(() => {
+            if (shouldUpdate) {
+                setLoading(false);
+            }
+        })
         return () => {
             shouldUpdate = false;
         }
-    }, [playerId])
+    }, [playerId, page])
 
-    return {games, loading}
+    return {games, loading, pages}
 
 }
 
 
-export const usePlayerGamesWithOpponent = (playerId, opponentId, gameType) => {
+export const usePlayerGamesWithOpponent = (playerId, opponentId, gameType, page = 1) => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [pages, setPages] = useState(false);
 
 
     useEffect(() => {
@@ -174,23 +176,23 @@ export const usePlayerGamesWithOpponent = (playerId, opponentId, gameType) => {
 
         setLoading(true);
         let shouldUpdate = true;
-        axios.get(`games/user/${playerId}/${gameType}${opponentId ? `?opponentId=${opponentId}` : ''}`).then((response) => {
+        axios.get(`games/user/${playerId}/${gameType}${opponentId ? `?opponentId=${opponentId}` : ''}${opponentId ? "&" : "?"}pageNumber=${page - 1}`).then((response) => {
 
             if (shouldUpdate) {
-                    setGames(games);
-                    setGames(response.data.content);
-                }
-            }).finally(() => {
-                if (shouldUpdate) {
-                    setLoading(false);
-                }
-            })
+                setGames(response.data.content);
+                setPages(response.data.totalPages)
+            }
+        }).finally(() => {
+            if (shouldUpdate) {
+                setLoading(false);
+            }
+        })
         return () => {
             shouldUpdate = false;
         }
-    }, [playerId, opponentId, gameType])
+    }, [playerId, opponentId, gameType, page])
 
-    return {games, loading}
+    return {games, loading, pages}
 
 }
 

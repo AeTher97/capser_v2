@@ -31,6 +31,10 @@ public abstract class AbstractSinglesGame extends AbstractGame {
     @Getter
     private UUID winner;
 
+    protected AbstractSinglesGame() {
+        super();
+    }
+
     @JsonIgnore
     public GamePlayerStats getPlayer1Stats() {
         try {

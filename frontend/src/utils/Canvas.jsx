@@ -23,6 +23,9 @@ const Canvas = React.memo(({drawFunction, setPosition}) => {
             let animationFrameId;
 
             const render = () => {
+                if (!canvasRef.current) {
+                    return;
+                }
                 frameCount++;
                 const box = canvasRef.current.getBoundingClientRect();
                 if (x - box.left > 0 && x - box.left < box.width && y - box.top > 0 && y - box.top < box.height) {
@@ -44,6 +47,9 @@ const Canvas = React.memo(({drawFunction, setPosition}) => {
 
 
     function resizeCanvas(canvas) {
+        if (!canvas) {
+            return;
+        }
         const {width, height} = canvas.getBoundingClientRect()
 
         if (canvas.width !== width || canvas.height !== height) {

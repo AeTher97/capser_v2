@@ -22,6 +22,7 @@ public abstract class AbstractGame {
     protected AbstractGame() {
         time = new Date();
         accepted = false;
+        gameEventList = new ArrayList<>();
     }
 
     @Id

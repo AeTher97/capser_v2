@@ -112,8 +112,7 @@ const SoloPlayersList = ({type, pointsHidden = false}) => {
                                                                                                 }}/></div>)
                 }
                 {!loading && pageCount > 1 &&
-                <CapserPagination onNext={() => setPage(currentPage + 1)}
-                                  onPrevious={() => setPage(currentPage + -1)}
+                <CapserPagination onChange={page => setPage(page)}
                                   currentPage={currentPage}
                                   pageCount={pageCount}/>
                 }

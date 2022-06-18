@@ -14,9 +14,7 @@ import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -92,7 +90,7 @@ public class SinglesGameService extends SoloGameService {
 
     @Override
     protected Page<? extends AbstractGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
-        return singlesRepository.findSinglesGamesWithPlayerAndOpponent(PageRequest.of(0, 10, Sort.by("time").descending()),
+        return singlesRepository.findSinglesGamesWithPlayerAndOpponent(pageable,
                 player1, player2);
     }
 

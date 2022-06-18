@@ -6,6 +6,7 @@ import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
 import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import com.mwozniak.capser_v2.service.game.UnrankedGameService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,11 @@ public class AggregateGameService {
     }
 
 
-    public List<AbstractGame> getUserGames(UUID userId) {
-        List<AbstractGame> singlesGames = singlesGameService.listPlayerAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending()), userId).getContent();
-        List<AbstractGame> easyCapsGames = easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending()), userId).getContent();
-        List<AbstractGame> unrankedGames = unrankedGameService.listPlayerAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending()), userId).getContent();
+    public Page<AbstractGame> getUserGames(UUID userId, int pageNumber) {
+        pageNumber += 1;
+        List<AbstractGame> singlesGames = singlesGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
+        List<AbstractGame> easyCapsGames = easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
+        List<AbstractGame> unrankedGames = unrankedGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
 
 
         List<AbstractGame> aggregatedList = new ArrayList<>();
@@ -44,24 +46,25 @@ public class AggregateGameService {
 
         aggregatedList.sort(AbstractGame.Comparators.DATE);
         Collections.reverse(aggregatedList);
-        if (aggregatedList.size() > 10) {
-            return aggregatedList.subList(0, 9);
+
+        if (aggregatedList.size() > 10 * pageNumber) {
+            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, 10 * pageNumber - 1), PageRequest.of(0, 10), aggregatedList.size());
         } else {
-            return aggregatedList;
+            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, aggregatedList.size() - 1), PageRequest.of(0, 10), aggregatedList.size());
         }
     }
 
-    public Page<? extends AbstractGame> getUserGames(UUID userId, UUID user2Id, GameType gameType) {
+    public Page<? extends AbstractGame> getUserGames(UUID userId, UUID user2Id, GameType gameType, int page) {
 
         switch (gameType) {
             case SINGLES:
-                return singlesGameService.listGamesWithPlayerAndOpponent(PageRequest.of(0, 10, Sort.by("time").descending()),
+                return singlesGameService.listGamesWithPlayerAndOpponent(PageRequest.of(page, 10, Sort.by("time").descending()),
                         userId, user2Id);
             case EASY_CAPS:
-                return easyCapsGameService.listGamesWithPlayerAndOpponent(PageRequest.of(0, 10, Sort.by("time").descending()),
+                return easyCapsGameService.listGamesWithPlayerAndOpponent(PageRequest.of(page, 10, Sort.by("time").descending()),
                         userId, user2Id);
             case UNRANKED:
-                return unrankedGameService.listGamesWithPlayerAndOpponent(PageRequest.of(0, 10, Sort.by("time").descending()),
+                return unrankedGameService.listGamesWithPlayerAndOpponent(PageRequest.of(page, 10, Sort.by("time").descending()),
                         userId, user2Id);
             default:
                 return null;

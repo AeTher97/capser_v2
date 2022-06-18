@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,14 +20,15 @@ public class AggregateGameController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<AbstractGame> getUserGames(@PathVariable @Valid UUID userId) {
-        return aggregateGameService.getUserGames(userId);
+    public Page<AbstractGame> getUserGames(@PathVariable @Valid UUID userId, @RequestParam(required = false) int pageNumber) {
+        return aggregateGameService.getUserGames(userId, pageNumber);
     }
 
     @GetMapping("/user/{userId}/{gameType}")
     public Page<? extends AbstractGame> getUserGamesWithOpponent(@PathVariable @Valid UUID userId,
                                                                  @PathVariable @Valid GameType gameType,
+                                                                 @RequestParam(required = false) int pageNumber,
                                                                  @RequestParam(required = false) UUID opponentId) {
-        return aggregateGameService.getUserGames(userId, opponentId, gameType);
+        return aggregateGameService.getUserGames(userId, opponentId, gameType, pageNumber);
     }
 }

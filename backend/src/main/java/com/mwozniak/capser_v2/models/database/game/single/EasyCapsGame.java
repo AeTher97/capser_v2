@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 public class EasyCapsGame extends AbstractSinglesGame {
 
     public EasyCapsGame() {
-
+        super();
     }
 
     @Override
