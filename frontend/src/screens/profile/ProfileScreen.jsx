@@ -92,6 +92,10 @@ const ProfileScreen = () => {
         setTick(tick + 1)
     }
 
+    if (data) {
+        console.log(data.teams)
+    }
+
     return (
         <div>
             <div style={{
@@ -161,7 +165,7 @@ const ProfileScreen = () => {
                                 <div className={classes.paddedContent} style={{paddingLeft: 0}}>
                                     <Typography variant={"h6"}>Teams</Typography>
                                 </div>
-                                {data.teams.map(team => {
+                                {data.teams.filter(team => team.active).map(team => {
                                     return <div key={team.id} style={{color: 'red'}}>
                                         <div className={classes.paddedContent}>
                                             <Typography color={"inherit"}>{team.name}</Typography>
@@ -170,8 +174,8 @@ const ProfileScreen = () => {
                                     </div>
                                 })}
                                 {data.teams.length === 0 &&
-                                <div className={classes.header} style={{justifyContent: 'center'}}>
-                                    <Typography variant={"h6"}>No teams</Typography>
+                                    <div className={classes.header} style={{justifyContent: 'center'}}>
+                                        <Typography variant={"h6"}>No teams</Typography>
                                 </div>}
                             </div>
                         </TabPanel>
