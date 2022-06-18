@@ -135,7 +135,7 @@ const TournamentComponent = () => {
                             maxWidth: 800, flex: 1, padding: 0, minWidth: 300, alignItems: "stretch",
                             justifyContent: 'stretch', display: 'flex', flexDirection: 'column'
                         }}>
-                            <div style={{padding: 10, flex: 1, marginBottom: 0}} className={classes.standardBorder}>
+                            <div style={{padding: 10, flex: 1}} className={classes.standardBorder}>
                                 <div className={classes.header} style={{alignItems: 'flex-start', marginTop: 5}}>
                                     <Typography variant={"h4"} color={"primary"}
                                                 style={{flex: 1}}>{tournament.tournamentName}</Typography>
@@ -153,7 +153,7 @@ const TournamentComponent = () => {
                                 <Typography>{getSeedTypeString(tournament.seedType)}</Typography>
                                 <Typography>{getInProgressString(tournament.seeded, tournament.finished)}</Typography>
                             </div>
-                            {isOwner() && <div className={classes.standardBorder} style={{padding: 10}}>
+                            {isOwner() && <div className={classes.standardBorder} style={{padding: 10, marginTop: 0}}>
                                 <Typography variant={"h5"}>Actions</Typography>
                                 <div>
                                     {!edited && <div style={{padding: 5}}>

@@ -72,7 +72,7 @@ const RoundRobinLadder = ({
                 <Typography variant={"h5"} color={"textSecondary"} noWrap>
                     Results
                 </Typography>
-                <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', position: "relative", left: -10}}>
                     <div className={classes.standardBorder}
                          style={{display: 'flex', flexDirection: 'column', padding: 0}}>
                         <Table size={"small"} padding={"none"}>

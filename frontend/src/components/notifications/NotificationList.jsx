@@ -46,7 +46,7 @@ const NotificationList = ({notifications, markSeen}) => {
                             <Typography color={"primary"} style={{flex: 1}}
                                         variant={"body2"}>{getDescription(notification.notificationType)}</Typography>
                             <Typography
-                                variant={"caption"}>{new Date(notification.date).toDateString()} {new Date(notification.date).getHours()}:{new Date(notification.date).getMinutes()}</Typography>
+                                variant={"caption"}>{new Date(notification.date).toDateString()} {new Date(notification.date).getHours().toString().padStart(2, '0')}:{new Date(notification.date).getMinutes().toString().padStart(2, '0')}</Typography>
                         </div>
                         <div style={{whiteSpace: "normal"}}>
                             <Typography variant={"body2"}>
