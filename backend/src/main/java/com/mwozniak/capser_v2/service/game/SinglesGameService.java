@@ -85,7 +85,7 @@ public class SinglesGameService extends SoloGameService {
 
     @Override
     protected Page<AbstractGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
-        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
+        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
     @Override
