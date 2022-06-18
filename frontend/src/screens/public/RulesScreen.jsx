@@ -137,7 +137,7 @@ const RulesScreen = () => {
                         }
                     )}
 
-                    <Typography color={"primary"} variant={"h4"}>Rules changes</Typography>
+                    <Typography color={"primary"} variant={"h4"}>Rule changes</Typography>
                     <div className={styles.section}>
                         <Typography>16.10.2020 - Caps rules written down.
                         </Typography>
