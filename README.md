@@ -20,7 +20,7 @@ Also secret for generating jwt secrets and automatic acceptance cron need to be 
 - JWT_SECRET
 - CRON_EXPRESSION
 
-For email communication with users email env must be set for gmail account:
+For email communication with users email env must be set for a gmail account:
 
 - EMAIL_USERNAME
 - EMAIL_PASSWORD
