@@ -5,6 +5,7 @@ import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
+import com.mwozniak.capser_v2.models.exception.DataValidationException;
 import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;

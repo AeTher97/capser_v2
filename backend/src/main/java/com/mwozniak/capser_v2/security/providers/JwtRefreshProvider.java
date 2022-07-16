@@ -45,7 +45,6 @@ public class JwtRefreshProvider implements AuthenticationProvider {
         return aClass.equals(RefreshTokenAuthentication.class);
     }
 
-    @SuppressWarnings("unchecked")
     private Authentication validateToken(String jwtToken) {
 
         try {
@@ -58,14 +57,14 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                String role =  user.getRole().toString();
+                String role = user.getRole().toString();
                 userService.updateLastSeen(user);
                 List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(role));
                 return new RefreshTokenAuthentication(claims.getSubject(), TokenFactory.generateAuthToken(user.getId(), role, user.getEmail(), jwtConfiguration), authorities);
             } else {
                 throw new UsernameNotFoundException("User with this id doesn't exist");
             }
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             throw new BadCredentialsException(e.getMessage(), e);
         } catch (IOException | NullPointerException e) {
             throw new AuthenticationServiceException("Error occurred while trying to authenticate");

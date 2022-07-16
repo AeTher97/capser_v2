@@ -66,7 +66,7 @@ const BellComponent = ({expanded = true}) => {
     );
 };
 
-const useStyle = makeStyles(theme => ({
+const useStyle = makeStyles(() => ({
     iconButton: {
         '&:hover': {
             color: 'red'
