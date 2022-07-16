@@ -6,7 +6,7 @@ import {useHistory} from "react-router-dom";
 import useFieldValidation from "../../utils/useFieldValidation";
 import FormComponent from "../../components/misc/FormComponent";
 import CenteredColumn from "../../components/misc/CenteredColumn";
-import {validateEmail, validateLength, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
+import {validateEmail, validateUsername, validatePassword, validateRepeatedPassword} from "../../utils/Validators";
 
 
 const RegisterScreen = () => {
@@ -17,7 +17,7 @@ const RegisterScreen = () => {
 
     const validatePasswordConfirmation = useCallback(validateRepeatedPassword(password.value), [password.value]);
     const repeatPassword = useFieldValidation("", validatePasswordConfirmation);
-    const username = useFieldValidation("", (word) => () => validateLength(word, 3, 15))
+    const username = useFieldValidation("", validateUsername)
     const email = useFieldValidation("", validateEmail)
 
     password.showError = true;

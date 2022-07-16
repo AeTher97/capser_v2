@@ -28,6 +28,21 @@ export const validateEmail = (email) => {
     }
 }
 
+export const validateUsername = (username) => {
+    const lengthValidation = validateLength(username, 3, 15);
+    if(lengthValidation !== null) {
+        return lengthValidation;
+    }
+    return validateTrailingSpaces(username);
+}
+
+export const validateTrailingSpaces = (word) => {
+    const trimmedWord = word.trim();
+    if(word !== trimmedWord) {
+        return "Text cannot have leading or trailing spaces.";
+    }
+    return null;
+}
 
 export const validateLength = (word, lengthMin, lengthMax = Infinity) => {
     if (word.length < lengthMin) {
