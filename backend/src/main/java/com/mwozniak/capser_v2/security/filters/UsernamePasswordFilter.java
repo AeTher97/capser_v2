@@ -1,5 +1,7 @@
 package com.mwozniak.capser_v2.security.filters;
 
+import com.mwozniak.capser_v2.security.handlers.CapserAuthenticationFailureHandler;
+import com.mwozniak.capser_v2.security.handlers.CapserAuthenticationSuccessHandler;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;

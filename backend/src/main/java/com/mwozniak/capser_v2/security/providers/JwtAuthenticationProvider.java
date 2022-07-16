@@ -35,7 +35,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         return aClass.equals(JwtTokenAuthentication.class);
     }
 
-    @SuppressWarnings("unchecked")
     private Authentication validateToken(String jwtToken){
 
         try {

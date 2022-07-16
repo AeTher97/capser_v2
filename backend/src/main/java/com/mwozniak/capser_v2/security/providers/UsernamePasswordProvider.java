@@ -17,7 +17,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
@@ -40,7 +39,6 @@ public class UsernamePasswordProvider implements AuthenticationProvider {
     }
 
     @Override
-    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         Optional<User> userOptional = userService.getUser(authentication.getPrincipal().toString());
 
