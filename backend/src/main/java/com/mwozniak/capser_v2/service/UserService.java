@@ -11,6 +11,7 @@ import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
+import com.mwozniak.capser_v2.models.exception.DataValidationException;
 import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserDto;
@@ -128,11 +129,13 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public User createUser(CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException {
+    public User createUser(CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException, DataValidationException {
         if (usersRepository.findUserByEmail(createUserDto.getEmail()).isPresent()) {
             throw new CredentialTakenException("Email not available");
         } else if (usersRepository.findUserByUsername(createUserDto.getUsername()).isPresent()) {
             throw new CredentialTakenException("Username not available");
+        } else if (!createUserDto.getUsername().trim().equals(createUserDto.getUsername())) {
+            throw new DataValidationException("Username has leading or trailing spaces");
         }
         User user = User.createUserFromDto(createUserDto, passwordEncoder.encode(createUserDto.getPassword()));
         usersRepository.save(user);

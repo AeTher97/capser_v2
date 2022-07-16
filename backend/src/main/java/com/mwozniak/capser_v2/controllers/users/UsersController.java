@@ -63,7 +63,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException {
+    public ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto createUserDto) throws CredentialTakenException, NoSuchAlgorithmException, DataValidationException {
         log.info("Creating user");
         return ResponseEntity.ok(userService.createUser(createUserDto));
     }
