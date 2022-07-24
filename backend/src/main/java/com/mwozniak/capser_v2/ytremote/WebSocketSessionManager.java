@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import sun.rmi.server.InactiveGroupException;
 
 import java.io.IOException;
 import java.util.*;
@@ -65,7 +64,7 @@ public class WebSocketSessionManager {
             List<String> removedMemberSessions = new ArrayList<>();
             for (Map.Entry<String, MemberSession> memberSession : remoteSession.getValue().getMemberSessions().entrySet()) {
                 if (new Date().getTime() - memberSession.getValue().getLastActive().getTime() > 60000) {
-                    sendError(new InactiveGroupException("This session was inactive for too long!"), memberSession.getValue().getWebSocketSession());
+                    sendError(new RuntimeException("This session was inactive for too long!"), memberSession.getValue().getWebSocketSession());
                     removedMemberSessions.add(memberSession.getKey());
                     deletedMemberSessions++;
                 }

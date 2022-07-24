@@ -13,12 +13,12 @@ import com.mwozniak.capser_v2.ytremote.models.messages.client.SetReceiver;
 import com.mwozniak.capser_v2.ytremote.models.messages.client.Start;
 import com.mwozniak.capser_v2.ytremote.models.messages.client.Stop;
 import com.mwozniak.capser_v2.ytremote.models.messages.server.Error;
-import com.sun.corba.se.spi.activation.InitialNameServicePackage.NameAlreadyBound;
 import javassist.NotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
+import javax.naming.NameAlreadyBoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,7 +153,7 @@ public class YouTubeHandler implements WebSocketHandler, SubProtocolCapable {
         Start start = objectMapper.readValue(message.getPayload().toString(), Start.class);
 
         if (webSocketSessionManager.getRemoteSession(user).getMemberSessions().containsKey(start.getDeviceName())) {
-            sendError(new NameAlreadyBound("This name is already in use"), webSocketSession);
+            sendError(new NameAlreadyBoundException("This name is already in use"), webSocketSession);
             webSocketSession.close();
             return;
         }
