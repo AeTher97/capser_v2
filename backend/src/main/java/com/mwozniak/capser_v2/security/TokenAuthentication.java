@@ -1,9 +1,9 @@
 package com.mwozniak.capser_v2.security;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 
