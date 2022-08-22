@@ -66,7 +66,8 @@ public class EmailService {
             updateTokenIfNecessary();
             executorService.submit(new SendMessageTask(to, subject, content, this, emailConfiguration));
         } catch (Exception e) {
-            //don't propagate this exception to callers to avoid weird exceptions, save email for later and handle it here
+            //don't propagate this exception to callers to avoid weird errors, save email for later and handle it here
+            log.error("Failed to send email " + e.getMessage());
             saveFailedEmail(FailedEmail.builder()
                     .recipient(to)
                     .subject(subject)
