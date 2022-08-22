@@ -5,9 +5,11 @@ import useFieldValidation from "../../utils/useFieldValidation";
 import {validateEmail} from "../../utils/Validators";
 import ValidatedField from "../../components/misc/ValidatedField";
 import {useResetPassword} from "../../data/ResetPasswordData";
+import {useHistory} from "react-router-dom";
 
 const ResetPasswordScreen = () => {
 
+    const history = useHistory();
     const emailField = useFieldValidation('', validateEmail);
     emailField.showError = true;
     const {resetPassword} = useResetPassword();
@@ -16,7 +18,7 @@ const ResetPasswordScreen = () => {
         if (emailField.validate()) {
             return;
         }
-        resetPassword(emailField.value);
+        resetPassword(emailField.value, history.push("/reset/go"));
     }
 
     const classes = mainStyles();

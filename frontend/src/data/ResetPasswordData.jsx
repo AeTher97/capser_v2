@@ -7,10 +7,10 @@ export const useResetPassword = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const resetPassword = (email) => {
+    const resetPassword = (email, callback) => {
         axios.post(`/users/resetPassword?email=${email}`).then(r => {
                 dispatch(showSuccess("Password reset token was send to an email associated with your account"));
-                history.push("/");
+                callback();
             }
         )
     }

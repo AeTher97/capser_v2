@@ -13,6 +13,7 @@ import RegisterScreen from "../screens/administration/RegisterScreen";
 import ResetPasswordScreen from "../screens/administration/ResetPasswordScreen";
 import FinishResettingPasswordScreen from "../screens/administration/FinishResettingPasswordScreen";
 import ScrollToTop from "../utils/ScrollToTop";
+import ResetFinalizeScreen from "../screens/administration/ResetFinalizeScreen";
 
 const MainNavigation = () => {
     const {severity, message, isOpen} = useSelector(state => state.alert);
@@ -44,6 +45,10 @@ const MainNavigation = () => {
                             {message}
                         </Alert>
                     </Snackbar>
+                </Route>
+
+                <Route exact path={"/reset/go"}>
+                    <ResetFinalizeScreen/>
                 </Route>
 
                 <Route exact path={"/resetUpdate"}>
