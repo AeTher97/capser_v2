@@ -72,8 +72,6 @@ const SingleEliminationLadder = ({
     let currentVertical = 0;
     let additionalVerticalOffset = 60;
 
-
-    console.log(onHighlight)
     return (
         <>
             <div className={[styles.container].join(' ')} ref={ref}>

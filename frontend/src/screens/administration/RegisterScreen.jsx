@@ -52,8 +52,9 @@ const RegisterScreen = () => {
     const handleClick = (e) => {
         e.preventDefault();
 
-        if (password.validate() || repeatPassword.validate() || username.validate()()) {
-            console.log()
+        console.log({password, repeatPassword, username});
+        // here there was an error that would be catched if we used typescript
+        if (password.validate() || repeatPassword.validate() || username.validate()) {
             return;
         }
         createAccount({

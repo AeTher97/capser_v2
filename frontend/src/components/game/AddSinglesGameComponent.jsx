@@ -76,7 +76,6 @@ const AddSinglesGameComponent = ({
         }
 
         postGame(request).then(() => {
-            console.log("posted")
             dispatch(showSuccess("Game posted"))
             history.push('/')
         }).catch(e => {
