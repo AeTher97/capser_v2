@@ -29,7 +29,6 @@ const EditUserDataDialog = ({open, setOpen, editData, data}) => {
         if (usernameField.validate()() || emailField.validate() || passwordField.validate()()) {
             return;
         }
-        console.log("saving")
         editData({
             email: emailField.value,
             username: usernameField.value,

@@ -52,7 +52,6 @@ const AddDoublesGameComponent = ({
     }
 
     useEffect(() => {
-        console.log(team1, team2)
         if (team1 && team2) {
             handleTeamChange({target: {value: team1}})
             handleOpponentTeamChange(team2)
@@ -151,7 +150,6 @@ const AddDoublesGameComponent = ({
             playerStatsDtos: opposingTeamStats.concat(teamStats),
             gameEventList: []
         }
-        console.log(request)
 
         if (externalSave) {
             externalSave(request);
@@ -159,7 +157,6 @@ const AddDoublesGameComponent = ({
         }
 
         postGame(request).then(() => {
-            console.log("posted")
             dispatch(showSuccess("Game posted"))
             history.push('/')
         }).catch(e => {
