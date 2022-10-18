@@ -8,16 +8,15 @@ export const useResetPassword = () => {
     const history = useHistory();
 
     const resetPassword = (email, callback) => {
-        axios.post(`/users/resetPassword?email=${email}`).then(r => {
+        axios.post(`/users/resetPassword?email=${email}`).then(() => {
                 dispatch(showSuccess("Password reset token was send to an email associated with your account"));
                 callback();
             }
         )
     }
 
-    const updatePassword = (code, newPassword, callback = () => {
-    }) => {
-        axios.post(`/users/updatePassword`, {code, password: newPassword}).then(r => {
+    const updatePassword = (code, newPassword, callback) => {
+        axios.post(`/users/updatePassword`, {code, password: newPassword}).then(() => {
             dispatch(showSuccess("Password was updated"));
             history.push("/login");
         }).catch(e => {

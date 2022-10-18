@@ -6,17 +6,17 @@ import {useHistory} from "react-router-dom";
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import {makeStyles} from "@material-ui/core/styles";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutAction} from "../redux/actions/authActions";
-import {useHasRole} from "../utils/SecurityUtils";
+import {logoutAction} from "../../redux/actions/authActions";
+import {useHasRole} from "../../utils/SecurityUtils";
 import CheckIcon from '@material-ui/icons/Check';
-import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../misc/icons/CapsIcons";
-import BellComponent from "../components/notifications/BellComponent";
+import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
+import BellComponent from "../notifications/BellComponent";
 import AccountBoxOutlinedIcon from '@material-ui/icons/AccountBoxOutlined';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import GavelIcon from '@material-ui/icons/Gavel';
-import mainStyles from "../misc/styles/MainStyles";
-import BoldTyphography from "../components/misc/BoldTyphography";
-import {useXtraSmallSize} from "../utils/SizeQuery";
+import mainStyles from "../../misc/styles/MainStyles";
+import BoldTyphography from "../misc/BoldTyphography";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 
 const SideBar = ({open, setOpen}) => {

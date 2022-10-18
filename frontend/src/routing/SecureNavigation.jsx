@@ -1,11 +1,11 @@
 import {Route, Switch} from "react-router-dom";
 import React, {useState} from 'react';
-import SideBar from "../bars/SideBar";
+import SideBar from "../components/bars/SideBar";
 import AddSinglesGameComponent from "../components/game/AddSinglesGameComponent";
 import AcceptanceScreen from "../screens/private/AcceptanceScreen";
 import TeamsScreen from "../screens/private/TeamsScreen";
 import {useXtraSmallSize} from "../utils/SizeQuery";
-import MobileTopBar from "../bars/TopBar";
+import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 

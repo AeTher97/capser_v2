@@ -1,6 +1,6 @@
 import {Route, Switch} from "react-router-dom";
 import React, {useState} from 'react';
-import SideBar from "../bars/SideBar";
+import SideBar from "../components/bars/SideBar";
 import SinglesScreen from "../screens/games/solo/SinglesScreen";
 import EasyCapsGamesScreen from "../screens/games/solo/EasyCapsGamesScreen";
 import UnrankedScreen from "../screens/games/solo/UnrankedScreen";
@@ -9,7 +9,7 @@ import TenCommandmentsScreen from "../screens/public/TenCommandmentsScreen";
 import RulesScreen from "../screens/public/RulesScreen";
 import SoloGame from "../components/game/details/SoloGame";
 import {useXtraSmallSize} from "../utils/SizeQuery";
-import MobileTopBar from "../bars/TopBar";
+import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import TournamentComponent from "../components/tournament/TournamentComponent";
 import TournamentsComponent from "../screens/tournament/TournamentsComponent";

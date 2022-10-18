@@ -16,6 +16,7 @@ import {useWindowSize} from "../../utils/UseSize";
 import ProfilePlots from "../../components/profile/ProfilePlots";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import GameHistory from "../../components/profile/GameHistory";
+import AchievementsTab from "../../components/profile/AchievementsTab";
 
 
 const displayStats = (type, stats, showPoints = true) => {
@@ -33,7 +34,7 @@ const displayStats = (type, stats, showPoints = true) => {
                         rebuttals: {stats.avgRebuttals.toFixed(2)}</Typography>
                     <Typography noWrap variant={"caption"}>Total rebuttals: {stats.totalRebuttals}</Typography>
                     {showPoints &&
-                    <Typography noWrap variant={"caption"}>Points: {stats.points.toFixed(2)}</Typography>}
+                        <Typography noWrap variant={"caption"}>Points: {stats.points.toFixed(2)}</Typography>}
                     <Typography noWrap variant={"caption"}>Beers downed: {stats.beersDowned}</Typography>
                     <Typography noWrap variant={"caption"}>Games played: {stats.gamesPlayed}</Typography>
                     <Typography noWrap variant={"caption"}>Games won: {stats.gamesWon}</Typography>
@@ -92,9 +93,7 @@ const ProfileScreen = () => {
         setTick(tick + 1)
     }
 
-    if (data) {
-        console.log(data.teams)
-    }
+
 
     return (
         <div>
@@ -120,25 +119,24 @@ const ProfileScreen = () => {
                     {data && <ProfilePicture changePictureOverlayEnabled={(!playerId || playerId === userId)}
                                              avatarHash={data.avatarHash}/>}
                     {!loading && loaded &&
-                    <Typography variant={"h6"} style={{marginTop: 10}}>{data.username}</Typography>}
+                        <Typography variant={"h6"} style={{marginTop: 10}}>{data.username}</Typography>}
                     {!loading && loaded &&
-                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column', marginTop: 10}}>
-                        <Typography style={{fontWeight: 'bold'}}>Last seen</Typography>
-                        <Typography>{data.lastSeen ? new Date(data.lastSeen).toDateString() : 'Never seen'}</Typography>
-                        <Typography style={{fontWeight: 'bold'}}>Last game</Typography>
-                        <Typography>{data.lastGame ? new Date(data.lastGame).toDateString() : 'Never played'}</Typography>
-                    </div>}
+                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'column', marginTop: 10}}>
+                            <Typography style={{fontWeight: 'bold'}}>Last seen</Typography>
+                            <Typography>{data.lastSeen ? new Date(data.lastSeen).toDateString() : 'Never seen'}</Typography>
+                            <Typography style={{fontWeight: 'bold'}}>Last game</Typography>
+                            <Typography>{data.lastGame ? new Date(data.lastGame).toDateString() : 'Never played'}</Typography>
+                        </div>}
                     {(!playerId || playerId === userId) &&
-                    <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
-                        profile</Button>}
+                        <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
+                            profile</Button>}
                 </div>
                 <div style={{flex: 5, padding: 20}}>
                     <Tabs value={tab} onChange={handleTabChange} centered={small}>
-                        <Tab label={"Overview"} value={"stats"} onChange={() => {
-                        }}/>
-                        <Tab label={"Charts"} value={"charts"} onChange={() => {
-                        }}/>
+                        <Tab label={"Overview"} value={"stats"}/>
+                        <Tab label={"Charts"} value={"charts"}/>
                         <Tab label={"Game history"} value={"history"}/>
+                        <Tab label={"Achievements"} value={"achievements"}/>
                     </Tabs>
 
                     {!loading && loaded && <>
@@ -176,31 +174,31 @@ const ProfileScreen = () => {
                                 {data.teams.length === 0 &&
                                     <div className={classes.header} style={{justifyContent: 'center'}}>
                                         <Typography variant={"h6"}>No teams</Typography>
-                                </div>}
+                                    </div>}
                             </div>
                         </TabPanel>
                         <TabPanel value={tab} showValue={'charts'}>
                             <div className={classes.paddedContent} style={{paddingLeft: 0}}>
                                 <div ref={measuredRef}>
-
                                     <ProfilePlots userId={playerId ? playerId : userId} width={plotWidth}/>
                                 </div>
                             </div>
                         </TabPanel>
                         <TabPanel value={tab} showValue={'history'}>
                             <div className={classes.paddedContent} style={{paddingLeft: 0}}>
-                                <div ref={measuredRef}>
-                                    <GameHistory userId={playerId ? playerId : userId}/>
-                                </div>
+                                <GameHistory userId={playerId ? playerId : userId}/>
+                            </div>
+                        </TabPanel>
+                        <TabPanel value={tab} showValue={'achievements'}>
+                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                                <AchievementsTab achievementsList={data.achievements}/>
                             </div>
                         </TabPanel>
                     </>}
-
-
                 </div>
-
                 {(!playerId || playerId === userId) && !loading && loaded &&
-                <EditUserDataDialog open={dialogOpen} setOpen={setDialogOpen} data={data} editData={updateUserData}/>}
+                    <EditUserDataDialog open={dialogOpen} setOpen={setDialogOpen} data={data}
+                                        editData={updateUserData}/>}
 
 
             </div>

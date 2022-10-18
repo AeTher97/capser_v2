@@ -18,7 +18,7 @@ const ResetPasswordScreen = () => {
         if (emailField.validate()) {
             return;
         }
-        resetPassword(emailField.value, history.push("/reset/go"));
+        resetPassword(emailField.value, () => history.push("/reset/go"));
     }
 
     const classes = mainStyles();
