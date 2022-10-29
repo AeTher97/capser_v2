@@ -11,7 +11,7 @@ const RulesScreen = () => {
     const styles = useStyles();
 
     const basicRules = [
-        "Game needs to have at least two teams with at least one player.",
+        "Game needs to have two teams with at least one player.",
         "Team count doesn't have to be equal, but if it's not, adjustments need to be made " +
         "for each team to shoot the same number of times each round. Adjustments can be made in any way that is fair and fulfills previously stated condition.",
         "Caps is a game played with beverages with at least 3% alcohol in it's contains.",
@@ -44,13 +44,13 @@ const RulesScreen = () => {
         "Rebuttal happens when receiving team is able to put a cap in opposing teams tumbler after receiving a cap in their tumbler. " +
         "After that rebuttal situation reverses and the team that landed cap first becomes receiving and they have to land a cap themselves. " +
         "If they manage to do so rebuttal chain continues if they don't scoring rules below apply.",
-        "Score is awarded when on of the teams manages to land a cap in opposing team tumbler and the throw is not rebutted or rebuttal chain is broken (team that broke it loses one point).",
+        "Score is awarded when one of the teams manages to land a cap in opposing team tumbler and the throw is not rebutted or rebuttal chain is broken (team that broke it loses one point).",
         "Caps accidentally placed by the team in their own tumbler immediately count as a point for the opposing team and next shot is performed by opposing team player in accordance to shooting order.",
     ]
 
     const conflictRules = [
         "If one of the players violates shooting order, game continues according to shooting order. The player that" +
-        "committed the violation is skipped during his next turn.",
+        "committed the violation is skipped during his next turn. If the cap was sunk out of turn the sink doesn't count",
         "If shooting order is consecutively violated by both teams no sinks are awarded and no players are skipped. Team representatives " +
         "play a Rock Paper Scissors game and winning team chooses a player that continues the game. After that player shoots next ones go according to the shooting order",
         "If beer is spilled during the game spilling team loses as many points as would correspond to the usual drinking progress " +
@@ -142,6 +142,8 @@ const RulesScreen = () => {
                         <Typography>16.10.2020 - Caps rules written down.
                         </Typography>
                         <Typography>29.11.2021 - Improved numbering and changes playing field rules paragraph name.
+                        </Typography>
+                        <Typography>29.10.2021 - Fixed minor typos. Added information about out of turn sinks not counting.
                         </Typography>
                     </div>
                 </div>
