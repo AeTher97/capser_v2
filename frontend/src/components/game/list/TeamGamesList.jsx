@@ -14,7 +14,6 @@ const TeamGamesList = ({hiddenPoints = false, type, render = true}) => {
 
     const {games, loading, pagesNumber} = useMultipleGames(type, currentPage - 1, 10);
 
-
     return (
         <div style={{display: "flex", justifyContent: 'center'}}>
             <div style={{maxWidth: 800, flex: 1}}>
@@ -25,7 +24,7 @@ const TeamGamesList = ({hiddenPoints = false, type, render = true}) => {
                             <GameComponent game={game}
                                            vertical={small}/>
                         </Grid>)} </Grid> :
-                        loading && Array.from(Array(10)).map(() => <Skeleton variant={"rect"} style={{
+                        loading && Array.from(Array(10)).map((i) => <Skeleton key={i} variant={"rect"} style={{
                             width: '100%', height: 62, borderRadius: 7
                             , margin: '0 0px 8px 0'
                         }}/>)}

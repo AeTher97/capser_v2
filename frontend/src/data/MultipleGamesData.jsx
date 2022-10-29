@@ -25,10 +25,6 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
     const [loading, setLoading] = useState(false);
     const [pagesNumber, setPagesNumber] = useState(0);
 
-    const fetchTeamName = (id) => {
-        return axios.get(`/teams/name/${id}`);
-    }
-
     useEffect(() => {
         setLoading(true);
         let shouldUpdate = true;
@@ -36,6 +32,7 @@ export const useMultipleGames = (type, pageNumber = 0, pageSize = 10) => {
 
                 if (shouldUpdate) {
                     setGames(response.data.content);
+                    setPagesNumber(response.data.totalPages);
                 }
             }).finally(() => {
                 if (shouldUpdate) {

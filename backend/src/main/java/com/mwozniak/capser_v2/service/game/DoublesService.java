@@ -45,6 +45,9 @@ public class DoublesService extends AbstractMultipleGameService {
         if (abstractGame instanceof DoublesGameDto) {
             DoublesGame tempObject = doublesRepository.findDoublesGameById(abstractGame.getId()).get();
             BeanUtils.copyProperties(abstractGame, tempObject);
+            if(abstractGame.isAccepted()){
+                tempObject.setAccepted();
+            }
             return doublesRepository.save(tempObject);
         }
         return doublesRepository.save((DoublesGame) abstractGame);
