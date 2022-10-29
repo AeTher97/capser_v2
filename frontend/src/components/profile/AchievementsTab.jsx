@@ -4,9 +4,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import mainStyles from "../../misc/styles/MainStyles";
 import Achievement from "../achievements/Achievement";
 import gameIconWithName from "../../misc/GameIconWithName";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 const AchievementsTab = ({achievementsList}) => {
 
+    const small = useXtraSmallSize();
     const achievementStyles = useAchievementStyles();
     const classes = mainStyles();
 
@@ -16,11 +18,10 @@ const AchievementsTab = ({achievementsList}) => {
             return;
         }
         return achievementsList.map(achievement =>
-            <div className={classes.standardBorder}>
-                <div className={[achievementStyles.container]}>
-                    <Achievement name={achievement.achievement}/>
-                    {new Date(achievement.dateAchieved).toDateString()}
-                    {gameIconWithName(achievement)}
+            <div key={achievement.id} className={classes.standardBorder} style={{width: small ? "100%" : ""}}>
+                <div className={ small ?  "" : achievementStyles.container}>
+                    <Achievement achievement={achievement}/>
+
                 </div>
             </div>
         )

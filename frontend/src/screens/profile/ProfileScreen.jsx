@@ -67,7 +67,6 @@ const ProfileScreen = () => {
     const [plotWidth, setPlotWidth] = useState(0);
     const [tick, setTick] = useState(1);
     const size = useWindowSize();
-    const small = useXtraSmallSize();
 
     const measuredRef = useCallback(node => {
         if (node) {
@@ -131,8 +130,8 @@ const ProfileScreen = () => {
                         <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
                             profile</Button>}
                 </div>
-                <div style={{flex: 5, padding: 20}}>
-                    <Tabs value={tab} onChange={handleTabChange} centered={small}>
+                <div style={{flex: 5, paddingTop: 20}}>
+                    <Tabs value={tab} onChange={handleTabChange} variant={"scrollable"}>
                         <Tab label={"Overview"} value={"stats"}/>
                         <Tab label={"Charts"} value={"charts"}/>
                         <Tab label={"Game history"} value={"history"}/>
@@ -141,7 +140,7 @@ const ProfileScreen = () => {
 
                     {!loading && loaded && <>
                         <TabPanel value={tab} showValue={'stats'}>
-                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                            <div className={classes.paddedContent}>
                                 <Typography variant={"h6"}>Game stats</Typography>
                                 <div style={{display: "flex", flexWrap: "wrap"}}>
                                     <div style={{display: "flex", flexDirection: "column", flex: 1}}>
@@ -160,7 +159,7 @@ const ProfileScreen = () => {
                             </div>
                             <Divider/>
                             <div>
-                                <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                                <div className={classes.paddedContent}>
                                     <Typography variant={"h6"}>Teams</Typography>
                                 </div>
                                 {data.teams.filter(team => team.active).map(team => {
@@ -178,19 +177,19 @@ const ProfileScreen = () => {
                             </div>
                         </TabPanel>
                         <TabPanel value={tab} showValue={'charts'}>
-                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                            <div className={classes.paddedContent} >
                                 <div ref={measuredRef}>
                                     <ProfilePlots userId={playerId ? playerId : userId} width={plotWidth}/>
                                 </div>
                             </div>
                         </TabPanel>
                         <TabPanel value={tab} showValue={'history'}>
-                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                            <div className={classes.paddedContent} >
                                 <GameHistory userId={playerId ? playerId : userId}/>
                             </div>
                         </TabPanel>
                         <TabPanel value={tab} showValue={'achievements'}>
-                            <div className={classes.paddedContent} style={{paddingLeft: 0}}>
+                            <div className={classes.paddedContent}>
                                 <AchievementsTab achievementsList={data.achievements}/>
                             </div>
                         </TabPanel>

@@ -14,6 +14,7 @@ import TeamStats from "../../components/teams/TeamStats";
 import LoadingComponent from "../../utils/LoadingComponent";
 import EditIcon from "@material-ui/icons/Edit";
 import EditTeamDialog from "../../components/teams/EditTeamDialog";
+import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 
 const TeamsScreen = () => {
@@ -31,9 +32,8 @@ const TeamsScreen = () => {
     const [deleteTeamFunc, setDeleteTeam] = useState(() => () => {
     })
 
-    const theme = useTheme();
+    const small =  useXtraSmallSize();
 
-    console.log(theme)
     const {teams, createTeam, deleteTeam, loading, updateTeam} = usePlayerTeams(userId)
 
 
@@ -65,8 +65,8 @@ const TeamsScreen = () => {
     return (
         <div>
             <PageHeader title={"Teams"} icon={<PeopleOutlineIcon fontSize={"large"}/>}/>
-            <div className={classes.root}>
-                <Grid container spacing={2}>
+            <div className={ small ? "" : classes.root}>
+                <Grid container spacing={0}>
                     <Grid item md={4} sm={12} xs={12}>
                         {!loading ? <div style={{minHeight: 500, padding: 0}}
                                          className={classes.standardBorder}>

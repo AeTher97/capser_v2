@@ -1,11 +1,13 @@
 import React from 'react';
+import {useXtraSmallSize} from "../../utils/SizeQuery";
+import gameIconWithName from "../../misc/GameIconWithName";
+import {Typography} from "@material-ui/core";
 
-const Achievement = ({name}) => {
+const Achievement = ({achievement}) => {
 
-    const icon = 1;
 
     const getSource = () => {
-        switch (name) {
+        switch (achievement.achievement) {
             case "PLACE_IN_EASY":
             case "PLACE_IN_SINGLES":
                 return "/achievements/Placement.png"
@@ -33,7 +35,7 @@ const Achievement = ({name}) => {
     }
 
     const getDescription = () => {
-        switch (name) {
+        switch (achievement.achievement) {
             case "PLACE_IN_EASY":
                 return "Get placement in easy caps!"
             case "PLACE_IN_SINGLES":
@@ -66,6 +68,8 @@ const Achievement = ({name}) => {
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <img src={getSource()}/>
             <div style={{textAlign: "center"}}>{getDescription()}</div>
+            <Typography>{new Date(achievement.dateAchieved).toDateString()}</Typography>
+            {gameIconWithName(achievement)}
         </div>
     );
 };
