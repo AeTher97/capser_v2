@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route, Switch,} from "react-router-dom";
 import SecureRoute from "./SecureRoute";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -21,6 +21,8 @@ const MainNavigation = () => {
     const handleClose = () => {
         dispatch(closeAlert());
     }
+
+    const [open, setOpen] = useState();
 
 
     return (
@@ -61,7 +63,7 @@ const MainNavigation = () => {
                 </Route>
 
                 <SecureRoute path='/secure*'>
-                    <SecureNavigation/>
+                    <SecureNavigation setOpen={setOpen} open={open}/>
                     <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
                         <Alert severity={severity}>
                             {message}
@@ -71,7 +73,7 @@ const MainNavigation = () => {
 
 
                 <Route path='/*'>
-                    <InsecureNavigation/>
+                    <InsecureNavigation setOpen={setOpen} open={open}/>
                     <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
                         <Alert severity={severity}>
                             {message}

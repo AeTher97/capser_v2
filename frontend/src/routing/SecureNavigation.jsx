@@ -8,16 +8,17 @@ import {useXtraSmallSize} from "../utils/SizeQuery";
 import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import ProfileScreen from "../screens/profile/ProfileScreen";
+import SideBarMobile from "../components/bars/SideBarMobile";
 
-const SecureNavigation = () => {
+const SecureNavigation = ({open,setOpen}) => {
 
     const small = useXtraSmallSize();
-    const [open, setOpen] = useState();
     const theme = useTheme();
 
     return (
         <div>
-            <SideBar open={open} setOpen={setOpen}/>
+            {small ? <SideBarMobile open={open} setOpen={setOpen}/>
+                : <SideBar open={open} setOpen={setOpen}/>}
             {small && <MobileTopBar open={open} setOpen={setOpen}/>}
             <div style={{paddingLeft: small ? 0 : 44, backgroundColor: theme.palette.background.default}}>
 

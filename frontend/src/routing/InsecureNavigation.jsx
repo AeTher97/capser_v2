@@ -16,16 +16,17 @@ import TournamentsComponent from "../screens/tournament/TournamentsComponent";
 import DoublesGame from "../components/game/details/DoublesGame";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import HomeScreen from "../screens/public/HomeScreen";
+import SideBarMobile from "../components/bars/SideBarMobile";
 
-const InsecureNavigation = () => {
+const InsecureNavigation = ({open,setOpen}) => {
 
     const small = useXtraSmallSize();
-    const [open, setOpen] = useState();
     const theme = useTheme();
 
     return (
         <div style={{height: '100%'}}>
-            <SideBar open={open} setOpen={setOpen}/>
+            {small ? <SideBarMobile open={open} setOpen={setOpen}/>
+                : <SideBar open={open} setOpen={setOpen}/>}
             {small && <MobileTopBar open={open} setOpen={setOpen}/>}
             <div style={{
                 paddingLeft: small ? 0 : 50,

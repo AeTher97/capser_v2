@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {Drawer, SwipeableDrawer} from "@material-ui/core";
+import {SwipeableDrawer} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import SideBarContent from "./SideBarContent";
 
 
-const SideBar = ({open, setOpen}) => {
+const SideBarMobile = ({open, setOpen}) => {
 
     const history = useHistory();
 
-    const openState =  {
+    const openState = {
         visible: true,
         width: 300
-    } ;
+    }
 
-    const closedState =  {
-        visible: true,
-        width: 50
-    } ;
+    const closedState ={
+        visible: false,
+        width: 300
+    }
 
 
     const [state, setState] = useState(open ? openState : closedState);
@@ -24,6 +24,7 @@ const SideBar = ({open, setOpen}) => {
 
     const go = (address) => {
         history.push(address);
+            setOpen(false);
 
     }
 
@@ -39,25 +40,19 @@ const SideBar = ({open, setOpen}) => {
 
     return (
 
-        <Drawer variant={"persistent"} open={state.visible}
+        <SwipeableDrawer variant={"temporary"} open={state.visible}
                          onOpen={() => {
                              setOpen(true);
                          }}
                          onClose={() => {
                              setOpen(false)
                          }}
-                         onMouseEnter={() => {
-                                 setOpen(true);
-
-                         }}
-                         onMouseLeave={() => {
-                                 setOpen(false);
-
-                         }}>
-            <SideBarContent state={state} small={false} go={go}/>
-        </Drawer>
+     >
+            <div style={{height: 48}}/>
+            <SideBarContent state={state} small={true} go={go}/>
+        </SwipeableDrawer>
     );
 };
 
 
-export default SideBar;
+export default SideBarMobile;
