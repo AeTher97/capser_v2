@@ -130,7 +130,7 @@ const ProfileScreen = () => {
                         <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
                             profile</Button>}
                 </div>
-                <div style={{flex: 5, paddingTop: 20}}>
+                <div style={{flex: 5, paddingTop: 20, maxWidth: '100%'}}>
                     <Tabs value={tab} onChange={handleTabChange} variant={"scrollable"}>
                         <Tab label={"Overview"} value={"stats"}/>
                         <Tab label={"Charts"} value={"charts"}/>
