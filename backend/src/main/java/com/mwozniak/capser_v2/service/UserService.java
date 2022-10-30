@@ -5,10 +5,7 @@ import com.mwozniak.capser_v2.enums.Roles;
 import com.mwozniak.capser_v2.models.database.PasswordResetToken;
 import com.mwozniak.capser_v2.models.database.TeamWithStats;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.dto.CreateUserDto;
-import com.mwozniak.capser_v2.models.dto.PlotsDto;
-import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
-import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
+import com.mwozniak.capser_v2.models.dto.*;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
 import com.mwozniak.capser_v2.models.exception.DataValidationException;
@@ -19,6 +16,7 @@ import com.mwozniak.capser_v2.models.responses.UserMinimized;
 import com.mwozniak.capser_v2.repository.PasswordTokenRepository;
 import com.mwozniak.capser_v2.repository.UsersRepository;
 import com.mwozniak.capser_v2.security.providers.UsernamePasswordProvider;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -207,6 +206,20 @@ public class UserService {
         passwordTokenRepository.delete(resetToken);
         usersRepository.save(user);
     }
+
+    @Transactional
+    public void changePassword(ChangePasswordDTO changePasswordDTO) throws UserNotFoundException {
+        Optional<User> userOptional = usersRepository.findUserById(SecurityUtils.getUserId());
+        if(userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+            }
+        } else {
+            throw new UserNotFoundException("User with this id not found");
+        }
+    }
+
 
     private void createPasswordResetToken(User user, String token) {
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);

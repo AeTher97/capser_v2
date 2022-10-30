@@ -3,12 +3,14 @@ package com.mwozniak.capser_v2.controllers.users;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import com.mwozniak.capser_v2.models.dto.UpdatePasswordDto;
+import com.mwozniak.capser_v2.models.dto.ChangePasswordDTO;
 import com.mwozniak.capser_v2.models.dto.UpdateUserDto;
 import com.mwozniak.capser_v2.models.exception.CredentialTakenException;
 import com.mwozniak.capser_v2.models.exception.DataValidationException;
 import com.mwozniak.capser_v2.models.exception.ResetTokenExpiredException;
 import com.mwozniak.capser_v2.models.exception.UserNotFoundException;
 import com.mwozniak.capser_v2.models.responses.UserMinimized;
+import com.mwozniak.capser_v2.security.utils.SecurityUtils;
 import com.mwozniak.capser_v2.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
@@ -88,9 +90,17 @@ public class UsersController {
     }
 
     @PostMapping("/updatePassword")
-    public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto) throws ResetTokenExpiredException, UserNotFoundException {
-        log.info("Updating password for " + updatePasswordDto.getCode());
+    public ResponseEntity<Object> updatePassword(@Valid @RequestBody UpdatePasswordDto updatePasswordDto) throws ResetTokenExpiredException, UserNotFoundException {
+        log.info("Updating password for code: " + updatePasswordDto.getCode());
         userService.updatePassword(updatePasswordDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/changePassword")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Object> changePassword( @Valid @RequestBody ChangePasswordDTO changePasswordDTO) throws UserNotFoundException {
+        log.info("Changing password for " + SecurityUtils.getUserId());
+        userService.changePassword(changePasswordDTO);
         return ResponseEntity.ok().build();
     }
 

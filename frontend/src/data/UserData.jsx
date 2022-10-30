@@ -60,7 +60,27 @@ export const useUserData = (id) => {
 
         })
     }
-    return {updateUserData, data, loading, loaded}
+
+    const changePassword = (passwordRequest) => {
+        return axios.post(`/users/changePassword`, passwordRequest, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then((response) => {
+            dispatch(showSuccess("Password saved"))
+        }).catch(e => {
+            if (e.response.status === 403) {
+                dispatch(showError("Password invalid"));
+                throw  e;
+            }
+            if (e.response.data.error) {
+                dispatch(showError(e.response.data.error))
+            }
+
+        })
+    }
+
+    return {updateUserData, changePassword,data, loading, loaded}
 }
 
 export const useUserPlots = (id, gameType) => {

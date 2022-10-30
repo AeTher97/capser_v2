@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.security.filters;
 
 import com.mwozniak.capser_v2.security.JwtTokenAuthentication;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,7 +21,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager){
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
@@ -34,22 +36,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         try {
-            JwtTokenAuthentication authentication = new JwtTokenAuthentication(null,stripBearer(authHeader),null);
+            JwtTokenAuthentication authentication = new JwtTokenAuthentication(null, stripBearer(authHeader), null);
             Authentication authResult = authenticationManager.authenticate(authentication);
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
             securityContext.setAuthentication(authResult);
 
             SecurityContextHolder.setContext(securityContext);
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
 
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
     }
 
-    private String stripBearer(String tokenWithBearer){
-        return tokenWithBearer.replace("Bearer","").trim();
+    private String stripBearer(String tokenWithBearer) {
+        return tokenWithBearer.replace("Bearer", "").trim();
     }
 }

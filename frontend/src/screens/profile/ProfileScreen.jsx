@@ -17,6 +17,7 @@ import ProfilePlots from "../../components/profile/ProfilePlots";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import GameHistory from "../../components/profile/GameHistory";
 import AchievementsTab from "../../components/profile/AchievementsTab";
+import EditPasswordDialog from "../../components/dialogs/EditPasswordDialog";
 
 
 const displayStats = (type, stats, showPoints = true) => {
@@ -76,12 +77,14 @@ const ProfileScreen = () => {
 
 
     const history = useHistory();
-    const {data, loading, loaded, updateUserData} = useUserData(playerId ? playerId : userId);
+    const {data, loading, loaded, updateUserData, changePassword} = useUserData(playerId ? playerId : userId);
+
 
     const query = useQuery();
     const tab = query.get('tab') || 'stats';
 
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [changePasswordOpen, setChangePasswordOpen] = useState(false);
 
 
     const classes = mainStyles();
@@ -117,9 +120,9 @@ const ProfileScreen = () => {
                 <div style={{flex: 1, padding: 20, display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                     {data && <ProfilePicture changePictureOverlayEnabled={(!playerId || playerId === userId)}
                                              avatarHash={data.avatarHash}/>}
-                    {!loading && loaded &&
+                    {!loading && data && loaded &&
                         <Typography variant={"h6"} style={{marginTop: 10}}>{data.username}</Typography>}
-                    {!loading && loaded &&
+                    {!loading && data && loaded &&
                         <div style={{display: "flex", alignItems: 'center', flexDirection: 'column', marginTop: 10}}>
                             <Typography style={{fontWeight: 'bold'}}>Last seen</Typography>
                             <Typography>{data.lastSeen ? new Date(data.lastSeen).toDateString() : 'Never seen'}</Typography>
@@ -127,8 +130,10 @@ const ProfileScreen = () => {
                             <Typography>{data.lastGame ? new Date(data.lastGame).toDateString() : 'Never played'}</Typography>
                         </div>}
                     {(!playerId || playerId === userId) &&
-                        <Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
-                            profile</Button>}
+                        <><Button style={{marginTop: 20}} variant={"text"} onClick={() => setDialogOpen(true)}>Edit
+                            profile</Button>
+                            <Button style={{marginTop: 20}} variant={"text"} onClick={() => setChangePasswordOpen(true)}>Change password</Button>
+                        </>}
                 </div>
                 <div style={{flex: 5, paddingTop: 20, maxWidth: '100%'}}>
                     <Tabs value={tab} onChange={handleTabChange} variant={"scrollable"}>
@@ -198,6 +203,9 @@ const ProfileScreen = () => {
                 {(!playerId || playerId === userId) && !loading && loaded &&
                     <EditUserDataDialog open={dialogOpen} setOpen={setDialogOpen} data={data}
                                         editData={updateUserData}/>}
+                {(!playerId || playerId === userId) && !loading && loaded &&
+                    <EditPasswordDialog open={changePasswordOpen} setOpen={setChangePasswordOpen} data={data}
+                                        editData={changePassword}/>}
 
 
             </div>

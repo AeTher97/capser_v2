@@ -48,7 +48,7 @@ const EditUserDataDialog = ({open, setOpen, editData, data}) => {
                     <Typography variant={"h5"}>Change account data</Typography>
                     <ValidatedField field={usernameField} label={usernameField.value === "" ? "Username" : ""}/>
                     <ValidatedField field={emailField} label={emailField.value === "" ? "Email" : ""}/>
-                    <ValidatedField field={passwordField} label={passwordField.value === "" ? "Password" : ""}
+                    <ValidatedField field={passwordField} label={passwordField.value === "" ? "Password for confirmation" : ""}
                                     type={"password"}/>
                     <div style={{marginTop: 10}}>
                         <Button style={{marginRight: 5}} type={"submit"}>Save</Button>
