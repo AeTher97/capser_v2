@@ -29,7 +29,6 @@ const TeamScreen = () => {
         history.push(`?tab=${value}`);
     }
 
-    console.log(team)
 
     return (
         <div>
@@ -53,7 +52,7 @@ const TeamScreen = () => {
                         top: -60
                     }}>
                     <div style={{flex: 1, padding: 20, display: "flex", alignItems: 'center', flexDirection: 'column'}}>
-                        <TeamPicture player1Hash={team.players[0].id} player2Hash={team.players[1].id}/>
+                        <TeamPicture player1Hash={team.players[0].avatarHash} player2Hash={team.players[1].avatarHash}/>
                         <Typography variant={"h5"} style={{marginTop: 10}}>{team.teamWithStats.name}</Typography>
                         <Typography variant={"h6"} style={{marginTop: 10}}>Team</Typography>
 
