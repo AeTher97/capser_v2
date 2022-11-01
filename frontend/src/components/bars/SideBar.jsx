@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Drawer, SwipeableDrawer} from "@material-ui/core";
+import {Drawer} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import SideBarContent from "./SideBarContent";
 
@@ -40,13 +40,8 @@ const SideBar = ({open, setOpen}) => {
     return (
 
         <Drawer variant={"persistent"} open={state.visible}
-                         onOpen={() => {
-                             setOpen(true);
-                         }}
-                         onClose={() => {
-                             setOpen(false)
-                         }}
-                         onMouseEnter={() => {
+
+                onMouseEnter={() => {
                                  setOpen(true);
 
                          }}

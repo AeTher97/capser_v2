@@ -102,6 +102,10 @@ public class TeamService {
 
     }
 
+    public Page<TeamWithStats> searchAllTeams(Pageable pageable, String teamName) {
+        return  teamRepository.findByNameContainingIgnoreCaseAndActive(pageable, teamName, true);
+    }
+
     public TeamWithStats getTeam(UUID teamId) throws TeamNotFoundException {
         Optional<TeamWithStats> teamWithStatsOptional = teamRepository.findTeamById(teamId);
         if (teamWithStatsOptional.isPresent()) {
@@ -129,5 +133,6 @@ public class TeamService {
             throw new TeamNotFoundException("Team with this id not found");
         }
     }
+
 
 }

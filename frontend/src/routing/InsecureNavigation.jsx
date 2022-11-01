@@ -18,6 +18,7 @@ import ProfileScreen from "../screens/profile/ProfileScreen";
 import HomeScreen from "../screens/public/HomeScreen";
 import SideBarMobile from "../components/bars/SideBarMobile";
 import TeamScreen from "../screens/profile/TeamProfile";
+import SearchScreen from "../screens/public/SearchScreen";
 
 const InsecureNavigation = ({open,setOpen}) => {
 
@@ -39,6 +40,10 @@ const InsecureNavigation = ({open,setOpen}) => {
 
                     <Route exact path={"/"}>
                         <HomeScreen/>
+                    </Route>
+
+                    <Route exact path={"/search"}>
+                        <SearchScreen/>
                     </Route>
 
                     <Route exact path={"/singles"}>

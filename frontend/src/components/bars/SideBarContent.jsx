@@ -8,6 +8,7 @@ import mainStyles from "../../misc/styles/MainStyles";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
+import SearchIcon from "@material-ui/icons/Search";
 import {DoublesIcon, EasyIcon, SinglesIcon, UnrankedIcon} from "../../misc/icons/CapsIcons";
 import CheckIcon from "@material-ui/icons/Check";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
@@ -33,6 +34,11 @@ const SideBarContent = ({state, go, small}) => {
             tooltip: "Homepage",
             link: "/",
             icon: <HomeOutlinedIcon/>
+        },
+        {
+            tooltip: "Search",
+            link: "/search",
+            icon: <SearchIcon/>
         },
         {
             tooltip: username,
