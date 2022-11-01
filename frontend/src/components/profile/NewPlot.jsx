@@ -1,6 +1,5 @@
 import React from 'react';
 import Canvas from "../../utils/Canvas";
-import {useTheme} from "@material-ui/core";
 
 const NewPlot = React.memo(({seriesData}) => {
 
@@ -8,7 +7,6 @@ const NewPlot = React.memo(({seriesData}) => {
     const textColor = 'rgba(255,255,255,1)';
 
     const dateOptions = {month: 'long', day: 'numeric'};
-    const theme = useTheme();
 
     const verticalAxisOffset = 30;
     const horizontalAxisOffset = 30;
@@ -52,6 +50,7 @@ const NewPlot = React.memo(({seriesData}) => {
     const drawContent = (ctx, frame, series, actualLength, min, max) => {
         const width = ctx.canvas.width;
         const height = ctx.canvas.height;
+        const lastElement = seriesData.lastElement;
 
         const step = frame > 100 ? 100 : frame;
 
@@ -63,12 +62,12 @@ const NewPlot = React.memo(({seriesData}) => {
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
-        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[0] - center) / span * (height - horizontalAxisOffset)) * step / 100);
+        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
         for (let i = 0; i < 365; i++) {
-            if (series.data[i] === -100000) {
+            if (series.data[(lastElement + i) % 365] === -100000) {
                 continue;
             }
-            ctx.lineTo(verticalAxisOffset + horizontalOffset * i, (height - horizontalAxisOffset) / 2 - ((series.data[i] - center) / span * (height - horizontalAxisOffset)) * step / 100);
+            ctx.lineTo(verticalAxisOffset + horizontalOffset * i, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement + i) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
         }
 
         ctx.stroke();
@@ -94,16 +93,16 @@ const NewPlot = React.memo(({seriesData}) => {
         }
 
 
-        for (let i = 0; i < verticalLabels.length; i++) {
+        for (const element of verticalLabels) {
             let text;
-            if (Math.abs(verticalLabels[i]) < 10) {
-                text = verticalLabels[i].toFixed(2);
-            } else if (Math.abs(verticalLabels[i]) < 100) {
-                text = verticalLabels[i].toFixed(1);
+            if (Math.abs(element) < 10) {
+                text = element.toFixed(2);
+            } else if (Math.abs(element) < 100) {
+                text = element.toFixed(1);
             } else {
-                text = verticalLabels[i].toFixed(0);
+                text = element.toFixed(0);
             }
-            ctx.fillText(text, 1, 3 + (height - horizontalAxisOffset) - (verticalLabels[i] - min) / span * (height - horizontalAxisOffset));
+            ctx.fillText(text, 1, 3 + (height - horizontalAxisOffset) - (element - min) / span * (height - horizontalAxisOffset));
         }
 
         ctx.strokeStyle = lineColor;
@@ -150,7 +149,14 @@ const NewPlot = React.memo(({seriesData}) => {
         const span = (max - min);
 
         const size = ctx.canvas.width - verticalAxisOffset;
-        const entry = series.data[Math.floor((event.x - verticalAxisOffset) / size * actualLength)];
+        let i = Math.floor((event.x - verticalAxisOffset) / size * actualLength);
+        if (i < 0) {
+            return;
+        }
+        let entryPos = (i + series.lastElement) % 365;
+
+        const entry = series.data[entryPos];
+
 
         const padding = 10;
         let height = (ctx.canvas.height - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.height - horizontalAxisOffset)) * step / 100;
@@ -180,6 +186,17 @@ const NewPlot = React.memo(({seriesData}) => {
         }
     }
 
+    for (let i = 0; i < 365; i++) {
+        seriesData.data[i] = 512.0;
+    }
+    seriesData.data[260] = 452.0;
+    seriesData.data[261] = 452.0;
+    seriesData.data[262] = 452.0;
+    seriesData.data[263] = 452.0;
+    seriesData.data[264] = 452.0;
+    seriesData.data[265] = 452.0;
+    seriesData.data[266] = 452.0;
+    console.log(seriesData)
     return (
         <div style={{padding: 5}}>
             <Canvas drawFunction={(ctx, frame, event) => {
