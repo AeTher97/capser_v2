@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import PageHeader from "../../components/misc/PageHeader";
 import {Chip, Grid, TextField, Typography} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
@@ -30,6 +30,10 @@ const SearchScreen = () => {
 
     const history = useHistory();
 
+    const ref = useRef();
+    const ref2 = useRef();
+    const ref3 = useRef();
+
 
     return (
         <div style={{height: '100%', overflow: 'scroll'}}>
@@ -44,21 +48,24 @@ const SearchScreen = () => {
                                }}/>
                     <Grid container className={classes.paddedContent} spacing={1}>
                         <Grid item>
-                            <Chip label={"All"} variant={"outlined"} color={getColor(searchType, 'all')}
+                            <Chip ref={ref} label={"All"} variant={"outlined"} color={getColor(searchType, 'all')}
                                   onClick={() => {
-                                      setSearchType("all")
+                                      setSearchType("all");
+                                      ref.current.blur();
                                   }}/>
                         </Grid>
                         <Grid item>
-                            <Chip label={"Player"} variant={"outlined"} color={getColor(searchType, 'player')}
+                            <Chip ref={ref2} label={"Player"} variant={"outlined"} color={getColor(searchType, 'player')}
                                   onClick={() => {
                                       setSearchType("player")
+                                      ref2.current.blur();
                                   }}/>
                         </Grid>
                         <Grid item>
-                            <Chip label={"Team"} variant={"outlined"} color={getColor(searchType, 'team')}
+                            <Chip ref={ref3} label={"Team"} variant={"outlined"} color={getColor(searchType, 'team')}
                                   onClick={() => {
                                       setSearchType("team")
+                                      ref3.current.blur();
                                   }}/>
                         </Grid>
                     </Grid>
