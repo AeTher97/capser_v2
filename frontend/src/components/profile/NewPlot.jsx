@@ -186,17 +186,7 @@ const NewPlot = React.memo(({seriesData}) => {
         }
     }
 
-    for (let i = 0; i < 365; i++) {
-        seriesData.data[i] = 512.0;
-    }
-    seriesData.data[260] = 452.0;
-    seriesData.data[261] = 452.0;
-    seriesData.data[262] = 452.0;
-    seriesData.data[263] = 452.0;
-    seriesData.data[264] = 452.0;
-    seriesData.data[265] = 452.0;
-    seriesData.data[266] = 452.0;
-    console.log(seriesData)
+
     return (
         <div style={{padding: 5}}>
             <Canvas drawFunction={(ctx, frame, event) => {
