@@ -59,7 +59,9 @@ const SearchScreen = () => {
                                   onClick={() => {
                                       setSearchType("player")
                                       ref2.current.blur();
-                                  }}/>
+                                  }}
+
+                            />
                         </Grid>
                         <Grid item>
                             <Chip ref={ref3} label={"Team"} variant={"outlined"} color={getColor(searchType, 'team')}

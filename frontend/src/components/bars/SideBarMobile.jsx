@@ -46,8 +46,7 @@ const SideBarMobile = ({open, setOpen}) => {
                          }}
                          onClose={() => {
                              setOpen(false)
-                         }}
-     >
+                         }}>
             <div style={{height: 48}}/>
             <SideBarContent state={state} small={true} go={go}/>
         </SwipeableDrawer>

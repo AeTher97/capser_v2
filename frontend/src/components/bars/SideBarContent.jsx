@@ -102,7 +102,7 @@ const SideBarContent = ({state, go, small}) => {
     ]
 
     return (
-        <div style={{width: state.width, overflow: "hidden"}} className={classes.expanding}>
+        <div style={{width: state.width, overflow: "scroll"}} className={classes.expanding}>
             {!small && <div onClick={() => {
                 history.push("/")
             }}
