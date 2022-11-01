@@ -12,7 +12,7 @@ const ProfilePlots = ({userId, width}) => {
     const query = useQuery();
     const gameType = query.get('chart') || 'SINGLES';
     const history = useHistory();
-    const {data, loading, loaded} = useUserPlots(userId, gameType);
+    const {data, loaded} = useUserPlots(userId, gameType);
 
 
 

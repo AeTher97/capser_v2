@@ -164,10 +164,12 @@ export const useTeamData = (id) => {
 
 
             }).catch(e => {
+
+            console.error(e.message);
+        }).finally(() => {
             if (shouldUpdate) {
                 setLoading(false);
             }
-            console.error(e.message);
         })
         return () => {
             shouldUpdate = false;

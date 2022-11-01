@@ -1,7 +1,7 @@
 import React from 'react';
 import ProfilePicture from "./ProfilePicture";
 
-const TeamPicture = ({size = 'large', player1Hash, player2Hash, overrideSize, overrideOverlap}) => {
+const TeamPicture = ({size = 'large', player1Hash, player2Hash, overrideOverlap}) => {
 
     let baseSize;
     let overLap = overrideOverlap || 0.5;

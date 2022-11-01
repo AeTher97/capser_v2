@@ -40,7 +40,9 @@ const TeamsList = () => {
                             <div style={{flex: 0.4}} className={classes.header}>
                                 <TeamTooltip teamId={team.id}>
                                     <BoldTyphography color={"primary"} className={classes.twichHighlightPadding}
-                                                     style={{flex: 0}}>
+                                                     style={{flex: 0}} onClick={() => {
+                                        history.push(`/teams/${team.id}`)
+                                    }}>
                                         {(currentPage - 1) * 10 + index}. {team.name}
                                     </BoldTyphography>
                                 </TeamTooltip>

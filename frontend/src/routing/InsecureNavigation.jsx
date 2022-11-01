@@ -1,5 +1,5 @@
 import {Route, Switch} from "react-router-dom";
-import React, {useState} from 'react';
+import React from 'react';
 import SideBar from "../components/bars/SideBar";
 import SinglesScreen from "../screens/games/solo/SinglesScreen";
 import EasyCapsGamesScreen from "../screens/games/solo/EasyCapsGamesScreen";
@@ -17,6 +17,7 @@ import DoublesGame from "../components/game/details/DoublesGame";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import HomeScreen from "../screens/public/HomeScreen";
 import SideBarMobile from "../components/bars/SideBarMobile";
+import TeamScreen from "../screens/profile/TeamProfile";
 
 const InsecureNavigation = ({open,setOpen}) => {
 
@@ -52,6 +53,9 @@ const InsecureNavigation = ({open,setOpen}) => {
                         <ProfileScreen/>
                     </Route>
 
+                    <Route exact path={"/teams/:teamId"}>
+                        <TeamScreen/>
+                    </Route>
 
                     <Route exact path={"/easy"}>
                         <EasyCapsGamesScreen/>
