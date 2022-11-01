@@ -77,6 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/api/users/resetPassword").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/users/updatePassword").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/games/user/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/api/search").permitAll()
                 .mvcMatchers("/api/**").authenticated()
                 .mvcMatchers("/**").permitAll()
                 .anyRequest().authenticated()

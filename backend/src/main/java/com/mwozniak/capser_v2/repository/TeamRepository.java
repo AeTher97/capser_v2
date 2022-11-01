@@ -16,6 +16,9 @@ public interface TeamRepository extends JpaRepository<TeamWithStats, UUID> {
 
     Page<TeamWithStats> findByNameContainingIgnoreCaseAndPlayerListNotContainingAndActive(Pageable pageable, String name, UUID id, boolean active);
 
+    Page<TeamWithStats> findByNameContainingIgnoreCaseAndActive(Pageable pageable, String name, boolean active);
+
+
     Page<TeamWithStats> findByActiveTrueAndDoublesStatsGamesPlayedGreaterThanEqual(Pageable pageable, int games);
 
 }

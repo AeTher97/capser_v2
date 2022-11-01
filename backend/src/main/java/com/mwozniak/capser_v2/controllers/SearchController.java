@@ -35,13 +35,13 @@ public class SearchController {
         switch (searchType) {
             case "all":
                 searchItems.addAll(mapUsersToSearchItems(userService.searchUsers(PageRequest.of(0, 5), searchString).toList()));
-                searchItems.addAll(mapTeamsToSearchItems(teamService.searchTeams(PageRequest.of(0, 5), searchString).toList()));
+                searchItems.addAll(mapTeamsToSearchItems(teamService.searchAllTeams(PageRequest.of(0, 5), searchString).toList()));
                 break;
             case "player":
                 searchItems.addAll(mapUsersToSearchItems(userService.searchUsers(PageRequest.of(0, 10), searchString).toList()));
                 break;
             case "team":
-                searchItems.addAll(mapTeamsToSearchItems(teamService.searchTeams(PageRequest.of(0, 10), searchString).toList()));
+                searchItems.addAll(mapTeamsToSearchItems(teamService.searchAllTeams(PageRequest.of(0, 10), searchString).toList()));
                 break;
             default:
                 return ResponseEntity.notFound().build();
@@ -60,6 +60,6 @@ public class SearchController {
     private List<SearchItemDto> mapTeamsToSearchItems(List<TeamWithStats> teamList) {
         return teamList.stream().map(team ->
                 new SearchItemDto(team.getId(), team.getName(),
-                        SearchItemDto.SearchItemType.PLAYER)).collect(Collectors.toList());
+                        SearchItemDto.SearchItemType.TEAM)).collect(Collectors.toList());
     }
 }
