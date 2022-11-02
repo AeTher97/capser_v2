@@ -62,9 +62,9 @@ const NewPlot = React.memo(({seriesData}) => {
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
-        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
+        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement + 1) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
         for (let i = 0; i < 365; i++) {
-            if (series.data[(lastElement + i) % 365] === -100000) {
+            if (series.data[(lastElement + i +  1) % 365] === -100000) {
                 continue;
             }
             ctx.lineTo(verticalAxisOffset + horizontalOffset * i, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement + i) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
@@ -153,7 +153,7 @@ const NewPlot = React.memo(({seriesData}) => {
         if (i < 0) {
             return;
         }
-        let entryPos = (i + series.lastElement) % 365;
+        let entryPos = (i + series.lastElement + 1) % 365;
 
         const entry = series.data[entryPos];
 
