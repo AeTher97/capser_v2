@@ -13,17 +13,17 @@ const NewPlot = React.memo(({seriesData}) => {
 
 
     const roundRect = (ctx, x, y, width, height, radius, fill, stroke) => {
-        if (typeof stroke === 'undefined') {
+        if (typeof stroke === "undefined") {
             stroke = true;
         }
-        if (typeof radius === 'undefined') {
+        if (typeof radius === "undefined") {
             radius = 5;
         }
         if (typeof radius === 'number') {
             radius = {tl: radius, tr: radius, br: radius, bl: radius};
         } else {
-            var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
-            for (var side in defaultRadius) {
+            const defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+            for (let side in defaultRadius) {
                 radius[side] = radius[side] || defaultRadius[side];
             }
         }
@@ -48,8 +48,8 @@ const NewPlot = React.memo(({seriesData}) => {
     }
 
     const drawContent = (ctx, frame, series, actualLength, min, max) => {
-        const width = ctx.canvas.width;
-        const height = ctx.canvas.height;
+        const width = ctx.canvas.scrollWidth;
+        const height = ctx.canvas.scrollHeight;
         const lastElement = seriesData.lastElement;
 
         const step = frame > 100 ? 100 : frame;
@@ -62,7 +62,10 @@ const NewPlot = React.memo(({seriesData}) => {
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
-        ctx.moveTo(verticalAxisOffset, (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement +1) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100);
+
+        const startingHorizontalOffset = (height - horizontalAxisOffset) / 2 - ((series.data[(lastElement +1) % 365] - center) / span * (height - horizontalAxisOffset)) * step / 100;
+
+        ctx.moveTo(verticalAxisOffset, startingHorizontalOffset);
         for (let i = 0; i < 365; i++) {
             if (series.data[(lastElement + i +1) % 365] === -100000) {
                 continue;
@@ -75,8 +78,8 @@ const NewPlot = React.memo(({seriesData}) => {
     }
 
     const drawAxes = (ctx, series, actualLength, min, max) => {
-        const width = ctx.canvas.width;
-        const height = ctx.canvas.height;
+        const width = ctx.canvas.scrollWidth;
+        const height = ctx.canvas.scrollHeight;
 
 
         const span = (max - min);
@@ -115,14 +118,13 @@ const NewPlot = React.memo(({seriesData}) => {
         }
 
 
-        const daysSpan = Math.floor(new Date(series.lastLogged).getTime() / 86400000) - Math.floor(new Date(series.lastLogged).getTime() / 86400000) + actualLength;
-        const startDateDays = Math.floor(new Date(series.lastLogged).getTime() / 86400000) - daysSpan
+        const startDateDays = Math.floor(new Date(series.lastLogged).getTime() / 86400000) - actualLength
 
         const horizontalAxisPoints = Math.floor((width - height - horizontalAxisOffset) / 40);
         const horizontalLabels = [];
 
         for (let i = 0; i < horizontalAxisPoints; i++) {
-            horizontalLabels.push(new Date((startDateDays + Math.floor(i / horizontalAxisPoints * daysSpan)) * 86400000));
+            horizontalLabels.push(new Date((startDateDays + Math.floor(i / horizontalAxisPoints * actualLength)) * 86400000));
         }
 
 
@@ -148,7 +150,7 @@ const NewPlot = React.memo(({seriesData}) => {
         const center = (max + min) / 2;
         const span = (max - min);
 
-        const size = ctx.canvas.width - verticalAxisOffset;
+        const size = ctx.canvas.scrollWidth - verticalAxisOffset;
         let i = Math.floor((event.x - verticalAxisOffset) / size * actualLength);
         if (i < 0) {
             return;
@@ -159,10 +161,10 @@ const NewPlot = React.memo(({seriesData}) => {
 
 
         const padding = 10;
-        let height = (ctx.canvas.height - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.height - horizontalAxisOffset)) * step / 100;
+        let height = (ctx.canvas.scrollHeight - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.scrollHeight - horizontalAxisOffset)) * step / 100;
         const circleHeight = height;
         height += 10;
-        if (ctx.canvas.height - horizontalAxisOffset - height < 30) {
+        if (ctx.canvas.scrollHeight - horizontalAxisOffset - height < 30) {
             height -= 50;
         }
 
@@ -176,13 +178,13 @@ const NewPlot = React.memo(({seriesData}) => {
             ctx.fillStyle = 'rgb(51,51,51)';
             ctx.beginPath();
             const tooltipWidth = ctx.measureText(entry.toFixed(2)).width + 20;
-            roundRect(ctx, event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - tooltipWidth / 2,
+            roundRect(ctx, event.x - (ctx.canvas.scrollWidth - event.x < 30 ? 30 : 0) - tooltipWidth / 2,
                 height, ctx.measureText(entry.toFixed(2)).width + 20, 35, 7, true, false)
             ctx.fill()
 
 
             ctx.fillStyle = textColor;
-            ctx.fillText(entry.toFixed(2), event.x - (ctx.canvas.width - event.x < 30 ? 30 : 0) - tooltipWidth / 2 + padding, height + padding + 12);
+            ctx.fillText(entry.toFixed(2), event.x - (ctx.canvas.scrollWidth - event.x < 30 ? 30 : 0) - tooltipWidth / 2 + padding, height + padding + 12);
         }
     }
 
@@ -190,7 +192,8 @@ const NewPlot = React.memo(({seriesData}) => {
     return (
         <div style={{padding: 5}}>
             <Canvas drawFunction={(ctx, frame, event) => {
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+                ctx.clearRect(0, 0, ctx.canvas.scrollWidth, ctx.canvas.scrollHeight)
+                console.log(ctx.canvas.scrollWidth, ctx.canvas.scrollHeight);
                 ctx.font = '13px Arial'
 
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
@@ -209,7 +212,7 @@ const NewPlot = React.memo(({seriesData}) => {
                     ctx.font = '15px Arial';
                     const width = ctx.measureText('No data').width;
 
-                    ctx.fillText('No data', ctx.canvas.width / 2 - width / 2, ctx.canvas.height / 2 - 3)
+                    ctx.fillText('No data', ctx.canvas.scrollWidth / 2 - width / 2, ctx.canvas.scrollHeight / 2 - 3)
                 }
 
 
