@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Table(name = "failed_emails")
@@ -29,4 +30,5 @@ public class FailedEmail {
     private String content;
     private String recipient;
     private String subject;
+    private Date date;
 }

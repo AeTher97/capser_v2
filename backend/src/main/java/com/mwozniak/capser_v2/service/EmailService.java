@@ -72,6 +72,7 @@ public class EmailService {
                     .recipient(to)
                     .subject(subject)
                     .content(content)
+                    .date(new Date())
                     .build());
         }
     }
