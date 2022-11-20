@@ -13,10 +13,10 @@ const NewPlot = React.memo(({seriesData}) => {
 
 
     const roundRect = (ctx, x, y, width, height, radius, fill, stroke) => {
-        if (typeof stroke === undefined) {
+        if (typeof stroke === "undefined") {
             stroke = true;
         }
-        if (typeof radius === undefined) {
+        if (typeof radius === "undefined") {
             radius = 5;
         }
         if (typeof radius === 'number') {
