@@ -67,8 +67,9 @@ const Achievement = ({achievement}) => {
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <img src={getSource()}/>
-            <div style={{textAlign: "center"}}>{getDescription()}</div>
+            <div style={{textAlign: "center"}}>{getDescription()}
             <Typography>{new Date(achievement.dateAchieved).toDateString()}</Typography>
+            </div>
             {gameIconWithName(achievement)}
         </div>
     );

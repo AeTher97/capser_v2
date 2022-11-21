@@ -193,7 +193,6 @@ const NewPlot = React.memo(({seriesData}) => {
         <div style={{padding: 5}}>
             <Canvas drawFunction={(ctx, frame, event) => {
                 ctx.clearRect(0, 0, ctx.canvas.scrollWidth, ctx.canvas.scrollHeight)
-                console.log(ctx.canvas.scrollWidth, ctx.canvas.scrollHeight);
                 ctx.font = '13px Arial'
 
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
