@@ -76,7 +76,7 @@ public class TeamService {
             teamWithStats.setActive(false);
             teamRepository.save(teamWithStats);
         } else {
-            throw new TeamNotFoundException("No team whit this id");
+            throw new TeamNotFoundException("No team with this id");
         }
     }
 
@@ -88,7 +88,7 @@ public class TeamService {
             teamWithStats.setPlayerList(createTeamDto.getPlayers());
             return teamRepository.save(teamWithStats);
         } else {
-            throw new TeamNotFoundException("No team whit this id");
+            throw new TeamNotFoundException("No team with this id");
         }
     }
 
