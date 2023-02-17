@@ -40,8 +40,10 @@ public class TimeSeries {
 
     private int lastElement;
 
+    private static final float NULL_VALUE = -100000;
+
+
     public void logToday(float points) {
-        float NULL_VALUE = -100000;
 
         int start = getLastElement();
         int end;

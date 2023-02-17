@@ -24,9 +24,9 @@ public interface GameService {
 
     void queueGame(AbstractGame abstractGame) throws CapserException;
 
-    UUID queueGame(AbstractGame abstractGame, boolean notify) throws CapserException;
+    void queueGame(AbstractGame abstractGame, boolean notify) throws CapserException;
 
-    AbstractGame acceptGame(UUID gameId, boolean notify) throws CapserException;
+    void acceptGame(UUID gameId, boolean notify) throws CapserException;
 
     void acceptGame(UUID gameId) throws CapserException;
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import mainStyles from "../../misc/styles/MainStyles";
 import {Typography} from "@material-ui/core";
-import {usePlayersListFetch} from "../../data/Players";
+import {usePlayersList} from "../../data/PlayersData";
 import Tooltip from "@material-ui/core/Tooltip";
 import PlayerCard from "../tooltips/PlayerCard";
 import {getStatsString} from "../../utils/Utils";
@@ -20,7 +20,7 @@ const SoloPlayersList = ({type, pointsHidden = false}) => {
     const [currentPage, setPage] = useState(1);
 
     const small = useXtraSmallSize();
-    const {loading, players, pageCount} = usePlayersListFetch(type, currentPage - 1);
+    const {loading, players, pageCount} = usePlayersList(type, currentPage - 1);
     const history = useHistory();
 
     const styles = listStyles({small})();
@@ -101,7 +101,7 @@ const SoloPlayersList = ({type, pointsHidden = false}) => {
                         })
                         }
                     </div> :
-                    Array.from(Array(10)).map(() => <div
+                    Array.from(Array(10)).map((value) => <div key={value}
                         style={{display: 'flex', alignItems: 'center', margin: '5px 0 5px 0'}}>
                         <Skeleton variant={"circle"} style={{width: 60, height: 60}}/><Skeleton variant={"rect"}
                                                                                                 style={{

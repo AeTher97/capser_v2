@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import {useSelector} from "react-redux";
 
-const useAcceptanceFetch = () => {
+const useAcceptance = () => {
 
     const {accessToken} = useSelector(state => state.auth);
 
@@ -16,4 +16,4 @@ const useAcceptanceFetch = () => {
 };
 
 
-export default useAcceptanceFetch;
+export default useAcceptance;

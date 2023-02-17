@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useMultipleGames} from "../../../data/MultipleGamesData";
+import {useMultipleGames} from "../../../data/TeamGamesData";
 import GameComponent from "../details/GameComponent";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import Grid from "@material-ui/core/Grid";

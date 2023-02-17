@@ -5,7 +5,7 @@ import mainStyles from "../../misc/styles/MainStyles";
 import GameIconWithName from "../../misc/GameIconWithName";
 import useQuery from "../../utils/UserQuery";
 import {useHistory} from "react-router-dom";
-import NewPlot from "./NewPlot";
+import Plot from "./Plot";
 
 
 const ProfilePlots = ({userId, width}) => {
@@ -25,9 +25,9 @@ const ProfilePlots = ({userId, width}) => {
             <Typography>Plots in double stats are aggregated results from all teams</Typography>}
             {loaded && <>
                 <Typography>Points</Typography>
-                <NewPlot seriesData={data.pointSeries}/>
+                <Plot seriesData={data.pointSeries}/>
                 <Typography>Rebuttals</Typography>
-                <NewPlot seriesData={data.rebuttalsSeries}/>
+                <Plot seriesData={data.rebuttalsSeries}/>
             </>}
             {!loaded && <div style={{height: 1000}}/>}
 

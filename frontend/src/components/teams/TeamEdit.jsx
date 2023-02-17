@@ -10,7 +10,7 @@ import ValidatedField from "../misc/ValidatedField";
 import CloseIcon from "@material-ui/icons/Close";
 import FetchSelectField from "../../utils/FetchSelectField";
 import Button from "@material-ui/core/Button";
-import {fetchUsername} from "../../data/UsersFetch";
+import {fetchUsername} from "../../data/FieldSearchData";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 
 const TeamEdit = ({applyChange, setClose, open, team = {name: '', playerList: []}}) => {

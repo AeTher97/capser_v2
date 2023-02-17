@@ -11,14 +11,6 @@ export const useDashboard = () => {
     const [games, setGames] = useState([]);
     const [posts, setPosts] = useState([]);
 
-    const fetchTeamName = (id) => {
-        return axios.get(`/teams/name/${id}`);
-    }
-
-    const fetchUsername = (id) => {
-        return axios.get(`/users/${id}`)
-    }
-
 
     const fetchDashboardGames = () => {
         let shouldUpdate = true;

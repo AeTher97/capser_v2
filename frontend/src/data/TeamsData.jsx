@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {showError, showSuccess} from "../redux/actions/alertActions";
-import {fetchUsername} from "./UsersFetch";
+import {fetchUsername} from "./FieldSearchData";
 
 export const usePlayerTeams = (userId, pageNumber = 0, pageSize = 50) => {
     const {accessToken} = useSelector(state => state.auth);

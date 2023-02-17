@@ -59,12 +59,11 @@ public abstract class AbstractGameService implements GameService {
 
     @Transactional
     @Override
-    public UUID queueGame(AbstractGame abstractGame, boolean notify) throws CapserException {
+    public void queueGame(AbstractGame abstractGame, boolean notify) throws CapserException {
         AbstractGame saved = saveGame(abstractGame);
         if (notify) {
             addAcceptanceAndNotify(saved);
         }
-        return saved.getId();
     }
 
     protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
@@ -106,7 +105,7 @@ public abstract class AbstractGameService implements GameService {
 
     @Transactional
     @Override
-    public AbstractGame acceptGame(UUID gameId, boolean notify) throws CapserException {
+    public void acceptGame(UUID gameId, boolean notify) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
         AbstractGame game = findGame(request.getGameToAccept());
@@ -127,7 +126,6 @@ public abstract class AbstractGameService implements GameService {
                             .findFirst().get().getAcceptingUser())
                     .build());
         }
-        return game;
     }
 
     @Transactional

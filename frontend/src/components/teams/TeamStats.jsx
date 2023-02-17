@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Divider, Typography} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import Grid from "@material-ui/core/Grid";
-import {fetchUsername} from "../../data/UsersFetch";
+import {fetchUsername} from "../../data/FieldSearchData";
 
 const TeamStats = ({team}) => {
     const stats = team.doublesStats;

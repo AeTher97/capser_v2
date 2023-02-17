@@ -1,7 +1,7 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 
-export const usePlayersListFetch = (type, pageNumber, pageSize = 10) => {
+export const usePlayersList = (type, pageNumber, pageSize = 10) => {
 
     const [players, setPlayers] = useState([])
     const [loading, setLoading] = useState(false);

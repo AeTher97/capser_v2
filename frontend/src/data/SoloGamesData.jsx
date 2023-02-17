@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useSelector} from "react-redux";
 import {getRequestGameTypeString} from "../utils/Utils";
-import {fetchUsername} from "./UsersFetch";
+import {fetchUsername} from "./FieldSearchData";
 
 
 export const useSoloGamePost = (type) => {

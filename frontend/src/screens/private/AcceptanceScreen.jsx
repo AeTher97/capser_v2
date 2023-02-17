@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import useAcceptanceFetch from "../../data/Acceptance";
+import useAcceptance from "../../data/AcceptanceData";
 import PageHeader from "../../components/misc/PageHeader";
 import {Typography} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
@@ -12,7 +12,7 @@ import {showSuccess} from "../../redux/actions/alertActions";
 import LoadingComponent from "../../utils/LoadingComponent";
 import CheckIcon from '@material-ui/icons/Check';
 import {usePlayerTeams} from "../../data/TeamsData";
-import {fetchUsername} from "../../data/UsersFetch";
+import {fetchUsername} from "../../data/FieldSearchData";
 import {listStyles} from "../../components/participant/SoloPlayersList";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import BoldTyphography from "../../components/misc/BoldTyphography";
@@ -20,7 +20,7 @@ import GameIconWithName from "../../misc/GameIconWithName";
 
 const AcceptanceScreen = props => {
 
-    const fetchAcceptance = useAcceptanceFetch();
+    const fetchAcceptance = useAcceptance();
     const [acceptanceRequests, setAcceptanceRequests] = useState([]);
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);

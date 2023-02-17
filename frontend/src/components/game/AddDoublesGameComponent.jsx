@@ -7,9 +7,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Button, Divider, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import FetchSelectField from "../../utils/FetchSelectField";
-import {useMultipleGamePost} from "../../data/MultipleGamesData";
+import {useMultipleGamePost} from "../../data/TeamGamesData";
 import {usePlayerTeams} from "../../data/TeamsData";
-import {fetchUsername} from "../../data/UsersFetch";
+import {fetchUsername} from "../../data/FieldSearchData";
 
 const AddDoublesGameComponent = ({
                                      showBorder = true,

@@ -6,7 +6,7 @@ import {useXtraSmallSize} from "../../../utils/SizeQuery";
 import {getGameIcon} from "./GameComponent";
 import {getGameModeString, getGameTypeString} from "../../../utils/Utils";
 import LoadingComponent from "../../../utils/LoadingComponent";
-import {useTeamGame} from "../../../data/MultipleGamesData";
+import {useTeamGame} from "../../../data/TeamGamesData";
 import TeamPicture from "../../profile/TeamPicture";
 import BoldTyphography from "../../misc/BoldTyphography";
 import TeamTooltip from "../../tooltips/TeamTooltip";
@@ -94,7 +94,6 @@ const DoublesGame = () => {
     return (
         <div>
             {!loading && game ? <>
-                    }
                     <div style={{borderBottom: '1px solid ' + theme.palette.divider, minHeight: 94}}/>
 
                     <div style={{display: 'flex', justifyContent: 'center'}}>

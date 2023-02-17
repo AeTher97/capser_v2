@@ -69,7 +69,7 @@ const TeamsList = () => {
                         </div>
                     })}
                 </div>}
-                {loading && Array.from(Array(10)).map(() => <div
+                {loading && Array.from(Array(10)).map((value) => <div key={value}
                     style={{display: 'flex', alignItems: 'center', margin: '5px 0 5px 0'}}>
                     <Skeleton variant={"circle"} style={{width: 60, height: 60}}/><Skeleton variant={"rect"}
                                                                                             style={{
