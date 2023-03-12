@@ -2,7 +2,7 @@ package com.mwozniak.capser_v2.models.database.tournament.strategy.elimination;
 
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
-import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.AbstractSoloGame;
 import com.mwozniak.capser_v2.models.database.game.team.AbstractTeamGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.CompetitorTournamentStats;
@@ -34,13 +34,13 @@ public class RoundRobinStrategy implements EliminationStrategy {
             CompetitorTournamentStats temp = new CompetitorTournamentStats();
 
             for (BracketEntry entry : competitorEntries) {
-                if (entry.getGame().getWinnerId().equals(competitor.getId())) {
+                if (entry.getGame().getWinner().equals(competitor.getId())) {
                     temp.setWins(temp.getWins() + 1);
                 } else {
                     temp.setLosses(temp.getLosses() + 1);
                 }
 
-                if (entry.getGame() instanceof AbstractSinglesGame) {
+                if (entry.getGame() instanceof AbstractSoloGame) {
                     calculateStatsFromSinglesGame(competitor, temp, entry);
                 } else if (entry.getGame() instanceof AbstractTeamGame) {
                     calculateStatsForTeamGame(competitor, temp, entry);
@@ -78,16 +78,16 @@ public class RoundRobinStrategy implements EliminationStrategy {
     }
 
     private void calculateStatsFromSinglesGame(Competitor competitor, CompetitorTournamentStats temp, BracketEntry entry) {
-        AbstractSinglesGame abstractSinglesGame = (AbstractSinglesGame) entry.getGame();
+        AbstractSoloGame abstractSoloGame = (AbstractSoloGame) entry.getGame();
 
         GamePlayerStats gamePlayerStats;
         GamePlayerStats opponentPlayerStats;
-        if (((AbstractSinglesGame) entry.getGame()).getPlayer1().equals(competitor.getId())) {
-            gamePlayerStats = abstractSinglesGame.getPlayer1Stats();
-            opponentPlayerStats = abstractSinglesGame.getPlayer2Stats();
+        if (((AbstractSoloGame) entry.getGame()).getPlayer1().equals(competitor.getId())) {
+            gamePlayerStats = abstractSoloGame.getPlayer1Stats();
+            opponentPlayerStats = abstractSoloGame.getPlayer2Stats();
         } else {
-            gamePlayerStats = abstractSinglesGame.getPlayer2Stats();
-            opponentPlayerStats = abstractSinglesGame.getPlayer1Stats();
+            gamePlayerStats = abstractSoloGame.getPlayer2Stats();
+            opponentPlayerStats = abstractSoloGame.getPlayer1Stats();
         }
         temp.points += gamePlayerStats.getScore();
         temp.pointsLost += opponentPlayerStats.getScore();

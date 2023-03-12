@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EasyCapsGameService extends SoloGameService {
+public class EasyCapsGameService extends SoloGameService<EasyCapsGame> {
 
     private final EasyCapsRepository easyCapsRepository;
 
@@ -38,18 +38,18 @@ public class EasyCapsGameService extends SoloGameService {
     }
 
     @Override
-    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
-        achievementService.processEasyAchievements(user, abstractGame);
+    protected void doProcessAchievements(User user, EasyCapsGame game) {
+        achievementService.processEasyAchievements(user, game);
     }
 
     @Override
-    public AbstractGame saveGame(AbstractGame abstractGame) {
-        return easyCapsRepository.save((EasyCapsGame) abstractGame);
+    public EasyCapsGame saveGame(EasyCapsGame game) {
+        return easyCapsRepository.save(game);
     }
 
     @Override
-    public void removeGame(AbstractGame abstractGame) {
-        easyCapsRepository.delete((EasyCapsGame) abstractGame);
+    public void removeGame(EasyCapsGame game) {
+        easyCapsRepository.delete(game);
     }
 
 
@@ -64,27 +64,27 @@ public class EasyCapsGameService extends SoloGameService {
     }
 
     @Override
-    public List<AbstractGame> listGames() {
-        return (List<AbstractGame>) (List<?>) easyCapsRepository.findAll();
+    public List<EasyCapsGame> listGames() {
+        return easyCapsRepository.findAll();
     }
 
     @Override
-    public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findAll(pageable);
+    public Page<EasyCapsGame> listGames(Pageable pageable) {
+        return easyCapsRepository.findAll(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
+    protected Page<EasyCapsGame> getAcceptedGames(Pageable pageable) {
+        return easyCapsRepository.findEasyCapsGamesByAcceptedTrue(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
-        return (Page<AbstractGame>) (Page<?>) easyCapsRepository.findEasyCapsGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
+    protected Page<EasyCapsGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
+        return  easyCapsRepository.findEasyCapsGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
     @Override
-    protected Page<? extends AbstractGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
+    protected Page<EasyCapsGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
         return easyCapsRepository.findEasyGamesWithPlayerAndOpponent(pageable,
                 player1, player2);
     }

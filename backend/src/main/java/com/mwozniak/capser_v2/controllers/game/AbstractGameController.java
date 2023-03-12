@@ -48,8 +48,8 @@ public abstract class AbstractGameController implements GameController {
     @Override
     public ResponseEntity<Object> doAddGame( AbstractGame abstractGame) throws CapserException {
         log.info("Posting game");
-        abstractGame.validateGame();
-        abstractGame.calculateGameStats();
+        abstractGame.validate();
+        abstractGame.calculateStatsOfAllPlayers();
         abstractGameService.queueGame(abstractGame);
         return ResponseEntity.ok().build();
     }

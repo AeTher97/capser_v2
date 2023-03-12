@@ -3,7 +3,6 @@ package com.mwozniak.capser_v2.service.game;
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
@@ -22,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UnrankedGameService extends SoloGameService {
+public class UnrankedGameService extends SoloGameService<UnrankedGame> {
 
     private final UnrankedRepository unrankedRepository;
 
@@ -37,18 +36,18 @@ public class UnrankedGameService extends SoloGameService {
     }
 
     @Override
-    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+    protected void doProcessAchievements(User user, UnrankedGame game) {
         //NO UNRANKED ACHIEVEMENTS!
     }
 
     @Override
-    public AbstractGame saveGame(AbstractGame abstractGame) {
-        return unrankedRepository.save((UnrankedGame) abstractGame);
+    public UnrankedGame saveGame(UnrankedGame game) {
+        return unrankedRepository.save(game);
     }
 
     @Override
-    public void removeGame(AbstractGame abstractGame) {
-        unrankedRepository.delete((UnrankedGame) abstractGame);
+    public void removeGame(UnrankedGame abstractGame) {
+        unrankedRepository.delete(abstractGame);
     }
 
 
@@ -63,28 +62,28 @@ public class UnrankedGameService extends SoloGameService {
     }
 
     @Override
-    public List<AbstractGame> listGames() {
-        return (List<AbstractGame>) (List<?>) unrankedRepository.findAll();
+    public List<UnrankedGame> listGames() {
+        return unrankedRepository.findAll();
     }
 
     @Override
-    public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findAll(pageable);
+    public Page<UnrankedGame> listGames(Pageable pageable) {
+        return unrankedRepository.findAll(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
+    protected Page<UnrankedGame> getAcceptedGames(Pageable pageable) {
+        return unrankedRepository.findUnrankedGameByAcceptedTrue(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
-        return (Page<AbstractGame>) (Page<?>) unrankedRepository.findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
+    protected Page<UnrankedGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
+        return unrankedRepository.findUnrankedGameByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
 
     @Override
-    protected Page<? extends AbstractGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
+    protected Page<UnrankedGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
         return unrankedRepository.findUnrankedGamesWithPlayerAndOpponent(pageable,
                 player1, player2);
     }

@@ -2,6 +2,10 @@ package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.models.database.Post;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
+import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
+import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.repository.BlobPostRepository;
 import com.mwozniak.capser_v2.service.game.DoublesService;
 import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
@@ -39,10 +43,10 @@ public class DashboardService {
     }
 
     public List<AbstractGame> getDashboardGames() {
-        List<AbstractGame> singlesGames = singlesGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> doublesGames = doublesService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> easyCapsGames = easyCapsGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
-        List<AbstractGame> unrankedGames = unrankedGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<SoloGame> singlesGames = singlesGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<DoublesGame> doublesGames = doublesService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<EasyCapsGame> easyCapsGames = easyCapsGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
+        List<UnrankedGame> unrankedGames = unrankedGameService.listAcceptedGames(PageRequest.of(0, 10, Sort.by("time").descending())).getContent();
 
         List<AbstractGame> aggregatedList = new ArrayList<>();
         aggregatedList.addAll(singlesGames);
@@ -60,8 +64,8 @@ public class DashboardService {
         }
     }
 
-    public List<Post> getAllBlogPosts(){
-        return blobPostRepository.findAll( Sort.by("date").descending());
+    public List<Post> getAllBlogPosts() {
+        return blobPostRepository.findAll(Sort.by("date").descending());
     }
 
 }

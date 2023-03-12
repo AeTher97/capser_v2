@@ -446,7 +446,7 @@ public class DoublesTournamentTests {
         assertEquals(user9, getBracketEntry(doublesTournament, 0).getTeam1());
         assertEquals(user14, getBracketEntry(doublesTournament, 0).getTeam2());
 
-        assertEquals(user9.getId(), getBracketEntry(doublesTournament, 0).getGame().getWinnerId());
+        assertEquals(user9.getId(), getBracketEntry(doublesTournament, 0).getGame().getWinner());
         assertTrue(doublesTournament.isFinished());
 
     }

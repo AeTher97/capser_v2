@@ -2,6 +2,9 @@ package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
+import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
 import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import com.mwozniak.capser_v2.service.game.UnrankedGameService;
@@ -33,9 +36,9 @@ public class AggregateGameService {
 
     public Page<AbstractGame> getUserGames(UUID userId, int pageNumber) {
         pageNumber += 1;
-        List<AbstractGame> singlesGames = singlesGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
-        List<AbstractGame> easyCapsGames = easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
-        List<AbstractGame> unrankedGames = unrankedGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
+        List<SoloGame> singlesGames = singlesGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
+        List<EasyCapsGame> easyCapsGames = easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
+        List<UnrankedGame> unrankedGames = unrankedGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
 
 
         List<AbstractGame> aggregatedList = new ArrayList<>();

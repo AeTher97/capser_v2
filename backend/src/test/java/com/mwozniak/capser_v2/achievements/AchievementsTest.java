@@ -12,7 +12,7 @@ import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.GameEventEntity;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
 import com.mwozniak.capser_v2.models.dto.CreateUserDto;
 import com.mwozniak.capser_v2.models.dto.PlayerStatsDto;
 import com.mwozniak.capser_v2.models.dto.SoloGameDto;
@@ -86,7 +86,7 @@ class AchievementsTest {
                 .build());
 
         abstractGame.fillCommonProperties(soloGameDto);
-        abstractGame.calculateGameStats();
+        abstractGame.calculateStatsOfAllPlayers();
 
         abstractGame.calculatePlayerStats(user1);
         abstractGame.calculatePlayerStats(user2);
@@ -118,7 +118,7 @@ class AchievementsTest {
 
     @Test
     void testFirstGameAchievementFromSinglesGame() {
-        SinglesGame singlesGame = new SinglesGame();
+        SoloGame singlesGame = new SoloGame();
         fillSoloGameData(11, 15, 5, 7, singlesGame);
 
         when(applicationContext.getBeansWithAnnotation(SinglesAchievement.class))
@@ -148,7 +148,7 @@ class AchievementsTest {
 
     @Test
     void testFirstNakedLapAchievementFromSinglesGame() {
-        SinglesGame singlesGame = new SinglesGame();
+        SoloGame singlesGame = new SoloGame();
         fillSoloGameData(0, 11, 5, 7, singlesGame);
 
         when(applicationContext.getBeansWithAnnotation(SinglesAchievement.class))
@@ -178,7 +178,7 @@ class AchievementsTest {
 
     @Test
     void testFirstWinAchievementFromSinglesGame() {
-        SinglesGame singlesGame = new SinglesGame();
+        SoloGame singlesGame = new SoloGame();
         fillSoloGameData(11, 3, 5, 7, singlesGame);
 
         when(applicationContext.getBeansWithAnnotation(SinglesAchievement.class))
@@ -216,7 +216,7 @@ class AchievementsTest {
 
     @Test
     void testRebuttalStreakFromSinglesGame() {
-        SinglesGame singlesGame = new SinglesGame();
+        SoloGame singlesGame = new SoloGame();
         fillSoloGameData(11, 3, 5, 7, singlesGame,
                 Arrays.asList(
                         new GameEventEntity(null, GameEvent.SINK, new Date(), user1.getId()),
@@ -269,7 +269,7 @@ class AchievementsTest {
 
     @Test
     void testRebuttalOnLastChanceFromSinglesGame() {
-        SinglesGame singlesGame = new SinglesGame();
+        SoloGame singlesGame = new SoloGame();
         fillSoloGameData(11, 3, 5, 7, singlesGame,
                 Arrays.asList(
                         new GameEventEntity(null, GameEvent.SINK, new Date(), user2.getId()),

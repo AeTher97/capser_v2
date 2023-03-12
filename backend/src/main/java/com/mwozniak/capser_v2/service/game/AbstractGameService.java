@@ -5,8 +5,8 @@ import com.mwozniak.capser_v2.enums.NotificationType;
 import com.mwozniak.capser_v2.models.database.AcceptanceRequest;
 import com.mwozniak.capser_v2.models.database.Notification;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
+import com.mwozniak.capser_v2.models.database.game.Game;
+import com.mwozniak.capser_v2.models.database.game.single.AbstractSoloGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.models.exception.TeamNotFoundException;
@@ -16,7 +16,6 @@ import com.mwozniak.capser_v2.service.AchievementService;
 import com.mwozniak.capser_v2.service.EmailService;
 import com.mwozniak.capser_v2.service.NotificationService;
 import com.mwozniak.capser_v2.service.UserService;
-import com.mwozniak.capser_v2.utils.EloRating;
 import com.mwozniak.capser_v2.utils.EmailLoader;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -31,7 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Log4j2
-public abstract class AbstractGameService implements GameService {
+public abstract class AbstractGameService<T extends Game> implements GameService<T> {
 
     protected final AcceptanceRequestRepository acceptanceRequestRepository;
     protected final UserService userService;
@@ -53,30 +52,30 @@ public abstract class AbstractGameService implements GameService {
 
     @Transactional
     @Override
-    public void queueGame(AbstractGame abstractGame) throws CapserException {
-        queueGame(abstractGame, true);
+    public void queueGame(T game) throws CapserException {
+        queueGame(game, true);
     }
 
     @Transactional
     @Override
-    public void queueGame(AbstractGame abstractGame, boolean notify) throws CapserException {
-        AbstractGame saved = saveGame(abstractGame);
+    public void queueGame(T game, boolean notify) throws CapserException {
+        T saved = saveGame(game);
         if (notify) {
             addAcceptanceAndNotify(saved);
         }
     }
 
-    protected void addAcceptanceAndNotify(AbstractGame abstractGame) throws UserNotFoundException, TeamNotFoundException {
-        AbstractSinglesGame singlesGame = (AbstractSinglesGame) abstractGame;
+    protected void addAcceptanceAndNotify(T game) throws UserNotFoundException, TeamNotFoundException {
+        AbstractSoloGame singlesGame = (AbstractSoloGame) game;
         User user1 = userService.getUser(singlesGame.getPlayer1());
         User user2 = userService.getUser(singlesGame.getPlayer2());
 
         AcceptanceRequest posterAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                 AcceptanceRequestType.PASSIVE,
-                singlesGame.getPlayer1(), abstractGame.getId(), abstractGame.getGameType());
+                singlesGame.getPlayer1(), game.getId(), game.getGameType());
         AcceptanceRequest activeAcceptanceRequest = AcceptanceRequest.createAcceptanceRequest(
                 getAcceptanceRequestType(),
-                singlesGame.getPlayer2(), abstractGame.getId(), abstractGame.getGameType());
+                singlesGame.getPlayer2(), game.getId(), game.getGameType());
 
         acceptanceRequestRepository.save(posterAcceptanceRequest);
         acceptanceRequestRepository.save(activeAcceptanceRequest);
@@ -87,15 +86,15 @@ public abstract class AbstractGameService implements GameService {
                         user2.getUsername()).replace("${opponent}", user1.getUsername()));
     }
 
-    private void processAchievements(AbstractGame abstractGame) {
-        List<UUID> players = abstractGame.getPlayers();
+    private void processAchievements(T game) {
+        List<UUID> players = game.getAllPlayers();
         players.forEach(player -> {
             User user = userService.getUser(player);
-            doProcessAchievements(user, abstractGame);
+            doProcessAchievements(user, game);
         });
     }
 
-    protected abstract void doProcessAchievements(User user, AbstractGame abstractGame);
+    protected abstract void doProcessAchievements(User user, T game);
 
     @Transactional
     @Override
@@ -108,7 +107,7 @@ public abstract class AbstractGameService implements GameService {
     public void acceptGame(UUID gameId, boolean notify) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
-        AbstractGame game = findGame(request.getGameToAccept());
+        T game = findGame(request.getGameToAccept());
         game.setAccepted();
         updateEloAndStats(game);
         processAchievements(game);
@@ -129,11 +128,11 @@ public abstract class AbstractGameService implements GameService {
     }
 
     @Transactional
-    public AbstractGame postGameWithoutAcceptance(AbstractGame abstractGame) throws CapserException {
-        abstractGame.setAccepted();
-        updateEloAndStats(abstractGame);
-        processAchievements(abstractGame);
-        return saveGame(abstractGame);
+    public T postGameWithoutAcceptance(T game) throws CapserException {
+        game.setAccepted();
+        updateEloAndStats(game);
+        processAchievements(game);
+        return saveGame(game);
     }
 
     @Override
@@ -163,7 +162,7 @@ public abstract class AbstractGameService implements GameService {
     public void rejectGame(UUID gameId) throws CapserException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
         AcceptanceRequest request = extractAcceptanceRequest(gameId);
-        AbstractGame game = findGame(request.getGameToAccept());
+        T game = findGame(request.getGameToAccept());
         removeGame(game);
         notificationService.notify(Notification.builder()
                 .date(new Date())
@@ -179,30 +178,9 @@ public abstract class AbstractGameService implements GameService {
 
     }
 
-    protected void updateEloAndStats(AbstractGame abstractGame) throws CapserException {
-        AbstractSinglesGame abstractSinglesGame = (AbstractSinglesGame) abstractGame;
-        User user1 = userService.getUser(abstractSinglesGame.getPlayer1());
-        User user2 = userService.getUser(abstractSinglesGame.getPlayer2());
-
-        abstractSinglesGame.calculatePlayerStats(user1);
-        abstractSinglesGame.calculatePlayerStats(user2);
-
-        boolean d = abstractSinglesGame.getWinner().equals(user1.getId());
-
-        EloRating.EloResult eloResult = EloRating.calculate(abstractSinglesGame.findCorrectStats(user1).getPoints(), abstractSinglesGame.findCorrectStats(user2).getPoints(), 30, d);
-
-        abstractSinglesGame.updateUserPoints(user1, eloResult.getResult1());
-        abstractSinglesGame.updateUserPoints(user2, eloResult.getResult2());
-
-
-        userService.saveUser(user1);
-        userService.saveUser(user2);
-
-    }
-
 
     @Override
-    public Page<AbstractGame> listAcceptedGames(Pageable pageable, UUID player) {
+    public Page<T> listAcceptedGames(Pageable pageable, UUID player) {
         if (player == null) {
             return listAcceptedGames(pageable);
         } else {
@@ -210,7 +188,7 @@ public abstract class AbstractGameService implements GameService {
         }
     }
 
-    protected abstract Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID player);
+    public abstract Page<T> listPlayerAcceptedGames(Pageable pageable, UUID player);
 
     protected AcceptanceRequest extractAcceptanceRequest(UUID gameId) throws GameNotFoundException {
         List<AcceptanceRequest> acceptanceRequestList = acceptanceRequestRepository.findAcceptanceRequestByGameToAccept(gameId);
@@ -220,11 +198,6 @@ public abstract class AbstractGameService implements GameService {
         return acceptanceRequestList.stream().filter(acceptanceRequest ->
                 acceptanceRequest.getAcceptanceRequestType().equals(getAcceptanceRequestType())).findFirst().get();
     }
-
-
-    public abstract AbstractGame saveGame(AbstractGame abstractGame);
-
-    public abstract void removeGame(AbstractGame abstractGame);
 
 
 }

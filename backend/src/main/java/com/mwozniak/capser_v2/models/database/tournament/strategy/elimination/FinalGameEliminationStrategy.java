@@ -19,7 +19,7 @@ public abstract class FinalGameEliminationStrategy extends AbstractEliminationSt
             if (entry.getCoordinate() == 0) {
                 if (entry.getGame() != null) {
                     tournament.setFinished(true);
-                    tournament.setWinner(abstractSinglesBracketEntry.getGame().getWinnerId());
+                    tournament.setWinner(abstractSinglesBracketEntry.getGame().getWinner());
                 } else if (entry.isForfeited()) {
                     tournament.setFinished(true);
                     if (abstractSinglesBracketEntry.getPlayer1().getId().equals(entry.getForfeitedId())) {
@@ -34,7 +34,7 @@ public abstract class FinalGameEliminationStrategy extends AbstractEliminationSt
             if (entry.getCoordinate() == 0) {
                 if (entry.getGame() != null) {
                     tournament.setFinished(true);
-                    tournament.setWinner(doublesBracketEntry.getGame().getWinnerId());
+                    tournament.setWinner(doublesBracketEntry.getGame().getWinner());
                 } else if (entry.isForfeited()) {
                     tournament.setFinished(true);
                     if (doublesBracketEntry.getTeam1().getId().equals(entry.getForfeitedId())) {

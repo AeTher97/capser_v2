@@ -2,7 +2,6 @@ package com.mwozniak.capser_v2.service.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.team.DoublesGame;
 import com.mwozniak.capser_v2.models.dto.DoublesGameDto;
 import com.mwozniak.capser_v2.models.dto.TeamWithPlayersDto;
@@ -23,7 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class DoublesService extends AbstractMultipleGameService {
+public class DoublesService extends AbstractTeamGameService<DoublesGame> {
 
     private final DoublesRepository doublesRepository;
     private final TeamService teamService;
@@ -40,26 +39,28 @@ public class DoublesService extends AbstractMultipleGameService {
         this.teamService = teamService1;
     }
 
+
+
     @Override
-    public AbstractGame saveGame(AbstractGame abstractGame) {
+    public DoublesGame saveGame(DoublesGame abstractGame) {
         if (abstractGame instanceof DoublesGameDto) {
             DoublesGame tempObject = doublesRepository.findDoublesGameById(abstractGame.getId()).get();
             BeanUtils.copyProperties(abstractGame, tempObject);
-            if(abstractGame.isAccepted()){
+            if (abstractGame.isAccepted()) {
                 tempObject.setAccepted();
             }
             return doublesRepository.save(tempObject);
         }
-        return doublesRepository.save((DoublesGame) abstractGame);
+        return doublesRepository.save(abstractGame);
     }
 
     @Override
-    public void removeGame(AbstractGame abstractGame) {
+    public void removeGame(DoublesGame abstractGame) {
         doublesRepository.delete((DoublesGame) abstractGame);
     }
 
     @Override
-    public AbstractGame findGame(UUID id) throws CapserException {
+    public DoublesGame findGame(UUID id) throws CapserException {
         Optional<DoublesGame> doublesGameOptional = doublesRepository.findDoublesGameById(id);
         if (doublesGameOptional.isPresent()) {
             DoublesGameDto doublesGameDto = new DoublesGameDto();
@@ -94,24 +95,23 @@ public class DoublesService extends AbstractMultipleGameService {
     }
 
     @Override
-    public List<AbstractGame> listGames() {
-        return (List<AbstractGame>) (List<?>) doublesRepository.findAll();
+    public List<DoublesGame> listGames() {
+        return doublesRepository.findAll();
     }
 
     @Override
-    public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) doublesRepository.findAll(pageable);
+    public Page<DoublesGame> listGames(Pageable pageable) {
+        return doublesRepository.findAll(pageable);
     }
 
     @Override
-    public Page<AbstractGame> listAcceptedGames(Pageable pageable) {
-        Page<AbstractGame> games = (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrue(pageable);
+    public Page<DoublesGame> listAcceptedGames(Pageable pageable) {
+        Page<DoublesGame> games = doublesRepository.findDoublesGameByAcceptedTrue(pageable);
         games = games.map(game -> {
             try {
-                DoublesGame doublesGame = (DoublesGame) game;
-                doublesGame.setTeam1Name(teamService.findTeam(((DoublesGame) game).getTeam1DatabaseId()).getName());
-                doublesGame.setTeam2Name(teamService.findTeam(((DoublesGame) game).getTeam2DatabaseId()).getName());
-                return doublesGame;
+                game.setTeam1Name(teamService.findTeam((game).getTeam1DatabaseId()).getName());
+                game.setTeam2Name(teamService.findTeam((game).getTeam2DatabaseId()).getName());
+                return game;
             } catch (CapserException e) {
                 e.printStackTrace();
                 return game;
@@ -121,13 +121,13 @@ public class DoublesService extends AbstractMultipleGameService {
     }
 
     @Override
-    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
+    protected void doProcessAchievements(User user, DoublesGame abstractGame) {
         achievementService.processDoublesAchievements(user, abstractGame);
     }
 
     @Override
-    public Page<AbstractGame> listPlayerAcceptedGames(Pageable pageable, UUID team) {
-        return (Page<AbstractGame>) (Page<?>) doublesRepository.findDoublesGameByAcceptedTrueAndTeam1DatabaseIdEqualsOrTeam2DatabaseIdEquals(pageable, team, team);
+    public Page<DoublesGame> listPlayerAcceptedGames(Pageable pageable, UUID team) {
+        return doublesRepository.findDoublesGameByAcceptedTrueAndTeam1DatabaseIdEqualsOrTeam2DatabaseIdEquals(pageable, team, team);
     }
 
     @Override
