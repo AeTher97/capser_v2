@@ -1,6 +1,6 @@
 package com.mwozniak.capser_v2.models.database.tournament.singles;
 
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ public class SinglesBracketEntry extends AbstractSinglesBracketEntry {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @Setter
-    private SinglesGame game;
+    private SoloGame game;
 
 
 

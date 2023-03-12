@@ -61,7 +61,7 @@ public class DoublesGame extends AbstractTeamGame {
     }
 
     @Override
-    public List<UUID> getPlayers() {
+    public List<UUID> getAllPlayers() {
         List<UUID> players = new ArrayList<>();
         players.addAll(getTeam1().getPlayerList());
         players.addAll(getTeam2().getPlayerList());

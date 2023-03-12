@@ -17,7 +17,7 @@ import java.util.*;
 
 @MappedSuperclass
 @AllArgsConstructor
-public abstract class AbstractGame {
+public abstract class AbstractGame implements Game{
 
     protected AbstractGame() {
         time = new Date();
@@ -68,11 +68,7 @@ public abstract class AbstractGame {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameEventEntity> gameEventList;
 
-    public abstract GameType getGameType();
 
-    public abstract void calculateGameStats() throws GameValidationException;
-
-    public abstract void validateGame() throws GameValidationException;
 
     public void calculatePlayerStats(User user) throws UpdateStatsException {
         try {
@@ -128,19 +124,10 @@ public abstract class AbstractGame {
     }
 
 
-    public abstract void updateUserPoints(User user, float pointsChange) throws GameValidationException;
 
-    public abstract void fillCommonProperties(AbstractGameDto abstractGameDto);
-
-    public abstract UserStats findCorrectStats(User user);
-
-    public abstract int getSinksLost(User user);
-
-    public abstract int getPointsLost(User user);
-
-    protected abstract boolean isWinner(User user);
-
-    public abstract List<UUID> getPlayers();
+    public void setAccepted() {
+        accepted = true;
+    }
 
     public static class Comparators {
 
@@ -149,12 +136,6 @@ public abstract class AbstractGame {
         }
 
         public static final Comparator<AbstractGame> DATE = Comparator.comparing(AbstractGame::getTime);
-    }
-
-    public abstract UUID getWinnerId();
-
-    public void setAccepted() {
-        accepted = true;
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mwozniak.capser_v2.service.tournament;
 
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EasyCapsTournamentService extends AbstractSinglesTournamentService<EasyCapsTournament> {
+public class EasyCapsTournamentService extends AbstractSoloTournamentService<EasyCapsTournament> {
 
 
     private final EasyCapsTournamentRepository tournamentRepository;
@@ -54,12 +53,12 @@ public class EasyCapsTournamentService extends AbstractSinglesTournamentService<
         }
         EasyCapsBracketEntry easyCapsBracketEntry = (EasyCapsBracketEntry) easyCapsBracketEntryOptional.get();
 
-        AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(soloGameDto);
-        abstractGame.validateGame();
-        abstractGame.calculateGameStats();
-        AbstractGame game = easyCapsGameService.postGameWithoutAcceptance(abstractGame);
-        easyCapsBracketEntry.setGame((EasyCapsGame) game);
+        EasyCapsGame game = createGameObject();
+        game.fillCommonProperties(soloGameDto);
+        game.validate();
+        game.calculateStatsOfAllPlayers();
+        EasyCapsGame postedGame = easyCapsGameService.postGameWithoutAcceptance(game);
+        easyCapsBracketEntry.setGame(postedGame);
         easyCapsBracketEntry.setFinal(true);
         tournament.resolveAfterGame();
         return tournamentRepository.save(tournament);
@@ -72,14 +71,14 @@ public class EasyCapsTournamentService extends AbstractSinglesTournamentService<
     }
 
     @Override
-    protected AbstractGame createGameObject() {
+    protected EasyCapsGame createGameObject() {
         return new EasyCapsGame();
     }
 
     @Override
     protected AbstractSinglesBracketEntry getBracketEntry(UUID tournamentId, UUID entryId) throws TournamentNotFoundException {
         EasyCapsTournament tournament = getTournament(tournamentId);
-        Optional< BracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
+        Optional<BracketEntry> easyCapsBracketEntryOptional = tournament.getBracketEntries().stream().filter(singlesBracketEntry1 -> singlesBracketEntry1.getId().equals(entryId)).findAny();
         if (!easyCapsBracketEntryOptional.isPresent()) {
             throw new TournamentNotFoundException("Entry not found");
         }

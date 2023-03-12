@@ -3,8 +3,7 @@ package com.mwozniak.capser_v2.service.game;
 import com.mwozniak.capser_v2.enums.AcceptanceRequestType;
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
 import com.mwozniak.capser_v2.models.exception.CapserException;
 import com.mwozniak.capser_v2.models.exception.GameNotFoundException;
 import com.mwozniak.capser_v2.repository.AcceptanceRequestRepository;
@@ -22,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SinglesGameService extends SoloGameService {
+public class SinglesGameService extends SoloGameService<SoloGame> {
 
     private final SinglesRepository singlesRepository;
 
@@ -36,25 +35,27 @@ public class SinglesGameService extends SoloGameService {
         this.singlesRepository = singlesRepository;
     }
 
+
+
     @Override
-    protected void doProcessAchievements(User user, AbstractGame abstractGame) {
-        achievementService.processSinglesAchievements(user, abstractGame);
+    protected void doProcessAchievements(User user, SoloGame game) {
+        achievementService.processSinglesAchievements(user, game);
     }
 
     @Override
-    public AbstractGame saveGame(AbstractGame abstractGame) {
-        return singlesRepository.save((SinglesGame) abstractGame);
+    public SoloGame saveGame(SoloGame game) {
+        return singlesRepository.save(game);
     }
 
     @Override
-    public void removeGame(AbstractGame abstractGame) {
-        singlesRepository.delete((SinglesGame) abstractGame);
+    public void removeGame(SoloGame game) {
+        singlesRepository.delete(game);
     }
 
 
     @Override
-    public SinglesGame findGame(UUID uuid) throws CapserException {
-        Optional<SinglesGame> singlesGameOptional = singlesRepository.findSinglesGameById(uuid);
+    public SoloGame findGame(UUID uuid) throws CapserException {
+        Optional<SoloGame> singlesGameOptional = singlesRepository.findSinglesGameById(uuid);
         if (singlesGameOptional.isPresent()) {
             return singlesGameOptional.get();
         } else {
@@ -69,31 +70,30 @@ public class SinglesGameService extends SoloGameService {
         return AcceptanceRequestType.SINGLE;
     }
     @Override
-    public List<AbstractGame> listGames() {
-        return (List<AbstractGame>)(List<?>)singlesRepository.findAll();
+    public List<SoloGame> listGames() {
+        return singlesRepository.findAll();
     }
 
     @Override
-    public Page<AbstractGame> listGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) singlesRepository.findAll(pageable);
+    public Page<SoloGame> listGames(Pageable pageable) {
+        return singlesRepository.findAll(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getAcceptedGames(Pageable pageable) {
-        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
+    protected Page<SoloGame> getAcceptedGames(Pageable pageable) {
+        return singlesRepository.findSinglesGamesByAcceptedTrue(pageable);
     }
 
     @Override
-    protected Page<AbstractGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
-        return (Page<AbstractGame>) (Page<?>) singlesRepository.findSinglesGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
+    protected Page<SoloGame> getPlayerAcceptedGames(Pageable pageable, UUID player) {
+        return singlesRepository.findSinglesGamesByAcceptedTrueAndPlayer1EqualsOrPlayer2Equals(pageable, player, player);
     }
 
     @Override
-    protected Page<? extends AbstractGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
+    protected Page<SoloGame> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
         return singlesRepository.findSinglesGamesWithPlayerAndOpponent(pageable,
                 player1, player2);
     }
-
 
     @Override
     public GameType getGameType() {

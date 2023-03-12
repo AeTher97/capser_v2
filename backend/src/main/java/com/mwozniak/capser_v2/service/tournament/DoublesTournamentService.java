@@ -138,12 +138,12 @@ public class DoublesTournamentService extends AbstractTournamentService<DoublesT
         }
         DoublesBracketEntry singlesBracketEntry = (DoublesBracketEntry) singlesBracketEntryOptional.get();
 
-        AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(teamGameDto);
-        abstractGame.validateGame();
-        abstractGame.calculateGameStats();
-        AbstractGame game = doublesService.postGameWithoutAcceptance(abstractGame);
-        singlesBracketEntry.setGame((DoublesGame) game);
+        DoublesGame doublesGame = createGameObject();
+        doublesGame.fillCommonProperties(teamGameDto);
+        doublesGame.validate();
+        doublesGame.calculateStatsOfAllPlayers();
+        DoublesGame postedGame = doublesService.postGameWithoutAcceptance(doublesGame);
+        singlesBracketEntry.setGame(postedGame);
         singlesBracketEntry.setFinal(true);
         tournament.resolveAfterGame();
         return doublesTournamentRepository.save(tournament);

@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @Entity
 @Builder
 @Getter
-public class EasyCapsGame extends AbstractSinglesGame {
+public class EasyCapsGame extends AbstractSoloGame {
 
     public EasyCapsGame() {
         super();

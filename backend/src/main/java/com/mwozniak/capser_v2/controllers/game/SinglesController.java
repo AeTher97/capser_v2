@@ -1,7 +1,7 @@
 package com.mwozniak.capser_v2.controllers.game;
 
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
-import com.mwozniak.capser_v2.models.database.game.single.SinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.SoloGame;
 import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +16,6 @@ public class SinglesController extends AbstractSolosController {
 
     @Override
     protected AbstractGame createGameObject() {
-        return new SinglesGame();
+        return new SoloGame();
     }
 }

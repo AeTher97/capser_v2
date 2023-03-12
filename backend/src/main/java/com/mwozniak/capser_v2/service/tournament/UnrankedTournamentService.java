@@ -1,6 +1,5 @@
 package com.mwozniak.capser_v2.service.tournament;
 
-import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.UnrankedGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.singles.AbstractSinglesBracketEntry;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UnrankedTournamentService extends AbstractSinglesTournamentService<UnrankedTournament> {
+public class UnrankedTournamentService extends AbstractSoloTournamentService<UnrankedTournament> {
 
     private final UnrankedTournamentRepository tournamentRepository;
     private final UnrankedGameService unrankedGameService;
@@ -52,12 +51,12 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
         }
         UnrankedBracketEntry unrankedBracketEntry = (UnrankedBracketEntry) unrankedBracketEntryOptional.get();
 
-        AbstractGame abstractGame = createGameObject();
-        abstractGame.fillCommonProperties(soloGameDto);
-        abstractGame.validateGame();
-        abstractGame.calculateGameStats();
-        AbstractGame game = unrankedGameService.postGameWithoutAcceptance(abstractGame);
-        unrankedBracketEntry.setGame((UnrankedGame) game);
+        UnrankedGame game = createGameObject();
+        game.fillCommonProperties(soloGameDto);
+        game.validate();
+        game.calculateStatsOfAllPlayers();
+        UnrankedGame postedGame = unrankedGameService.postGameWithoutAcceptance(game);
+        unrankedBracketEntry.setGame((UnrankedGame) postedGame);
         unrankedBracketEntry.setFinal(true);
         tournament.resolveAfterGame();
         return tournamentRepository.save(tournament);
@@ -69,7 +68,7 @@ public class UnrankedTournamentService extends AbstractSinglesTournamentService<
     }
 
     @Override
-    protected AbstractGame createGameObject() {
+    protected UnrankedGame createGameObject() {
         return new UnrankedGame();
     }
 

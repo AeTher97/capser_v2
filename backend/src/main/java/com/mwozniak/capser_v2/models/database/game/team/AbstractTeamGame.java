@@ -56,7 +56,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
     private UUID winnerId;
 
     @JsonIgnore
-    public Team getWinner() {
+    public Team getWinningTeam() {
 
         if (team1DatabaseId.equals(winnerId)) {
             return team1;
@@ -77,7 +77,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
 
 
     @Override
-    public void validateGame() throws GameValidationException {
+    public void validate() throws GameValidationException {
         if (getTeam1Score() == getTeam2Score()) {
             throw new GameValidationException("Game cannot end in a draw");
         }
@@ -111,7 +111,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
     }
 
     @Override
-    public final void calculateGameStats() throws GameValidationException {
+    public final void calculateStatsOfAllPlayers() throws GameValidationException {
         if (team1Score > team2Score) {
             setWinnerId(team1DatabaseId);
         } else {
@@ -303,8 +303,12 @@ public abstract class AbstractTeamGame extends AbstractGame {
         return stats.stream().anyMatch(GamePlayerStats::isNakedLap);
     }
 
-    protected boolean isWinner(User user) {
-        return getWinner().getPlayerList().contains(user.getId());
+    public boolean isWinner(User user){
+        return getWinningTeam().getPlayerList().contains(user.getId());
+    }
+
+    public UUID getWinner() {
+        return getWinner();
     }
 
     protected abstract void playerNumberSpecificValidation() throws GameValidationException;

@@ -171,7 +171,7 @@ public abstract class Tournament {
 
     public Competitor getWinner(BracketEntry entry) {
         if (entry.getGame() != null) {
-            return entry.getCompetitor1().getId().equals(entry.getGame().getWinnerId()) ? entry.getCompetitor1() : entry.getCompetitor2();
+            return entry.getCompetitor1().getId().equals(entry.getGame().getWinner()) ? entry.getCompetitor1() : entry.getCompetitor2();
         } else if (entry.isForfeited()) {
             return entry.getCompetitor1().getId().equals(entry.getForfeitedId()) ? entry.getCompetitor2() : entry.getCompetitor1();
         } else {
@@ -181,7 +181,7 @@ public abstract class Tournament {
 
     public Competitor getLoser(BracketEntry entry) {
         if (entry.getGame() != null) {
-            return entry.getCompetitor1().getId().equals(entry.getGame().getWinnerId()) ? entry.getCompetitor2() : entry.getCompetitor1();
+            return entry.getCompetitor1().getId().equals(entry.getGame().getWinner()) ? entry.getCompetitor2() : entry.getCompetitor1();
         } else {
             return null;
         }

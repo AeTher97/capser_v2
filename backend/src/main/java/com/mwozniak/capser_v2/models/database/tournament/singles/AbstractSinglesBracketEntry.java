@@ -3,7 +3,7 @@ package com.mwozniak.capser_v2.models.database.tournament.singles;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.User;
-import com.mwozniak.capser_v2.models.database.game.single.AbstractSinglesGame;
+import com.mwozniak.capser_v2.models.database.game.single.AbstractSoloGame;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public abstract class AbstractSinglesBracketEntry extends BracketEntry {
     @JsonIgnoreProperties(value = {"userSinglesStats", "userEasyStats", "userUnrankedStats", "userDoublesStats", "teams", "lastSeen", "lastGame", "role"})
     private User player2;
 
-    public abstract AbstractSinglesGame getGame();
+    public abstract AbstractSoloGame getGame();
 
 
 

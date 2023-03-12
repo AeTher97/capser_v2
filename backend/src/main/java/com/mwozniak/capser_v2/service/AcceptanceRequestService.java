@@ -38,7 +38,7 @@ public class AcceptanceRequestService {
                     acceptanceRequestWithAGame.setAcceptanceRequest(acceptanceRequest);
                     Optional<GameService> gameService = gameServiceList.stream().filter(gameService1 -> gameService1.getGameType().equals(acceptanceRequest.getGameType())).findAny();
                     try {
-                        acceptanceRequestWithAGame.setAbstractGame(gameService.get().findGame(acceptanceRequest.getGameToAccept()));
+                        acceptanceRequestWithAGame.setGame(gameService.get().findGame(acceptanceRequest.getGameToAccept()));
                     } catch (CapserException e) {
                         e.printStackTrace();
                     }
