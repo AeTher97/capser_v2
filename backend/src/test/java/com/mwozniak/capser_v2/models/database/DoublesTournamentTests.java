@@ -21,10 +21,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Doubles Tournament Test")
-public class DoublesTournamentTests {
+class DoublesTournamentTests {
 
     @Test
-    public void singleEliminationTournamentCreation_shouldCreateRightNumberOfEntries() {
+    void singleEliminationTournamentCreation_shouldCreateRightNumberOfEntries() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -36,7 +36,7 @@ public class DoublesTournamentTests {
 
 
     @Test
-    public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries14() {
+    void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries14() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -51,7 +51,7 @@ public class DoublesTournamentTests {
 
 
     @Test
-    public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries30() {
+    void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries30() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -66,7 +66,7 @@ public class DoublesTournamentTests {
 
 
     @Test
-    public void doubleElimination_seedsCorrectly() {
+    void doubleElimination_seedsCorrectly() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -99,7 +99,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void singleElimination_seedsCorrectly() {
+    void singleElimination_seedsCorrectly() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -131,7 +131,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void singleElimination_seedsCorrectly8() {
+    void singleElimination_seedsCorrectly8() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -163,7 +163,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void singleElimination_resolveByesCorrectly8() {
+    void singleElimination_resolveByesCorrectly8() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -190,7 +190,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void doubleElimination_resolveByesCorrectly8() {
+    void doubleElimination_resolveByesCorrectly8() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -217,7 +217,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void doubleElimination_resolveByesCorrectlyFinal8() {
+    void doubleElimination_resolveByesCorrectlyFinal8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -246,7 +246,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void singleElimination_resolveByesCorrectly16() {
+    void singleElimination_resolveByesCorrectly16() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -275,7 +275,7 @@ public class DoublesTournamentTests {
 
 
     @Test
-    public void doubleElimination_progressesCorrectly16() {
+    void doubleElimination_progressesCorrectly16() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -317,7 +317,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void doubleElimination_progressesCorrectlyWithMemory16() {
+    void doubleElimination_progressesCorrectlyWithMemory16() {
         DoublesTournament doublesTournament = new DoublesTournament();
         doublesTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         doublesTournament.setTournamentName("Test");
@@ -452,14 +452,14 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void singleEliminationGetAbove_returnsCorrectNumber() {
+    void singleEliminationGetAbove_returnsCorrectNumber() {
         int result = BracketEntryType.getSingleEliminationCountAbove(BracketEntryType.RO_16);
         assertEquals(7, result);
     }
 
 
     @Test
-    public void doubleEliminationGetAbove_returnsCorrectNumber() {
+    void doubleEliminationGetAbove_returnsCorrectNumber() {
         assertEquals(1, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_2, true));
         assertEquals(2, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_4, true));
         assertEquals(4, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_8, true));
@@ -473,7 +473,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void doubleEliminationGetAboveAndEqual_returnsCorrectNumber() {
+    void doubleEliminationGetAboveAndEqual_returnsCorrectNumber() {
         assertEquals(2, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_2, true));
         assertEquals(4, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_4, true));
         assertEquals(8, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_8, true));
@@ -488,13 +488,13 @@ public class DoublesTournamentTests {
 
 
     @Test
-    public void singleEliminationGetAboveAndEquals_returnsCorrectNumber() {
+    void singleEliminationGetAboveAndEquals_returnsCorrectNumber() {
         int result = BracketEntryType.getSingleEliminationCountAboveAndEqual(BracketEntryType.RO_16);
         assertEquals(15, result);
     }
 
     @Test
-    public void testIsPowerOf2() {
+    void testIsPowerOf2() {
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.RO_4));
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.RO_8));
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.D_RO_4));
@@ -504,7 +504,7 @@ public class DoublesTournamentTests {
     }
 
     @Test
-    public void testGetHigherPowerOf2() {
+    void testGetHigherPowerOf2() {
         assertEquals(BracketEntryType.D_RO_8, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_16));
         assertEquals(BracketEntryType.D_RO_4, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_8));
         assertEquals(BracketEntryType.D_RO_8, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_12));
