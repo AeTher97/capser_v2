@@ -47,10 +47,10 @@ const AcceptanceScreen = props => {
     const fetch = () => {
         fetchAcceptance().then(data => {
             setAcceptanceRequests(data.data.map(request => request.acceptanceRequest))
-            setGames(data.data.map(request => request.abstractGame))
+            setGames(data.data.map(request => request.game))
             setLoading(false);
 
-            Promise.all(data.data.map(request => request.abstractGame).map(game => {
+            Promise.all(data.data.map(request => request.game).map(game => {
                 if (game.gameType === 'DOUBLES') {
                     return [fetchTeamName(game.team1DatabaseId), fetchTeamName(game.team2DatabaseId)]
                 } else {
@@ -66,7 +66,7 @@ const AcceptanceScreen = props => {
 
             })
 
-            Promise.all(data.data.map(request => request.abstractGame).map(game => {
+            Promise.all(data.data.map(request => request.game).map(game => {
                 if (game.gameType === 'DOUBLES') {
                     return [];
                 }

@@ -308,7 +308,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
     }
 
     public UUID getWinner() {
-        return getWinner();
+        return winnerId;
     }
 
     protected abstract void playerNumberSpecificValidation() throws GameValidationException;
