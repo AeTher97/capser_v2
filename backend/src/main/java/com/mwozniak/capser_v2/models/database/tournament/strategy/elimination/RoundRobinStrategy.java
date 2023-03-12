@@ -10,6 +10,7 @@ import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,15 @@ public class RoundRobinStrategy implements EliminationStrategy {
             CompetitorTournamentStats temp = new CompetitorTournamentStats();
 
             for (BracketEntry entry : competitorEntries) {
+                if(entry.isForfeited()){
+                    if(entry.getForfeitedId().equals(competitor.getId())){
+                        temp.setLosses(temp.getLosses() + 1);
+                    } else {
+                        temp.setWins(temp.getWins() + 1);
+                    }
+                    continue;
+                }
+
                 if (entry.getGame().getWinner().equals(competitor.getId())) {
                     temp.setWins(temp.getWins() + 1);
                 } else {
