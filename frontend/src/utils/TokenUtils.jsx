@@ -1,9 +1,9 @@
-import * as jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 
-const errorString = 'Nastąpiło wylogowanie, zaloguj się ponownie';
+const errorString = 'Log out occured, please log in again';
 export const decodeToken = (accessToken) => {
     try {
-        const {sub, rol, exp, email} = jwt.decode(accessToken);
+        const {sub, rol, exp, email} = jwt_decode(accessToken);
 
         return {
             userId: sub,
