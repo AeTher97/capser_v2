@@ -1,9 +1,7 @@
 package com.mwozniak.capser_v2;
 
-import com.mwozniak.capser_v2.configuration.EmailConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableScheduling
-@EnableConfigurationProperties(EmailConfiguration.class)
 public class CapserV2Application {
 
     public static void main(String[] args) {
@@ -30,7 +27,6 @@ public class CapserV2Application {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 
     @Bean
