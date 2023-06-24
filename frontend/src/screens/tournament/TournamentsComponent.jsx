@@ -152,7 +152,12 @@ const TournamentsComponent = () => {
                         </Select>}
                         <Select style={{width: 200, marginBottom: 10}} value={seedType}
                                 onChange={(e) => setSeedType(e.target.value)} label={"Seed type"}>
-                            {tournamentType !== 'ROUND_ROBIN' && <MenuItem value={"RANDOM"}>Random</MenuItem>}
+                            {tournamentType !== 'ROUND_ROBIN' &&
+                                <MenuItem value={"RANDOM"}>Random</MenuItem>
+                            }
+                            {tournamentType !== 'ROUND_ROBIN' &&
+                                <MenuItem value={"PICKED"}>Picked</MenuItem>
+                            }
                             {tournamentType === 'ROUND_ROBIN' &&
                                 <MenuItem value={"ROUND_ROBIN_CIRCLE"}>Round robin circle</MenuItem>}
                         </Select>

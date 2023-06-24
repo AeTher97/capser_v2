@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.service.tournament;
 
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.dto.CreateTournamentDto;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,6 +44,16 @@ public abstract class AbstractTournamentService<T extends Tournament> {
         }
         T tournament = tournamentOptional.get();
         tournament.seedPlayers();
+        return repository.save(tournament);
+    }
+
+    public T setSeeds(UUID id, List<? extends BracketEntry> bracketEntries) {
+        Optional<T> tournamentOptional = repository.findById(id);
+        if (!tournamentOptional.isPresent()) {
+            throw new TournamentNotFoundException();
+        }
+        T tournament = tournamentOptional.get();
+        tournament.setSeeds(bracketEntries);
         return repository.save(tournament);
     }
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Typography} from "@material-ui/core";
 import BracketEntry from "./BracketEntry";
@@ -43,7 +43,9 @@ const DoubleEliminationLadder = ({
                                      teams,
                                      onHighlight,
                                      onHighlightEnd,
-                                     highlighted
+                                     highlighted,
+                                     setPlayer,
+                                     started
                                  }) => {
     const styles = ladderStyles();
 
@@ -86,6 +88,7 @@ const DoubleEliminationLadder = ({
     let lastPower2;
     let firstLowerRow = true;
 
+
     return (
         <>
             <div className={[styles.container].join(' ')} ref={ref}>
@@ -117,6 +120,8 @@ const DoubleEliminationLadder = ({
                                                       onHighlightEnd={onHighlightEnd}
                                                       onHighlight={onHighlight}
                                                       highlighted={highlighted}
+                                                      setPlayer={setPlayer}
+                                                      started={started}
                                         />
                                         {level.type !== lowestRound && <>
                                             <BracketPath height={verticalOffsetLevel / 4}
@@ -125,17 +130,17 @@ const DoubleEliminationLadder = ({
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>
                                             {level.type !== 'D_RO_1' && currentVertical > parseInt(level.type.split("_")[2]) / 2 - 1 &&
-                                            <BracketPath height={verticalOffsetLevel / 4}
-                                                         width={50} left={-50}
-                                                         top={-verticalOffsetLevel / 4 + 35}
-                                                         pathType={"top"}/>}
+                                                <BracketPath height={verticalOffsetLevel / 4}
+                                                             width={50} left={-50}
+                                                             top={-verticalOffsetLevel / 4 + 35}
+                                                             pathType={"top"}/>}
                                             {currentVertical < parseInt(level.type.split("_")[2]) / 2 &&
-                                            <BracketPath height={verticalOffsetLevel / 4}
-                                                         width={level.type === "D_RO_1" ? 50 : 300}
-                                                         left={level.type === "D_RO_1" ? -50 : -300}
-                                                         top={35}
-                                                         pathType={"bottom"}
-                                            />}</>}
+                                                <BracketPath height={verticalOffsetLevel / 4}
+                                                             width={level.type === "D_RO_1" ? 50 : 300}
+                                                             left={level.type === "D_RO_1" ? -50 : -300}
+                                                             top={35}
+                                                             pathType={"bottom"}
+                                                />}</>}
                                     </div>)
                                     currentVertical += 1;
 
@@ -175,6 +180,8 @@ const DoubleEliminationLadder = ({
                                                       onHighlightEnd={onHighlightEnd}
                                                       onHighlight={onHighlight}
                                                       highlighted={highlighted}
+                                                      setPlayer={setPlayer}
+                                                      started={started}
                                         />
                                         {level.type !== lowestRound && <>
                                             {!firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}

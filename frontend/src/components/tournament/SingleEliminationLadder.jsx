@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import BracketEntry from "./BracketEntry";
 import BracketPath from "./BracketPath";
@@ -33,7 +33,9 @@ const SingleEliminationLadder = ({
                                      teams,
                                      highlighted,
                                      onHighlight,
-                                     onHighlightEnd
+                                     onHighlightEnd,
+                                     setPlayer,
+                                     started
                                  }) => {
     const styles = ladderStyles();
 
@@ -96,6 +98,8 @@ const SingleEliminationLadder = ({
                                                   openAddGameDialog={openAddGameDialog} openSkipDialog={openSkipDialog}
                                                   gameType={gameType} teams={teams} highlighted={highlighted}
                                                   onHighlight={onHighlight} onHighlightEnd={onHighlightEnd}
+                                                  setPlayer={setPlayer}
+                                                  started={started}
                                     />
                                     {level.type !== lowestRound && <>
                                         <BracketPath height={verticalOffsetLevel / 4}

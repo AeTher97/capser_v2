@@ -46,4 +46,6 @@ public abstract class AbstractSinglesTournamentController<T extends AbstractSing
         log.info("Skipping game in tournament " + tournamentId.toString());
         return tournamentService.skipGame(tournamentId, entryId, skipDto.getForfeitedId());
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
+import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesBracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.doubles.DoublesTournament;
 import com.mwozniak.capser_v2.models.dto.SkipDto;
 import com.mwozniak.capser_v2.models.dto.TeamGameDto;
@@ -47,5 +48,11 @@ public class DoublesTournamentController  extends AbstractTournamentController<D
     public DoublesTournament skipGame(@PathVariable UUID tournamentId, @PathVariable UUID entryId, @Valid @RequestBody SkipDto skipDto) throws CapserException {
         log.info("Skipping game in tournament " + tournamentId.toString());
         return doublesTournamentService.skipGame(tournamentId, entryId, skipDto.getForfeitedId());
+    }
+
+    @PostMapping("/{tournamentId}/setSeed")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public DoublesTournament setSeeds(@PathVariable UUID tournamentId, @RequestBody List<DoublesBracketEntry> bracketEntries) throws TournamentNotFoundException {
+        return doSetSeeds(tournamentId, bracketEntries);
     }
 }

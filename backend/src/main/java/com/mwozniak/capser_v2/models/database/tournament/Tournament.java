@@ -12,6 +12,7 @@ import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.Do
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.EliminationStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.RoundRobinStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.elimination.SingleEliminationStrategy;
+import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.PickedSeedStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.RandomSeedStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.RoundRobinSeedingStrategy;
 import com.mwozniak.capser_v2.models.database.tournament.strategy.seeding.SeedingStrategy;
@@ -111,6 +112,8 @@ public abstract class Tournament {
     public SeedingStrategy getSeedingStrategy() {
         if (seedType.equals(SeedType.ROUND_ROBIN_CIRCLE)) {
             return new RoundRobinSeedingStrategy();
+        } else if (seedType.equals(SeedType.PICKED)) {
+            return new PickedSeedStrategy();
         } else {
             return new RandomSeedStrategy();
         }
@@ -136,7 +139,6 @@ public abstract class Tournament {
 
     public void resolveByes() {
         getEliminationStrategy().resolveByes(this);
-
     }
 
     public void resolveAfterGame() {
@@ -157,6 +159,20 @@ public abstract class Tournament {
         getSeedingStrategy().seedPlayers(this);
         isSeeded = true;
         resolveByes();
+    }
+
+    public void setSeeds(List<? extends BracketEntry> bracketEntries) {
+        bracketEntries.forEach(bracketEntry -> {
+            BracketEntry entryToModify = getBracketEntries().stream().filter(entry -> entry.getCoordinate() == bracketEntry.getCoordinate()).findFirst().get();
+            if (bracketEntry.getCompetitor1() != null) {
+                Competitor competitor1 = getCompetitorList().stream().filter(competitor -> competitor.getId().equals(bracketEntry.getCompetitor1().getId())).findFirst().get();
+                entryToModify.setCompetitor1(competitor1);
+            }
+            if (bracketEntry.getCompetitor2() != null) {
+                Competitor competitor2 = getCompetitorList().stream().filter(competitor -> competitor.getId().equals(bracketEntry.getCompetitor2().getId())).findFirst().get();
+                entryToModify.setCompetitor2(competitor2);
+            }
+        });
     }
 
     public Optional<CompetitorTournamentStats> getCompetitorTournamentStatsForId(UUID id) {

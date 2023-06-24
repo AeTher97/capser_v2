@@ -113,8 +113,6 @@ public abstract class AbstractEliminationStrategy implements EliminationStrategy
     protected void resolveByesInARow(BracketEntryType currentRow, int absoluteCoord, int higherAbsoluteCoord, int i) {
         BracketEntry topEntry = tournament.getBracketEntry(absoluteCoord + i);
         BracketEntry bottomEntry = tournament.getBracketEntry(absoluteCoord + i + 1);
-        topEntry.setBracketEntryType(currentRow);
-        bottomEntry.setBracketEntryType(currentRow);
         BracketEntry higherEntry = tournament.getBracketEntry(higherAbsoluteCoord + i / 2);
         threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.isBye(), bottomEntry.isBye(), true, true);
     }

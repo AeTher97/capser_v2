@@ -30,6 +30,7 @@ public class EasyCapsTournament extends AbstractSinglesTournament {
         return  (List<BracketEntry>) (List<?>) bracketEntries;
     }
 
+
     @Override
     public GameType getGameType() {
         return GameType.EASY_CAPS;

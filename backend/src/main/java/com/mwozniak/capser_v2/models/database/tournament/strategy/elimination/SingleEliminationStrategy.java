@@ -49,6 +49,7 @@ public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
         }
         abstractBracketEntries.get(0).setBracketEntryType(BracketEntryType.RO_2);
         tournament.setBracketEntries(abstractBracketEntries);
+        populateBracketEntryTypes(tournament);
     }
 
     @Override
@@ -60,6 +61,22 @@ public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
             int higherAbsoluteCoord = BracketEntryType.getSingleEliminationCountAboveAndEqual(BracketEntryType.getHigher(currentRow)) - BracketEntryType.getSingleEliminationCountAbove(BracketEntryType.getHigher(currentRow)) - 1;
             for (int i = 0; i < currentRow.getValue() / 2; i += 2) {
                 resolveByesInARow(currentRow, absoluteCoord, higherAbsoluteCoord, i);
+            }
+            currentRow = BracketEntryType.getHigher(currentRow);
+
+        }
+    }
+
+    private void populateBracketEntryTypes(Tournament tournament) {
+        BracketEntryType currentRow = tournament.getSize();
+        while (!currentRow.equals(BracketEntryType.RO_2)) {
+            tournament.getBracketEntries().sort(BracketEntry.Comparators.COORDINATE);
+            int absoluteCord = BracketEntryType.getSingleEliminationCountAbove(currentRow);
+            for (int i = 0; i < currentRow.getValue() / 2; i += 2) {
+                BracketEntry topEntry = tournament.getBracketEntry(absoluteCord + i);
+                BracketEntry bottomEntry = tournament.getBracketEntry(absoluteCord + i + 1);
+                topEntry.setBracketEntryType(currentRow);
+                bottomEntry.setBracketEntryType(currentRow);
             }
             currentRow = BracketEntryType.getHigher(currentRow);
 

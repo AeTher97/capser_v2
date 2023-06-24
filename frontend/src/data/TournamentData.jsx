@@ -137,9 +137,8 @@ export const useTournamentData = (type, tournamentId) => {
     }
 
     const savePlayers = (playersList) => {
-        let shouldUpdate = true;
         setLoading(true);
-        axios.post(`${type}/tournaments/${tournamentId}/players`, playersList, {
+        return axios.post(`${type}/tournaments/${tournamentId}/players`, playersList, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -148,19 +147,11 @@ export const useTournamentData = (type, tournamentId) => {
         }).catch(e => {
             console.log(e.message)
             dispatch(showError(e.response.data.error))
-        }).finally(() => {
-            if (shouldUpdate) {
-                setLoading(false);
-            }
         })
 
-        return () => {
-            shouldUpdate = false;
-        }
     }
 
     const seedTournament = () => {
-        let shouldUpdate = true;
         setLoading(true);
         axios.post(`${type}/tournaments/${tournamentId}/seed`, null, {
             headers: {
@@ -171,14 +162,9 @@ export const useTournamentData = (type, tournamentId) => {
         }).catch(e => {
             console.log(e.message)
         }).finally(() => {
-            if (shouldUpdate) {
-                setLoading(false);
-            }
+
         })
 
-        return () => {
-            shouldUpdate = false;
-        }
     }
 
     const deleteTournament = (callback) => {
@@ -203,6 +189,67 @@ export const useTournamentData = (type, tournamentId) => {
         }
     }
 
-    return {tournament, loading, postTournamentGame, savePlayers, seedTournament, deleteTournament, skipTournamentGame}
+    const addParticipantToEntryTemp = (entry, bottom, playerId, playerName) => {
+        setTournament(current => {
+            const i = current.bracketEntries.findIndex(currentEntry => currentEntry.id === entry);
+
+            const teams = tournament && tournament.gameType === 'DOUBLES';
+
+            if (teams) {
+                const team = {
+                    id: playerId,
+                    name: playerName,
+                }
+                if (bottom) {
+                    current.bracketEntries[i].team2 = team;
+                } else {
+                    current.bracketEntries[i].team1 = team;
+                }
+            } else {
+                const player = {
+                    id: playerId,
+                    username: playerName,
+                    avatarHash: null,
+                    achievements: []
+                }
+                if (bottom) {
+                    current.bracketEntries[i].player2 = player;
+                } else {
+                    current.bracketEntries[i].player1 = player;
+                }
+
+            }
+
+
+            return current;
+
+        })
+    }
+
+    const addParticipantsToEntries = () => {
+        setLoading(true);
+        return axios.post(`${type}/tournaments/${tournamentId}/setSeed`, tournament.bracketEntries, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then((response) => {
+            setTournament(response.data);
+        }).catch(e => {
+            console.log(e.message)
+            dispatch(showError(e.response.data.error))
+        })
+    }
+
+    return {
+        tournament,
+        loading,
+        postTournamentGame,
+        savePlayers,
+        seedTournament,
+        deleteTournament,
+        skipTournamentGame,
+        addParticipantsToEntries,
+        addParticipantToEntryTemp
+    }
 }
 

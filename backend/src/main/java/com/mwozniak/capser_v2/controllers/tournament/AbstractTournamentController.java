@@ -1,5 +1,6 @@
 package com.mwozniak.capser_v2.controllers.tournament;
 
+import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
 import com.mwozniak.capser_v2.models.dto.CreateTournamentDto;
 import com.mwozniak.capser_v2.models.exception.TournamentNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -59,5 +61,10 @@ public abstract class AbstractTournamentController<T extends Tournament> {
     public T seedPlayers(@PathVariable UUID tournamentId) throws TournamentNotFoundException {
         log.info("Seeding players in " + tournamentId.toString());
         return tournamentService.seedPlayers(tournamentId);
+    }
+
+    protected T doSetSeeds(@PathVariable UUID tournamentId, @RequestBody List<? extends BracketEntry> bracketEntries) throws TournamentNotFoundException {
+        log.info("Setting seeds in " + tournamentId.toString());
+        return tournamentService.setSeeds(tournamentId, bracketEntries);
     }
 }
