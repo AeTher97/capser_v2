@@ -14,7 +14,8 @@ const ResetPasswordScreen = () => {
     emailField.showError = true;
     const {resetPassword} = useResetPassword();
 
-    const sendResetRequest = () => {
+    const sendResetRequest = (e) => {
+        e.preventDefault();
         if (emailField.validate()) {
             return;
         }
