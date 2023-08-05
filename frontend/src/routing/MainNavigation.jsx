@@ -14,6 +14,7 @@ import ResetPasswordScreen from "../screens/administration/ResetPasswordScreen";
 import FinishResettingPasswordScreen from "../screens/administration/FinishResettingPasswordScreen";
 import ScrollToTop from "../utils/ScrollToTop";
 import ResetFinalizeScreen from "../screens/administration/ResetFinalizeScreen";
+import StreamNavigation from "./StreamNavigation";
 
 const MainNavigation = () => {
     const {severity, message, isOpen} = useSelector(state => state.alert);
@@ -70,6 +71,11 @@ const MainNavigation = () => {
                         </Alert>
                     </Snackbar>
                 </SecureRoute>
+
+                <SecureRoute path='/stream*'>
+                    <StreamNavigation setOpen={setOpen} open={open}/>
+                </SecureRoute>
+
 
 
                 <Route path='/*'>

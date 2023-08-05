@@ -62,7 +62,7 @@ export const useTournamentsList = (type, pageNumber = 0, pageSize = 10) => {
 }
 
 
-export const useTournamentData = (type, tournamentId) => {
+export const useTournamentData = (type, tournamentId, refresh) => {
 
     const [tournament, setTournament] = useState(null);
     const {accessToken} = useSelector(state => state.auth);
@@ -87,9 +87,29 @@ export const useTournamentData = (type, tournamentId) => {
         return () => {
             shouldUpdate = false;
         }
-
-
     }, [tournamentId])
+
+    useEffect(() => {
+
+        if (refresh) {
+            const interval = setInterval(() => {
+                console.log("Refreshing tournament data")
+                axios.get(`/${type}/tournaments/${tournamentId}`).then(result => {
+                    setTournament(result.data);
+
+                }).catch(e => {
+                    console.log(e.message)
+                }).finally(() => {
+                    setLoading(false);
+                })
+
+            }, 10000)
+
+            return () => {
+                clearInterval(interval);
+            }
+        }
+    }, [refresh]);
 
 
     const postTournamentGame = (entryId, gameRequest) => {

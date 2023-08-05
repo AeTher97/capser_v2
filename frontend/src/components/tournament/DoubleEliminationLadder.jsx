@@ -81,14 +81,12 @@ const DoubleEliminationLadder = ({
 
 
     let currentHorizontalOffset = 30;
-    let horizontalOffsetLevel = 250;
-    let verticalOffsetLevel = 100;
+    let horizontalOffsetLevel = 270;
+    let verticalOffsetLevel = 75;
     let currentVertical = 0;
     let additionalVerticalOffset = 60;
     let lastPower2;
     let firstLowerRow = true;
-
-
     return (
         <>
             <div className={[styles.container].join(' ')} ref={ref}>
@@ -125,22 +123,24 @@ const DoubleEliminationLadder = ({
                                         />
                                         {level.type !== lowestRound && <>
                                             <BracketPath height={verticalOffsetLevel / 4}
-                                                         width={level.type === "D_RO_1" ? 50 : 300}
-                                                         left={level.type === "D_RO_1" ? -50 : -300}
+                                                         width={level.type === "D_RO_1" ? (50 - (250 - horizontalOffsetLevel)) : (300 - 2 * (250 - horizontalOffsetLevel))}
+                                                         left={level.type === "D_RO_1" ? -(50 - (250 - horizontalOffsetLevel)) : -(300 - 2 * (250 - horizontalOffsetLevel))}
                                                          top={-verticalOffsetLevel / 4 + 35}
                                                          pathType={"top"}/>
                                             {level.type !== 'D_RO_1' && currentVertical > parseInt(level.type.split("_")[2]) / 2 - 1 &&
                                                 <BracketPath height={verticalOffsetLevel / 4}
-                                                             width={50} left={-50}
+                                                             width={(50 - (250 - horizontalOffsetLevel))}
+                                                             left={-(50 - (250 - horizontalOffsetLevel))}
                                                              top={-verticalOffsetLevel / 4 + 35}
                                                              pathType={"top"}/>}
                                             {currentVertical < parseInt(level.type.split("_")[2]) / 2 &&
                                                 <BracketPath height={verticalOffsetLevel / 4}
-                                                             width={level.type === "D_RO_1" ? 50 : 300}
-                                                             left={level.type === "D_RO_1" ? -50 : -300}
+                                                             width={level.type === "D_RO_1" ? (50 - (250 - horizontalOffsetLevel)) : (300 - 2 * (250 - horizontalOffsetLevel))}
+                                                             left={level.type === "D_RO_1" ? -(50 - (250 - horizontalOffsetLevel)) : -(300 - 2 * (250 - horizontalOffsetLevel))}
                                                              top={35}
                                                              pathType={"bottom"}
-                                                />}</>}
+                                                />}
+                                        </>}
                                     </div>)
                                     currentVertical += 1;
 
@@ -185,7 +185,8 @@ const DoubleEliminationLadder = ({
                                         />
                                         {level.type !== lowestRound && <>
                                             {!firstLowerRow && <BracketPath height={verticalOffsetLevel / 4}
-                                                                            width={50} left={-50}
+                                                                            width={(50 - (250 - horizontalOffsetLevel))}
+                                                                            left={-(50 - (250 - horizontalOffsetLevel))}
                                                                             top={35}
                                                                             pathType={"bottom"}
                                             />}</>}
