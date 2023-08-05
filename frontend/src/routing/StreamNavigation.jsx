@@ -7,8 +7,6 @@ const StreamNavigation = ({open, setOpen}) => {
 
     const theme = useTheme();
 
-    console.log("xd")
-
     return (
         <div style={{height: '100%'}}>
             <div style={{

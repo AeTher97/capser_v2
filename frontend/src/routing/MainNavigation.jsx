@@ -72,9 +72,9 @@ const MainNavigation = () => {
                     </Snackbar>
                 </SecureRoute>
 
-                <SecureRoute path='/stream*'>
+                <Route path='/stream*'>
                     <StreamNavigation setOpen={setOpen} open={open}/>
-                </SecureRoute>
+                </Route>
 
 
 
