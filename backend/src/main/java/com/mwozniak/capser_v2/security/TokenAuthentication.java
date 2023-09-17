@@ -3,7 +3,6 @@ package com.mwozniak.capser_v2.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.ObjectUtils;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 
@@ -34,7 +33,7 @@ public abstract class TokenAuthentication implements Authentication {
 
     @Override
     public Object getDetails() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -67,7 +66,7 @@ public abstract class TokenAuthentication implements Authentication {
         if (obj instanceof TokenAuthentication) {
             TokenAuthentication secondObj = (TokenAuthentication) obj;
             return secondObj.isAuthenticated == this.isAuthenticated && ObjectUtils.nullSafeEquals(this.getCredentials(), secondObj.getCredentials())
-                    && ObjectUtils.nullSafeEquals(this.getPrincipal(),secondObj.getPrincipal()) && ObjectUtils.nullSafeEquals(this.getAuthorities(),secondObj.getAuthorities());
+                    && ObjectUtils.nullSafeEquals(this.getPrincipal(), secondObj.getPrincipal()) && ObjectUtils.nullSafeEquals(this.getAuthorities(), secondObj.getAuthorities());
 
         } else {
             return false;

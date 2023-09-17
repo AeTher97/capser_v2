@@ -22,12 +22,10 @@ public class CapserV2Application {
 
         SpringApplication.run(CapserV2Application.class, args);
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public TaskScheduler taskScheduler() {
