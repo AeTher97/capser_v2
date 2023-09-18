@@ -1,5 +1,5 @@
 import React from 'react';
-import {useLocation, useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import mainStyles from "../../../misc/styles/MainStyles";
 import {Typography, useTheme} from "@material-ui/core";
 import {useXtraSmallSize} from "../../../utils/SizeQuery";
@@ -12,9 +12,9 @@ import BoldTyphography from "../../misc/BoldTyphography";
 import TeamTooltip from "../../tooltips/TeamTooltip";
 
 
-const TeamSplash = ({teamDetails}) => {
+const TeamSplash = ({teamDetails, onClick}) => {
     return (
-        <div style={{margin: 40, display: 'flex', flexDirection: 'column', maxWidth: 270, alignItems: 'center'}}>
+        <div style={{margin: 40, display: 'flex', flexDirection: 'column', maxWidth: 270, alignItems: 'center'}} onClick={onClick}>
             <TeamPicture size={'large'} player1Hash={teamDetails.players[0].avatarHash}
                          player2Hash={teamDetails.players[1].avatarHash}/>
             <TeamTooltip teamId={teamDetails.teamWithStats.id}>
@@ -76,20 +76,14 @@ const TeamStats = ({game, team}) => {
 
 const DoublesGame = () => {
     const {gameId} = useParams();
-    const location = useLocation();
     const classes = mainStyles();
     const theme = useTheme();
     const small = useXtraSmallSize();
+    const history = useHistory();
 
     const {loading, game} = useTeamGame(gameId)
 
 
-    let player1Stats;
-    let player2Stats;
-    if (!loading && game) {
-        player1Stats = game.gamePlayerStats.find(obj => obj.playerId === game.player1)
-        player2Stats = game.gamePlayerStats.find(obj => obj.playerId === game.player2)
-    }
 
     return (
         <div>
@@ -101,9 +95,13 @@ const DoublesGame = () => {
                             style={{position: 'relative', top: -100, maxWidth: 800, flex: 1}}>
                             <div className={classes.header}
                                  style={{justifyContent: 'center', flexDirection: small ? 'column' : 'row'}}>
-                                <TeamSplash teamDetails={game.team1Details}/>
+                                <TeamSplash teamDetails={game.team1Details} onClick={() => {
+                                    history.push(`/teams/${game.team1DatabaseId}`)
+                                }}/>
                                 <Typography variant={"h3"}>VS</Typography>
-                                <TeamSplash teamDetails={game.team2Details}/>
+                                <TeamSplash teamDetails={game.team2Details} onClick={()=>{
+                                    history.push(`/teams/${game.team1DatabaseId}`)
+                                }}/>
                                 />
                             </div>
                             <div className={classes.standardBorder}>

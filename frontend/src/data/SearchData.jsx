@@ -4,12 +4,11 @@ import {useEffect, useState} from "react";
 const useSearch = (type, phrase) => {
 
     const [loading, setLoading] = useState(false);
-    const [searchResult, setSearchResult] = useState();
+    const [searchResult, setSearchResult] = useState(null);
 
 
     useEffect(() => {
         if (phrase === '') {
-            setSearchResult([]);
             return;
         }
         setLoading(true);
