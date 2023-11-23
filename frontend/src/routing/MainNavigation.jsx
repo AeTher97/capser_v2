@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Route, Switch,} from "react-router-dom";
+import {Redirect, Route, Switch,} from "react-router-dom";
 import SecureRoute from "./SecureRoute";
 import Snackbar from "@material-ui/core/Snackbar";
 import Slide from "@material-ui/core/Slide";

@@ -29,7 +29,6 @@ public class CapserV2Application {
 
     @Bean
     public TaskScheduler taskScheduler() {
-
         return new ThreadPoolTaskScheduler();
     }
 }
