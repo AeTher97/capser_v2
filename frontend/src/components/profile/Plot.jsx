@@ -64,15 +64,21 @@ const Plot = React.memo(({seriesData}) => {
         if (span === 0) {
             span = 1;
         }
-        const horizontalStepSize = (width - 5 - horizontalAxisOffset) / actualLength;
+        const horizontalStepSize = (width - 10 - horizontalAxisOffset) / actualLength;
         const lineHeight = height - verticalAxisOffset - 2;
 
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
 
+        let startingValue = series.data[(lastElement + 1) % 365];
+        if (startingValue === -100000) {
+            startingValue = series.data[0];
+        }
+
         const startingVerticalOffset = 2 + lineHeight / 2
-            - ((series.data[(lastElement + 1) % 365] - center) / span * lineHeight);
+            - ((startingValue - center) / span * lineHeight);
+
 
         ctx.moveTo(horizontalAxisOffset, startingVerticalOffset);
         for (let i = 0; i < 365; i++) {
@@ -168,7 +174,7 @@ const Plot = React.memo(({seriesData}) => {
             span = 1;
         }
 
-        const size = ctx.canvas.scrollWidth - horizontalAxisOffset - 5;
+        const size = ctx.canvas.scrollWidth - horizontalAxisOffset - 10;
         let i = Math.floor((event.x - verticalAxisOffset) / size * actualLength);
         if (i < 0) {
             return;
@@ -216,7 +222,7 @@ const Plot = React.memo(({seriesData}) => {
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
                 const min = Math.min(...seriesData.data.filter(obj => obj > -100000));
                 const max = Math.max(...seriesData.data);
-                const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj !== 500 && obj > -100000).length;
+                const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj > -100000).length;
 
                 if (onlyZeros !== 0) {
                     drawAxes(ctx, seriesData, actualLength, min, max);
