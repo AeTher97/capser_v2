@@ -63,10 +63,10 @@ public class PlayerComparisonCollector implements Collector<AbstractSoloGame, Pl
     }
 
     private void fillIdFieldsIfRequired(PlayerComparisonDto playerComparisonDto, AbstractSoloGame abstractSoloGame) {
-        if (playerComparisonDto.getPlayer1() == null) {
+        if (playerComparisonDto.getPlayer1Id() == null) {
             playerComparisonDto.setPlayer1Id(abstractSoloGame.getPlayer1());
         }
-        if (playerComparisonDto.getPlayer2() == null) {
+        if (playerComparisonDto.getPlayer2Id() == null) {
             playerComparisonDto.setPlayer2Id(abstractSoloGame.getPlayer2());
         }
     }
