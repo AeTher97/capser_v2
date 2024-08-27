@@ -19,10 +19,9 @@ const FetchSelectField = ({
                               className,
                               clearOnChange = false,
                               disabled,
-                              searchYourself = false
+                              searchYourself = false,
+                              omitAlso
                           }) => {
-
-
     const searchPhrase = useFieldSearch(url, resultSize || 5);
     const theme = useTheme();
     const classes = fetchSelectFieldStyles();
@@ -89,9 +88,9 @@ const FetchSelectField = ({
             timeout = setTimeout(() => {
                 searchPhrase(phrase).then((response => {
                     if (!searchYourself) {
-                        setSearchResult(response.data.content.filter(obj => obj.id !== userId))
+                        setSearchResult(response.data.content.filter(obj => obj.id !== userId && obj.id !== omitAlso))
                     } else {
-                        setSearchResult(response.data.content)
+                        setSearchResult(response.data.content.filter(obj => obj.id !== omitAlso))
                     }
                     setSearching(false);
                     if (response.data.content.length > 0) {

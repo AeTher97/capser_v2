@@ -10,7 +10,7 @@ import {
 } from "./types/authActionTypes";
 import {decodeToken} from "../../utils/TokenUtils";
 
-
+const baseURL = process.env.REACT_APP_BACKEND_URL;
 
 const axiosInstance = axios.create(
     {baseURL: baseURL}
@@ -45,5 +45,34 @@ export const loginAction = ({username, password}, onSuccessCallback = () => null
 
 export const createAccount = (request) => {
     return axiosInstance.post('/users', request);
+}
+
+export const refreshAction = (refreshToken, onSuccessCallback = () => null) => dispatch => {
+    dispatch({type: REFRESH_ATTEMPT});
+
+    let formData = new FormData();
+    formData.append('refreshToken', refreshToken);
+
+
+    return axiosInstance.post('/refresh', formData)
+        .then(({data}) => {
+            const payload = {
+                ...decodeToken(data.authToken),
+                accessToken: data.authToken,
+            };
+            console.log("refreshed")
+
+            dispatch({type: REFRESH_SUCCESS, payload: payload});
+            onSuccessCallback(data.authToken, data.refreshToken);
+            return data;
+        })
+        .catch(err => {
+            console.error('Refresh unsuccessful');
+            dispatch({type: REFRESH_FAILED, error: "Nastąpiło wylogowanie"});
+        });
+};
+
+export const logoutAction = () => dispatch => {
+    dispatch({type: LOGOUT});
 }
 

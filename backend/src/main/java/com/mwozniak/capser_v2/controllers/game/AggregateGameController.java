@@ -21,7 +21,7 @@ public class AggregateGameController {
 
     @GetMapping("/user/{userId}")
     public Page<AbstractGame> getUserGames(@PathVariable @Valid UUID userId, @RequestParam(required = false) int pageNumber) {
-        return aggregateGameService.getUserGames(userId, pageNumber);
+        return aggregateGameService.getUserGamesWithTypeAndOpponent(userId, pageNumber);
     }
 
     @GetMapping("/user/{userId}/{gameType}")
@@ -29,6 +29,11 @@ public class AggregateGameController {
                                                                  @PathVariable @Valid GameType gameType,
                                                                  @RequestParam(required = false) int pageNumber,
                                                                  @RequestParam(required = false) UUID opponentId) {
-        return aggregateGameService.getUserGames(userId, opponentId, gameType, pageNumber);
+        if (opponentId == null) {
+            return aggregateGameService.getUserGamesWithType(userId, gameType, pageNumber);
+        } else {
+            return aggregateGameService.getUserGamesWithTypeAndOpponent(userId, opponentId, gameType, pageNumber);
+        }
+
     }
 }

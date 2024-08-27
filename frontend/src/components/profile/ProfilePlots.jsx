@@ -7,6 +7,7 @@ import useQuery from "../../utils/UserQuery";
 import {useHistory} from "react-router-dom";
 import Plot from "./Plot";
 
+const emptyData = {data: [0]};
 
 const ProfilePlots = ({userId, width}) => {
     const query = useQuery();
@@ -15,19 +16,24 @@ const ProfilePlots = ({userId, width}) => {
     const {data, loaded} = useUserPlots(userId, gameType);
 
 
-
     return (
         <div>
             <ProfilePlotsSelector selected={gameType}
                                   onClick={(value) => history.push(`/players/${userId}?tab=charts&chart=${value}`)}/>
             <Typography variant={"h6"}>Results over time</Typography>
             {gameType === 'DOUBLES' &&
-            <Typography>Plots in double stats are aggregated results from all teams</Typography>}
+                <Typography>Plots in double stats are aggregated results from all teams</Typography>}
             {loaded && <>
-                <Typography>Points</Typography>
-                <Plot seriesData={data.pointSeries}/>
-                <Typography>Rebuttals</Typography>
-                <Plot seriesData={data.rebuttalsSeries}/>
+                <>
+                    <Typography>Points</Typography>
+                    {data.pointSeries && <Plot seriesData={data.pointSeries}/>}
+                    {!data.pointSeries && <Plot seriesData={emptyData}/>}
+                </>
+                <>
+                    <Typography>Rebuttals</Typography>
+                    {data.rebuttalsSeries && <Plot seriesData={data.rebuttalsSeries}/>}
+                    {!data.rebuttalsSeries && <Plot seriesData={emptyData}/>}
+                </>
             </>}
             {!loaded && <div style={{height: 1000}}/>}
 

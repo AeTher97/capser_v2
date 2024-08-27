@@ -4,6 +4,7 @@ import GameComponent from "../game/details/GameComponent";
 import GameHistoryFilters from "./GameHistoryFilters";
 import CapserPagination from "../game/list/CapserPagination";
 import {Skeleton} from "@material-ui/lab";
+import {useSelector} from "react-redux";
 
 const GameHistory = ({userId}) => {
 
@@ -24,7 +25,7 @@ const GameHistory = ({userId}) => {
     const loading = loadingAll || loadingWithOpponent;
     return (
         <div>
-            <GameHistoryFilters setOpponent={setOpponentId} selectedGameType={gameType} setGameType={setGameType}/>
+            <GameHistoryFilters profileOwner={userId} setOpponent={setOpponentId} selectedGameType={gameType} setGameType={setGameType}/>
             {loading && Array.from(Array(10)).map((index) => <Skeleton key={index} variant={"rect"} style={{
                 width: '100%', height: 62, borderRadius: 7
                 , margin: '0 0px 8px 0'

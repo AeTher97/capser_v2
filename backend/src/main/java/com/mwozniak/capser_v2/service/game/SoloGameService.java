@@ -45,7 +45,7 @@ public abstract class SoloGameService<T extends AbstractSoloGame> extends Abstra
     @Override
     public Page<T> listAcceptedGames(Pageable pageable) {
         Page<T> games = getAcceptedGames(pageable);
-        games = mapGamesWithPlayerNames(games);
+         mapGamesWithPlayerNames(games);
 
         return games;
     }
@@ -53,32 +53,29 @@ public abstract class SoloGameService<T extends AbstractSoloGame> extends Abstra
     @Override
     public Page<T> listPlayerAcceptedGames(Pageable pageable, UUID player) {
         Page<T> games = getPlayerAcceptedGames(pageable, player);
-        games = mapGamesWithPlayerNames(games);
+        mapGamesWithPlayerNames(games);
 
         return games;
     }
 
     public Page<T> listGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2) {
         Page<T> games = getGamesWithPlayerAndOpponent(pageable, player1, player2);
-        games = mapGamesWithPlayerNames(games);
+        mapGamesWithPlayerNames(games);
 
         return games;
     }
 
 
-    private Page<T> mapGamesWithPlayerNames(Page<T> games) {
-        return games.map(game -> {
+    private void mapGamesWithPlayerNames(Page<T> games) {
+        games.getContent().forEach(game -> {
             try {
                 String user1Name = userService.getUser(game.getPlayer1()).getUsername();
                 String user2Name = userService.getUser(game.getPlayer2()).getUsername();
 
                 game.setTeam1Name(user1Name);
                 game.setTeam2Name(user2Name);
-
-                return game;
             } catch (UserNotFoundException e) {
                 e.printStackTrace();
-                return game;
             }
         });
     }

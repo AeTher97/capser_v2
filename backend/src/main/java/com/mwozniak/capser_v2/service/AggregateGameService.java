@@ -34,7 +34,7 @@ public class AggregateGameService {
     }
 
 
-    public Page<AbstractGame> getUserGames(UUID userId, int pageNumber) {
+    public Page<AbstractGame> getUserGamesWithTypeAndOpponent(UUID userId, int pageNumber) {
         pageNumber += 1;
         List<SoloGame> singlesGames = singlesGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
         List<EasyCapsGame> easyCapsGames = easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(0, Integer.MAX_VALUE, Sort.by("time").descending()), userId).getContent();
@@ -51,13 +51,13 @@ public class AggregateGameService {
         Collections.reverse(aggregatedList);
 
         if (aggregatedList.size() > 10 * pageNumber) {
-            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, 10 * pageNumber - 1), PageRequest.of(0, 10), aggregatedList.size());
+            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, 10 * pageNumber), PageRequest.of(0, 10), aggregatedList.size());
         } else {
-            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, aggregatedList.size() - 1), PageRequest.of(0, 10), aggregatedList.size());
+            return new PageImpl<>(aggregatedList.subList(10 * pageNumber - 10, aggregatedList.size()), PageRequest.of(0, 10), aggregatedList.size());
         }
     }
 
-    public Page<? extends AbstractGame> getUserGames(UUID userId, UUID user2Id, GameType gameType, int page) {
+    public Page<? extends AbstractGame> getUserGamesWithTypeAndOpponent(UUID userId, UUID user2Id, GameType gameType, int page) {
 
         switch (gameType) {
             case SINGLES:
@@ -69,6 +69,23 @@ public class AggregateGameService {
             case UNRANKED:
                 return unrankedGameService.listGamesWithPlayerAndOpponent(PageRequest.of(page, 10, Sort.by("time").descending()),
                         userId, user2Id);
+            default:
+                return null;
+        }
+    }
+
+    public Page<? extends AbstractGame> getUserGamesWithType(UUID userId, GameType gameType, int page) {
+
+        switch (gameType) {
+            case SINGLES:
+                return singlesGameService.listPlayerAcceptedGames(PageRequest.of(page, 10, Sort.by("time").descending()),
+                        userId);
+            case EASY_CAPS:
+                return easyCapsGameService.listPlayerAcceptedGames(PageRequest.of(page, 10, Sort.by("time").descending()),
+                        userId);
+            case UNRANKED:
+                return unrankedGameService.listPlayerAcceptedGames(PageRequest.of(page, 10, Sort.by("time").descending()),
+                        userId);
             default:
                 return null;
         }

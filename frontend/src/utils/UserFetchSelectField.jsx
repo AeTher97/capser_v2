@@ -1,11 +1,11 @@
 import React from 'react';
 import FetchSelectField from "./FetchSelectField";
 
-const UserFetchSelectField = ({label, onChange}) => {
+const UserFetchSelectField = ({onChange, omitAlso, searchYourself}) => {
     return (
         <FetchSelectField label={"Select Opponent"} onChange={onChange}
                           url={"/users/search"}
-                          nameParameter={"username"}/>
+                          nameParameter={"username"} omitAlso={omitAlso} searchYourself={omitAlso}/>
     );
 };
 

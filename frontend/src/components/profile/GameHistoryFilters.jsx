@@ -3,7 +3,7 @@ import mainStyles from "../../misc/styles/MainStyles";
 import UserFetchSelectField from "../../utils/UserFetchSelectField";
 import {MenuItem, Select, Typography} from "@material-ui/core";
 
-const GameHistoryFilters = ({setOpponent, setGameType, selectedGameType}) => {
+const GameHistoryFilters = ({profileOwner, setOpponent, setGameType, selectedGameType}) => {
     const classes = mainStyles();
     return (
         <div className={[classes.standardBorder, classes.header].join(' ')}
@@ -14,7 +14,8 @@ const GameHistoryFilters = ({setOpponent, setGameType, selectedGameType}) => {
                 <MenuItem value={'SINGLES'}>Singles</MenuItem>
                 <MenuItem value={'UNRANKED'}>Unranked</MenuItem>
             </Select>
-            {selectedGameType !== 'ALL' && <UserFetchSelectField label={"Opponent"} onChange={(value) => {
+            {selectedGameType !== 'ALL' && <UserFetchSelectField searchYourself={true}
+                                                                 omitAlso={profileOwner} onChange={(value) => {
                 if (!value) {
                     setOpponent(null);
                     return;
