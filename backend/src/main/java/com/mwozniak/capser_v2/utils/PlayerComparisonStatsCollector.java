@@ -43,6 +43,7 @@ public class PlayerComparisonStatsCollector implements Collector<AbstractSoloGam
     @Override
     public BinaryOperator<PlayerComparisonDto.ComparisonStats> combiner() {
         return (playerComparisonDto, playerComparisonDto2) -> {
+            combinePlayerStats(playerComparisonDto, playerComparisonDto2);
             return playerComparisonDto;
         };
     }
