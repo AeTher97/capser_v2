@@ -2,6 +2,7 @@ package com.mwozniak.capser_v2.controllers.game;
 
 import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
+import com.mwozniak.capser_v2.models.dto.PlayerComparisonDto;
 import com.mwozniak.capser_v2.service.AggregateGameService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,12 @@ public class AggregateGameController {
         } else {
             return aggregateGameService.getUserGamesWithTypeAndOpponent(userId, opponentId, gameType, pageNumber);
         }
+    }
 
+    @GetMapping("/user/{userId}/{gameType}/comparison/{opponentId}")
+    public PlayerComparisonDto getUserStatsAgainstOpponent(@PathVariable @Valid UUID userId,
+                                                           @PathVariable @Valid GameType gameType,
+                                                           @PathVariable @Valid UUID opponentId) {
+        return aggregateGameService.getPlayerComparison(userId, opponentId, gameType);
     }
 }

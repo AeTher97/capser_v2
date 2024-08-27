@@ -89,6 +89,10 @@ public class EasyCapsGameService extends SoloGameService<EasyCapsGame> {
                 player1, player2);
     }
 
+    @Override
+    protected List<EasyCapsGame> getGamesWithPlayerAndOpponent(UUID player1, UUID player2) {
+        return easyCapsRepository.findEasyGamesWithPlayerAndOpponent(player1, player2);
+    }
 
     @Override
     public GameType getGameType() {

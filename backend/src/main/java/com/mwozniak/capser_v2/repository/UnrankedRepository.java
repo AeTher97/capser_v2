@@ -23,4 +23,8 @@ public interface UnrankedRepository extends JpaRepository<UnrankedGame, UUID> {
     @Query(value = "select * from unranked_game u where ((CAST(u.player1 as text) = CAST(?1 as text) OR CAST(u.player1 as text)=CAST(?2 as text)) AND (CAST(u.player2 as text) =CAST(?1 as text) OR CAST(u.player2 as text)=CAST(?2 as text))) OR ((?2 IS NULL ) AND (CAST(u.player1 as text) = CAST(?1 as text) OR CAST(u.player2 as text)=CAST(?1 as text)))",
             nativeQuery = true)
     Page<UnrankedGame> findUnrankedGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2);
+
+    @Query(value = "select * from unranked_game u where ((CAST(u.player1 as text) = CAST(?1 as text) OR CAST(u.player1 as text)=CAST(?2 as text)) AND (CAST(u.player2 as text) =CAST(?1 as text) OR CAST(u.player2 as text)=CAST(?2 as text))) OR ((?2 IS NULL ) AND (CAST(u.player1 as text) = CAST(?1 as text) OR CAST(u.player2 as text)=CAST(?1 as text)))",
+            nativeQuery = true)
+    List<UnrankedGame> findUnrankedGamesWithPlayerAndOpponent(UUID player1, UUID player2);
 }

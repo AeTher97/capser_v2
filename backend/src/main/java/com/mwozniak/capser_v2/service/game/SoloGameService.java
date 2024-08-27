@@ -13,6 +13,7 @@ import com.mwozniak.capser_v2.utils.EloRating;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public abstract class SoloGameService<T extends AbstractSoloGame> extends AbstractGameService<T> {
@@ -65,6 +66,10 @@ public abstract class SoloGameService<T extends AbstractSoloGame> extends Abstra
         return games;
     }
 
+    public List<T> listGamesWithPlayerAndOpponent(UUID player1, UUID player2) {
+        return getGamesWithPlayerAndOpponent(player1, player2);
+    }
+
 
     private void mapGamesWithPlayerNames(Page<T> games) {
         games.getContent().forEach(game -> {
@@ -82,6 +87,8 @@ public abstract class SoloGameService<T extends AbstractSoloGame> extends Abstra
 
 
     protected abstract Page<T> getGamesWithPlayerAndOpponent(Pageable pageable, UUID player1, UUID player2);
+
+    protected abstract List<T> getGamesWithPlayerAndOpponent(UUID player1, UUID player2);
 
     protected abstract Page<T> getAcceptedGames(Pageable pageable);
 

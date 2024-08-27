@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import PageHeader from "../../components/misc/PageHeader";
-import {Chip, Grid, TextField, Typography} from "@material-ui/core";
+import {Button, Chip, Grid, TextField, Typography} from "@material-ui/core";
 import mainStyles from "../../misc/styles/MainStyles";
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import SearchIcon from "@material-ui/icons/Search";
@@ -8,6 +8,7 @@ import LoadingComponent from "../../utils/LoadingComponent";
 import useSearch from "../../data/SearchData";
 import TwichZoom from "../../components/misc/TwichZoom";
 import {useHistory} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const getColor = (searchType, requiredType) => {
     if (searchType === requiredType) {
@@ -22,6 +23,7 @@ const SearchScreen = () => {
 
     const classes = mainStyles();
     const small = useXtraSmallSize();
+    const {userId} = useSelector(state => state.auth);
 
     const [searchType, setSearchType] = useState('all');
     const [searchPhrase, setSearchPhrase] = useState("");
@@ -81,9 +83,22 @@ const SearchScreen = () => {
                                     history.push(`/teams/${result.id}`)
                                 }
                             }}>
+                                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                    <div>
                                 <Typography>{result.name}</Typography>
                                 <Typography
                                     variant={"caption"}>{result.type === 'PLAYER' ? "Player" : "Team"}</Typography>
+                                    </div>
+                                    <div>
+                                        {userId && result.type === 'PLAYER' && result.id !== userId
+                                            && <Button onClick={(e) => {
+                                                e.stopPropagation();
+                                                history.push(
+                                                    `/comparison?player1=${userId}&player2=${result.id}&gameType=EASY_CAPS`)
+                                            }}>
+                                            Compare</Button>}
+                                    </div>
+                                </div>
                             </TwichZoom>
                         })}
 

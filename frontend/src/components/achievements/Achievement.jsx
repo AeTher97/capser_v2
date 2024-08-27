@@ -2,6 +2,7 @@ import React from 'react';
 import {useXtraSmallSize} from "../../utils/SizeQuery";
 import gameIconWithName from "../../misc/GameIconWithName";
 import {Typography} from "@material-ui/core";
+import GameIconWithName from "../../misc/GameIconWithName";
 
 const Achievement = ({achievement}) => {
 
@@ -63,14 +64,13 @@ const Achievement = ({achievement}) => {
         }
     }
 
-
     return (
         <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
             <img src={getSource()}/>
             <div style={{textAlign: "center"}}>{getDescription()}
             <Typography>{new Date(achievement.dateAchieved).toDateString()}</Typography>
             </div>
-            {gameIconWithName(achievement)}
+            <GameIconWithName gameType={achievement.gameType}/>
         </div>
     );
 };

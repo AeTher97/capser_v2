@@ -96,6 +96,11 @@ public class SinglesGameService extends SoloGameService<SoloGame> {
     }
 
     @Override
+    protected List<SoloGame> getGamesWithPlayerAndOpponent(UUID player1, UUID player2) {
+        return singlesRepository.findSinglesGamesWithPlayerAndOpponent(player1, player2);
+    }
+
+    @Override
     public GameType getGameType() {
         return GameType.SINGLES;
     }

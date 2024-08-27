@@ -32,3 +32,35 @@ export const usePlayersList = (type, pageNumber, pageSize = 10) => {
     return {loading, players, pageCount}
 
 }
+
+export const usePlayerComparison = (player1, player2, gameType) => {
+    const [comparison, setComparison] = useState(null)
+    const [loading, setLoading] = useState(false);
+
+    const fetchComparison = () => {
+        return axios.get(`/games/user/${player1}/${gameType}/comparison/${player2}`)
+    };
+
+
+    useEffect(() => {
+        if (!player1 || !player2 || !gameType) {
+            return
+        }
+
+        let shouldUpdate = true;
+        setLoading(true)
+        fetchComparison().then((response) => {
+            if (shouldUpdate) {
+                setLoading(false)
+                setComparison(response.data)
+            }
+        })
+
+        return () => {
+            shouldUpdate = false
+        }
+    }, [player1, player2, gameType])
+
+
+    return {loading, comparison}
+}

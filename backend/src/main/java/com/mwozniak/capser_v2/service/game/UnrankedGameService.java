@@ -89,6 +89,11 @@ public class UnrankedGameService extends SoloGameService<UnrankedGame> {
     }
 
     @Override
+    protected List<UnrankedGame> getGamesWithPlayerAndOpponent(UUID player1, UUID player2) {
+        return unrankedRepository.findUnrankedGamesWithPlayerAndOpponent(player1, player2);
+    }
+
+    @Override
     public AcceptanceRequestType getAcceptanceRequestType() {
         return AcceptanceRequestType.UNRANKED;
     }

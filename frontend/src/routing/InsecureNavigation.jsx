@@ -19,6 +19,7 @@ import HomeScreen from "../screens/public/HomeScreen";
 import SideBarMobile from "../components/bars/SideBarMobile";
 import TeamScreen from "../screens/profile/TeamProfile";
 import SearchScreen from "../screens/public/SearchScreen";
+import Comparison from "../components/teams/Comparison";
 
 const InsecureNavigation = ({open,setOpen}) => {
 
@@ -104,6 +105,11 @@ const InsecureNavigation = ({open,setOpen}) => {
 
                     <Route exact path={"/:tournamentType/tournament/:tournamentId"}>
                         <TournamentComponent/>
+                    </Route>
+
+
+                    <Route exact path={"/comparison"}>
+                        <Comparison/>
                     </Route>
 
 

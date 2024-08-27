@@ -12,7 +12,7 @@ import PlayerTooltip from "../../tooltips/PlayerTooltip";
 import Timeline from "./Timeline";
 
 
-const PlayerSplash = ({avatarHash, username, gameType, playerId}) => {
+export const PlayerSplash = ({avatarHash, username, gameType, playerId}) => {
     return (
         <div style={{margin: 40, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <ProfilePicture size={'large'} avatarHash={avatarHash}/>
