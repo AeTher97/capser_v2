@@ -6,69 +6,55 @@ import com.mwozniak.capser_v2.models.dto.PlayerComparisonDto;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-public class PlayerComparisonCollector implements Collector<AbstractSoloGame, PlayerComparisonDto, PlayerComparisonDto> {
-    @Override
-    public Supplier<PlayerComparisonDto> supplier() {
-        return PlayerComparisonDto::new;
+public class PlayerComparisonStatsCollector implements Collector<AbstractSoloGame, PlayerComparisonDto.ComparisonStats,
+        PlayerComparisonDto.ComparisonStats> {
+
+    private final UUID playerId;
+
+    public PlayerComparisonStatsCollector(UUID playerId) {
+        this.playerId = playerId;
     }
 
     @Override
-    public BiConsumer<PlayerComparisonDto, AbstractSoloGame> accumulator() {
-        return ((playerComparisonDto, abstractSoloGame) -> {
-            fillIdFieldsIfRequired(playerComparisonDto, abstractSoloGame);
+    public Supplier<PlayerComparisonDto.ComparisonStats> supplier() {
+        return PlayerComparisonDto.ComparisonStats::new;
+    }
 
-            playerComparisonDto.setGamesPlayed(playerComparisonDto.getGamesPlayed() + 1);
+    @Override
+    public BiConsumer<PlayerComparisonDto.ComparisonStats, AbstractSoloGame> accumulator() {
+        return ((comparisonStats, abstractSoloGame) -> {
 
-            accumulatePlayerStats(playerComparisonDto.getPlayer1Stats(),
-                    abstractSoloGame.getPlayer1() == playerComparisonDto.getPlayer1Id() ? abstractSoloGame.getPlayer1Stats()
-                            : abstractSoloGame.getPlayer2Stats(),
-                    abstractSoloGame.getWinner().equals(playerComparisonDto.getPlayer1Id()));
-            accumulatePlayerStats(playerComparisonDto.getPlayer2Stats(),
-                    abstractSoloGame.getPlayer2() == playerComparisonDto.getPlayer2Id() ? abstractSoloGame.getPlayer2Stats()
-                            : abstractSoloGame.getPlayer1Stats(),
-                    abstractSoloGame.getWinner().equals(playerComparisonDto.getPlayer2Id()));
+
+            accumulatePlayerStats(comparisonStats,
+                    abstractSoloGame.getPlayer1().equals(playerId)
+                            ? abstractSoloGame.getPlayer1Stats() : abstractSoloGame.getPlayer2Stats(),
+                    abstractSoloGame.getWinner().equals(playerId));
+
         });
     }
 
     @Override
-    public BinaryOperator<PlayerComparisonDto> combiner() {
+    public BinaryOperator<PlayerComparisonDto.ComparisonStats> combiner() {
         return (playerComparisonDto, playerComparisonDto2) -> {
-            playerComparisonDto.setGamesPlayed(playerComparisonDto.getGamesPlayed()
-                    + playerComparisonDto2.getGamesPlayed());
-            combinePlayerStats(playerComparisonDto.getPlayer1Stats(),
-                    playerComparisonDto.getPlayer1Id().equals(playerComparisonDto2.getPlayer1Id())
-                            ? playerComparisonDto2.getPlayer1Stats() : playerComparisonDto.getPlayer2Stats());
-
-            combinePlayerStats(playerComparisonDto.getPlayer2Stats(),
-                    playerComparisonDto.getPlayer2Id().equals(playerComparisonDto2.getPlayer2Id())
-                    ? playerComparisonDto2.getPlayer2Stats() : playerComparisonDto.getPlayer1Stats());
             return playerComparisonDto;
         };
     }
 
     @Override
-    public Function<PlayerComparisonDto, PlayerComparisonDto> finisher() {
+    public Function<PlayerComparisonDto.ComparisonStats, PlayerComparisonDto.ComparisonStats> finisher() {
         return a -> a;
     }
 
     @Override
     public Set<Characteristics> characteristics() {
         return new HashSet<>();
-    }
-
-    private void fillIdFieldsIfRequired(PlayerComparisonDto playerComparisonDto, AbstractSoloGame abstractSoloGame) {
-        if (playerComparisonDto.getPlayer1Id() == null) {
-            playerComparisonDto.setPlayer1Id(abstractSoloGame.getPlayer1());
-        }
-        if (playerComparisonDto.getPlayer2Id() == null) {
-            playerComparisonDto.setPlayer2Id(abstractSoloGame.getPlayer2());
-        }
     }
 
     private void accumulatePlayerStats(PlayerComparisonDto.ComparisonStats comparisonStats, GamePlayerStats stats, boolean won) {

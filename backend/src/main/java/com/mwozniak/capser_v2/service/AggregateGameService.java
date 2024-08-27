@@ -1,7 +1,6 @@
 package com.mwozniak.capser_v2.service;
 
 import com.mwozniak.capser_v2.enums.GameType;
-import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSoloGame;
 import com.mwozniak.capser_v2.models.database.game.single.EasyCapsGame;
@@ -12,7 +11,7 @@ import com.mwozniak.capser_v2.models.responses.UserMinimized;
 import com.mwozniak.capser_v2.service.game.EasyCapsGameService;
 import com.mwozniak.capser_v2.service.game.SinglesGameService;
 import com.mwozniak.capser_v2.service.game.UnrankedGameService;
-import com.mwozniak.capser_v2.utils.PlayerComparisonCollector;
+import com.mwozniak.capser_v2.utils.PlayerComparisonStatsCollector;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -100,9 +99,12 @@ public class AggregateGameService {
                 games = unrankedGameService.listGamesWithPlayerAndOpponent(userId, user2Id);
         }
 
-        PlayerComparisonDto playerComparisonDto =  games.stream().collect(new PlayerComparisonCollector());
-        playerComparisonDto.setPlayer1(UserMinimized.fromUser(userService.getUser(playerComparisonDto.getPlayer1Id())));
-        playerComparisonDto.setPlayer2(UserMinimized.fromUser(userService.getUser(playerComparisonDto.getPlayer2Id())));
+        PlayerComparisonDto playerComparisonDto = new PlayerComparisonDto();
+        playerComparisonDto.setGamesPlayed(games.size());
+        playerComparisonDto.setPlayer1(UserMinimized.fromUser(userService.getUser(userId)));
+        playerComparisonDto.setPlayer2(UserMinimized.fromUser(userService.getUser(user2Id)));
+        playerComparisonDto.setPlayer1Stats(games.stream().collect(new PlayerComparisonStatsCollector(userId)));
+        playerComparisonDto.setPlayer2Stats(games.stream().collect(new PlayerComparisonStatsCollector(user2Id)));
         return playerComparisonDto;
     }
 

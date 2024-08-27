@@ -14,8 +14,6 @@ import java.util.UUID;
 @Builder
 public class PlayerComparisonDto {
 
-    private UUID player1Id;
-    private UUID player2Id;
     private UserMinimized player1;
     private UserMinimized player2;
     private int gamesPlayed;
@@ -24,7 +22,7 @@ public class PlayerComparisonDto {
 
 
     @Data
-    public class ComparisonStats {
+    public static class ComparisonStats {
         private int gamesWon;
         private int gamesLost;
         private int pointsMade;
