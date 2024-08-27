@@ -11,7 +11,7 @@ const Plot = React.memo(({seriesData}) => {
     const verticalAxisOffset = 30;
     const horizontalAxisOffset = 30;
 
-    if(seriesData == null){
+    if (seriesData == null) {
         return;
     }
 
@@ -60,25 +60,28 @@ const Plot = React.memo(({seriesData}) => {
 
 
         const center = (max + min) / 2;
-        const span = (max - min);
+        let span = (max - min);
+        if (span === 0) {
+            span = 1;
+        }
         const horizontalStepSize = (width - 5 - horizontalAxisOffset) / actualLength;
-        const lineHeight = height - verticalAxisOffset- 2;
+        const lineHeight = height - verticalAxisOffset - 2;
 
         ctx.strokeStyle = 'rgb(255,0,0)'
         ctx.lineWidth = 2.0;
         ctx.beginPath();
 
         const startingVerticalOffset = 2 + lineHeight / 2
-            - ((series.data[(lastElement + 1 ) % 365] - center) / span * lineHeight);
+            - ((series.data[(lastElement + 1) % 365] - center) / span * lineHeight);
 
         ctx.moveTo(horizontalAxisOffset, startingVerticalOffset);
         for (let i = 0; i < 365; i++) {
-            const seriesValue = series.data[(lastElement + i + 1 ) % 365];
+            const seriesValue = series.data[(lastElement + i + 1) % 365];
             if (seriesValue === -100000) {
                 continue;
             }
             ctx.lineTo(horizontalAxisOffset + horizontalStepSize * i,
-                2+ (lineHeight / 2 - ((seriesValue - center) / span)
+                2 + (lineHeight / 2 - ((seriesValue - center) / span)
                     * lineHeight));
         }
 
@@ -91,7 +94,10 @@ const Plot = React.memo(({seriesData}) => {
         const height = ctx.canvas.scrollHeight;
 
 
-        const span = (max - min);
+        let span = (max - min);
+        if (span === 0) {
+            span = 1;
+        }
 
         const verticalAxisPoints = Math.floor((height - horizontalAxisOffset) / 40);
 
@@ -157,7 +163,10 @@ const Plot = React.memo(({seriesData}) => {
             step = 100;
         }
         const center = (max + min) / 2;
-        const span = (max - min);
+        let span = (max - min);
+        if (span === 0) {
+            span = 1;
+        }
 
         const size = ctx.canvas.scrollWidth - horizontalAxisOffset - 5;
         let i = Math.floor((event.x - verticalAxisOffset) / size * actualLength);
@@ -170,7 +179,7 @@ const Plot = React.memo(({seriesData}) => {
 
 
         const padding = 10;
-        let height = 2+ (ctx.canvas.scrollHeight - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.scrollHeight - horizontalAxisOffset)) * step / 100;
+        let height = 2 + (ctx.canvas.scrollHeight - horizontalAxisOffset) / 2 - ((entry - center) / span * (ctx.canvas.scrollHeight - horizontalAxisOffset)) * step / 100;
         const circleHeight = height;
         height += 10;
         if (ctx.canvas.scrollHeight - horizontalAxisOffset - height < 30) {
