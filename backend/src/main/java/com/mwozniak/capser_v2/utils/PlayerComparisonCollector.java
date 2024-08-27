@@ -4,6 +4,7 @@ import com.mwozniak.capser_v2.models.database.game.GamePlayerStats;
 import com.mwozniak.capser_v2.models.database.game.single.AbstractSoloGame;
 import com.mwozniak.capser_v2.models.dto.PlayerComparisonDto;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -53,7 +54,7 @@ public class PlayerComparisonCollector implements Collector<AbstractSoloGame, Pl
 
     @Override
     public Set<Characteristics> characteristics() {
-        return Set.of();
+        return new HashSet<>();
     }
 
     private void fillIdFieldsIfRequired(PlayerComparisonDto playerComparisonDto, AbstractSoloGame abstractSoloGame) {
