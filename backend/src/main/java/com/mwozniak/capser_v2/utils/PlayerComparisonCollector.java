@@ -41,8 +41,13 @@ public class PlayerComparisonCollector implements Collector<AbstractSoloGame, Pl
         return (playerComparisonDto, playerComparisonDto2) -> {
             playerComparisonDto.setGamesPlayed(playerComparisonDto.getGamesPlayed()
                     + playerComparisonDto2.getGamesPlayed());
-            combinePlayerStats(playerComparisonDto.getPlayer1Stats(), playerComparisonDto2.getPlayer1Stats());
-            combinePlayerStats(playerComparisonDto.getPlayer2Stats(), playerComparisonDto2.getPlayer2Stats());
+            combinePlayerStats(playerComparisonDto.getPlayer1Stats(),
+                    playerComparisonDto.getPlayer1Id().equals(playerComparisonDto2.getPlayer1Id())
+                            ? playerComparisonDto2.getPlayer1Stats() : playerComparisonDto.getPlayer2Stats());
+
+            combinePlayerStats(playerComparisonDto.getPlayer2Stats(),
+                    playerComparisonDto.getPlayer2Id().equals(playerComparisonDto2.getPlayer2Id())
+                    ? playerComparisonDto2.getPlayer2Stats() : playerComparisonDto.getPlayer1Stats());
             return playerComparisonDto;
         };
     }

@@ -34,12 +34,12 @@ const Comparison = () => {
                                 <PlayerSplash avatarHash={comparison.player1.avatarHash}
                                               username={comparison.player1.username}
                                               gameType={gameType}
-                                              playerId={player1}/>
+                                              playerId={comparison.player1.id}/>
                                 <Typography variant={"h3"}>VS</Typography>
                                 <PlayerSplash avatarHash={comparison.player2.avatarHash}
                                               username={comparison.player2.username}
                                               gameType={gameType}
-                                              playerId={player2}/>
+                                              playerId={comparison.player2.id}/>
                             </div>
                             <div className={classes.standardBorder}>
                                 <Typography variant={"h6"} color={"primary"}>Player comparison</Typography>
