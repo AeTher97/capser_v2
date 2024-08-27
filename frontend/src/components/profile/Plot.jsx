@@ -222,7 +222,7 @@ const Plot = React.memo(({seriesData}) => {
                 const actualLength = seriesData.data.filter(obj => obj > -100000).length;
                 const min = Math.min(...seriesData.data.filter(obj => obj > -100000));
                 const max = Math.max(...seriesData.data);
-                const onlyZeros = seriesData.data.filter(obj => obj !== 0 && obj > -100000).length;
+                const onlyZeros = seriesData.data.filter(obj => obj > -100000).length;
 
                 if (onlyZeros !== 0) {
                     drawAxes(ctx, seriesData, actualLength, min, max);
