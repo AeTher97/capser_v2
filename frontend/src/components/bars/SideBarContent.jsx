@@ -31,6 +31,11 @@ const SideBarContent = ({state, go, small}) => {
 
     const icons = [
         {
+            tooltip: "Live Game",
+            link: "/secure/liveGame",
+            icon: <HomeOutlinedIcon/>
+        },
+        {
             tooltip: "Homepage",
             link: "/",
             icon: <HomeOutlinedIcon/>

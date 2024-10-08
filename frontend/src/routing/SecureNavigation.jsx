@@ -9,6 +9,7 @@ import MobileTopBar from "../components/bars/TopBar";
 import {useTheme} from "@material-ui/core";
 import ProfileScreen from "../screens/profile/ProfileScreen";
 import SideBarMobile from "../components/bars/SideBarMobile";
+import LiveGameScreen from "../screens/games/solo/LiveGameScreen";
 
 const SecureNavigation = ({open,setOpen}) => {
 
@@ -23,18 +24,23 @@ const SecureNavigation = ({open,setOpen}) => {
             <div style={{paddingLeft: small ? 0 : 44, backgroundColor: theme.palette.background.default}}>
 
                 <Switch>
+
+                    <Route exact path={"/secure/liveGame"}>
+                        <div>
+                            <LiveGameScreen/>
+                        </div>
+                    </Route>
+
                     <Route exact path={"/secure/addSinglesGame"}>
                         <div>
                             <AddSinglesGameComponent/>
                         </div>
-
                     </Route>
 
                     <Route exact path={"/secure/acceptance"}>
                         <div>
                             <AcceptanceScreen/>
                         </div>
-
                     </Route>
 
                     <Route exact path={"/secure/teams"}>
