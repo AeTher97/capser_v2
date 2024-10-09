@@ -20,6 +20,7 @@ import SideBarMobile from "../components/bars/SideBarMobile";
 import TeamScreen from "../screens/profile/TeamProfile";
 import SearchScreen from "../screens/public/SearchScreen";
 import Comparison from "../components/teams/Comparison";
+import LiveGameScreen from "../screens/games/solo/LiveGameScreen";
 
 const InsecureNavigation = ({open,setOpen}) => {
 
@@ -88,7 +89,11 @@ const InsecureNavigation = ({open,setOpen}) => {
                     <Route exact path={"/doubles/:gameId"}>
                         <DoublesGame/>
                     </Route>
-
+                    <Route exact path={"/liveGame"}>
+                        <div style={{display: "flex", alignItems: "stretch", flexDirection: "column", height: "100%"}}>
+                            <LiveGameScreen/>
+                        </div>
+                    </Route>
 
                     <Route exact path={"/10commandments"}>
                         <TenCommandmentsScreen/>
