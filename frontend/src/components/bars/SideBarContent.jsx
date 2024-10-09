@@ -17,6 +17,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useHasRole} from "../../utils/SecurityUtils";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 
 
 const SideBarContent = ({state, go, small}) => {
@@ -33,7 +34,8 @@ const SideBarContent = ({state, go, small}) => {
         {
             tooltip: "Live Game",
             link: "/secure/liveGame",
-            icon: <HomeOutlinedIcon/>
+            icon: <AddOutlinedIcon/>,
+            mobileOnly: true
         },
         {
             tooltip: "Homepage",
@@ -123,9 +125,7 @@ const SideBarContent = ({state, go, small}) => {
             {icons.filter(icon => {
                 if (icon.role) {
                     return hasRole(icon.role)
-                } else {
-                    return true
-                }
+                } else return !(icon.mobileOnly && !small);
             }).map(icon => {
                 return (
                     <div key={icon.link}
