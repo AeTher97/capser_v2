@@ -33,7 +33,7 @@ const getOverrides = (divider, baseTheme, type) => {
                 padding: '2px 15px 2px 15px',
                 borderRadius: 7,
                 backgroundColor: baseTheme.palette.primary.main,
-                color: baseTheme.palette.text.disabled
+                color: baseTheme.palette.text.primary
             },
             textPrimary: {
                 color: baseTheme.palette.text.primary

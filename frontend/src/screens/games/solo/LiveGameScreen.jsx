@@ -62,14 +62,18 @@ const LiveGameScreen = () => {
                 e.preventDefault();
             }
         };
-        // Add event listener to the document
-        document.addEventListener("touchmove", disablePullToRefresh, {passive: false});
+        if(stage !== 5) {
+            // Add event listener to the document
+            document.addEventListener("touchmove", disablePullToRefresh, {passive: false});
 
-        // Clean up the event listener on unmount
-        return () => {
+            // Clean up the event listener on unmount
+            return () => {
+                document.removeEventListener("touchmove", disablePullToRefresh);
+            };
+        } else {
             document.removeEventListener("touchmove", disablePullToRefresh);
-        };
-    }, []);
+        }
+    }, [stage]);
 
     const addGameEvents = (user, ...types) => {
         const newGameEvents = [...gameEvents];
