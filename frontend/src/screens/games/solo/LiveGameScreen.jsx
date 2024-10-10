@@ -15,6 +15,8 @@ export const BEER_SPILLED = "BEER_SPILLED"
 export const OUT_OF_TURN = "OUT_OF_TURN"
 export const ROCK_PAPER_SCISSORS = "ROCK_PAPER_SCISSORS"
 
+const SUMMARY_PAGE = 6;
+
 const LiveGameScreen = () => {
 
     const {userId} = useSelector(state => state.auth);
@@ -26,7 +28,6 @@ const LiveGameScreen = () => {
     const [gameEvents, setGameEvents] = useState([{
         gameEvent: START,
         time: new Date()
-
     }]);
 
     const [gameState, setGameState] = useState({
@@ -62,7 +63,7 @@ const LiveGameScreen = () => {
                 e.preventDefault();
             }
         };
-        if(stage !== 5) {
+        if (stage !== SUMMARY_PAGE) {
             // Add event listener to the document
             document.addEventListener("touchmove", disablePullToRefresh, {passive: false});
 
@@ -71,7 +72,9 @@ const LiveGameScreen = () => {
                 document.removeEventListener("touchmove", disablePullToRefresh);
             };
         } else {
-            document.removeEventListener("touchmove", disablePullToRefresh);
+            setTimeout(() => {
+                document.removeEventListener("touchmove", disablePullToRefresh);
+            }, 300);
         }
     }, [stage]);
 
@@ -132,7 +135,7 @@ const LiveGameScreen = () => {
         })
         if (pointsCount === 11) {
             addGameEvents(null, END)
-            setStage(5);
+            setStage(SUMMARY_PAGE);
         }
     }
 
@@ -145,7 +148,7 @@ const LiveGameScreen = () => {
         })
         if (pointsCount === 11) {
             addGameEvents(null, END)
-            setStage(5);
+            setStage(SUMMARY_PAGE);
         }
     }
 
@@ -171,7 +174,7 @@ const LiveGameScreen = () => {
         <div style={{
             height: "100%",
             display: "flex",
-            width: "600vw",
+            width: "700vw",
             maxHeight: "100%",
         }}>
             <div style={{
@@ -252,6 +255,65 @@ const LiveGameScreen = () => {
                     <img src={"/glhf.png"} style={{width: "60vw"}}/>
                     <Typography>Good luck and have fun in your games!
                     </Typography>
+                </div>
+                {!localStorage.getItem("tutorialPassed") && <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignSelf: "stretch",
+                    marginTop: "auto"
+                }}>
+                    <FillingDots count={3} filledCount={3}/>
+                    <div onClick={() => {
+                        setStage(3);
+                        localStorage.setItem("tutorialPassed", "true")
+                    }}>
+                        <Typography color={"primary"}>
+                            Next
+                        </Typography>
+                    </div>
+                </div>}
+            </div>
+            <div style={{
+                width: "100vw",
+                transition: "0.3s ease-in-out",
+                transform: `translate(${stage * -100}%,0)`,
+                padding: "20px 20px 20px 20px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                textAlign: "center"
+            }}>
+                <div style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 50,
+                    backgroundColor: "red",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column"
+                }} onClick={() => {
+                    addGameEvents(userId, ROCK_PAPER_SCISSORS)
+                    setStage(4)
+                }}>
+                    <Typography variant={"h4"}>You</Typography>
+                </div>
+                <Typography variant={"h4"}>
+                    Who won rock paper scissors?
+                </Typography>
+                <div style={{
+                    width: 200,
+                    height: 200,
+                    borderRadius: 50,
+                    backgroundColor: "red",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column"
+                }} onClick={() => {
+                    addGameEvents(null, ROCK_PAPER_SCISSORS)
+                    setStage(4)
+                }}>
+                    <Typography variant={"h4"}>Opponent</Typography>
                 </div>
                 {!localStorage.getItem("tutorialPassed") && <div style={{
                     display: "flex",

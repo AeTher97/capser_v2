@@ -91,7 +91,7 @@ const AddSinglesGameComponent = ({
                     event.userId = opponent.id;
                 }
                 return event;
-            }) :[]
+            }) : []
         }
         if (handleSaveExternal) {
             handleSaveExternal(request);
