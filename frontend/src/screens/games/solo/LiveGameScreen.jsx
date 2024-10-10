@@ -1,11 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import LiveGameCards from "./LiveGameCards";
+import AddSinglesGameComponent from "../../../components/game/AddSinglesGameComponent";
+import {useSelector} from "react-redux";
 
+export const SINK = "SINK"
+export const REBUTTAL = "REBUTTAL"
+export const POINT = "POINT"
+export const END = "END"
+export const START = "START"
+export const BEER_DOWNED = "BEER_DOWNED"
+export const BEER_SPILLED = "BEER_SPILLED"
+export const OUT_OF_TURN = "OUT_OF_TURN"
+export const ROCK_PAPER_SCISSORS = "ROCK_PAPER_SCISSORS"
 
 const LiveGameScreen = () => {
 
+    const {userId} = useSelector(state => state.auth);
+
     const [rebuttalsActive, setRebuttalsActive] = useState(false);
     const [player1Sunk, setPlayer1Sunk] = useState(false);
+    const [stage, setStage] = useState(1);
+    const [gameEvents, setGameEvents] = useState([{
+        gameEvent: START,
+        time: new Date()
+
+    }]);
 
     const [gameState, setGameState] = useState({
             player1: {
@@ -38,6 +57,17 @@ const LiveGameScreen = () => {
         };
     }, []);
 
+    const addGameEvents = (user, ...types) => {
+        const newGameEvents = [...gameEvents];
+        types.forEach(type => {
+            newGameEvents.push({
+                gameEvent: type,
+                time: new Date(),
+                userId: user ? userId : null
+            })
+        })
+        setGameEvents(newGameEvents)
+    }
 
     const switchToRebuttals = () => {
         setRebuttalsActive(true);
@@ -74,6 +104,9 @@ const LiveGameScreen = () => {
             newState.player1.points = pointsCount;
             return newState;
         })
+        if (pointsCount === 11) {
+            setStage(3);
+        }
     }
 
     const pointForPlayer2 = () => {
@@ -83,6 +116,9 @@ const LiveGameScreen = () => {
             newState.player2.points = pointsCount;
             return newState;
         })
+        if (pointsCount === 11) {
+            setStage(3);
+        }
     }
 
     const rebuttalForPlayer1 = () => {
@@ -103,17 +139,36 @@ const LiveGameScreen = () => {
         })
     }
 
+    useEffect(() => {
+        setTimeout(() => {
+            // setStage(1);
+
+        }, 500)
+    }, []);
 
     return (
         <div style={{
             height: "100%",
             display: "flex",
-            width: "200vw",
+            width: "400vw",
         }}>
             <div style={{
                 width: "100vw",
                 transition: "0.3s ease-in-out",
-                transform: `translate(${rebuttalsActive ? -100 : 0}%,0)`,
+                transform: `translate(${stage * -100}%,0)`,
+                padding: "20px 20px 20px 20px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+
+            }}>
+                <img src={"/glhf.png"} style={{width: "60vw"}}/>
+            </div>
+            <div style={{
+                width: "100vw",
+                transition: "0.3s ease-in-out",
+                transform: `translate(${stage * -100 + (rebuttalsActive ? -100 : 0)}%,0)`,
                 padding: "20px 20px 20px 20px",
                 display: "flex",
                 alignItems: "stretch"
@@ -124,6 +179,7 @@ const LiveGameScreen = () => {
                                rebuttals={false}
                                sinkForPlayer1={sinkForPlayer1}
                                sinkForPlayer2={sinkForPlayer2}
+                               addGameEvents={addGameEvents}
                 />
             </div>
             <div style={{
@@ -131,7 +187,7 @@ const LiveGameScreen = () => {
                 transition: "0.3s ease-in-out",
                 position: "relative",
                 padding: "20px 20px 20px 20px",
-                transform: `translate(${rebuttalsActive ? -100 : 0}%,0)`,
+                transform: `translate(${stage * -100 + (rebuttalsActive ? -100 : 0)}%,0)`,
                 display: "flex",
                 alignItems: "stretch"
             }}>
@@ -146,7 +202,25 @@ const LiveGameScreen = () => {
                     rebuttalForPlayer1={rebuttalForPlayer1}
                     rebuttalForPlayer2={rebuttalForPlayer2}
                     player1Sunk={player1Sunk}
+                    addGameEvents={addGameEvents}
                 />
+            </div>
+            <div style={{
+                width: "100vw",
+                transition: "0.3s ease-in-out",
+                transform: `translate(${stage * -100}%,0)`,
+                display: "flex",
+                alignItems: "stretch",
+                flexDirection: "column",
+                padding: "20px 20px 20px 20px",
+                justifyContent: "center",
+
+            }}>
+                <AddSinglesGameComponent type={"EASY_CAPS"} disableEditing={true}
+                                         player1Points={gameState.player1.points}
+                                         player1Sinks={gameState.player1.sinks}
+                                         player2Points={gameState.player2.points}
+                                         player2Sinks={gameState.player2.sinks} gameEventsList={gameEvents}/>
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Divider, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -11,7 +11,9 @@ import UserFetchSelectField from "../../utils/UserFetchSelectField";
 
 const AddSinglesGameComponent = ({
                                      type, choosePlayers = true, displayGameDataSection = true, showBorder = true,
-                                     handleSaveExternal, overridePlayer1Name, overridePlayer2Name, onCancel
+                                     handleSaveExternal, overridePlayer1Name, overridePlayer2Name, onCancel,
+                                     player1Sinks, player2Sinks, player1Points, player2Points, gameEventsList,
+                                     disableEditing = false
                                  }) => {
 
     const classes = mainStyles()
@@ -24,12 +26,28 @@ const AddSinglesGameComponent = ({
     const history = useHistory();
 
 
-    const [playerScore, setPlayerScore] = useState(0);
-    const [playerSinks, setPlayerSinks] = useState(0);
-    const [opponentScore, setOpponentScore] = useState(0);
+    const [playerScore, setPlayerScore] = useState(player1Points ? player1Points : 0);
+    const [playerSinks, setPlayerSinks] = useState(player1Sinks ? player1Sinks : 0);
 
-    const [opponentSinks, setOpponentSinks] = useState(0);
+    const [opponentScore, setOpponentScore] = useState(player2Points ? player2Points : 0);
+    const [opponentSinks, setOpponentSinks] = useState(player2Sinks ? player2Sinks : 0);
+
     const [opponent, setOpponent] = useState(null);
+
+    useEffect(() => {
+        if(player1Points){
+            setPlayerScore(player1Points);
+        }
+        if(player2Points){
+            setOpponentScore(player2Points);
+        }
+        if(player1Sinks){
+            setPlayerSinks(player1Sinks);
+        }
+        if(player2Sinks){
+            setOpponentSinks(player2Sinks);
+        }
+    }, [player1Points, player2Points, player1Sinks, player2Sinks, gameEventsList]);
 
 
     const handleChange = (e) => {
@@ -68,13 +86,19 @@ const AddSinglesGameComponent = ({
             gameMode: gameMode,
             player1Stats: player1Stats,
             player2Stats: player2Stats,
-            gameEventList: []
+            gameEventList: gameEventsList ? gameEventsList.map(event => {
+                if(event.userId === null){
+                    event.userId = opponent.id;
+                }
+                return event;
+            }) :[]
         }
         if (handleSaveExternal) {
             handleSaveExternal(request);
             return;
         }
 
+        console.log(request)
         postGame(request).then(() => {
             dispatch(showSuccess("Game posted"))
             history.push('/')
@@ -108,7 +132,7 @@ const AddSinglesGameComponent = ({
                         <Divider/>
                         <div className={classes.margin}>
                             <Select style={{minWidth: 200}} value={gameMode}
-                                    onChange={handleChange}>
+                                    onChange={handleChange} disabled={disableEditing}>
                                 <MenuItem value={"SUDDEN_DEATH"}>Sudden Death</MenuItem>
                                 <MenuItem value={"OVERTIME"}>Overtime</MenuItem>
                             </Select>
@@ -123,7 +147,7 @@ const AddSinglesGameComponent = ({
                             <Typography>Points</Typography>
                             <Select style={{minWidth: 200}} value={playerScore} onChange={(e) => {
                                 setPlayerScore(e.target.value)
-                            }}>
+                            }}disabled={disableEditing}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                             </Select>
                         </div>
@@ -132,7 +156,7 @@ const AddSinglesGameComponent = ({
                             <Typography>Sinks</Typography>
                             <Select style={{minWidth: 200}} value={playerSinks} onChange={(e) => {
                                 setPlayerSinks(e.target.value)
-                            }}>
+                            }} disabled={disableEditing}>
                                 {getScoreOptions(21)}
                             </Select>
                         </div>
@@ -150,7 +174,7 @@ const AddSinglesGameComponent = ({
 
                             <Select value={opponentScore} onChange={(e) => {
                                 setOpponentScore(e.target.value)
-                            }} className={classes.width200}>
+                            }} className={classes.width200} disabled={disableEditing}>
                                 {getScoreOptions(gameMode === 'SUDDEN_DEATH' ? 11 : 21)}
                             </Select>
                         </div>
@@ -159,8 +183,8 @@ const AddSinglesGameComponent = ({
                             <Select className={classes.width200} value={opponentSinks}
                                     onChange={(e) => {
                                         setOpponentSinks(e.target.value)
-                                    }}>
-                                {getScoreOptions(21)}
+                                    }} disabled={disableEditing}>
+                                {getScoreOptions(27)}
                             </Select>
                         </div>
                     </div>
@@ -169,7 +193,7 @@ const AddSinglesGameComponent = ({
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: 0}}>
                     <Button onClick={handleSave}>Add a game</Button>
                     {onCancel &&
-                    <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
+                        <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
                 </div>
                 <div style={{height: 50}}/>
             </div>

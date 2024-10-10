@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Typography} from "@material-ui/core";
+import {POINT, REBUTTAL, SINK} from "./LiveGameScreen";
 
 const BREAK_ROTATION = 75;
 const ZERO_ROTATION = 0;
@@ -17,7 +18,8 @@ const LiveGameCards = ({
                            pointForPlayer2,
                            rebuttalForPlayer1,
                            rebuttalForPlayer2,
-                           player1Sunk
+                           player1Sunk,
+                           addGameEvents
                        }) => {
     const [everClicked, setEverClicked] = useState(false);
     const [rotationTopCard, setRotationTopCard] = useState(ZERO_ROTATION);
@@ -69,29 +71,42 @@ const LiveGameCards = ({
     }
 
     const addRebuttal = (top) => {
-        console.log("tutaj")
         if (top) {
             if (player1Sunk) {
                 pointForPlayer1();
+                addGameEvents(true, POINT);
             } else {
-                console.log("lolz")
                 rebuttalForPlayer1();
+                addGameEvents(true, SINK, REBUTTAL);
             }
         } else {
             if (!player1Sunk) {
                 pointForPlayer2();
+                addGameEvents(false, POINT);
             } else {
-                console.log("XD")
                 rebuttalForPlayer2();
+                addGameEvents(false, SINK, REBUTTAL);
             }
         }
     }
 
     const addSink = (top) => {
-        if (top) {
-            sinkForPlayer1();
+        if (rebuttals) {
+            if (top) {
+                if (!player1Sunk) {
+                    sinkForPlayer1()
+                }
+            } else {
+                if (player1Sunk) {
+                    sinkForPlayer2();
+                }
+            }
         } else {
-            sinkForPlayer2();
+            if (top) {
+                sinkForPlayer1();
+            } else {
+                sinkForPlayer2();
+            }
         }
     }
 
@@ -120,6 +135,7 @@ const LiveGameCards = ({
                         addRebuttal(top);
                     } else {
                         addSink(top);
+                        addGameEvents(top, SINK)
                     }
                     setRotation(top, 0)
                     animate(!top, 0, 90, () => {
