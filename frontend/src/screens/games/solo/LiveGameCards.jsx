@@ -5,8 +5,8 @@ import BoldTyphography from "../../../components/misc/BoldTyphography";
 
 const BREAK_ROTATION = 75;
 const ZERO_ROTATION = 0;
-const UP_SPEED = 2;
-const DOWN_SPEED = 3;
+const UP_SPEED =  3.5;
+const DOWN_SPEED = 3.5;
 const DRAG_MULTIPLIER = 1.5;
 
 const LiveGameCards = ({
@@ -29,8 +29,12 @@ const LiveGameCards = ({
 
     const [disableInteractionTopCard, setDisableInteractionTopCard] = useState(false);
     const [disableInteractionBottomCard, setDisableInteractionBottomCard] = useState(false);
+
     const [animatingDownTopCard, setAnimatingDownTopCard] = useState(false);
     const [animatingDownBottomCard, setAnimatingDownBottomCard] = useState(false);
+
+    const [rebuttedTopCard, setRebuttedTopCard] = useState(false);
+    const [rebuttedBottomCard, setRebuttedBottomCard] = useState(false);
 
     const [timeoutObjectTopCard, setTimeoutObjectTopCard] = useState(null);
     const [timeoutObjectBottomCard, setTimeoutObjectBottomCard] = useState(null);
@@ -79,6 +83,14 @@ const LiveGameCards = ({
             setAnimatingDownTopCard(animating);
         } else {
             setAnimatingDownBottomCard(animating);
+        }
+    }
+
+    const setRebutted = (top, animating) => {
+        if (top) {
+            setRebuttedTopCard(animating);
+        } else {
+            setRebuttedBottomCard(animating);
         }
     }
 
@@ -151,12 +163,16 @@ const LiveGameCards = ({
                     if (rebuttals) {
                         addSink(top)
                         pointScored = addRebuttal(top);
+                        if (!pointScored) {
+                            setRebutted(!top, true);
+                        }
                     } else {
                         addSink(top);
                         addGameEvents(top, SINK)
                     }
                     setRotation(top, 0)
                     animate(!top, 0, 90, () => {
+                        setRebutted(!top, false);
                         if (!rebuttals) {
                             switchScreen();
                         } else if (rebuttals && ((player1Sunk && top) || (!player1Sunk && !top))) {
@@ -185,6 +201,8 @@ const LiveGameCards = ({
         frame(top, targetRotation, currentRotation ? currentRotation : (top ? rotationTopCard : rotationBottomCard), callback)
     }
 
+    console.log(rebuttedTopCard, rebuttedBottomCard)
+
     return (
         <div style={{
             display: "flex", flexDirection: "column", alignItems: "stretch",
@@ -198,7 +216,8 @@ const LiveGameCards = ({
                     width: ref.current.clientWidth
                 }}>
                     <LiveCard disabled={true} stats={gameState.player1} green={animatingDownTopCard && rebuttals}
-                              rebuttals={rebuttals} player1Sunk={player1Sunk} animating={animatingDownTopCard}/>
+                              rebuttals={rebuttals} player1Sunk={player1Sunk} animating={animatingDownTopCard}
+                              rebutted={rebuttedTopCard}/>
                 </div>}
                 <div ref={ref} style={{flex: 1, display: "flex"}}>
                     <LiveCard rotation={rotationTopCard}
@@ -221,7 +240,7 @@ const LiveGameCards = ({
                     <LiveCard bottom={true} disabled={true} stats={gameState.player2}
                               green={animatingDownBottomCard && rebuttals} rebuttals={rebuttals}
                               player1Sunk={player1Sunk}
-                              animating={animatingDownBottomCard}/>
+                              animating={animatingDownBottomCard} rebutted={rebuttedBottomCard}/>
                 </div>}
                 <div style={{flex: 1, display: "flex"}}>
                     <LiveCard bottom={true}
@@ -250,7 +269,8 @@ const LiveCard = ({
                       rebuttals,
                       player1Sunk,
                       setEverClicked,
-                      animating
+                      animating,
+                      rebutted
                   }) => {
 
     const [clicked, setClicked] = useState(false);
@@ -335,12 +355,12 @@ const LiveCard = ({
                 <Typography variant={"h4"}>{bottom ? "Opponent" : "You"}</Typography>
                 <Typography variant={"body1"}>Rebuttals</Typography>
                 <Typography
-                    variant={"body1"}>{!animating && disabled && rebuttals && ((bottom && player1Sunk) || (!bottom && !player1Sunk)) ? stats.rebuttals + 1 : stats.rebuttals}</Typography>
+                    variant={"body1"}>{!rebutted && !animating && disabled && rebuttals && ((bottom && player1Sunk) || (!bottom && !player1Sunk)) ? stats.rebuttals + 1 : stats.rebuttals}</Typography>
                 <BoldTyphography variant={"h4"}>Points</BoldTyphography>
                 <Typography
                     variant={"h4"}>{!animating && disabled && rebuttals && ((bottom && !player1Sunk) || (!bottom && player1Sunk)) ? stats.points + 1 : stats.points}</Typography>
                 <Typography variant={"body2"}>Sinks</Typography>
-                <Typography variant={"body2"}>{!animating && disabled &&
+                <Typography variant={"body2"}>{!rebutted && !animating && disabled &&
                 (!rebuttals || (rebuttals && ((bottom && player1Sunk) || (!bottom && !player1Sunk)))) ? stats.sinks + 1 : stats.sinks}</Typography>
 
             </div>
