@@ -201,8 +201,6 @@ const LiveGameCards = ({
         frame(top, targetRotation, currentRotation ? currentRotation : (top ? rotationTopCard : rotationBottomCard), callback)
     }
 
-    console.log(rebuttedTopCard, rebuttedBottomCard)
-
     return (
         <div style={{
             display: "flex", flexDirection: "column", alignItems: "stretch",
