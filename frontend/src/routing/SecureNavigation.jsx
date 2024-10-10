@@ -24,7 +24,8 @@ const SecureNavigation = ({open, setOpen}) => {
             <div style={{
                 paddingLeft: small ? 0 : 44,
                 backgroundColor: theme.palette.background.default,
-                flex: 1
+                flex: 1,
+                minHeight: 0
             }}>
 
                 <Switch>

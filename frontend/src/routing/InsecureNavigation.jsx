@@ -89,11 +89,6 @@ const InsecureNavigation = ({open,setOpen}) => {
                     <Route exact path={"/doubles/:gameId"}>
                         <DoublesGame/>
                     </Route>
-                    <Route exact path={"/liveGame"}>
-                        <div style={{display: "flex", alignItems: "stretch", flexDirection: "column", height: "100%"}}>
-                            <LiveGameScreen/>
-                        </div>
-                    </Route>
 
                     <Route exact path={"/10commandments"}>
                         <TenCommandmentsScreen/>

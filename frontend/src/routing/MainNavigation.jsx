@@ -65,8 +65,8 @@ const MainNavigation = () => {
 
                 <SecureRoute path='/secure*'>
                     <SecureNavigation setOpen={setOpen} open={open}/>
-                    <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
-                        <Alert severity={severity}>
+                    <Snackbar open={false} autoHideDuration={3000} onClose={handleClose} TransitionComponent={Slide}>
+                        <Alert severity={"error"}>
                             {message}
                         </Alert>
                     </Snackbar>

@@ -86,7 +86,7 @@ const AddSinglesGameComponent = ({
             gameMode: gameMode,
             player1Stats: player1Stats,
             player2Stats: player2Stats,
-            gameEventList: gameEventsList ? gameEventsList.map(event => {
+            gameEvents: gameEventsList ? gameEventsList.map(event => {
                 if(event.userId === null){
                     event.userId = opponent.id;
                 }
@@ -191,9 +191,9 @@ const AddSinglesGameComponent = ({
                 </div>
 
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: 0}}>
-                    <Button onClick={handleSave}>Add a game</Button>
+                    <Button onClick={handleSave} disabled={!opponent}>Add a game</Button>
                     {onCancel &&
-                        <Button variant={"outlined"} style={{marginLeft: 10}} onClick={onCancel}>Cancel</Button>}
+                        <Button variant={"outlined"} style={{marginLeft: 10}}  onClick={onCancel}>Cancel</Button>}
                 </div>
                 <div style={{height: 50}}/>
             </div>

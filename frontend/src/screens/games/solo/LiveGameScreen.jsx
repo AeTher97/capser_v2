@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import LiveGameCards from "./LiveGameCards";
 import AddSinglesGameComponent from "../../../components/game/AddSinglesGameComponent";
 import {useSelector} from "react-redux";
+import FillingDots from "../../../components/misc/FillingDots";
+import {Typography} from "@material-ui/core";
 
 export const SINK = "SINK"
 export const REBUTTAL = "REBUTTAL"
@@ -19,7 +21,8 @@ const LiveGameScreen = () => {
 
     const [rebuttalsActive, setRebuttalsActive] = useState(false);
     const [player1Sunk, setPlayer1Sunk] = useState(false);
-    const [stage, setStage] = useState(1);
+    const [stage, setStage] = useState(2);
+    const [disabled, setDisabled] = useState(false);
     const [gameEvents, setGameEvents] = useState([{
         gameEvent: START,
         time: new Date()
@@ -39,6 +42,17 @@ const LiveGameScreen = () => {
             }
         }
     )
+
+    useEffect(() => {
+        const tutorialPassed = localStorage.getItem("tutorialPassed");
+        if (tutorialPassed) {
+            setTimeout(() => {
+                setStage(3);
+            }, 500)
+        } else {
+            setStage(0);
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -71,10 +85,18 @@ const LiveGameScreen = () => {
 
     const switchToRebuttals = () => {
         setRebuttalsActive(true);
+        setDisabled(true)
+        setTimeout(() => {
+            setDisabled(false);
+        }, 250)
     }
 
     const switchToDefault = () => {
         setRebuttalsActive(false);
+        setDisabled(true)
+        setTimeout(() => {
+            setDisabled(false);
+        }, 250)
     }
 
     const sinkForPlayer1 = () => {
@@ -105,7 +127,8 @@ const LiveGameScreen = () => {
             return newState;
         })
         if (pointsCount === 11) {
-            setStage(3);
+            addGameEvents(null, END)
+            setStage(5);
         }
     }
 
@@ -117,7 +140,8 @@ const LiveGameScreen = () => {
             return newState;
         })
         if (pointsCount === 11) {
-            setStage(3);
+            addGameEvents(null, END)
+            setStage(5);
         }
     }
 
@@ -131,7 +155,7 @@ const LiveGameScreen = () => {
     }
 
     const rebuttalForPlayer2 = () => {
-        const rebuttalsCount = gameState.player1.rebuttals + 1;
+        const rebuttalsCount = gameState.player2.rebuttals + 1;
         setGameState(state => {
             const newState = {...state}
             newState.player2.rebuttals = rebuttalsCount;
@@ -139,18 +163,12 @@ const LiveGameScreen = () => {
         })
     }
 
-    useEffect(() => {
-        setTimeout(() => {
-            // setStage(1);
-
-        }, 500)
-    }, []);
-
     return (
         <div style={{
             height: "100%",
             display: "flex",
-            width: "400vw",
+            width: "600vw",
+            maxHeight: "100%",
         }}>
             <div style={{
                 width: "100vw",
@@ -161,9 +179,92 @@ const LiveGameScreen = () => {
                 alignItems: "center",
                 flexDirection: "column",
                 justifyContent: "center",
-
             }}>
-                <img src={"/glhf.png"} style={{width: "60vw"}}/>
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+                    <img src={"/main_game.png"} style={{width: "60vw"}}/>
+                    <Typography>You are about to enter the game screen. If you manage to sink a cap flip the scoreboard
+                        down
+                        if your opponent does sink flip the scoreboard up.<br/><br/> After that you will enter rebuttals
+                        screen.
+                    </Typography>
+                </div>
+                <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignSelf: "stretch",
+                    marginTop: "auto"
+                }}>
+                    <FillingDots count={3} filledCount={1}/>
+                    <div onClick={() => setStage(1)}>
+                        <Typography color={"primary"}>
+                            Next
+                        </Typography>
+                    </div>
+                </div>
+            </div>
+            <div style={{
+                width: "100vw",
+                transition: "0.3s ease-in-out",
+                transform: `translate(${stage * -100}%,0)`,
+                padding: "20px 20px 20px 20px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+            }}>
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+                    <img src={"/rebuttal.png"} style={{width: "60vw"}}/>
+                    <Typography>Person rebutting is indicated by the green outline.
+                        If someone rebutted drag the green card if not drag the red.
+                        Then colors switch. Follow the green with rebuttals. <br/><br/> If someone fails you go back to
+                        previous screen.
+                    </Typography>
+                </div>
+                <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignSelf: "stretch",
+                    marginTop: "auto"
+                }}>
+                    <FillingDots count={3} filledCount={2}/>
+                    <div onClick={() => setStage(2)}>
+                        <Typography color={"primary"}>
+                            Next
+                        </Typography>
+                    </div>
+                </div>
+            </div>
+            <div style={{
+                width: "100vw",
+                transition: "0.3s ease-in-out",
+                transform: `translate(${stage * -100}%,0)`,
+                padding: "20px 20px 20px 20px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+            }}>
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+                    <img src={"/glhf.png"} style={{width: "60vw"}}/>
+                    <Typography>Good luck and have fun in your games!
+                    </Typography>
+                </div>
+                {!localStorage.getItem("tutorialPassed") && <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignSelf: "stretch",
+                    marginTop: "auto"
+                }}>
+                    <FillingDots count={3} filledCount={3}/>
+                    <div onClick={() => {
+                        setStage(3);
+                        localStorage.setItem("tutorialPassed", "true")
+                    }}>
+                        <Typography color={"primary"}>
+                            Next
+                        </Typography>
+                    </div>
+                </div>}
             </div>
             <div style={{
                 width: "100vw",
@@ -180,6 +281,7 @@ const LiveGameScreen = () => {
                                sinkForPlayer1={sinkForPlayer1}
                                sinkForPlayer2={sinkForPlayer2}
                                addGameEvents={addGameEvents}
+                               disabled={disabled}
                 />
             </div>
             <div style={{
@@ -203,6 +305,7 @@ const LiveGameScreen = () => {
                     rebuttalForPlayer2={rebuttalForPlayer2}
                     player1Sunk={player1Sunk}
                     addGameEvents={addGameEvents}
+                    disabled={disabled}
                 />
             </div>
             <div style={{
@@ -212,15 +315,15 @@ const LiveGameScreen = () => {
                 display: "flex",
                 alignItems: "stretch",
                 flexDirection: "column",
-                padding: "20px 20px 20px 20px",
-                justifyContent: "center",
-
+                padding: "0px 20px 20px 20px",
+                overflow: "scroll",
             }}>
                 <AddSinglesGameComponent type={"EASY_CAPS"} disableEditing={true}
                                          player1Points={gameState.player1.points}
                                          player1Sinks={gameState.player1.sinks}
                                          player2Points={gameState.player2.points}
-                                         player2Sinks={gameState.player2.sinks} gameEventsList={gameEvents}/>
+                                         player2Sinks={gameState.player2.sinks}
+                                         gameEventsList={gameEvents}/>
             </div>
         </div>
 

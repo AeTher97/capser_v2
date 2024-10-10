@@ -28,7 +28,7 @@ const getElapsedTime = (startTimestamp, currentTimestamp) => {
     const elapsed = currentTimestamp.getTime() - startTimestamp.getTime();
     const minutes = Math.floor(elapsed / 60000);
     const seconds = (elapsed % 60000) / 1000;
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    return minutes + ":" + (seconds < 10 ? "0" : "") + Math.floor(seconds);
 }
 
 const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
