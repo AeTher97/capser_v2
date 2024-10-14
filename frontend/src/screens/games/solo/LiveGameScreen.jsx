@@ -287,8 +287,8 @@ const LiveGameScreen = () => {
                 <div style={{
                     width: 200,
                     height: 200,
+                    border: "5px solid red",
                     borderRadius: 50,
-                    backgroundColor: "red",
                     display: "flex",
                     justifyContent: "center",
                     flexDirection: "column"
@@ -304,8 +304,8 @@ const LiveGameScreen = () => {
                 <div style={{
                     width: 200,
                     height: 200,
+                    border: "5px solid red",
                     borderRadius: 50,
-                    backgroundColor: "red",
                     display: "flex",
                     justifyContent: "center",
                     flexDirection: "column"
