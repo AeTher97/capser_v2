@@ -288,7 +288,7 @@ const LiveGameScreen = () => {
                     width: 200,
                     height: 200,
                     border: "5px solid red",
-                    borderRadius: 50,
+                    borderRadius: 20,
                     display: "flex",
                     justifyContent: "center",
                     flexDirection: "column"
@@ -305,7 +305,7 @@ const LiveGameScreen = () => {
                     width: 200,
                     height: 200,
                     border: "5px solid red",
-                    borderRadius: 50,
+                    borderRadius: 20,
                     display: "flex",
                     justifyContent: "center",
                     flexDirection: "column"
