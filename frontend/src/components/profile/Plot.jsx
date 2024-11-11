@@ -82,7 +82,7 @@ const Plot = React.memo(({seriesData}) => {
 
         ctx.moveTo(horizontalAxisOffset, startingVerticalOffset);
         for (let i = 0; i < 365; i++) {
-            const seriesValue = series.data[(lastElement + i) % 365];
+            const seriesValue = series.data[(lastElement + i + 1) % 365];
             if (seriesValue === -100000) {
                 continue;
             }
@@ -179,7 +179,7 @@ const Plot = React.memo(({seriesData}) => {
         if (i < 0) {
             return;
         }
-        let entryPos = (i + series.lastElement) % 365;
+        let entryPos = (i + series.lastElement + 1) % 365;
 
         const entry = series.data[entryPos];
 
