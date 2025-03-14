@@ -37,7 +37,7 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
     const ref = useRef(null);
 
     const [height, setHeight] = useState(0);
-    const verticalClasses = useTimelineStyles(height, small)();
+    const verticalClasses = useTimelineStyles(height)();
     const horizontalClasses = useTimelineHorizontalStyles();
 
     const classes = small ? verticalClasses : horizontalClasses;
@@ -98,28 +98,30 @@ const Timeline = ({timeline, leftPlayer, leftPlayerName, rightPlayerName}) => {
                     <div style={{height: small ? 30 : null, width: small ? null : 30}}/>
 
 
-                    {timeline.filter(event => event.gameEvent !== "SINK").map((event, i) => {
-                        const left = leftPlayer === event.userId;
-                        return <div key={event.time + event.gameEvent} className={classes.row}>
-                            {left && <div className={classes.dotLeft}/>}
-                            {!left && <div className={classes.dotRight}/>}
-                            <div className={left ? classes.leftItem : classes.rightItem}>
-                                <Tooltip title={event.gameEvent}>
-                                    <div>
-                                        {getIcon(event.gameEvent, left ? leftColor : rightColor)}
+                    {timeline.filter(event => event.gameEvent !== "SINK" && event.gameEvent !== "START" &&
+                        event.gameEvent !== "ROCK_PAPER_SCISSORS")
+                        .map((event, i) => {
+                            const left = leftPlayer === event.userId;
+                            return <div key={event.time + event.gameEvent} className={classes.row}>
+                                {left && <div className={classes.dotLeft}/>}
+                                {!left && <div className={classes.dotRight}/>}
+                                <div className={left ? classes.leftItem : classes.rightItem}>
+                                    <Tooltip title={event.gameEvent}>
+                                        <div>
+                                            {getIcon(event.gameEvent, left ? leftColor : rightColor)}
+                                        </div>
+                                    </Tooltip>
+                                    <div style={{
+                                        color: left ? leftColor : rightColor, display: "flex",
+                                        flexDirection: "column", alignItems: "center"
+                                    }}>
+                                        <Typography color={"inherit"}
+                                                    variant={"caption"}>{getElapsedTime(startTime, new Date(event.time))}
+                                        </Typography>
                                     </div>
-                                </Tooltip>
-                                <div style={{
-                                    color: left ? leftColor : rightColor, display: "flex",
-                                    flexDirection: "column", alignItems: "center"
-                                }}>
-                                    <Typography color={"inherit"}
-                                                variant={"caption"}>{getElapsedTime(startTime, new Date(event.time))}
-                                    </Typography>
                                 </div>
                             </div>
-                        </div>
-                    })}
+                        })}
 
 
                 </div>
