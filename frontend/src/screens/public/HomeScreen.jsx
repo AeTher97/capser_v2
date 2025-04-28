@@ -20,12 +20,17 @@ const BlogPosts = ({classes, small, posts, theme}) => {
                         return (
                             <div key={post.title} style={{textAlign: "left"}}>
                                 <div style={{padding: 10, margin: 0}}>
-                                    <div className={classes.header}>
+                                    <div className={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        flex: 1,
+                                        gap: 5,
+                                        alignItems: "center",
+                                    }}>
                                         <Typography variant={"h5"}
                                                     style={{color: theme.palette.primary.main, flex: 1}}
                                                     align={"left"}
                                                     className={classes.textHeading}>{post.title}</Typography>
-
                                         <Typography align={"left"} variant={"caption"}
                                                     className={classes.textSubheading}>{new Date(post.date).toDateString()}</Typography>
                                     </div>
