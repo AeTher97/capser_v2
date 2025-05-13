@@ -50,7 +50,7 @@ public class EmailService {
         }
     }
 
-    @Scheduled(cron = "0 0 21 * * *")
+    @Scheduled(cron = "${time.series.cron}")
     public void resendEmails() {
         log.info("Resending failed emails");
         List<FailedEmail> failedEmailList = failedEmailRepository.findAll();

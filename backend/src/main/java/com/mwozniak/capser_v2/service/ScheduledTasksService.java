@@ -25,7 +25,7 @@ public class ScheduledTasksService {
         this.unrankedGameService = unrankedGameService;
     }
 
-    @Scheduled(fixedRate = 1800000, initialDelay = 10000)
+    @Scheduled(fixedRate = 900000, initialDelay = 10000)
     public void scheduledGameAcceptance() {
         log.info("Starting game accepting scan task");
         int totalAcceptedNumber = 0;
