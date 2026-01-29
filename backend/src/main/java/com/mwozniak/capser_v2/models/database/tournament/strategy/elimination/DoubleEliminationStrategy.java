@@ -15,7 +15,7 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
     }
 
     private void resolveOddLevel(BracketEntryType currentRow, int absoluteCoord, int higherAbsoluteCoord) {
-        for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, false); i += 1) {
+        for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, false); i++) {
             BracketEntry higherEntry = tournament.getBracketEntry(higherAbsoluteCoord + i);
             BracketEntry lowerEntry = tournament.getBracketEntry(absoluteCoord + i);
             BracketEntry upperBracketEntry = tournament.getBracketEntry(getUpperBracketCoord(higherAbsoluteCoord + i, currentRow));
@@ -72,7 +72,6 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
 
                     resolvePowerOfTwoLevel(currentRow, bottomAbsoluteCoord, bottomHigherAbsoluteCoord, !currentRow.equals(BracketEntryType.D_RO_2));
                 }
-
             } else {
                 int absoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(currentRow, false);
                 int higherAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(currentRow), false);
@@ -82,30 +81,25 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
                     for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, false); i++) {
                         BracketEntry upperEntry1 = tournament.getBracketEntry(upperCoord + i * 2);
                         BracketEntry upperEntry2 = tournament.getBracketEntry(upperCoord + i * 2 + 1);
-                        BracketEntry lowerEntry = tournament.getBracketEntry(absoluteCoord + i);
+                        BracketEntry lowerEntry = tournament.getBracketEntry(absoluteCoord
+                                + BracketEntryType.getDoubleEliminationCountInRow(currentRow, false) - 1 - i);
 
                         if (upperEntry1.getGame() != null) {
-                            lowerEntry.setCompetitor1(tournament.getLoser(upperEntry1));
+                            lowerEntry.setCompetitor2(tournament.getLoser(upperEntry1));
                         }
                         if (upperEntry2.getGame() != null) {
-                            lowerEntry.setCompetitor2(tournament.getLoser(upperEntry2));
+                            lowerEntry.setCompetitor1(tournament.getLoser(upperEntry2));
                         }
-                        if (upperEntry1.isFinal() && upperEntry2.isFinal()) {
-                            if (upperEntry1.isBye() || upperEntry2.isBye() || upperEntry2.isForfeited() || upperEntry1.isForfeited()) {
-                                lowerEntry.setBye(true);
-                                lowerEntry.setFinal(true);
-                            }
+                        if (upperEntry1.isFinal() && upperEntry2.isFinal()
+                                && (upperEntry1.isBye() || upperEntry2.isBye() || upperEntry2.isForfeited() || upperEntry1.isForfeited())) {
+                            lowerEntry.setBye(true);
+                            lowerEntry.setFinal(true);
                         }
-
                     }
                 }
                 resolveOddLevel(currentRow, absoluteCoord, higherAbsoluteCoord);
-
             }
-
-
             currentRow = BracketEntryType.getHigher(currentRow);
-
         }
     }
 
@@ -143,7 +137,7 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
                     int absoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(currentRow, true);
                     int higherAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigherPowerOf2(currentRow), true);
                     for (int i = 0; i < BracketEntryType.getDoubleEliminationCountInRow(currentRow, true); i += 2) {
-                        resolveByesInARow(currentRow, absoluteCoord, higherAbsoluteCoord, i);
+                        resolveByesInARow(absoluteCoord, higherAbsoluteCoord, i);
                     }
                 }
 
@@ -162,7 +156,6 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
                 }
             }
             currentRow = BracketEntryType.getHigher(currentRow);
-
         }
     }
 
@@ -198,6 +191,20 @@ public class DoubleEliminationStrategy extends FinalGameEliminationStrategy {
                 }
             }
             currentRow = BracketEntryType.getHigher(currentRow);
+        }
+    }
+
+    private int getUpperBracketCoord(int lowerBracketCoord, BracketEntryType row) {
+        int upperAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getLower(row), true);
+
+        if (Tournament.isPowerOfFour(BracketEntryType.getNumberInName(BracketEntryType.getHigher(row))) &&
+            Tournament.isPowerOfFour(BracketEntryType.getNumberInName(tournament.getSize()))) {
+            int rowStart = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(row), false) - 1;
+            int offset = lowerBracketCoord - rowStart;
+            return upperAbsoluteCoord - offset;
+        } else {
+            int lowerAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(row, false);
+            return upperAbsoluteCoord + lowerBracketCoord - lowerAbsoluteCoord;
         }
     }
 

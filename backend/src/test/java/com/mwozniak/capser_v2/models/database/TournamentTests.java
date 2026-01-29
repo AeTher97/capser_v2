@@ -1,5 +1,7 @@
 package com.mwozniak.capser_v2.models.database;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.enums.SeedType;
 import com.mwozniak.capser_v2.enums.TournamentType;
@@ -19,10 +21,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Tournament Test")
-public class TournamentTests {
+class TournamentTests {
 
     @Test
-    public void singleEliminationTournamentCreation_shouldCreateRightNumberOfEntries() {
+    void singleEliminationTournamentCreation_shouldCreateRightNumberOfEntries() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -34,37 +36,31 @@ public class TournamentTests {
 
 
     @Test
-    public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries14() {
+    void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries14() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
         easyCapsTournament.setSize(BracketEntryType.D_RO_8);
 
-
         assertEquals(14, easyCapsTournament.getBracketEntries().size());
-
-
     }
 
 
     @Test
-    public void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries30() {
+    void doubleEliminationTournamentCreation_shouldCreateRightNumberOfEntries30() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
         easyCapsTournament.setSeedType(SeedType.RANDOM);
         easyCapsTournament.setSize(BracketEntryType.D_RO_16);
 
-
         assertEquals(30, easyCapsTournament.getBracketEntries().size());
-
-
     }
 
 
     @Test
-    public void doubleElimination_seedsCorrectly() {
+    void doubleElimination_seedsCorrectly() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -85,19 +81,19 @@ public class TournamentTests {
 
         easyCapsTournament.seedPlayers();
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 6).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 6).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 4).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 4).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 7).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 7).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get()).getPlayer2());
+        assertNull(getBracketEntry(easyCapsTournament, 6).getPlayer1());
 
+        assertNull(getBracketEntry(easyCapsTournament, 6).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 4).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 4).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 7).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 7).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 5).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 5).getPlayer2());
     }
 
     @Test
-    public void singleElimination_seedsCorrectly() {
+    void singleElimination_seedsCorrectly() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -114,22 +110,21 @@ public class TournamentTests {
         }
 
         easyCapsTournament.getPlayers().addAll(players);
-
         easyCapsTournament.seedPlayers();
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 10).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 10).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 7).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 7).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 14).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 14).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 8).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 8).findAny().get()).getPlayer2());
+        assertNull(getBracketEntry(easyCapsTournament, 10).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 10).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 7).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 7).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 14).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 14).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 8).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 8).getPlayer2());
 
     }
 
     @Test
-    public void singleElimination_seedsCorrectly8() {
+    void singleElimination_seedsCorrectly8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -149,19 +144,18 @@ public class TournamentTests {
 
         easyCapsTournament.seedPlayers();
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 3).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 3).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 6).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 6).findAny().get()).getPlayer2());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 4).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 4).findAny().get()).getPlayer2());
-
+        assertNull(getBracketEntry(easyCapsTournament, 5).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 5).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 3).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 3).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 6).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 6).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 4).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 4).getPlayer2());
     }
 
     @Test
-    public void singleElimination_resolveByesCorrectly8() {
+    void singleElimination_resolveByesCorrectly8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -182,13 +176,14 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer2());
-        assertTrue(easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 4).findAny().get().isBye());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer2());
+        assertEquals(players.get(4).getUser(), getBracketEntry(easyCapsTournament, 1).getPlayer2());
+        assertTrue(getBracketEntry(easyCapsTournament, 4).isBye());
 
     }
 
     @Test
-    public void doubleElimination_resolveByesCorrectly8() {
+    void doubleElimination_resolveByesCorrectly8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -209,13 +204,13 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 2).findAny().get()).getPlayer2());
-        assertTrue(easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get().isBye());
+        assertNotNull(getBracketEntry(easyCapsTournament, 2).getPlayer2());
+        assertTrue(getBracketEntry(easyCapsTournament, 5).isBye());
 
     }
 
     @Test
-    public void doubleElimination_resolveByesCorrectlyFinal8() {
+    void doubleElimination_resolveByesCorrectlyFinal8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -236,15 +231,14 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 2).findAny().get()).getPlayer1());
-        assertTrue(easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 5).findAny().get().isBye());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer2());
-
+        assertNotNull(getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertTrue(getBracketEntry(easyCapsTournament, 5).isBye());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer2());
     }
 
     @Test
-    public void singleElimination_resolveByesCorrectly16() {
+    void singleElimination_resolveByesCorrectly16() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -265,14 +259,14 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 3).findAny().get()).getPlayer2());
-        assertTrue(easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 8).findAny().get().isBye());
+        assertNotNull(getBracketEntry(easyCapsTournament, 3).getPlayer2());
+        assertTrue(getBracketEntry(easyCapsTournament, 8).isBye());
 
     }
 
 
     @Test
-    public void singleElimination_progressesCorrectly8() {
+    void singleElimination_progressesCorrectly8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -294,31 +288,29 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1).getPlayer1());
 
         addGameToEntry(easyCapsTournament, 3, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 0).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 6, true);
         addGameToEntry(easyCapsTournament, 1, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 0).getPlayer2());
 
         assertFalse(easyCapsTournament.isFinished());
 
         addGameToEntry(easyCapsTournament, 0, true);
 
         assertTrue(easyCapsTournament.isFinished());
-
-
     }
 
     @Test
-    public void doubleElimination_progressesCorrectly16() {
+    void doubleElimination_progressesCorrectly16() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -343,24 +335,60 @@ public class TournamentTests {
         addGameToEntry(easyCapsTournament, 8, true);
         addGameToEntry(easyCapsTournament, 15, true);
         addGameToEntry(easyCapsTournament, 4, true);
-        addGameToEntry(easyCapsTournament, 1009, true);
+        addGameToEntry(easyCapsTournament, 1006, true);
         addGameToEntry(easyCapsTournament, 1, false);
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1006).findAny().get()).getPlayer1());
-
         addGameToEntry(easyCapsTournament, 1001, false);
         addGameToEntry(easyCapsTournament, 1000, false);
         addGameToEntry(easyCapsTournament, 0, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer2());
+        assertEquals(players.get(0).getUser(),getBracketEntry(easyCapsTournament, 8).getPlayer1());
+        assertEquals(players.get(2).getUser(),getBracketEntry(easyCapsTournament, 8).getPlayer2());
 
+        assertEquals(players.get(4).getUser(),getBracketEntry(easyCapsTournament, 9).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 9).getPlayer2());
+
+        assertEquals(players.get(3).getUser(),getBracketEntry(easyCapsTournament, 15).getPlayer1());
+        assertEquals(players.get(1).getUser(),getBracketEntry(easyCapsTournament, 15).getPlayer2());
+
+        assertEquals(players.get(0).getUser(),getBracketEntry(easyCapsTournament, 4).getPlayer1());
+        assertEquals(players.get(4).getUser(),getBracketEntry(easyCapsTournament, 4).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 7).getPlayer1());
+        assertEquals(players.get(3).getUser(),getBracketEntry(easyCapsTournament, 7).getPlayer2());
+
+        assertEquals(players.get(0).getUser(),getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 2).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 3).getPlayer1());
+        assertEquals(players.get(3).getUser(),getBracketEntry(easyCapsTournament, 3).getPlayer2());
+
+        assertEquals(players.get(0).getUser(),getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertEquals(players.get(3).getUser(),getBracketEntry(easyCapsTournament, 1).getPlayer2());
+
+        assertEquals(players.get(3).getUser(),getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertEquals(players.get(2).getUser(),getBracketEntry(easyCapsTournament, 0).getPlayer2());
+
+        assertEquals(players.get(1).getUser(),getBracketEntry(easyCapsTournament, 1010).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1010).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 1013).getPlayer1());
+        assertEquals(players.get(2).getUser(),getBracketEntry(easyCapsTournament, 1013).getPlayer2());
+
+        assertEquals(players.get(4).getUser(),getBracketEntry(easyCapsTournament, 1006).getPlayer1());
+        assertEquals(players.get(1).getUser(),getBracketEntry(easyCapsTournament, 1006).getPlayer2());
+
+        assertEquals(players.get(4).getUser(),getBracketEntry(easyCapsTournament, 1001).getPlayer1());
+        assertEquals(players.get(2).getUser(),getBracketEntry(easyCapsTournament, 1001).getPlayer2());
+
+        assertEquals(players.get(0).getUser(),getBracketEntry(easyCapsTournament, 1000).getPlayer1());
+        assertEquals(players.get(2).getUser(),getBracketEntry(easyCapsTournament, 1000).getPlayer2());
 
         assertTrue(easyCapsTournament.isFinished());
-
+        assertEquals(players.get(3).getUser().getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
     }
 
     @Test
-    public void doubleElimination_progressesCorrectly8() {
+    void doubleElimination_progressesCorrectly8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -382,51 +410,50 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 2).findAny().get()).getPlayer1());
+
+        assertNull(getBracketEntry(easyCapsTournament, 2).getPlayer1());
 
         addGameToEntry(easyCapsTournament, 4, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 2).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer1());
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 7, true);
         addGameToEntry(easyCapsTournament, 2, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1).getPlayer2());
 
         assertFalse(easyCapsTournament.isFinished());
 
         addGameToEntry(easyCapsTournament, 1, true);
 
-        assertNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1001).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1001).findAny().get()).getPlayer2());
+        assertNull(getBracketEntry(easyCapsTournament, 1001).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1001).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 1002, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1001).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1001).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1001).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1001).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 1001, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1000).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 1000).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1000).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 1000).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 1000, true);
 
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer1());
-        assertNotNull(((EasyCapsBracketEntry) easyCapsTournament.getBracketEntries().stream().filter(bracketEntry -> bracketEntry.getCoordinate() == 0).findAny().get()).getPlayer2());
+        assertNotNull(getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertNotNull(getBracketEntry(easyCapsTournament, 0).getPlayer2());
 
         addGameToEntry(easyCapsTournament, 0, true);
 
         assertTrue(easyCapsTournament.isFinished());
-
-
     }
 
     @Test
-    public void doubleElimination_progressesCorrectlyWithMemory8() {
+    void doubleElimination_progressesCorrectlyWithMemory8() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -448,36 +475,69 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        User user1 = getBracketEntry(easyCapsTournament, 4).getPlayer1();
-        User user2 = getBracketEntry(easyCapsTournament, 4).getPlayer2();
-        User user3 = getBracketEntry(easyCapsTournament, 5).getPlayer1();
-        User user4 = getBracketEntry(easyCapsTournament, 7).getPlayer1();
-        User user5 = getBracketEntry(easyCapsTournament, 7).getPlayer2();
+        User user0 = players.get(0).getUser();
+        User user1 = players.get(1).getUser();
+        User user2 = players.get(2).getUser();
+        User user3 = players.get(3).getUser();
+        User user4 = players.get(4).getUser();
 
         addGameToEntry(easyCapsTournament, 4, true);
-        skipGame(easyCapsTournament, user5, 7);
+        skipGame(easyCapsTournament, user3, 7);
         addGameToEntry(easyCapsTournament, 2, true);
-        addGameToEntry(easyCapsTournament, 1002, false);
+
+        addGameToEntry(easyCapsTournament, 1001, false);
         addGameToEntry(easyCapsTournament, 1, true);
-        skipGame(easyCapsTournament, user2, 1000);
+        skipGame(easyCapsTournament, user1, 1000);
         addGameToEntry(easyCapsTournament, 0, true);
 
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1004).getPlayer1());
-        assertEquals(user3, getBracketEntry(easyCapsTournament, 1002).getPlayer1());
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1002).getPlayer2());
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1001).getPlayer1());
-        assertTrue(getBracketEntry(easyCapsTournament, 1001).isBye());
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 1000).getPlayer1());
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1000).getPlayer2());
-        assertEquals(user1, getBracketEntry(easyCapsTournament, 0).getPlayer1());
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 0).getPlayer2());
-        assertEquals(user1.getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
-        assertTrue(easyCapsTournament.isFinished());
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 4).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 4).getPlayer2());
 
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 5).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 5).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 6).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 6).getPlayer2());
+
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 7).getPlayer1());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 7).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 2).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 3).getPlayer1());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 3).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 1).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 1004).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1004).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 1005).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1005).getPlayer2());
+
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 1002).getPlayer1());
+        assertNull(getBracketEntry(easyCapsTournament, 1002).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 1003).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1003).getPlayer2());
+
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 1001).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1001).getPlayer2());
+
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 1000).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1000).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 0 ).getPlayer2());
+
+        assertTrue(easyCapsTournament.isFinished());
+        assertEquals(user0.getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
     }
 
     @Test
-    public void doubleElimination_progressesCorrectlyWithMemory16() {
+    void doubleElimination_progressesCorrectlyWithMemory16() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -499,26 +559,26 @@ public class TournamentTests {
         easyCapsTournament.seedPlayers();
         easyCapsTournament.resolveByes();
 
-        User user1 = getBracketEntry(easyCapsTournament, 8).getPlayer1();
-        User user2 = getBracketEntry(easyCapsTournament, 8).getPlayer2();
-        User user3 = getBracketEntry(easyCapsTournament, 9).getPlayer1();
-        User user4 = getBracketEntry(easyCapsTournament, 9).getPlayer2();
-        User user5 = getBracketEntry(easyCapsTournament, 10).getPlayer1();
-        User user6 = getBracketEntry(easyCapsTournament, 10).getPlayer2();
-        User user7 = getBracketEntry(easyCapsTournament, 11).getPlayer1();
-        User user8 = getBracketEntry(easyCapsTournament, 11).getPlayer2();
-        User user9 = getBracketEntry(easyCapsTournament, 12).getPlayer2();
-        User user10 = getBracketEntry(easyCapsTournament, 13).getPlayer1();
-        User user11 = getBracketEntry(easyCapsTournament, 13).getPlayer2();
-        User user12 = getBracketEntry(easyCapsTournament, 14).getPlayer1();
-        User user13 = getBracketEntry(easyCapsTournament, 14).getPlayer2();
-        User user14 = getBracketEntry(easyCapsTournament, 15).getPlayer1();
-        User user15 = getBracketEntry(easyCapsTournament, 15).getPlayer2();
+        User user0 = players.get(0).getUser();
+        User user1 = players.get(1).getUser();
+        User user2 = players.get(2).getUser();
+        User user3 = players.get(3).getUser();
+        User user4 = players.get(4).getUser();
+        User user5 = players.get(5).getUser();
+        User user6 = players.get(6).getUser();
+        User user7 = players.get(7).getUser();
+        User user8 = players.get(8).getUser();
+        User user9 = players.get(9).getUser();
+        User user10 = players.get(10).getUser();
+        User user11 = players.get(11).getUser();
+        User user12 = players.get(12).getUser();
+        User user13 = players.get(13).getUser();
+        User user14 = players.get(14).getUser();
 
         addGameToEntry(easyCapsTournament, 8, true);
         addGameToEntry(easyCapsTournament, 9, false);
         addGameToEntry(easyCapsTournament, 10, true);
-        skipGame(easyCapsTournament, user7, 11);
+        skipGame(easyCapsTournament, user12, 11);
         addGameToEntry(easyCapsTournament, 13, true);
         addGameToEntry(easyCapsTournament, 14, false);
         addGameToEntry(easyCapsTournament, 15, true);
@@ -527,8 +587,8 @@ public class TournamentTests {
         addGameToEntry(easyCapsTournament, 6, true);
         addGameToEntry(easyCapsTournament, 7, false);
         addGameToEntry(easyCapsTournament, 3, true);
-        skipGame(easyCapsTournament, user1, 2);
-        skipGame(easyCapsTournament, user5, 1);
+        skipGame(easyCapsTournament, user8, 2);
+        skipGame(easyCapsTournament, user0, 1);
         addGameToEntry(easyCapsTournament, 1010, true);
         addGameToEntry(easyCapsTournament, 1013, false);
         addGameToEntry(easyCapsTournament, 1006, false);
@@ -536,83 +596,104 @@ public class TournamentTests {
         addGameToEntry(easyCapsTournament, 1008, false);
         addGameToEntry(easyCapsTournament, 1009, true);
         addGameToEntry(easyCapsTournament, 1004, false);
-        skipGame(easyCapsTournament, user11, 1005);
-        addGameToEntry(easyCapsTournament, 1003, true);
+        skipGame(easyCapsTournament, user5, 1005);
+        addGameToEntry(easyCapsTournament, 1002, true);
         addGameToEntry(easyCapsTournament, 1001, false);
         addGameToEntry(easyCapsTournament, 0, true);
 
-        assertEquals(user1, getBracketEntry(easyCapsTournament, 4).getPlayer1());
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 4).getPlayer2());
-        assertEquals(user5, getBracketEntry(easyCapsTournament, 5).getPlayer1());
-        assertEquals(user8, getBracketEntry(easyCapsTournament, 5).getPlayer2());
-        assertEquals(user9, getBracketEntry(easyCapsTournament, 6).getPlayer1());
-        assertEquals(user10, getBracketEntry(easyCapsTournament, 6).getPlayer2());
-        assertEquals(user13, getBracketEntry(easyCapsTournament, 7).getPlayer1());
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 7).getPlayer2());
-        assertEquals(user1, getBracketEntry(easyCapsTournament, 2).getPlayer1());
-        assertEquals(user5, getBracketEntry(easyCapsTournament, 2).getPlayer2());
-        assertEquals(user9, getBracketEntry(easyCapsTournament, 3).getPlayer1());
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 3).getPlayer2());
-        assertEquals(user5, getBracketEntry(easyCapsTournament, 1).getPlayer1());
-        assertEquals(user9, getBracketEntry(easyCapsTournament, 1).getPlayer2());
-        assertEquals(user9, getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 8).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 8).getPlayer2());
 
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1010).getPlayer1());
-        assertEquals(user3, getBracketEntry(easyCapsTournament, 1010).getPlayer2());
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 9).getPlayer1());
+        assertEquals(user6,getBracketEntry(easyCapsTournament, 9).getPlayer2());
 
+        assertEquals(user8,getBracketEntry(easyCapsTournament, 10).getPlayer1());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 10).getPlayer2());
+
+        assertEquals(user12,getBracketEntry(easyCapsTournament, 11).getPlayer1());
+        assertEquals(user14,getBracketEntry(easyCapsTournament, 11).getPlayer2());
+
+        assertNull(getBracketEntry(easyCapsTournament, 12).getPlayer1());
+        assertEquals(user13,getBracketEntry(easyCapsTournament, 12).getPlayer2());
+
+        assertEquals(user7,getBracketEntry(easyCapsTournament, 14).getPlayer1());
+        assertEquals(user5,getBracketEntry(easyCapsTournament, 14).getPlayer2());
+
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 15).getPlayer1());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 15).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 4).getPlayer1());
+        assertEquals(user6,getBracketEntry(easyCapsTournament, 4).getPlayer2());
+
+        assertEquals(user8,getBracketEntry(easyCapsTournament, 5).getPlayer1());
+        assertEquals(user14,getBracketEntry(easyCapsTournament, 5).getPlayer2());
+
+        assertEquals(user13,getBracketEntry(easyCapsTournament, 6).getPlayer1());
+        assertEquals(user11,getBracketEntry(easyCapsTournament, 6).getPlayer2());
+
+        assertEquals(user5,getBracketEntry(easyCapsTournament, 7).getPlayer1());
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 7).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertEquals(user8,getBracketEntry(easyCapsTournament, 2).getPlayer2());
+
+        assertEquals(user13,getBracketEntry(easyCapsTournament, 3).getPlayer1());
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 3).getPlayer2());
+
+        assertEquals(user0,getBracketEntry(easyCapsTournament, 1).getPlayer1());
+        assertEquals(user13,getBracketEntry(easyCapsTournament, 1).getPlayer2());
+
+        assertEquals(user13,getBracketEntry(easyCapsTournament, 0).getPlayer1());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 0).getPlayer2());
+
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 1010).getPlayer1());
+        assertEquals(user7,getBracketEntry(easyCapsTournament, 1010).getPlayer2());
+
+        assertEquals(user9,getBracketEntry(easyCapsTournament, 1011).getPlayer1());
         assertNull(getBracketEntry(easyCapsTournament, 1011).getPlayer2());
-        assertEquals(user6, getBracketEntry(easyCapsTournament, 1011).getPlayer1());
-        assertTrue(getBracketEntry(easyCapsTournament, 1011).isBye());
 
         assertNull(getBracketEntry(easyCapsTournament, 1012).getPlayer1());
-        assertEquals(user11, getBracketEntry(easyCapsTournament, 1012).getPlayer2());
-        assertTrue(getBracketEntry(easyCapsTournament, 1012).isBye());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1012).getPlayer2());
 
-        assertEquals(user12, getBracketEntry(easyCapsTournament, 1013).getPlayer1());
-        assertEquals(user15, getBracketEntry(easyCapsTournament, 1013).getPlayer2());
+        assertEquals(user4,getBracketEntry(easyCapsTournament, 1013).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1013).getPlayer2());
 
-        assertEquals(user13, getBracketEntry(easyCapsTournament, 1006).getPlayer1());
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1006).getPlayer2());
+        assertEquals(user6,getBracketEntry(easyCapsTournament, 1006).getPlayer1());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 1006).getPlayer2());
 
-        assertEquals(user10, getBracketEntry(easyCapsTournament, 1007).getPlayer1());
-        assertEquals(user6, getBracketEntry(easyCapsTournament, 1007).getPlayer2());
+        assertEquals(user14,getBracketEntry(easyCapsTournament, 1007).getPlayer1());
+        assertEquals(user9,getBracketEntry(easyCapsTournament, 1007).getPlayer2());
 
-        assertEquals(user8, getBracketEntry(easyCapsTournament, 1008).getPlayer1());
-        assertEquals(user11, getBracketEntry(easyCapsTournament, 1008).getPlayer2());
+        assertEquals(user11,getBracketEntry(easyCapsTournament, 1008).getPlayer1());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1008).getPlayer2());
 
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 1009).getPlayer1());
-        assertEquals(user15, getBracketEntry(easyCapsTournament, 1009).getPlayer2());
+        assertEquals(user5,getBracketEntry(easyCapsTournament, 1009).getPlayer1());
+        assertEquals(user2,getBracketEntry(easyCapsTournament, 1009).getPlayer2());
 
-        assertEquals(user2, getBracketEntry(easyCapsTournament, 1004).getPlayer1());
-        assertEquals(user10, getBracketEntry(easyCapsTournament, 1004).getPlayer2());
+        assertEquals(user1,getBracketEntry(easyCapsTournament, 1004).getPlayer1());
+        assertEquals(user14,getBracketEntry(easyCapsTournament, 1004).getPlayer2());
 
-        assertEquals(user11, getBracketEntry(easyCapsTournament, 1005).getPlayer1());
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 1005).getPlayer2());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1005).getPlayer1());
+        assertEquals(user5,getBracketEntry(easyCapsTournament, 1005).getPlayer2());
 
-        assertNull(getBracketEntry(easyCapsTournament, 1002).getPlayer1());
-        assertEquals(user10, getBracketEntry(easyCapsTournament, 1002).getPlayer2());
-        assertTrue(getBracketEntry(easyCapsTournament, 1002).isBye());
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 1002).getPlayer1());
+        assertEquals(user14,getBracketEntry(easyCapsTournament, 1002).getPlayer2());
 
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 1003).getPlayer1());
-        assertEquals(user4, getBracketEntry(easyCapsTournament, 1003).getPlayer2());
+        assertNull(getBracketEntry(easyCapsTournament, 1003).getPlayer1());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1003).getPlayer2());
 
-        assertEquals(user10, getBracketEntry(easyCapsTournament, 1001).getPlayer1());
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 1001).getPlayer2());
+        assertEquals(user3,getBracketEntry(easyCapsTournament, 1001).getPlayer1());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1001).getPlayer2());
 
         assertNull(getBracketEntry(easyCapsTournament, 1000).getPlayer1());
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 1000).getPlayer2());
-        assertTrue(getBracketEntry(easyCapsTournament, 1000).isBye());
+        assertEquals(user10,getBracketEntry(easyCapsTournament, 1000).getPlayer2());
 
-        assertEquals(user9, getBracketEntry(easyCapsTournament, 0).getPlayer1());
-        assertEquals(user14, getBracketEntry(easyCapsTournament, 0).getPlayer2());
-
-        assertEquals(user9.getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
         assertTrue(easyCapsTournament.isFinished());
-
+        assertEquals(user13.getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
     }
 
     @Test
-    public void singleElimination_progressesCorrectlyWithMemory16() {
+    void singleElimination_progressesCorrectlyWithMemory16() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -635,20 +716,14 @@ public class TournamentTests {
         easyCapsTournament.resolveByes();
 
         User user1 = getBracketEntry(easyCapsTournament, 7).getPlayer1();
-        User user2 = getBracketEntry(easyCapsTournament, 7).getPlayer2();
-        User user3 = getBracketEntry(easyCapsTournament, 8).getPlayer1();
         User user4 = getBracketEntry(easyCapsTournament, 8).getPlayer2();
         User user5 = getBracketEntry(easyCapsTournament, 9).getPlayer1();
-        User user6 = getBracketEntry(easyCapsTournament, 9).getPlayer2();
         User user7 = getBracketEntry(easyCapsTournament, 10).getPlayer1();
         User user8 = getBracketEntry(easyCapsTournament, 10).getPlayer2();
         User user9 = getBracketEntry(easyCapsTournament, 11).getPlayer2();
         User user10 = getBracketEntry(easyCapsTournament, 12).getPlayer1();
-        User user11 = getBracketEntry(easyCapsTournament, 12).getPlayer2();
-        User user12 = getBracketEntry(easyCapsTournament, 13).getPlayer1();
         User user13 = getBracketEntry(easyCapsTournament, 13).getPlayer2();
         User user14 = getBracketEntry(easyCapsTournament, 14).getPlayer1();
-        User user15 = getBracketEntry(easyCapsTournament, 14).getPlayer2();
 
         addGameToEntry(easyCapsTournament, 7, true);
         addGameToEntry(easyCapsTournament, 8, false);
@@ -665,7 +740,6 @@ public class TournamentTests {
         skipGame(easyCapsTournament, user1, 1);
         addGameToEntry(easyCapsTournament, 0, true);
 
-
         assertEquals(user1, getBracketEntry(easyCapsTournament, 3).getPlayer1());
         assertEquals(user4, getBracketEntry(easyCapsTournament, 3).getPlayer2());
         assertEquals(user5, getBracketEntry(easyCapsTournament, 4).getPlayer1());
@@ -681,10 +755,8 @@ public class TournamentTests {
         assertEquals(user5, getBracketEntry(easyCapsTournament, 0).getPlayer1());
         assertEquals(user9, getBracketEntry(easyCapsTournament, 0).getPlayer2());
 
-
         assertEquals(user5.getId(), getBracketEntry(easyCapsTournament, 0).getGame().getWinner());
         assertTrue(easyCapsTournament.isFinished());
-
     }
 
     @Test
@@ -728,7 +800,7 @@ public class TournamentTests {
     }
 
     @Test
-    public void singleElimination_resolvesByesCorrectlyInSpecialCaseRandomSeed() {
+    void singleElimination_resolvesByesCorrectlyInSpecialCaseRandomSeed() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.SINGLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -764,7 +836,7 @@ public class TournamentTests {
 
 
     @Test
-    public void doubleElimination_resolvesByesCorrectlyInSpecialCasePickedSeed() {
+    void doubleElimination_resolvesByesCorrectlyInSpecialCasePickedSeed() {
         Tournament easyCapsTournament = new EasyCapsTournament();
         easyCapsTournament.setTournamentType(TournamentType.DOUBLE_ELIMINATION);
         easyCapsTournament.setTournamentName("Test");
@@ -798,24 +870,23 @@ public class TournamentTests {
         addGameToEntry(easyCapsTournament, 9, true);
         addGameToEntry(easyCapsTournament, 12, true);
         addGameToEntry(easyCapsTournament, 5, true);
-        getBracketEntry(easyCapsTournament, 4).forfeitGame(getBracketEntry(easyCapsTournament, 4).getCompetitor1());
+        skipGame(easyCapsTournament, players.get(0).getUser(), 4);
 
-
-        assertFalse(getBracketEntry(easyCapsTournament, 1010).isFinal());
-
-
+        assertFalse(getBracketEntry(easyCapsTournament, 1013).isFinal());
+        assertEquals(players.get(2).getUser(), getBracketEntry(easyCapsTournament, 2).getPlayer1());
+        assertEquals(players.get(4).getUser(), getBracketEntry(easyCapsTournament, 2).getPlayer2());
     }
 
 
     @Test
-    public void singleEliminationGetAbove_returnsCorrectNumber() {
+    void singleEliminationGetAbove_returnsCorrectNumber() {
         int result = BracketEntryType.getSingleEliminationCountAbove(BracketEntryType.RO_16);
         assertEquals(7, result);
     }
 
 
     @Test
-    public void doubleEliminationGetAbove_returnsCorrectNumber() {
+    void doubleEliminationGetAbove_returnsCorrectNumber() {
         assertEquals(1, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_2, true));
         assertEquals(2, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_4, true));
         assertEquals(4, BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.D_RO_8, true));
@@ -829,7 +900,7 @@ public class TournamentTests {
     }
 
     @Test
-    public void doubleEliminationGetAboveAndEqual_returnsCorrectNumber() {
+    void doubleEliminationGetAboveAndEqual_returnsCorrectNumber() {
         assertEquals(2, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_2, true));
         assertEquals(4, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_4, true));
         assertEquals(8, BracketEntryType.getDoubleEliminationCountAboveAndEqual(BracketEntryType.D_RO_8, true));
@@ -844,13 +915,13 @@ public class TournamentTests {
 
 
     @Test
-    public void singleEliminationGetAboveAndEquals_returnsCorrectNumber() {
+    void singleEliminationGetAboveAndEquals_returnsCorrectNumber() {
         int result = BracketEntryType.getSingleEliminationCountAboveAndEqual(BracketEntryType.RO_16);
         assertEquals(15, result);
     }
 
     @Test
-    public void testIsPowerOf2() {
+    void testIsPowerOf2() {
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.RO_4));
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.RO_8));
         assertTrue(BracketEntryType.isPowerOf2(BracketEntryType.D_RO_4));
@@ -860,7 +931,7 @@ public class TournamentTests {
     }
 
     @Test
-    public void testGetHigherPowerOf2() {
+    void testGetHigherPowerOf2() {
         assertEquals(BracketEntryType.D_RO_8, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_16));
         assertEquals(BracketEntryType.D_RO_4, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_8));
         assertEquals(BracketEntryType.D_RO_8, BracketEntryType.getHigherPowerOf2(BracketEntryType.D_RO_12));
@@ -914,4 +985,11 @@ public class TournamentTests {
         }
     }
 
+    private void printTournamentJson(Tournament tournament) {
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(tournament));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

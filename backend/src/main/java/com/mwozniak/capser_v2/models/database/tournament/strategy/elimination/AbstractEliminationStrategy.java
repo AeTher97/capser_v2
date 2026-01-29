@@ -1,6 +1,5 @@
 package com.mwozniak.capser_v2.models.database.tournament.strategy.elimination;
 
-import com.mwozniak.capser_v2.enums.BracketEntryType;
 import com.mwozniak.capser_v2.models.database.Competitor;
 import com.mwozniak.capser_v2.models.database.tournament.BracketEntry;
 import com.mwozniak.capser_v2.models.database.tournament.Tournament;
@@ -60,11 +59,22 @@ public abstract class AbstractEliminationStrategy implements EliminationStrategy
     }
 
 
-    protected void threeObjectBye(BracketEntry topEntry, BracketEntry bottomEntry, BracketEntry higherEntry, boolean bye, boolean bye2, boolean copyFromTopOnBye) {
+    protected void threeObjectBye(BracketEntry topEntry,
+                                  BracketEntry bottomEntry,
+                                  BracketEntry higherEntry,
+                                  boolean bye,
+                                  boolean bye2,
+                                  boolean copyFromTopOnBye) {
         threeObjectBye(topEntry, bottomEntry, higherEntry, bye, bye2, copyFromTopOnBye, false);
     }
 
-    protected void threeObjectBye(BracketEntry topEntry, BracketEntry bottomEntry, BracketEntry higherEntry, boolean bye, boolean bye2, boolean copyFromTopOnBye, boolean reversePlayers) {
+    protected void threeObjectBye(BracketEntry topEntry,
+                                  BracketEntry bottomEntry,
+                                  BracketEntry higherEntry,
+                                  boolean bye,
+                                  boolean bye2,
+                                  boolean copyFromTopOnBye,
+                                  boolean reversePlayers) {
         Competitor competitor1;
         Competitor competitor2;
         Competitor competitor12;
@@ -110,24 +120,10 @@ public abstract class AbstractEliminationStrategy implements EliminationStrategy
     }
 
 
-    protected void resolveByesInARow(BracketEntryType currentRow, int absoluteCoord, int higherAbsoluteCoord, int i) {
+    protected void resolveByesInARow(int absoluteCoord, int higherAbsoluteCoord, int i) {
         BracketEntry topEntry = tournament.getBracketEntry(absoluteCoord + i);
         BracketEntry bottomEntry = tournament.getBracketEntry(absoluteCoord + i + 1);
         BracketEntry higherEntry = tournament.getBracketEntry(higherAbsoluteCoord + i / 2);
         threeObjectBye(bottomEntry, topEntry, higherEntry, topEntry.isBye(), bottomEntry.isBye(), true, true);
-    }
-
-
-    protected int getUpperBracketCoord(int lowerBracketCoord, BracketEntryType row) {
-        int upperAbsoluteCoord = BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getLower(row), true);
-
-        if (Tournament.isPowerOfFour(BracketEntryType.getNumberInName(BracketEntryType.getHigher(row)))) {
-            int lowerAbsoluteCoord = 1000 + BracketEntryType.getDoubleEliminationCountAbove(row, false);
-            return upperAbsoluteCoord + lowerBracketCoord - lowerAbsoluteCoord;
-        } else {
-            int rowStart = 1000 + BracketEntryType.getDoubleEliminationCountAbove(BracketEntryType.getHigher(row), false) - 1;
-            int offset = lowerBracketCoord - rowStart;
-            return upperAbsoluteCoord - offset;
-        }
     }
 }

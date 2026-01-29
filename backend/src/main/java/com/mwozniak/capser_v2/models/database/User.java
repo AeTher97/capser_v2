@@ -11,16 +11,14 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
 @Table(name = "users")
 public class User implements Competitor {
 
+    @Setter
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID",
@@ -55,6 +53,10 @@ public class User implements Competitor {
     @ElementCollection(fetch = FetchType.LAZY)
     private List<UUID> teams;
 
+    @JsonIgnore
+    private String email;
+    private String avatarHash;
+
     @Setter
     @Enumerated(EnumType.STRING)
     private Roles role;
@@ -76,10 +78,6 @@ public class User implements Competitor {
         achievementEntities = new ArrayList<>();
         teams = new ArrayList<>();
     }
-
-    @JsonIgnore
-    private String email;
-    private String avatarHash;
 
     @JsonIgnore
     public static User createUserFromDto(CreateUserDto createUserDto, String encodedPassword) throws NoSuchAlgorithmException {
@@ -107,7 +105,15 @@ public class User implements Competitor {
         avatarHash = stringBuffer.toString();
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username);
     }
 }

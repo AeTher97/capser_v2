@@ -60,7 +60,7 @@ public class SingleEliminationStrategy extends FinalGameEliminationStrategy {
             int absoluteCoord = BracketEntryType.getSingleEliminationCountAbove(currentRow);
             int higherAbsoluteCoord = BracketEntryType.getSingleEliminationCountAboveAndEqual(BracketEntryType.getHigher(currentRow)) - BracketEntryType.getSingleEliminationCountAbove(BracketEntryType.getHigher(currentRow)) - 1;
             for (int i = 0; i < currentRow.getValue() / 2; i += 2) {
-                resolveByesInARow(currentRow, absoluteCoord, higherAbsoluteCoord, i);
+                resolveByesInARow(absoluteCoord, higherAbsoluteCoord, i);
             }
             currentRow = BracketEntryType.getHigher(currentRow);
 

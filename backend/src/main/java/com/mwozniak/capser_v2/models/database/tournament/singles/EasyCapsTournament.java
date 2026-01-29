@@ -9,6 +9,7 @@ import lombok.Getter;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,15 +20,14 @@ public class EasyCapsTournament extends AbstractSinglesTournament {
 
 
     public EasyCapsTournament() {
-
     }
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     protected List<EasyCapsBracketEntry> bracketEntries;
 
     @Override
-    public List< BracketEntry> getBracketEntries(){
-        return  (List<BracketEntry>) (List<?>) bracketEntries;
+    public List<BracketEntry> getBracketEntries(){
+        return new ArrayList<>(bracketEntries);
     }
 
 
