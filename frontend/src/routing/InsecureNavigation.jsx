@@ -21,6 +21,7 @@ import TeamScreen from "../screens/profile/TeamProfile";
 import SearchScreen from "../screens/public/SearchScreen";
 import Comparison from "../components/teams/Comparison";
 import LiveGameScreen from "../screens/games/solo/LiveGameScreen";
+import TournamentTester from "../components/tournament/TournamentTester";
 
 const InsecureNavigation = ({open,setOpen}) => {
 
@@ -105,6 +106,10 @@ const InsecureNavigation = ({open,setOpen}) => {
 
                     <Route exact path={"/:tournamentType/tournament/:tournamentId"}>
                         <TournamentComponent/>
+                    </Route>
+
+                    <Route exact path={"/tournamentTester"}>
+                        <TournamentTester/>
                     </Route>
 
 

@@ -20,7 +20,6 @@ import java.util.UUID;
 public class DoublesGame extends AbstractTeamGame {
 
     public DoublesGame() {
-
     }
 
     @Override
@@ -38,7 +37,6 @@ public class DoublesGame extends AbstractTeamGame {
         if (gamePlayerStats.size() != 4) {
             throw new GameValidationException("Game needs to have 4 player stats objects");
         }
-
 
         if (gamePlayerStats.stream().map(GamePlayerStats::getPlayerId).distinct().count() != 4) {
             throw new GameValidationException("Game has to be played by 4 distinct players");
@@ -67,6 +65,4 @@ public class DoublesGame extends AbstractTeamGame {
         players.addAll(getTeam2().getPlayerList());
         return players;
     }
-
-
 }
