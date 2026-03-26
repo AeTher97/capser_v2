@@ -34,13 +34,13 @@ const RoundRobinLadder = ({
                               onHighlight,
                               onHighlightEnd,
                               competitorTournamentStats,
-                              competitors
+                              competitors,
+                              started
                           }) => {
     const styles = ladderStyles();
     const classes = mainStyles();
 
     const ref = useRef();
-
 
     let evenPlayerCount = playerCount % 2 === 0;
     let numberOfRounds = evenPlayerCount ? playerCount - 1 : playerCount;
@@ -79,7 +79,7 @@ const RoundRobinLadder = ({
                             <TableHead>
                                 <TableRow style={{borderBottom: '1px solid gray'}}>
                                     <TableCell style={{padding: 5}}>Player</TableCell>
-                                    <TableCell style={{padding: 5}}> Games</TableCell>
+                                    <TableCell style={{padding: 5}}>Games</TableCell>
                                     <TableCell style={{padding: 5}}>Points</TableCell>
                                     <TableCell style={{padding: 5}}>Difference</TableCell>
                                     <TableCell style={{padding: 5}}>Sinks</TableCell>
@@ -117,12 +117,16 @@ const RoundRobinLadder = ({
                         </Typography>
                         {level.entries.map((entry) =>
                             <div key={entry.id} className={styles.entry}>
-                                <BracketEntry isOwner={isOwner} bracketEntry={entry}
+                                <BracketEntry isOwner={isOwner}
+                                              bracketEntry={entry}
                                               openAddGameDialog={openAddGameDialog}
                                               openSkipDialog={openSkipDialog}
-                                              gameType={gameType} teams={teams}
+                                              gameType={gameType}
+                                              teams={teams}
                                               highlighted={highlighted}
-                                              onHighlight={onHighlight} onHighlightEnd={onHighlightEnd}
+                                              started={started}
+                                              onHighlight={onHighlight}
+                                              onHighlightEnd={onHighlightEnd}
                                 />
 
                             </div>

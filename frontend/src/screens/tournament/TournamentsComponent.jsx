@@ -65,6 +65,7 @@ const TournamentsComponent = () => {
 
     const classes = mainStyles();
     const styles = tournamentListStyles();
+
     return (
         <div>
             <PageHeader title={"Tournaments"} icon={<AccountTreeOutlinedIcon fontSize={"large"}/>} noSpace/>
@@ -126,6 +127,11 @@ const TournamentsComponent = () => {
                                    onChange={event => setName(event.target.value)}/>
                         <Select style={{width: 200, marginBottom: 10}} value={tournamentType}
                                 onChange={event => {
+                                    if(tournamentType !== "ROUND_ROBIN" && event.target.value === "ROUND_ROBIN") {
+                                        setSeedType("ROUND_ROBIN_CIRCLE");
+                                    } else if(tournamentType === "ROUND_ROBIN" && event.target.value !== "ROUND_ROBIN") {
+                                        setSeedType("RANDOM");
+                                    }
                                     setTournamentType(event.target.value)
                                     if (size === "RO_32" || size === "RO_64") {
                                         setSize("RO_16");
