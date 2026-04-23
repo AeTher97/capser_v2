@@ -3,6 +3,7 @@ package com.mwozniak.capser_v2.achievements.general;
 import com.mwozniak.capser_v2.achievements.AchievementProcessor;
 import com.mwozniak.capser_v2.achievements.GeneralAchievement;
 import com.mwozniak.capser_v2.enums.Achievement;
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
@@ -20,8 +21,8 @@ public class PlayFirstCapsGameAchievement implements AchievementProcessor {
     }
 
     @Override
-    public AchievementEntity createEntity(UUID player) {
-        return buildAchievementEntity(player);
+    public AchievementEntity createEntity(User user, GameType gameType) {
+        return buildAchievementEntity(user.getId(), gameType);
     }
 
     @Override

@@ -13,15 +13,15 @@ public interface AchievementProcessor {
 
     boolean checkConditions(User user, AbstractGame abstractGame);
 
-    AchievementEntity createEntity(UUID player);
+    AchievementEntity createEntity(User user, GameType gameType);
 
     Achievement getAchievement();
 
-    default AchievementEntity buildAchievementEntity(UUID player) {
+    default AchievementEntity buildAchievementEntity(UUID player, GameType gameType) {
         return AchievementEntity.builder()
                 .achievement(getAchievement())
                 .userId(player)
-                .gameType(GameType.EASY_CAPS)
+                .gameType(gameType)
                 .dateAchieved(new Date())
                 .build();
     }

@@ -12,11 +12,6 @@ import java.util.UUID;
 public class RebuttalsInARowAchievement15 extends RebuttalsInARowAchievement {
 
     @Override
-    public AchievementEntity createEntity(UUID player) {
-        return buildAchievementEntity(player);
-    }
-
-    @Override
     public Achievement getAchievement() {
         return Achievement.REBUTTALS_IN_A_ROW_5;
     }

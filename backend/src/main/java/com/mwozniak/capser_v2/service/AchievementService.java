@@ -49,22 +49,19 @@ public class AchievementService {
         processAchievementType(user, singlesGame, singlesAchievementProcessors);
     }
 
-
     public void processDoublesAchievements(User user, AbstractGame doublesGame) {
         processAchievementType(user, doublesGame, doublesAchievementsProcessors);
     }
-
 
     private void processAchievementType(User user, AbstractGame abstractGame, List<AchievementProcessor> achievementProcessors) {
         achievementProcessors.forEach(achievementProcessor -> {
             if (achievementProcessor.checkConditions(user, abstractGame)
                     && !checkIfAchievementUnlocked(user.getAchievementEntities(), achievementProcessor.getAchievement())) {
                 notificationService.notifyAboutAchievement(user.getId(), achievementProcessor.getAchievement().getName());
-                user.getAchievementEntities().add(achievementProcessor.createEntity(user.getId()));
+                user.getAchievementEntities().add(achievementProcessor.createEntity(user, abstractGame.getGameType()));
             }
         });
     }
-
 
     private boolean checkIfAchievementUnlocked(List<AchievementEntity> achievementEntities, Achievement achievement) {
         AtomicBoolean contains = new AtomicBoolean(false);

@@ -2,6 +2,8 @@ package com.mwozniak.capser_v2.achievements.general.rebuttals;
 
 import com.mwozniak.capser_v2.achievements.AchievementProcessor;
 import com.mwozniak.capser_v2.enums.GameEvent;
+import com.mwozniak.capser_v2.enums.GameType;
+import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
 import com.mwozniak.capser_v2.models.database.game.GameEventEntity;
@@ -12,10 +14,10 @@ public abstract class RebuttalsInARowAchievement implements AchievementProcessor
 
     @Override
     public boolean checkConditions(User user, AbstractGame abstractGame) {
-        return checkRebuttalsInARow(user, abstractGame);
+        return checkRebuttalsInARow(abstractGame);
     }
 
-    protected boolean checkRebuttalsInARow(User user, AbstractGame abstractGame) {
+    protected boolean checkRebuttalsInARow(AbstractGame abstractGame) {
         List<GameEventEntity> gameEvents = abstractGame.getGameEventList();
         if (gameEvents == null) {
             return false;
@@ -33,6 +35,11 @@ public abstract class RebuttalsInARowAchievement implements AchievementProcessor
             }
         }
         return false;
+    }
+
+    @Override
+    public AchievementEntity createEntity(User user, GameType gameType) {
+        return buildAchievementEntity(user.getId(), gameType);
     }
 
     protected abstract int getNumberInARow();

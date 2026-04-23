@@ -5,6 +5,7 @@ import com.mwozniak.capser_v2.achievements.EasyAchievement;
 import com.mwozniak.capser_v2.achievements.SinglesAchievement;
 import com.mwozniak.capser_v2.enums.Achievement;
 import com.mwozniak.capser_v2.enums.GameEvent;
+import com.mwozniak.capser_v2.enums.GameType;
 import com.mwozniak.capser_v2.models.database.AchievementEntity;
 import com.mwozniak.capser_v2.models.database.User;
 import com.mwozniak.capser_v2.models.database.game.AbstractGame;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @SinglesAchievement
 @EasyAchievement
 public class RebutOnLastChanceAchievement implements AchievementProcessor {
+
     @Override
     public boolean checkConditions(User user, AbstractGame abstractGame) {
         List<GameEventEntity> gameEventEntityList = abstractGame.getGameEventList();
@@ -29,7 +31,8 @@ public class RebutOnLastChanceAchievement implements AchievementProcessor {
             if (eventEntity.getGameEvent().equals(GameEvent.POINT) && !eventEntity.getUserId().equals(user.getId())) {
                 currentOpponentScore++;
             }
-            if (eventEntity.getGameEvent().equals(GameEvent.REBUTTAL) && eventEntity.getUserId().equals(user.getId()) && currentOpponentScore == 10) {
+            if (eventEntity.getGameEvent().equals(GameEvent.REBUTTAL) && eventEntity.getUserId().equals(user.getId())
+                    && currentOpponentScore == 10) {
                 return true;
             }
         }
@@ -37,12 +40,13 @@ public class RebutOnLastChanceAchievement implements AchievementProcessor {
     }
 
     @Override
-    public AchievementEntity createEntity(UUID player) {
-        return buildAchievementEntity(player);
+    public AchievementEntity createEntity(User user, GameType gameType) {
+        return buildAchievementEntity(user.getId(), gameType);
     }
 
     @Override
     public Achievement getAchievement() {
         return Achievement.REBUT_ON_LAST_CHANCE;
     }
+
 }
