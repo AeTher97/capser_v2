@@ -118,12 +118,14 @@ public abstract class AbstractTeamGame extends AbstractGame {
             setWinnerId(team2DatabaseId);
         }
 
-        gamePlayerStats.forEach(stats -> {
-            if (stats.getScore() == 0) {
-                stats.setNakedLap(true);
-                setNakedLap(true);
-            }
-        });
+        if (getTeamPoints(getTeam1Stats()) != 0 && getTeamPoints(getTeam2Stats()) != 0) {
+            gamePlayerStats.forEach(stats -> {
+                if (stats.getScore() == 0) {
+                    stats.setNakedLap(true);
+                    setNakedLap(true);
+                }
+            });
+        }
 
         calculateBeers(getTeam1Stats(), getTeam2Stats());
 
@@ -303,7 +305,7 @@ public abstract class AbstractTeamGame extends AbstractGame {
         return stats.stream().anyMatch(GamePlayerStats::isNakedLap);
     }
 
-    public boolean isWinner(User user){
+    public boolean isWinner(User user) {
         return getWinningTeam().getPlayerList().contains(user.getId());
     }
 
